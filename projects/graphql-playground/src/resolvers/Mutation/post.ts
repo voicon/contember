@@ -1,7 +1,23 @@
-import { getUserId, Context } from '../../utils'
+import { getUserId } from '../../utils'
+import { Context } from "../../Context";
+import { GraphQLResolveInfo } from '../../../node_modules/@types/graphql';
+
+interface CreateDraftArgs {
+  title: string
+  text: string
+}
+
+interface PublishArgs {
+  id: string
+}
+
+interface DeletePostArgs {
+  id: string
+}
+
 
 export const post = {
-  async createDraft(parent, { title, text }, ctx: Context, info) {
+  async createDraft(parent: any, { title, text }: CreateDraftArgs, ctx: Context, info: GraphQLResolveInfo) {
     const userId = getUserId(ctx)
     return ctx.db.mutation.createPost(
       {
@@ -18,7 +34,7 @@ export const post = {
     )
   },
 
-  async publish(parent, { id }, ctx: Context, info) {
+  async publish(parent: any, { id }: PublishArgs, ctx: Context, info: GraphQLResolveInfo) {
     const userId = getUserId(ctx)
     const postExists = await ctx.db.exists.Post({
       id,
@@ -37,7 +53,7 @@ export const post = {
     )
   },
 
-  async deletePost(parent, { id }, ctx: Context, info) {
+  async deletePost(parent: any, { id }: DeletePostArgs, ctx: Context, info: GraphQLResolveInfo) {
     const userId = getUserId(ctx)
     const postExists = await ctx.db.exists.Post({
       id,

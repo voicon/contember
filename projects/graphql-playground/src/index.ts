@@ -1,10 +1,11 @@
 import { GraphQLServer } from 'graphql-yoga'
 import { Prisma } from './generated/prisma'
 import resolvers from './resolvers'
+import { IResolvers } from 'graphql-yoga/dist/types';
 
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
-  resolvers,
+  resolvers: resolvers as IResolvers, // TODO: can graphql-yoga vs. graphql-
   context: req => ({
     ...req,
     db: new Prisma({
