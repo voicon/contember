@@ -21,6 +21,7 @@ test:
   before_script:
   - cd packages/projects/blog
   script:
+  - yarn install
   - ./node_modules/.bin/mocha --require ts-node/register  --ui bdd ./tests/*.ts
 
 lint:
@@ -28,4 +29,5 @@ lint:
   before_script:
   - cd packages/projects/blog
   script:
+  - yarn install
   - ./node_modules/.bin/tslint --project .
