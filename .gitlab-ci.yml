@@ -6,7 +6,7 @@ cache:
   untracked: true
   key: "$CI_BUILD_REF_NAME"
   paths:
-    - node_modules/
+    - packages/projects/blog/node_modules/
 
 build:
   stage: build
