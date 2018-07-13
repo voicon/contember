@@ -14,7 +14,7 @@ build:
   - cd packages/projects/blog
   script:
   - yarn install
-  - tsc -p .
+  - ./node_modules/.bin/tsc -p .
 
 test:
   stage: test
