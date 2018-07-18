@@ -1,33 +1,57 @@
-image: node:10
 stages:
-  - build
-  - test
-cache:
-  untracked: true
-  key: "$CI_BUILD_REF_NAME"
-  paths:
-    - packages/projects/blog/node_modules/
+  - test:build
+  - test:run
 
-build:
-  stage: build
-  before_script:
-  - cd packages/projects/blog
-  script:
-  - yarn install
-  - ./node_modules/.bin/tsc -p .
 
-test:
-  stage: test
-  before_script:
-  - cd packages/projects/blog
-  script:
-  - yarn install
-  - ./node_modules/.bin/mocha --require ts-node/register  --ui bdd ./tests/*.ts
+build:pkg:api:
+  stage: test:build
+  image: node:10
 
-lint:
-  stage: test
-  before_script:
-  - cd packages/projects/blog
   script:
-  - yarn install
-  - ./node_modules/.bin/tslint --project .
+    - cd packages/api
+    - yarn install
+    - yarn run build
+
+  artifacts:
+    paths:
+      - packages/api/dist
+      - packages/api/node_modules
+
+
+build:mgw:admin:
+  stage: test:build
+  image: node:10
+
+  script:
+    - cd mangoweb/admin
+    - yarn install
+    - yarn run build
+
+  artifacts:
+    paths:
+      - mangoweb/admin/dist
+      - mangoweb/admin/node_modules
+
+
+build:mgw:api:
+  stage: test:build
+  image: node:10
+
+  script:
+    - cd mangoweb/api
+    - yarn install
+    - yarn run build
+
+  artifacts:
+    paths:
+      - mangoweb/api/dist
+      - mangoweb/api/node_modules
+
+
+test:pkg:api:
+  stage: test:run
+  image: node:10
+
+  script:
+    - cd packages/api
+    - node_modules/.bin/mocha --require ts-node/register --ui bdd ./tests/*.ts
