@@ -1,7 +1,14 @@
 stages:
+  - test:init
   - test:build
   - test:run
 
+init:
+  stage: test:init
+  image: node:10
+
+  script:
+    - lerna bootstrap
 
 build:pkg:api:
   stage: test:build
@@ -9,8 +16,7 @@ build:pkg:api:
 
   script:
     - cd packages/cms-api
-    - yarn install
-    - yarn run build
+    - npm run build
 
   artifacts:
     paths:
@@ -24,8 +30,7 @@ build:mgw:admin:
 
   script:
     - cd mangoweb/admin
-    - yarn install
-    - yarn run build
+    - npm run build
 
   artifacts:
     paths:
@@ -39,8 +44,7 @@ build:mgw:api:
 
   script:
     - cd mangoweb/cms-api
-    - yarn install
-    - yarn run build
+    - npm run build
 
   artifacts:
     paths:
