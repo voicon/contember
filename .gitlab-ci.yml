@@ -8,7 +8,7 @@ init:
   image: node:10
 
   script:
-    - lerna bootstrap
+    - npx lerna bootstrap
 
 build:pkg:api:
   stage: test:build
