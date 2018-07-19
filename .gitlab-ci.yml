@@ -68,4 +68,4 @@ test:pkg:api:
 
   script:
     - cd packages/cms-api
-    - yarn run test
+    - npm test
