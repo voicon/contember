@@ -8,14 +8,14 @@ build:pkg:api:
   image: node:10
 
   script:
-    - cd packages/api
+    - cd packages/cms-api
     - yarn install
     - yarn run build
 
   artifacts:
     paths:
-      - packages/api/dist
-      - packages/api/node_modules
+      - packages/cms-api/dist
+      - packages/cms-api/node_modules
 
 
 build:mgw:admin:
@@ -38,14 +38,14 @@ build:mgw:api:
   image: node:10
 
   script:
-    - cd mangoweb/api
+    - cd mangoweb/cms-api
     - yarn install
     - yarn run build
 
   artifacts:
     paths:
-      - mangoweb/api/dist
-      - mangoweb/api/node_modules
+      - mangoweb/cms-api/dist
+      - mangoweb/cms-api/node_modules
 
 
 test:pkg:api:
@@ -56,5 +56,5 @@ test:pkg:api:
     - build:pkg:api
 
   script:
-    - cd packages/api
+    - cd packages/cms-api
     - yarn run test
