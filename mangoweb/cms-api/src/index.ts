@@ -39,7 +39,7 @@ const connection = knex({
 
 // const result = generate
 const server = new GraphQLServer({
-  schema: graphQLSchema,
+  schema: graphQLSchema as any,
   context: {
     db: connection,
   },
