@@ -10,6 +10,13 @@ init:
   script:
     - npx lerna bootstrap
 
+  artifacts:
+    paths:
+      - node_modules
+      - mangoweb/admin/node_modules
+      - mangoweb/cms-api/node_modules
+      - packages/cms-api/node_modules
+
 build:pkg:api:
   stage: test:build
   image: node:10
