@@ -52,6 +52,9 @@ test:pkg:api:
   stage: test:run
   image: node:10
 
+  dependencies:
+    - build:pkg:api
+
   script:
     - cd packages/api
-    - node_modules/.bin/mocha --require ts-node/register --ui bdd ./tests/*.ts
+    - yarn run test
