@@ -4,7 +4,7 @@ import { printSchema } from "graphql"
 import { GraphQLServer } from "graphql-yoga"
 import * as knex from "knex"
 import GraphQlSchemaBuilder from "cms-api/dist/graphQLSchema/GraphQlSchemaBuilder"
-// import buildSql from "cms-api/dist/sqlSchema/sqlSchemaBuilder"
+import getSql from "cms-api/dist/sqlSchema/sqlSchemaBuilderHelper"
 import model from "./projects/blog/src/model"
 // import { MigrationBuilder } from "node-pg-migrate"
 // import DefaultMigrationBuilder from "node-pg-migrate/lib/migration-builder"
@@ -14,13 +14,8 @@ dotenv.config()
 const builder = new GraphQlSchemaBuilder(model)
 const graphQLSchema = builder.build()
 
-// const migrationBuilder = new DefaultMigrationBuilder({}, {
-//   query: null,
-//   select: null,
-// })
-// buildSql(model, migrationBuilder)
-// const sql = (migrationBuilder as any).getSql()
-// fs.writeFile(__dirname + "/schema.sql", sql, error => console.error(error))
+const sql = getSql(model)
+fs.writeFile(__dirname + "/schema.sql", sql, error => console.error(error))
 
 const fileData = printSchema(graphQLSchema as any, {commentDescriptions: true})
 
