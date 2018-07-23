@@ -27,3 +27,9 @@ Installs `apple` and `banana` dependencies into `grocery` package. Creates a sym
 ```sh
 lerna add apple banana --scope=grocery
 ```
+
+### Run watch mode across all projects
+
+```sh
+lerna run --parallel start
+```
