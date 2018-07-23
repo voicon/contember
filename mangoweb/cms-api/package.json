@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc -p .",
-    "start": "concurrently \"tsc -w -p .\" \"nodemon dist/src/index.js\""
+    "build": "tsc -p tsconfig.json",
+    "start": "concurrently \"tsc -w -p tsconfig.json\" \"nodemon dist/index.js\""
   },
   "dependencies": {
     "@types/dotenv": "^4.0.3",
