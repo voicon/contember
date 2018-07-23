@@ -17,7 +17,7 @@ We use [Lerna](https://lernajs.io/) to help with a few things
 lerna bootstrap --hoist
 ```
 
-Hoist option deduplicates `node_modules` structure into one shared folder and per package differences.
+Hoist option deduplicates `node_modules` structure into one shared folder and per package differences. In case of broken symlinks you can run `lerna link` to restore them.
 
 
 ### Link internal dependency
