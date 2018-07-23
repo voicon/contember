@@ -18,10 +18,11 @@ builder.entity('Post', entity => entity
   .column('publishedAt', column => column.type('datetime'))
   .manyHasOne('author', relation => relation.target('Author').inversedBy('posts'))
   .manyHasMany('categories', relation => relation.target('Category').inversedBy('posts'))
-  .oneHasMany('locales', relation => relation.target('PostLocale'))
+  .oneHasMany('locales', relation => relation.target('PostLocale').inversedBy('post'))
   .oneHasMany('sites', relation => relation.target('PostSite'))
 )
 builder.entity('PostLocale', entity => entity
+  .unique(['post', 'locale'])
   .column('locale', column => column.type('locale'))
   .column('title', column => column.type('string'))
 )
