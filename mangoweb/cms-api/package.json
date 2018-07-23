@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "start": "concurrently \"tsc -w -p tsconfig.json\" \"nodemon dist/index.js\""
+    "start": "ts-node-dev --project tsconfig.json src/index.ts"
   },
   "dependencies": {
     "apollo-codegen": "^0.20.0",
@@ -20,6 +20,7 @@
     "node-pg-migrate": "^3.5.1",
     "pg": "^7.4.3",
     "sqlite3": "^4.0.0",
+    "ts-node-dev": "^1.0.0-pre.26",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
