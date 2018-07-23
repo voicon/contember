@@ -1,6 +1,7 @@
 stages:
   - test:init
-  - test:build
+  - test:build-packages
+  - test:build-mangoweb
   - test:run
 
 init:
@@ -18,7 +19,7 @@ init:
       - packages/cms-api/node_modules
 
 build:pkg:api:
-  stage: test:build
+  stage: test:build-packages
   image: node:10
 
   script:
@@ -32,7 +33,7 @@ build:pkg:api:
 
 
 build:mgw:admin:
-  stage: test:build
+  stage: test:build-mangoweb
   image: node:10
 
   script:
@@ -46,7 +47,7 @@ build:mgw:admin:
 
 
 build:mgw:api:
-  stage: test:build
+  stage: test:build-mangoweb
   image: node:10
 
   script:
