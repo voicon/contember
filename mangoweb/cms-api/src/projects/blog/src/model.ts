@@ -1,4 +1,4 @@
-import { RelationType, Schema } from "cms-api/src/schema/model"
+import { RelationType, Schema } from "cms-api/dist/schema/model"
 
 export default {
   enums: {

@@ -1,31 +1,44 @@
 stages:
-  - test:build
+  - test:init
+  - test:build-packages
+  - test:build-mangoweb
   - test:run
 
-
-build:pkg:api:
-  stage: test:build
+init:
+  stage: test:init
   image: node:10
 
   script:
-    - cd packages/api
-    - yarn install
-    - yarn run build
+    - npx lerna bootstrap
 
   artifacts:
     paths:
-      - packages/api/dist
-      - packages/api/node_modules
+      - node_modules
+      - mangoweb/admin/node_modules
+      - mangoweb/cms-api/node_modules
+      - packages/cms-api/node_modules
+
+build:pkg:api:
+  stage: test:build-packages
+  image: node:10
+
+  script:
+    - cd packages/cms-api
+    - npm run build
+
+  artifacts:
+    paths:
+      - packages/cms-api/dist
+      - packages/cms-api/node_modules
 
 
 build:mgw:admin:
-  stage: test:build
+  stage: test:build-mangoweb
   image: node:10
 
   script:
     - cd mangoweb/admin
-    - yarn install
-    - yarn run build
+    - npm run build
 
   artifacts:
     paths:
@@ -34,18 +47,17 @@ build:mgw:admin:
 
 
 build:mgw:api:
-  stage: test:build
+  stage: test:build-mangoweb
   image: node:10
 
   script:
-    - cd mangoweb/api
-    - yarn install
-    - yarn run build
+    - cd mangoweb/cms-api
+    - npm run build
 
   artifacts:
     paths:
-      - mangoweb/api/dist
-      - mangoweb/api/node_modules
+      - mangoweb/cms-api/dist
+      - mangoweb/cms-api/node_modules
 
 
 test:pkg:api:
@@ -56,5 +68,5 @@ test:pkg:api:
     - build:pkg:api
 
   script:
-    - cd packages/api
-    - yarn run test
+    - cd packages/cms-api
+    - npm test
