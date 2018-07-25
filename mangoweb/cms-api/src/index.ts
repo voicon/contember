@@ -15,11 +15,11 @@ const builder = new GraphQlSchemaBuilder(model)
 const graphQLSchema = builder.build()
 
 const sql = getSql(model)
-fs.writeFile(__dirname + "/schema.sql", sql, error => console.error(error))
+fs.writeFile(__dirname + "/../generated/schema.sql", sql, error => console.error(error))
 
 const fileData = printSchema(graphQLSchema as any, {commentDescriptions: true})
 
-fs.writeFile(__dirname + "/schema.graphql", fileData, error => console.error(error))
+fs.writeFile(__dirname + "/../generated/schema.graphql", fileData, error => console.error(error))
 
 const connection = knex({
   debug: true,
