@@ -1,5 +1,4 @@
-import { RelationType, Schema } from "cms-api/dist/schema/model"
-import { OnDelete } from "../../../../../../packages/cms-api/src/schema/model";
+import { OnDelete, RelationType, Schema } from "cms-api"
 
 const schema: Schema = {
   enums: {

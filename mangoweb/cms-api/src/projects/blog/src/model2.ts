@@ -1,4 +1,4 @@
-import SchemaBuilder from "cms-api/src/schema/builder/SchemaBuilder"
+import { SchemaBuilder } from "cms-api"
 
 const builder = new SchemaBuilder()
 builder.enum("siteVisibility", ['visible', 'hidden'])
