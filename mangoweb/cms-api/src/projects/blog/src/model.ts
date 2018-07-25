@@ -1,6 +1,7 @@
 import { RelationType, Schema } from "cms-api/dist/schema/model"
+import { OnDelete } from "../../../../../../packages/cms-api/src/schema/model";
 
-export default {
+const schema: Schema = {
   enums: {
     siteVisibility: ["visible", "hidden"],
     locale: ["cs", "en"],
@@ -8,12 +9,14 @@ export default {
   entities: {
     Author: {
       name: "Author",
+      pluralName: "Authors",
       primary: "id",
       primaryColumn: "id",
       tableName: "Author",
+      unique: [],
       fields: {
-        id: {name: "id", type: "uuid", columnName: "id"},
-        name: {name: "name", type: "string", columnName: "name"},
+        id: {name: "id", type: "uuid", columnName: "id", nullable: false},
+        name: {name: "name", type: "string", columnName: "name", nullable: false},
         posts: {name: "posts", relation: RelationType.OneHasMany, target: "Post", ownedBy: "author"}
       }
     },
@@ -23,21 +26,24 @@ export default {
       primary: "id",
       primaryColumn: "id",
       tableName: "Category",
+      unique: [],
       fields: {
-        id: {name: "id", type: "uuid", columnName: "id"},
+        id: {name: "id", type: "uuid", columnName: "id", nullable: false},
         locales: {name: "locales", relation: RelationType.OneHasMany, target: "CategoryLocale", ownedBy: "category"},
         posts: {name: "posts", relation: RelationType.ManyHasMany, target: "Post", ownedBy: "categories"},
       }
     },
     CategoryLocale: {
       name: "CategoryLocale",
+      pluralName: "CategoryLocales",
       primary: "id",
       primaryColumn: "id",
       tableName: "CategoryLocale",
+      unique: [],
       fields: {
-        id: {name: "id", type: "uuid", columnName: "id"},
-        name: {name: "name", type: "string", columnName: "name"},
-        locale: {name: "locale", type: "locale", columnName: "locale"},
+        id: {name: "id", type: "uuid", columnName: "id", nullable: false},
+        name: {name: "name", type: "string", columnName: "name", nullable: false},
+        locale: {name: "locale", type: "locale", columnName: "locale", nullable: false},
         category: {
           name: "category",
           relation: RelationType.ManyHasOne,
@@ -45,24 +51,26 @@ export default {
           inversedBy: "locales",
           joiningColumn: {
             columnName: "category_id",
-            onDelete: "restrict",
+            onDelete: OnDelete.restrict,
           }
         },
       }
     },
     Post: {
       name: "Post",
+      pluralName: "Posts",
       primary: "id",
       primaryColumn: "id",
       tableName: "Post",
+      unique: [],
       fields: {
-        id: {name: "id", type: "uuid", columnName: "id"},
-        publishedAt: {name: "publishedAt", type: "datetime", columnName: "publishedAt"},
+        id: {name: "id", type: "uuid", columnName: "id", nullable: false},
+        publishedAt: {name: "publishedAt", type: "datetime", columnName: "publishedAt", nullable: false},
         author: {
           name: "author",
           relation: RelationType.ManyHasOne,
           target: "Author",
-          joiningColumn: {columnName: "author_id", onDelete: "cascade"},
+          joiningColumn: {columnName: "author_id", onDelete: OnDelete.cascade},
           inversedBy: "posts"
         },
         locales: {name: "locales", relation: RelationType.OneHasMany, target: "PostLocale", ownedBy: "post"},
@@ -76,11 +84,11 @@ export default {
             tableName: "PostCategories",
             joiningColumn: {
               columnName: "post_id",
-              onDelete: "cascade"
+              onDelete: OnDelete.cascade
             },
             inverseJoiningColumn: {
               columnName: "category_id",
-              onDelete: "cascade"
+              onDelete: OnDelete.cascade
             }
           }
         },
@@ -88,12 +96,13 @@ export default {
     },
     PostLocale: {
       name: "PostLocale",
+      pluralName: "PostLocales",
       primary: "id",
       primaryColumn: "id",
       tableName: "PostLocale",
-      unique: [{fields: ["post", "locale"]}],
+      unique: [{fields: ["post", "locale"], name: "post_locale"}],
       fields: {
-        id: {name: "id", type: "uuid", columnName: "id"},
+        id: {name: "id", type: "uuid", columnName: "id", nullable: false},
         post: {
           name: "post",
           relation: RelationType.ManyHasOne,
@@ -101,20 +110,22 @@ export default {
           inversedBy: "locales",
           joiningColumn: {
             columnName: "post_id",
-            onDelete: "cascade",
+            onDelete: OnDelete.cascade,
           }
         },
-        locale: {name: "locale", type: "locale", columnName: "locale"},
-        title: {name: "title", type: "string", columnName: "title"},
+        locale: {name: "locale", type: "locale", columnName: "locale", nullable: false},
+        title: {name: "title", type: "string", columnName: "title", nullable: false},
       }
     },
     PostSite: {
       name: "PostSite",
+      pluralName: "PostSites",
       primary: "id",
       primaryColumn: "id",
       tableName: "PostSite",
+      unique: [],
       fields: {
-        id: {name: "id", type: "uuid", columnName: "id"},
+        id: {name: "id", type: "uuid", columnName: "id", nullable: false},
         post: {
           name: "post",
           relation: RelationType.ManyHasOne,
@@ -122,7 +133,7 @@ export default {
           inversedBy: "sites",
           joiningColumn: {
             columnName: "post_id",
-            onDelete: "cascade",
+            onDelete: OnDelete.cascade,
           }
         },
         site: {
@@ -131,38 +142,44 @@ export default {
           target: "Site",
           joiningColumn: {
             columnName: "site_id",
-            onDelete: "cascade"
+            onDelete: OnDelete.cascade
           }
         },
-        visibility: {name: "visibility", type: "siteVisibility", columnName: "visibility"},
+        visibility: {name: "visibility", type: "siteVisibility", columnName: "visibility", nullable: false},
       }
     },
     Site: {
       name: "Site",
+      pluralName: "Sites",
       primary: "id",
       primaryColumn: "id",
       tableName: "Site",
+      unique: [],
       fields: {
-        id: {name: "id", type: "uuid", columnName: "id"},
-        name: {name: "name", type: "string", columnName: "name"},
+        id: {name: "id", type: "uuid", columnName: "id", nullable: false},
+        name: {name: "name", type: "string", columnName: "name", nullable: false},
         setting: {
           name: "setting", relation: RelationType.OneHasOne, inversedBy: "site", target: "SiteSetting", nullable: false, joiningColumn: {
             columnName: "setting_id",
-            onDelete: "cascade"
+            onDelete: OnDelete.cascade
           }
         }
       },
     },
     SiteSetting: {
       name: "SiteSetting",
+      pluralName: "SiteSettings",
       primary: "id",
       primaryColumn: "id",
       tableName: "SiteSetting",
+      unique: [],
       fields: {
-        id: {name: "id", type: "uuid", columnName: "id"},
-        url: {name: "url", type: "string", columnName: "url"},
+        id: {name: "id", type: "uuid", columnName: "id", nullable: false},
+        url: {name: "url", type: "string", columnName: "url", nullable: false},
         site: {name: "site", relation: RelationType.OneHasOne, ownedBy: "setting", target: "Site"}
       }
     },
   }
-} as Schema
+}
+
+export default schema
