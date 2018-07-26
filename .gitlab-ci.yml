@@ -35,4 +35,5 @@ lint:prettier:
   stage: test:build
   image: node:10
   script:
+    - npm install
     - npm run prettier:lint
