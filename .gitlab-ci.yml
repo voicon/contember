@@ -30,3 +30,9 @@ test:pkg:api:
 
   script:
     - npm run test
+
+lint:prettier:
+  stage: test:build
+  image: node:10
+  script:
+    - npm run prettier:lint
