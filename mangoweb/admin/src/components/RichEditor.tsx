@@ -1,10 +1,12 @@
-import { Button, Icon, Toolbar } from './EditorComponents'
-import { Editor, getEventTransfer  } from 'slate-react'
+import { Button, Icon, Image, Toolbar } from './EditorComponents'
+import { Editor, getEventRange, getEventTransfer  } from 'slate-react'
 import { isKeyHotkey } from 'is-hotkey'
 // import { Value } from 'slate'
 import * as React from 'react'
 import Plain from 'slate-plain-serializer'
 import isUrl from 'is-url'
+import { LAST_CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import imageExtensions from '../data/image-extensions'
 
 /**
  * Define the default node type.
@@ -93,6 +95,9 @@ export default class RichEditor extends React.Component {
 					<Button active={this.hasLinks()} onMouseDown={this.onClickLink}>
             <Icon>link</Icon>
           </Button>
+					<Button onMouseDown={this.onClickImage}>
+            <Icon>image</Icon>
+          </Button>
           {this.renderBlockButton('heading-one', 'looks_one')}
           {this.renderBlockButton('heading-two', 'looks_two')}
           {this.renderBlockButton('heading-three', 'looks_3')}
@@ -108,6 +113,7 @@ export default class RichEditor extends React.Component {
           onChange={this.onChange}
 					onKeyDown={this.onKeyDown}
 					onPaste={this.onPaste}
+					onDrop={this.onDropOrPaste}
           renderNode={this.renderNode}
           renderMark={this.renderMark}
         />
@@ -171,7 +177,7 @@ export default class RichEditor extends React.Component {
    */
 
   renderNode = props => {
-    const { attributes, children, node } = props
+    const { attributes, children, node, isFocused } = props
 
     switch (node.type) {
       case 'block-quote':
@@ -197,6 +203,10 @@ export default class RichEditor extends React.Component {
 					</a>
 				)
 			}
+			case 'image': {
+        const src = node.data.get('src')
+        return <Image src={src} selected={isFocused} {...attributes} />
+      }
     }
   }
 
@@ -358,6 +368,22 @@ export default class RichEditor extends React.Component {
 	}
 
 	/**
+   * On clicking the image button, prompt for an image and insert it.
+   *
+   * @param {Event} event
+   */
+
+  onClickImage = event => {
+    event.preventDefault()
+    const src = window.prompt('Enter the URL of the image:')
+    if (!src) return
+
+    const change = this.state.value.change().call(insertImage, src)
+
+    this.onChange(change)
+  }
+
+	/**
    * On paste, if the text is a link, wrap the selection in a link.
    *
    * @param {Event} event
@@ -378,7 +404,48 @@ export default class RichEditor extends React.Component {
 
     change.call(wrapLink, text)
     return true
+	}
+
+	 /**
+   * On drop, insert the image wherever it is dropped.
+   *
+   * @param {Event} event
+   * @param {Change} change
+   * @param {Editor} editor
+   */
+
+  onDropOrPaste = (event, change, editor) => {
+    const target = getEventRange(event, change.value)
+    if (!target && event.type == 'drop') return
+
+    const transfer = getEventTransfer(event)
+    const { type, text, files } = transfer
+
+    if (type == 'files') {
+      for (const file of files) {
+        const reader = new FileReader()
+        const [mime] = file.type.split('/')
+        if (mime != 'image') continue
+
+        reader.addEventListener('load', () => {
+          editor.change(c => {
+            c.call(insertImage, reader.result, target)
+          })
+        })
+
+        reader.readAsDataURL(file)
+      }
+    }
+
+    if (type == 'text') {
+      if (!isUrl(text)) return
+      if (!isImage(text)) return
+      change.call(insertImage, text, target)
+    }
   }
+
+
+
 }
 
 /**
@@ -405,4 +472,35 @@ function wrapLink(change, href) {
 
 function unwrapLink(change) {
   change.unwrapInline('link')
+}
+
+/*
+ * A function to determine whether a URL has an image extension.
+ *
+ * @param {String} url
+ * @return {Boolean}
+ */
+
+function isImage(url) {
+  return !!imageExtensions.find(url.endsWith)
+}
+
+/**
+ * A change function to standardize inserting images.
+ *
+ * @param {Change} change
+ * @param {String} src
+ * @param {Range} target
+ */
+
+function insertImage(change, src, target) {
+  if (target) {
+    change.select(target)
+  }
+
+  change.insertBlock({
+    type: 'image',
+    isVoid: true,
+    data: { src },
+  })
 }
