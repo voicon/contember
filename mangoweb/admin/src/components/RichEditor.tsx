@@ -81,6 +81,7 @@ export default class RichEditor extends React.Component {
           {this.renderMarkButton('code', 'code')}
           {this.renderBlockButton('heading-one', 'looks_one')}
           {this.renderBlockButton('heading-two', 'looks_two')}
+          {this.renderBlockButton('heading-three', 'looks_3')}
           {this.renderBlockButton('block-quote', 'format_quote')}
           {this.renderBlockButton('numbered-list', 'format_list_numbered')}
           {this.renderBlockButton('bulleted-list', 'format_list_bulleted')}
@@ -166,6 +167,8 @@ export default class RichEditor extends React.Component {
         return <h1 {...attributes}>{children}</h1>
       case 'heading-two':
         return <h2 {...attributes}>{children}</h2>
+				case 'heading-three':
+        return <h3 {...attributes}>{children}</h3>
       case 'list-item':
         return <li {...attributes}>{children}</li>
       case 'numbered-list':
