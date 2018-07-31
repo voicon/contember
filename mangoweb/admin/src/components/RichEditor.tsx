@@ -1,9 +1,10 @@
 import { Button, Icon, Toolbar } from './EditorComponents'
-import { Editor } from 'slate-react'
+import { Editor, getEventTransfer  } from 'slate-react'
 import { isKeyHotkey } from 'is-hotkey'
 // import { Value } from 'slate'
 import * as React from 'react'
 import Plain from 'slate-plain-serializer'
+import isUrl from 'is-url'
 
 /**
  * Define the default node type.
@@ -63,6 +64,17 @@ export default class RichEditor extends React.Component {
   hasBlock = type => {
     const { value } = this.state
     return value.blocks.some(node => node.type == type)
+	}
+
+	/**
+   * Check whether the current selection has a link in it.
+   *
+   * @return {Boolean} hasLinks
+   */
+
+  hasLinks = () => {
+    const { value } = this.state
+    return value.inlines.some(inline => inline.type == 'link')
   }
 
   /**
@@ -77,8 +89,10 @@ export default class RichEditor extends React.Component {
         <Toolbar>
           {this.renderMarkButton('bold', 'format_bold')}
           {this.renderMarkButton('italic', 'format_italic')}
-          {this.renderMarkButton('underlined', 'format_underlined')}
-          {this.renderMarkButton('code', 'code')}
+					{this.renderMarkButton('underlined', 'format_underlined')}
+					<Button active={this.hasLinks()} onMouseDown={this.onClickLink}>
+            <Icon>link</Icon>
+          </Button>
           {this.renderBlockButton('heading-one', 'looks_one')}
           {this.renderBlockButton('heading-two', 'looks_two')}
           {this.renderBlockButton('heading-three', 'looks_3')}
@@ -92,7 +106,8 @@ export default class RichEditor extends React.Component {
           placeholder="Enter some rich text..."
           value={this.state.value}
           onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
+					onKeyDown={this.onKeyDown}
+					onPaste={this.onPaste}
           renderNode={this.renderNode}
           renderMark={this.renderMark}
         />
@@ -173,6 +188,15 @@ export default class RichEditor extends React.Component {
         return <li {...attributes}>{children}</li>
       case 'numbered-list':
         return <ol {...attributes}>{children}</ol>
+			case 'link': {
+				const { data } = node
+				const href = data.get('href')
+				return (
+					<a {...attributes} href={href}>
+						{children}
+					</a>
+				)
+			}
     }
   }
 
@@ -300,6 +324,85 @@ export default class RichEditor extends React.Component {
     }
 
     this.onChange(change)
+	}
+
+	/**
+   * When clicking a link, if the selection has a link in it, remove the link.
+   * Otherwise, add a new link with an href and text.
+   *
+   * @param {Event} event
+   */
+
+  onClickLink = event => {
+    event.preventDefault()
+    const { value } = this.state
+    const hasLinks = this.hasLinks()
+    const change = value.change()
+
+    if (hasLinks) {
+      change.call(unwrapLink)
+    } else if (value.isExpanded) {
+      const href = window.prompt('Enter the URL of the link:')
+      change.call(wrapLink, href)
+    } else {
+      const href = window.prompt('Enter the URL of the link:')
+      const text = window.prompt('Enter the text for the link:')
+
+      change
+        .insertText(text)
+        .extend(0 - text.length)
+        .call(wrapLink, href)
+    }
+
+    this.onChange(change)
+	}
+
+	/**
+   * On paste, if the text is a link, wrap the selection in a link.
+   *
+   * @param {Event} event
+   * @param {Change} change
+   */
+
+  onPaste = (event, change) => {
+    if (change.value.isCollapsed) return
+
+    const transfer = getEventTransfer(event)
+    const { type, text } = transfer
+    if (type != 'text' && type != 'html') return
+    if (!isUrl(text)) return
+
+    if (this.hasLinks()) {
+      change.call(unwrapLink)
+    }
+
+    change.call(wrapLink, text)
+    return true
   }
 }
 
+/**
+ * A change helper to standardize wrapping links.
+ *
+ * @param {Change} change
+ * @param {String} href
+ */
+
+function wrapLink(change, href) {
+  change.wrapInline({
+    type: 'link',
+    data: { href },
+  })
+
+  change.collapseToEnd()
+}
+
+/**
+ * A change helper to standardize unwrapping links.
+ *
+ * @param {Change} change
+ */
+
+function unwrapLink(change) {
+  change.unwrapInline('link')
+}
