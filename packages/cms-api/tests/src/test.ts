@@ -1,5 +1,5 @@
 import { expect } from "chai"
-import { graphql } from "graphql"
+import { graphql, printSchema } from "graphql"
 import { maskErrors } from "graphql-errors"
 import * as knex from "knex"
 import * as mockKnex from "mock-knex"
@@ -15,7 +15,7 @@ export interface SqlQuery
 {
   sql: string
   parameters?: any[]
-  response?: any[]
+  response?: any[] | any
 }
 
 export interface Test
@@ -26,9 +26,23 @@ export interface Test
   return: object
 }
 
+export const sqlTransaction = (executes: SqlQuery[]): SqlQuery[] => {
+  return [
+    {
+      sql: 'BEGIN;'
+    },
+    ...executes,
+    {
+      sql: 'COMMIT;'
+    },
+  ]
+}
+
 export const execute = async (test: Test) => {
   const builder = new GraphQlSchemaBuilder(test.schema)
   const graphQLSchema = builder.build()
+
+  // console.log(printSchema(graphQLSchema))
 
   maskErrors(graphQLSchema)
 
@@ -51,8 +65,8 @@ export const execute = async (test: Test) => {
       query.response([])
       return
     }
-    console.log(query.sql)
-    console.log(query.bindings)
+    // console.log(query.sql)
+    // console.log(query.bindings)
     if (!queryDefinition) {
       throw new Error(`Unexpected query #${step} '${query.sql}'`)
     }
