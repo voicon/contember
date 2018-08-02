@@ -4,6 +4,7 @@ import { detailRequest, listRequest } from "../state/request"
 import { Dispatch } from "../actions/types"
 import State from "../state"
 import * as React from 'react'
+import { Spinner } from '@blueprintjs/core'
 
 export default connect<State, { onViewGrid: (name: string) => void, onViewEdit: (name: string, id: string) => void }, {}, State>((state) => {
   return state
@@ -20,7 +21,7 @@ export default connect<State, { onViewGrid: (name: string) => void, onViewEdit: 
       <li><a onClick={() => props.onViewGrid("posts")}>Posts</a></li>
       <li><a onClick={() => props.onViewGrid("categories")}>Categories</a></li>
     </ul>
-    {props.view.loading && <h2>Loading</h2>}
+    {props.view.loading && <h2><Spinner />Loading</h2>}
 
     {props.view.name && props.view.id === null && <>
       <h1>Listing: {props.view.name}</h1>

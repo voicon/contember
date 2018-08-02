@@ -3,24 +3,25 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode=development --debug --devtool cheap-module-source-map --output-pathinfo --history-api-fallback --hot --inline --progress --colors --port 3001 --output-public-path http://localhost:3001/",
-    "build": "webpack --mode=production --colors"
+    "start": "webpack-dev-server --env.development --debug --history-api-fallback --hot --inline --progress --colors --port 3001 --output-public-path http://localhost:3001/",
+    "build": "webpack --env.production --colors"
   },
   "dependencies": {
+    "@blueprintjs/core": "^3.0.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
-    "redux-actions": "^2.4.0",
-    "redux-thunk": "^2.3.0"
+    "cms-admin": "0.0.0"
   },
   "devDependencies": {
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.6",
-    "@types/react-redux": "5.0.20",
-    "@types/redux-actions": "^2.3.0",
     "awesome-typescript-loader": "^5.2.0",
     "typescript": "^3.0.1",
+    "style-loader": "^0.21.0",
+    "sass-loader": "^7.1.0",
+    "node-sass": "^4.9.2",
+    "mini-css-extract-plugin": "^0.4.1",
+    "css-loader": "^1.0.0",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4"
