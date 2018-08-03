@@ -1,9 +1,9 @@
 {
 	"scripts": {
-		"ts-build": "tsc --build --verbose",
-		"ts-watch": "tsc --build --verbose --watch",
+		"ts:build": "tsc --build --verbose",
+		"ts:watch": "tsc --build --verbose --watch",
 		"prebuild": "lerna run prebuild",
-		"build": "npm run ts-build"
+		"build": "npm run ts:build"
 	},
 	"devDependencies": {
 		"lerna": "^2.11.0",
