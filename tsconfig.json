@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "include": [],
+  "references": [
+    {"path": "./mangoweb/cms-api"},
+    {"path": "./packages/cms-api"}
+  ]
+}

@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "start": "dotenv ts-node-dev --project tsconfig.json src/index.ts"
+    "build": "tsc --build --verbose tsconfig.modern.json",
+    "start": "dotenv nodemon dist/src/index.js"
   },
   "dependencies": {
     "cms-api": "^0.0.0",
@@ -12,11 +12,10 @@
     "pg": "^7.4.3"
   },
   "devDependencies": {
-    "@types/dotenv": "^4.0.3",
     "@types/knex": "^0.14.16",
-    "dotenv": "^6.0.0",
-    "ts-node-dev": "^1.0.0-pre.26",
+    "dotenv-cli": "^1.4.0",
+    "nodemon": "^1.18.3",
     "tslint": "^5.10.0",
-    "typescript": "2.9.2"
+    "typescript": "^3.0.1"
   }
 }

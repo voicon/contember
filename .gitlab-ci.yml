@@ -1,7 +1,6 @@
 stages:
   - test:init
-  - test:build-packages
-  - test:build-mangoweb
+  - test:build
   - test:run
 
 init:
@@ -18,54 +17,24 @@ init:
       - mangoweb/cms-api/node_modules
       - packages/cms-api/node_modules
 
-build:pkg:api:
-  stage: test:build-packages
+
+build:
+  stage: test:build
   image: node:10
 
   script:
-    - cd packages/cms-api
+    - npm install
     - npm run build
 
   artifacts:
     paths:
       - packages/cms-api/dist
-      - packages/cms-api/node_modules
-
-
-build:mgw:admin:
-  stage: test:build-mangoweb
-  image: node:10
-
-  script:
-    - cd mangoweb/admin
-    - npm run build
-
-  artifacts:
-    paths:
-      - mangoweb/admin/dist
-      - mangoweb/admin/node_modules
-
-
-build:mgw:api:
-  stage: test:build-mangoweb
-  image: node:10
-
-  script:
-    - cd mangoweb/cms-api
-    - npm run build
-
-  artifacts:
-    paths:
       - mangoweb/cms-api/dist
-      - mangoweb/cms-api/node_modules
 
 
 test:pkg:api:
   stage: test:run
   image: node:10
-
-  dependencies:
-    - build:pkg:api
 
   script:
     - cd packages/cms-api
