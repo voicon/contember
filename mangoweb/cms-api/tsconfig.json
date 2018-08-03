@@ -1,9 +1,7 @@
 {
-  "extends": "./tsconfig.settings.json",
-  "compilerOptions": {
-    "composite": false
-  },
-  "include": [
-    "src/**/*"
+  "files": [],
+  "include": [],
+  "references": [
+    {"path": "./src"}
   ]
 }

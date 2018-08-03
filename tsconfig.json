@@ -2,7 +2,7 @@
   "files": [],
   "include": [],
   "references": [
-    {"path": "./packages/cms-api"},
-    {"path": "./mangoweb/cms-api/tsconfig.modern.json"}
+    {"path": "./mangoweb/cms-api"},
+    {"path": "./packages/cms-api"}
   ]
 }
