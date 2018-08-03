@@ -19,7 +19,8 @@ build:
       - node_modules
       - packages/cms-api/dist
       - packages/cms-api/node_modules
-
+      - packages/cms-common/dist
+      - packages/cms-common/node_modules
 
 test:pkg:api:
   stage: test:run
