@@ -1,22 +1,6 @@
 stages:
-  - test:init
   - test:build
   - test:run
-
-init:
-  stage: test:init
-  image: node:10
-
-  script:
-    - npx lerna bootstrap
-
-  artifacts:
-    paths:
-      - node_modules
-      - mangoweb/admin/node_modules
-      - mangoweb/cms-api/node_modules
-      - packages/cms-api/node_modules
-
 
 build:
   stage: test:build
@@ -24,12 +8,17 @@ build:
 
   script:
     - npm install
+    - npm run bootstrap
     - npm run build
 
   artifacts:
     paths:
-      - packages/cms-api/dist
+      - mangoweb/admin/node_modules
       - mangoweb/cms-api/dist
+      - mangoweb/cms-api/node_modules
+      - node_modules
+      - packages/cms-api/dist
+      - packages/cms-api/node_modules
 
 
 test:pkg:api:
