@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+    ts_watch:
+        build: .
+        volumes:
+            - ./:/src:cached
+            - /src/node_modules
+            - /src/mangoweb/cms-api/node_modules
+            - /src/packages/cms-api/node_modules
+        working_dir: /src
+        command: npm run ts:watch
+
+    cms_api:
+        build: .
+        volumes:
+            - ./:/src:cached
+            - /src/node_modules
+            - /src/mangoweb/cms-api/node_modules
+            - /src/packages/cms-api/node_modules
+        working_dir: /src/mangoweb/cms-api
+        environment:
+            DB_HOST: db
+            DB_PASSWORD: cms
+            DB_USER: cms
+            DB_PORT: 5432
+            DB_DATABASE: cms
+            SERVER_PORT: 4477
+        ports:
+          - "127.0.0.1:4477:4477"
+        command: sh -c 'npm run build && npm run start'
+
+    db:
+        image: postgres:10-alpine
+        restart: unless-stopped
+        environment:
+            POSTGRES_PASSWORD: cms
+            POSTGRES_USER: cms
+            POSTGRES_DB: cms
+        volumes:
+            - pgsql-data:/var/lib/postgresql/data
+
+volumes:
+    pgsql-data: ~

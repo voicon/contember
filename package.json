@@ -1,6 +1,8 @@
 {
 	"scripts": {
+		"bootstrap": "lerna bootstrap",
 		"ts:build": "tsc --build --verbose",
+		"ts:clean": "tsc --build --verbose --clean",
 		"ts:watch": "tsc --build --verbose --watch",
 		"prebuild": "lerna run prebuild",
 		"build": "npm run ts:build"
