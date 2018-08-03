@@ -1,21 +1,7 @@
 {
+  "extends": "./tsconfig.settings.json",
   "compilerOptions": {
-    "target": "es6",
-    "moduleResolution": "node",
-    "module": "commonjs",
-    "sourceMap": true,
-    "outDir": "dist",
-    "strict": true,
-    "experimentalDecorators": true,
-    "lib": [
-      "esnext",
-      "dom",
-      "esnext.asynciterable"
-    ],
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/cms-api/src/types"
-    ]
+    "composite": false
   },
   "include": [
     "src/**/*"

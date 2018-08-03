@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "start": "dotenv ts-node-dev --project tsconfig.json src/index.ts"
+    "build": "tsc --build --verbose tsconfig.modern.json",
+    "start": "dotenv ts-node-dev src/index.ts"
   },
   "dependencies": {
     "cms-api": "^0.0.0",
