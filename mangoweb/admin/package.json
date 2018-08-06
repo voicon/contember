@@ -20,7 +20,7 @@
     "@types/react-redux": "5.0.20",
     "@types/redux-actions": "^2.3.0",
     "awesome-typescript-loader": "^5.2.0",
-    "typescript": "^2.9.2",
+    "typescript": "^3.0.1",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4"
