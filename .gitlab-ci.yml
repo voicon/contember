@@ -19,12 +19,14 @@ build:
       - node_modules
       - packages/cms-api/dist
       - packages/cms-api/node_modules
-
+      - packages/cms-common/dist
+      - packages/cms-common/node_modules
+      - packages/cms-client/dist
+      - packages/cms-client/node_modules
 
 test:pkg:api:
   stage: test:run
   image: node:10
 
   script:
-    - cd packages/cms-api
-    - npm test
+    - npm run test
