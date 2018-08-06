@@ -29,5 +29,4 @@ test:pkg:api:
   image: node:10
 
   script:
-    - cd packages/cms-api
-    - npm test
+    - npm run test

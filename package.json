@@ -5,7 +5,8 @@
 		"ts:clean": "tsc --build --verbose --clean",
 		"ts:watch": "tsc --build --verbose --watch",
 		"prebuild": "lerna run prebuild",
-		"build": "npm run ts:build"
+		"build": "npm run ts:build",
+		"test": "lerna run test"
 	},
 	"devDependencies": {
 		"lerna": "^2.11.0",
