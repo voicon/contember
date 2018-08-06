@@ -1,8 +1,14 @@
 import * as knex from 'knex'
 import blogModel from './projects/blog/src/model'
-import {CompositionRoot, Env, getSqlSchema, Project} from 'cms-api'
+import { CompositionRoot, Env, getSqlSchema, Project } from 'cms-api'
+import * as fs from 'fs'
+import * as path from 'path'
+import { promisify } from 'util'
+
 
 (async () => {
+  const fsRead = promisify(fs.readFile)
+
   const env = Env.fromUnsafe(process.env)
 
   const projects: Array<Project> = [
@@ -52,6 +58,7 @@ import {CompositionRoot, Env, getSqlSchema, Project} from 'cms-api'
         await db.raw(`DROP SCHEMA IF EXISTS ${pgSchemaName} CASCADE`)
         await db.raw(`CREATE SCHEMA ${pgSchemaName}`)
         await db.raw(sql)
+        await db.raw(await fsRead(path.join(__dirname, `../../src/projects/${project.slug}/src/data.sql`), {encoding: 'utf8'}))
       })
     })
   })
