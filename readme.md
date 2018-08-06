@@ -143,3 +143,8 @@ Lastly, update the login token in `mangoweb/admin/config.local.json` and restart
 ### Start admin interface
 
 When you have API server running and the user is created you can start admin interface by running `(cd mangoweb/admin && npm run start)`. Then you can sign in with your credentials.
+
+
+## Docker
+1. `docker/bootstrap.sh`
+2. `docker-compose up -d`
