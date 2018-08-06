@@ -7,8 +7,8 @@
 		"prebuild": "lerna run prebuild",
 		"build": "npm run ts:build",
 		"test": "lerna run test",
-		"prettier:lint": "prettier -l \"{mangoweb,packages}/**/*.{ts,tsx,js,jsx,json}\" \"!**/dist/**\"",
-		"prettier:fix": "prettier --write \"{mangoweb,packages}/**/*.{ts,tsx,js,jsx,json}\" \"!**/dist/**\""
+		"prettier:lint": "prettier -l \"packages/{cms-client,cms-common}/**/*.{ts,tsx,js,jsx,json}\" \"!**/dist/**\"",
+		"prettier:fix": "prettier --write \"packages/{cms-client,cms-common}/**/*.{ts,tsx,js,jsx,json}\" \"!**/dist/**\""
 	},
 	"devDependencies": {
 		"lerna": "^2.11.0",
