@@ -5,6 +5,8 @@
     {"path": "./mangoweb/cms-api"},
     {"path": "./packages/cms-api"},
     {"path": "./packages/cms-common"},
+    {"path": "./packages/cms-admin"},
+    {"path": "./mangoweb/admin"},
     {"path": "./packages/cms-client"}
   ]
 }

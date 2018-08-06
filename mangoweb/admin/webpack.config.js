@@ -1,20 +1,21 @@
 var path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 // variables
-var isProduction = process.argv.mode === 'production';
-var sourcePath = path.join(__dirname, './src');
-var outPath = path.join(__dirname, './dist');
+var sourcePath = path.join(__dirname, './dist/src');
+var outPath = path.join(__dirname, './public');
 
-
-module.exports = {
+module.exports = ({ production }) => ({
 	context: sourcePath,
 	entry: {
-		admin: ['./index.tsx'],
+		admin: ['./index.js'],
 	},
+	mode: production ? 'production' : 'development',
+	devtool: production ? 'source-map' : 'cheap-module-source-map',
 	output: {
 		path: outPath,
 		publicPath: '/dist/',
-		filename: isProduction ? '[name].[hash].js' : '[name].js',
+		filename: '[name].js',
 	},
 	target: 'web',
 	resolve: {
@@ -28,6 +29,14 @@ module.exports = {
 				test: /\.tsx?$/,
 				loader: 'awesome-typescript-loader'
 			},
+			{
+				test:/\.((s*)css|sass)$/,
+				use: [
+					production ? MiniCssExtractPlugin.loader : 'style-loader',
+					'css-loader',
+					'sass-loader'
+				]
+			}
 		],
 	},
 	devServer: {
@@ -47,5 +56,13 @@ module.exports = {
 		// https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179
 		fs: 'empty',
 		net: 'empty'
+	},
+	plugins: [
+		new MiniCssExtractPlugin({
+			filename: "[name].css",
+		})
+	],
+	devServer: {
+		contentBase: path.join(__dirname, './src')
 	}
-};
+});
