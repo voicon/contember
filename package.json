@@ -6,10 +6,13 @@
 		"ts:watch": "tsc --build --verbose --watch",
 		"prebuild": "lerna run prebuild",
 		"build": "npm run ts:build",
-		"test": "lerna run test"
+		"test": "lerna run test",
+		"prettier:lint": "prettier --list-different --ignore-path \".gitignore\" \"packages/{cms-common,cms-client}/**/*.{ts,tsx,json,sass}\" ",
+		"prettier:fix": "prettier --write --ignore-path \".gitignore\" \"packages/{cms-common,cms-client}/**/*.{ts,tsx,json,sass}\" "
 	},
 	"devDependencies": {
 		"lerna": "^2.11.0",
-		"typescript": "^3.0.1"
+		"typescript": "^3.0.1",
+		"prettier": "1.13.7"
 	}
 }

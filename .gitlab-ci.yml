@@ -24,9 +24,15 @@ build:
       - packages/cms-client/dist
       - packages/cms-client/node_modules
 
-test:pkg:api:
+test:
   stage: test:run
   image: node:10
 
   script:
     - npm run test
+
+prettier:
+  stage: test:run
+  image: node:10
+  script:
+    - npm run prettier:lint
