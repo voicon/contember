@@ -9,41 +9,41 @@ import { Editor } from 'slate-react'
  */
 
 export default class PlainTextEditor extends React.Component {
-  /**
-   * Deserialize the initial editor value.
-   *
-   * @type {Object}
-   */
+	/**
+	 * Deserialize the initial editor value.
+	 *
+	 * @type {Object}
+	 */
 
-  state = {
-    value: Plain.deserialize(''),
-  }
+	state = {
+		value: Plain.deserialize(''),
+	}
 
-  /**
-   * Render the editor.
-   *
-   * @return {Component} component
-   */
+	/**
+	 * Render the editor.
+	 *
+	 * @return {Component} component
+	 */
 
-  render() {
-    return (
-      <Editor
-        placeholder="Enter some plain text..."
-        value={this.state.value}
-        onChange={this.onChange}
-      />
-    )
-  }
+	render() {
+		return (
+			<Editor
+				placeholder="Enter some plain text..."
+				value={this.state.value}
+				onChange={this.onChange}
+			/>
+		)
+	}
 
-  /**
-   * On change.
-   *
-   * @param {Change} change
-   */
+	/**
+	 * On change.
+	 *
+	 * @param {Change} change
+	 */
 
-  onChange = ({ value }) => {
-    this.setState({ value })
-  }
+	onChange = ({ value }) => {
+		this.setState({ value })
+	}
 }
 
 
