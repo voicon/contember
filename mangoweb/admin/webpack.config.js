@@ -8,7 +8,7 @@ var outPath = path.join(__dirname, './public');
 module.exports = ({ production }) => ({
 	context: sourcePath,
 	entry: {
-		admin: ['./index.js'],
+		index: ['./index.js'],
 	},
 	mode: production ? 'production' : 'development',
 	devtool: production ? 'source-map' : 'cheap-module-source-map',
