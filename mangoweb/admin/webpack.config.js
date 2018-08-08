@@ -62,7 +62,4 @@ module.exports = ({ production }) => ({
 			filename: "[name].css",
 		})
 	],
-	devServer: {
-		contentBase: path.join(__dirname, './src')
-	}
 });
