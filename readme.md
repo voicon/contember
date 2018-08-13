@@ -14,22 +14,39 @@ We use [Lerna](https://lernajs.io/) to help with a few things
 ### Install all dependencies and bootstrap the project
 
 ```sh
-lerna bootstrap --hoist
+npm ci && \
+npm run bootstrap && \
+npm run build
 ```
 
-Hoist option deduplicates `node_modules` structure into one shared folder and per package differences. In case of broken symlinks you can run `lerna link` to restore them.
+Instead of `npm run bootstrap` you may also use `npm run bootstrap:hoist`. The hoist option deduplicates `node_modules` structure into one shared folder and per package differences. This makes the installation faster but the build is less reliable as it differs from CI. In case of broken symlinks you can run `lerna link` to restore them.
 
 
-### Link internal dependency
-
-Installs `apple` and `banana` dependencies into `grocery` package. Creates a symlink if its a local package.
+### Run TypeScript watch across all packages
 
 ```sh
-lerna add apple banana --scope=grocery
+npm run ts:watch
 ```
 
-### Run watch mode across all projects
+
+### Run tests
+
+* prerequisites
+  * running `npm run ts:watch` in background
 
 ```sh
-lerna run --parallel start
+npm run test
+```
+
+
+### Start API
+
+* prerequisites
+  * running `npm run ts:watch` in background
+  * creating PostgreSQL database
+  * importing `packages/cms-api/src/tenant-api/schema/tenant.sql`
+  * creating `mangoweb/cms-api/.env` (you can use `(cd mangoweb/cms-api && cp example.env .env && nano .env)`)
+
+```sh
+(cd mangoweb/cms-api && npm run start)
 ```

@@ -1,9 +1,12 @@
 {
 	"scripts": {
-		"bootstrap": "lerna bootstrap",
+		"bootstrap": "lerna bootstrap --ci",
+		"bootstrap:hoist": "lerna bootstrap --ci --hoist",
+		"update": "lerna bootstrap --no-ci",
+		"clean": "rm -rf node_modules {mangoweb,packages}/*/{dist,node_modules}",
 		"ts:build": "tsc --build --verbose",
-		"ts:clean": "tsc --build --verbose --clean",
 		"ts:watch": "tsc --build --verbose --watch",
+		"ts:clean": "tsc --build --clean",
 		"prebuild": "lerna run prebuild",
 		"build": "npm run ts:build",
 		"test": "lerna run test",
