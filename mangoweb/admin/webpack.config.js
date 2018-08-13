@@ -40,7 +40,7 @@ module.exports = ({ production }) => ({
 		],
 	},
 	devServer: {
-		contentBase: sourcePath,
+		contentBase: path.join(__dirname, './src'),
 		hot: true,
 		stats: {
 			warnings: false
