@@ -4,6 +4,7 @@ import { CompositionRoot, Env, getSqlSchema, Project } from 'cms-api'
 import * as fs from 'fs'
 import * as path from 'path'
 import { promisify } from 'util'
+
 ;(async () => {
 	const fsRead = promisify(fs.readFile)
 
@@ -37,7 +38,7 @@ import { promisify } from 'util'
 	projects.forEach(project => {
 		project.stages.forEach(stage => {
 			const pgSchemaName = 'public' // TODO: should depend on stage
-			const sql = getSqlSchema(stage.schema)
+			const sql = getSqlSchema(stage.schema.model)
 
 			const db = knex({
 				debug: false,

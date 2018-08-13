@@ -1,5 +1,5 @@
 import { SchemaBuilder } from 'cms-api'
-import { Model } from 'cms-common'
+import { Acl, Input, Model, Schema } from 'cms-common'
 
 const builder = new SchemaBuilder()
 builder.enum('siteVisibility', ['visible', 'hidden'])
@@ -55,4 +55,52 @@ builder.entity('Page', entity =>
 )
 
 const model = builder.buildSchema()
-export default model
+const acl: Acl.Schema = {
+	variables: {
+		locale: { type: Acl.VariableType.enum, enumName: 'locale' },
+		site: { type: Acl.VariableType.entity, entityName: 'Site' }
+	},
+	roles: {
+		editor: {
+			entities: {
+				Post: {
+					predicates: {},
+					operations: {
+						read: {
+							id: true,
+							locales: true
+						},
+						update: {
+							locales: true
+						}
+					}
+				},
+				PostLocale: {
+					predicates: {
+						locale_site: ({
+							and: [{ locale: { in: 'locale' } }, { post: { site: { in: 'site' } } }]
+						} as Input.Where<Acl.VariableCondition>) as any
+					},
+					operations: {
+						read: {
+							id: true,
+							title: true,
+							content: true
+						},
+						update: {
+							title: 'locale_site',
+							content: 'locale_site'
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+const schema: Schema = {
+	model: model,
+	acl: acl
+}
+
+export default schema
