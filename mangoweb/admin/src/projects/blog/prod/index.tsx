@@ -48,7 +48,7 @@ export default (
 				</Layout>
 			)}
 		</Page>
-		<EditPage entity="Post">
+		<EditPage entity="Post" layout={Layout}>
 			<TextField name="publishedAt" />
 			<OneToOne field="author">
 				<Entity name="Author">
