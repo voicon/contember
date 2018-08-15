@@ -3,8 +3,5 @@
 	"compilerOptions": {
 		"outDir": "../dist/src"
 	},
-	"references": [
-		{ "path": "../../../packages/cms-api/src" },
-		{ "path": "../../../packages/cms-common/src" }
-	]
+	"references": [{ "path": "../../../packages/cms-api/src" }, { "path": "../../../packages/cms-common/src" }]
 }
