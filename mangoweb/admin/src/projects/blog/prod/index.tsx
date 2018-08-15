@@ -1,5 +1,16 @@
 import * as React from 'react'
-import { Pages, Page, PageLink, Entity, DataProvider, OneToMany, OneToOne, GraphQlBuilder, TextField } from 'cms-admin'
+import {
+	Pages,
+	Page,
+	PageLink,
+	Entity,
+	DataProvider,
+	OneToMany,
+	OneToOne,
+	GraphQlBuilder,
+	TextField,
+	EditPage
+} from 'cms-admin'
 
 interface LayoutProps {
 	children: React.ReactNode
@@ -13,7 +24,14 @@ const Layout = ({ children }: LayoutProps) => (
 					<PageLink change={() => ({ name: 'dashboard', params: {} })}>Dashboard</PageLink>
 				</li>
 				<li>
-					<PageLink change={() => ({ name: 'edit_post', params: { id: '14474645-d439-446c-bac3-e104a9b72a86' } })}>Post</PageLink>
+					<PageLink change={() => ({ name: 'edit_post', params: { id: '14474645-d439-446c-bac3-e104a9b72a86' } })}>
+						Post
+					</PageLink>
+				</li>
+				<li>
+					<PageLink change={() => ({ name: 'edit_post2', params: { id: '14474645-d439-446c-bac3-e104a9b72a86' } })}>
+						Post2
+					</PageLink>
 				</li>
 			</ul>
 		</div>
@@ -30,7 +48,15 @@ export default (
 				</Layout>
 			)}
 		</Page>
-		<Page<{ edit_post: { id: string } }> name="edit_post">
+		<EditPage entity="Post">
+			<TextField name="publishedAt" />
+			<OneToOne field="author">
+				<Entity name="Author">
+					<TextField name="name" />
+				</Entity>
+			</OneToOne>
+		</EditPage>
+		<Page<{ edit_post2: { id: string } }> name="edit_post2">
 			{({ id }) => (
 				<Layout>
 					<DataProvider>
