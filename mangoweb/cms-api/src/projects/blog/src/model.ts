@@ -78,7 +78,7 @@ const acl: Acl.Schema = {
 				PostLocale: {
 					predicates: {
 						locale_site: {
-							and: [{ locale: { in: 'locale' } }, { post: { site: { in: 'site' } } }]
+							and: [{ locale: 'locale' }, { post: { site: 'site' } }]
 						}
 					},
 					operations: {
