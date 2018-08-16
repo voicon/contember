@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "cms-api": "^0.0.0",
+    "cms-common": "^0.0.0",
     "knex": "^0.14.6",
     "pg": "^7.4.3"
   },
