@@ -2,6 +2,7 @@
 	"extends": "../../tsconfig.settings.json",
 	"compilerOptions": {
 		"typeRoots": ["node_modules/@types", "src/types"],
-		"jsx": "react"
+		"jsx": "react",
+		"module": "esnext"
 	}
 }
