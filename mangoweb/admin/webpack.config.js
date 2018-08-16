@@ -30,10 +30,15 @@ module.exports = ({ production }) => ({
 				loader: 'awesome-typescript-loader'
 			},
 			{
+				test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+				loader: 'url-loader?limit=100000'
+			},
+			{
 				test:/\.((s*)css|sass)$/,
 				use: [
 					production ? MiniCssExtractPlugin.loader : 'style-loader',
 					'css-loader',
+					'resolve-url-loader',
 					'sass-loader'
 				]
 			}
