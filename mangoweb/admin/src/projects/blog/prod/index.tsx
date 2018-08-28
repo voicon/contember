@@ -11,7 +11,8 @@ import {
 	TextField,
 	EditPage,
 	PersistButton,
-	UnlinkButton
+	UnlinkButton,
+	Repeater
 } from 'cms-admin'
 
 interface LayoutProps {
@@ -75,7 +76,7 @@ export default (
 									<UnlinkButton />
 								</Entity>
 							</OneToOne>
-							<OneToMany field="categories">
+							<Repeater field="categories">
 								<Entity name="Category">
 									<OneToMany field="locales">
 										<Entity
@@ -88,13 +89,13 @@ export default (
 									</OneToMany>
 									<UnlinkButton />
 								</Entity>
-							</OneToMany>
-							<OneToMany field="locales">
+							</Repeater>
+							<Repeater field="locales">
 								<Entity name="PostLocale">
 									<TextField name="title" />
 									<UnlinkButton />
 								</Entity>
-							</OneToMany>
+							</Repeater>
 							<PersistButton />
 						</Entity>
 					</DataProvider>
