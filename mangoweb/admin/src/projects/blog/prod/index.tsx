@@ -64,15 +64,15 @@ export default (
 				<Layout>
 					<DataProvider>
 						<Entity name="Post" where={{ id }}>
-							<TextField name="publishedAt" />
+							<TextField name="publishedAt" label="Time" />
 							<OneToOne field="author">
 								<Entity name="Author">
-									<TextField name="name" />
+									<TextField name="name" label="Name" />
 								</Entity>
 							</OneToOne>
 							<OneToOne field="author">
 								<Entity name="Author">
-									<TextField name="name" />
+									<TextField name="name" label="Name" />
 									<UnlinkButton />
 								</Entity>
 							</OneToOne>
@@ -83,7 +83,7 @@ export default (
 											name="CategoryLocale"
 											where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}
 										>
-											<TextField name="name" />
+											<TextField name="name" label="Name" />
 											<UnlinkButton />
 										</Entity>
 									</OneToMany>
@@ -92,7 +92,7 @@ export default (
 							</Repeater>
 							<Repeater field="locales">
 								<Entity name="PostLocale">
-									<TextField name="title" />
+									<TextField name="title" label="Title" />
 									<UnlinkButton />
 								</Entity>
 							</Repeater>
