@@ -10,6 +10,7 @@ import {
 	GraphQlBuilder,
 	TextField,
 	EditPage,
+	PersistButton,
 	UnlinkButton
 } from 'cms-admin'
 
@@ -94,9 +95,7 @@ export default (
 									<UnlinkButton />
 								</Entity>
 							</OneToMany>
-							{/*<button type="button" onClick={persist}>
-								Save!
-							</button>*/}
+							<PersistButton />
 						</Entity>
 					</DataProvider>
 				</Layout>
