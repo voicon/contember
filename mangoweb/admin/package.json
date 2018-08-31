@@ -1,32 +1,32 @@
 {
-  "name": "mangoweb-admin",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "webpack-dev-server --env.development --debug --history-api-fallback --hot --inline --progress --colors --port 3001 --output-public-path http://localhost:3001/",
-    "build": "webpack --env.production --colors"
-  },
-  "dependencies": {
-    "@blueprintjs/icons": "^3.0.0",
-    "cms-admin": "0.0.0",
-    "file-loader": "^1.1.11",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.2",
-    "resolve-url-loader": "^2.3.0",
-    "url-loader": "^1.1.0"
-  },
-  "devDependencies": {
-    "@types/react": "^16.4.6",
-    "@types/react-dom": "^16.0.6",
-    "awesome-typescript-loader": "^5.2.0",
-    "css-loader": "^1.0.0",
-    "mini-css-extract-plugin": "^0.4.1",
-    "node-sass": "^4.9.2",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.21.0",
-    "typescript": "^3.0.1",
-    "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.4",
-    "webpack": "^4.16.1"
-  }
+	"name": "mangoweb-admin",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"start": "webpack-dev-server --env.development --debug --history-api-fallback --hot --inline --progress --colors --port 3001 --output-public-path http://localhost:3001/",
+		"build": "webpack --env.production --colors"
+	},
+	"dependencies": {
+		"@blueprintjs/icons": "^3.0.0",
+		"cms-admin": "0.0.0",
+		"file-loader": "^1.1.11",
+		"react": "^16.4.1",
+		"react-dom": "^16.4.2",
+		"resolve-url-loader": "^2.3.0",
+		"url-loader": "^1.1.0"
+	},
+	"devDependencies": {
+		"@types/react": "^16.4.6",
+		"@types/react-dom": "^16.0.6",
+		"awesome-typescript-loader": "^5.2.0",
+		"css-loader": "^1.0.0",
+		"mini-css-extract-plugin": "^0.4.1",
+		"node-sass": "^4.9.2",
+		"sass-loader": "^7.1.0",
+		"style-loader": "^0.21.0",
+		"typescript": "^3.0.1",
+		"webpack-cli": "^3.0.8",
+		"webpack-dev-server": "^3.1.4",
+		"webpack": "^4.16.1"
+	}
 }

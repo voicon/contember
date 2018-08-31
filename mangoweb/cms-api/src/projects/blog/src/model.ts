@@ -1,43 +1,42 @@
-import { SchemaBuilder } from "cms-api"
-import { Model } from "cms-common"
+import { SchemaBuilder } from 'cms-api'
+import { Model } from 'cms-common'
 
 const builder = new SchemaBuilder()
-builder.enum("siteVisibility", ['visible', 'hidden'])
-builder.enum("locale", ['cs', 'en'])
+builder.enum('siteVisibility', ['visible', 'hidden'])
+builder.enum('locale', ['cs', 'en'])
 
-builder.entity('Author', entity => entity
-  .column('name', column => column.type(Model.ColumnType.String))
+builder.entity('Author', entity => entity.column('name', column => column.type(Model.ColumnType.String)))
+builder.entity('Category', entity => entity.oneHasMany('locales', relation => relation.target('CategoryLocale')))
+builder.entity('CategoryLocale', entity =>
+	entity
+		.column('name', column => column.type(Model.ColumnType.String))
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 )
-builder.entity('Category', entity => entity
-  .oneHasMany('locales', relation => relation.target('CategoryLocale'))
+builder.entity('Post', entity =>
+	entity
+		.column('publishedAt', column => column.type(Model.ColumnType.DateTime))
+		.manyHasOne('author', relation => relation.target('Author').inversedBy('posts'))
+		.manyHasMany('categories', relation => relation.target('Category').inversedBy('posts'))
+		.oneHasMany('locales', relation => relation.target('PostLocale').ownedBy('post'))
+		.oneHasMany('sites', relation => relation.target('PostSite'))
 )
-builder.entity('CategoryLocale', entity => entity
-  .column('name', column => column.type(Model.ColumnType.String))
-  .column('locale', column => column.type(Model.ColumnType.Enum, {enumName: 'locale'}))
+builder.entity('PostLocale', entity =>
+	entity
+		.unique(['post', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.column('title', column => column.type(Model.ColumnType.String))
 )
-builder.entity('Post', entity => entity
-  .column('publishedAt', column => column.type(Model.ColumnType.DateTime))
-  .manyHasOne('author', relation => relation.target('Author').inversedBy('posts'))
-  .manyHasMany('categories', relation => relation.target('Category').inversedBy('posts'))
-  .oneHasMany('locales', relation => relation.target('PostLocale').ownedBy('post'))
-  .oneHasMany('sites', relation => relation.target('PostSite'))
+builder.entity('PostSite', entity =>
+	entity
+		.column('visibility', column => column.type(Model.ColumnType.Enum, { enumName: 'siteVisibility' }))
+		.manyHasOne('site', relation => relation.target('Site'))
 )
-builder.entity('PostLocale', entity => entity
-  .unique(['post', 'locale'])
-  .column('locale', column => column.type(Model.ColumnType.Enum, {enumName: 'locale'}))
-  .column('title', column => column.type(Model.ColumnType.String))
+builder.entity('Site', entity =>
+	entity
+		.column('name', column => column.type(Model.ColumnType.String))
+		.oneHasOne('setting', relation => relation.target('SiteSetting'))
 )
-builder.entity('PostSite', entity => entity
-  .column('visibility', column => column.type(Model.ColumnType.Enum, {enumName: 'siteVisibility'}))
-  .manyHasOne('site', relation => relation.target('Site'))
-)
-builder.entity('Site', entity => entity
-  .column('name', column => column.type(Model.ColumnType.String))
-  .oneHasOne('setting', relation => relation.target('SiteSetting'))
-)
-builder.entity('SiteSetting', entity => entity
-  .column('url', column => column.type(Model.ColumnType.String))
-)
+builder.entity('SiteSetting', entity => entity.column('url', column => column.type(Model.ColumnType.String)))
 
 const model = builder.buildSchema()
 export default model
