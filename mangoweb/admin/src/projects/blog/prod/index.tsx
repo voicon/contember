@@ -79,10 +79,7 @@ export default (
 							<Repeater field="categories">
 								<Entity name="Category">
 									<OneToMany field="locales">
-										<Entity
-											name="CategoryLocale"
-											where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}
-										>
+										<Entity name="CategoryLocale" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
 											<TextField name="name" label="Name" />
 											<UnlinkButton />
 										</Entity>

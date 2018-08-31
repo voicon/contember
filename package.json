@@ -10,8 +10,8 @@
 		"prebuild": "lerna run prebuild",
 		"build": "npm run ts:build",
 		"test": "lerna run test",
-		"prettier:lint": "prettier --list-different --ignore-path \".gitignore\" \"packages/{cms-common,cms-client}/**/*.{ts,tsx,json,sass}\" ",
-		"prettier:fix": "prettier --write --ignore-path \".gitignore\" \"packages/{cms-common,cms-client}/**/*.{ts,tsx,json,sass}\" "
+		"prettier:lint": "prettier --list-different --ignore-path \".gitignore\" \"**/*.{ts,tsx,json}\" ",
+		"prettier:fix": "prettier --write --ignore-path \".gitignore\" \"**/*.{ts,tsx,json}\" "
 	},
 	"devDependencies": {
 		"lerna": "^2.11.0",

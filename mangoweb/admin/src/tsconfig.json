@@ -3,7 +3,5 @@
 	"compilerOptions": {
 		"outDir": "../dist/src"
 	},
-	"references": [
-	  {"path": "../../../packages/cms-admin/src"}
-	]
+	"references": [{ "path": "../../../packages/cms-admin/src" }]
 }
