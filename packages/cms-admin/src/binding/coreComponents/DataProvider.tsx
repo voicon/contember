@@ -1,19 +1,20 @@
 import * as React from 'react'
-import EntityAccessor from '../dao/EntityAccessor'
-import RootEntityMarker from '../dao/RootEntityMarker'
-import { AccessorTreeGenerator, EntityTreeToQueryConverter } from '../model'
-import PersistQueryGenerator from '../model/PersistQueryGenerator'
-import DataContext, { DataContextValue } from './DataContext'
-import FieldContext from './FieldContext'
 import { connect } from 'react-redux'
-import State from '../../state'
-import { ContentStatus } from '../../state/content'
 import { getData, putData } from '../../actions/content'
 import { Dispatch } from '../../actions/types'
+import State from '../../state'
+import { ContentStatus } from '../../state/content'
+import EntityAccessor from '../dao/EntityAccessor'
+import EntityMarker from '../dao/EntityMarker'
+import MetaOperationsAccessor from '../dao/MetaOperationsAccessor'
+import { AccessorTreeGenerator, EntityTreeToQueryConverter } from '../model'
+import EntityTreeGenerator from '../model/EntityTreeGenerator'
+import PersistQueryGenerator from '../model/PersistQueryGenerator'
+import DataContext, { DataContextValue } from './DataContext'
+import MetaOperationsContext, { MetaOperationsContextValue } from './MetaOperationsContext'
 
-export interface DataProviderProps {
-	children: (persist: () => void) => React.ReactNode
-}
+export interface DataProviderProps {}
+
 export interface DataProviderDispatchProps {
 	getData: (query: string) => void
 	putData: (query: string) => Promise<void>
@@ -33,42 +34,47 @@ class DataProvider extends React.Component<DataProviderInnerProps, DataProviderS
 		data: undefined
 	}
 
-	protected rootContext?: RootEntityMarker = new RootEntityMarker()
-
-	componentDidUpdate(prevProps: DataProviderInnerProps) {
-		if (!this.rootContext) return
-		if (this.props.ready && prevProps.ready !== this.props.ready && this.props.data !== prevProps.data) {
-			const accessTreeGenerator = new AccessorTreeGenerator(this.rootContext, this.props.data)
-			accessTreeGenerator.generateLiveTree(newData => this.setState({ data: newData }))
-		}
-	}
+	protected entityTree?: EntityMarker
 
 	protected triggerPersist = () => {
 		if (this.props.data && this.state.data instanceof EntityAccessor) {
 			const generator = new PersistQueryGenerator(this.props.data, this.state.data)
 			const query = generator.generatePersistQuery()
-			if(query) {
+
+			if (query) {
 				this.props.putData(query)
 			}
 		}
 	}
 
+	protected metaOperations: MetaOperationsContextValue = new MetaOperationsAccessor(this.triggerPersist)
+
+	componentDidUpdate(prevProps: DataProviderInnerProps) {
+		if (!this.entityTree) {
+			return
+		}
+		if (this.props.ready && prevProps.ready !== this.props.ready && this.props.data !== prevProps.data) {
+			const accessTreeGenerator = new AccessorTreeGenerator(this.entityTree, this.props.data)
+			accessTreeGenerator.generateLiveTree(newData => this.setState({ data: newData }))
+		}
+	}
+
 	public render() {
-		return (
-			<FieldContext.Provider value={this.rootContext}>
-				<DataContext.Provider value={this.state.data}>{this.props.children(this.triggerPersist)}</DataContext.Provider>
-			</FieldContext.Provider>
-		)
+		return this.state.data ? (
+			<MetaOperationsContext.Provider value={this.metaOperations}>
+				<DataContext.Provider value={this.state.data}>{this.props.children}</DataContext.Provider>
+			</MetaOperationsContext.Provider>
+		) : null
 	}
 
 	public componentDidMount() {
-		console.log('The structure is', this.rootContext!.content)
+		const generator = new EntityTreeGenerator(this.props.children)
 
-		if (this.rootContext === undefined) {
-			return
-		}
+		this.entityTree = generator.generate()
 
-		const converter = new EntityTreeToQueryConverter(this.rootContext)
+		console.log('The structure is', this.entityTree!)
+
+		const converter = new EntityTreeToQueryConverter(this.entityTree)
 		const query = converter.convert()
 		if (query) {
 			this.props.getData(query)

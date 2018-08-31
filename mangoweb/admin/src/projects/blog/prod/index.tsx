@@ -9,7 +9,10 @@ import {
 	OneToOne,
 	GraphQlBuilder,
 	TextField,
-	EditPage
+	EditPage,
+	PersistButton,
+	UnlinkButton,
+	Repeater
 } from 'cms-admin'
 
 interface LayoutProps {
@@ -24,12 +27,12 @@ const Layout = ({ children }: LayoutProps) => (
 					<PageLink change={() => ({ name: 'dashboard', params: {} })}>Dashboard</PageLink>
 				</li>
 				<li>
-					<PageLink change={() => ({ name: 'edit_post', params: { id: '14474645-d439-446c-bac3-e104a9b72a86' } })}>
+					<PageLink change={() => ({ name: 'edit_post', params: { id: 'a3e98b8c-29b6-42da-a7e7-38828ac34c4c' } })}>
 						Post
 					</PageLink>
 				</li>
 				<li>
-					<PageLink change={() => ({ name: 'edit_post2', params: { id: '14474645-d439-446c-bac3-e104a9b72a86' } })}>
+					<PageLink change={() => ({ name: 'edit_post2', params: { id: '8784918b-6615-4e12-9fe1-aac0f73a11b2' } })}>
 						Post2
 					</PageLink>
 				</li>
@@ -60,71 +63,41 @@ export default (
 			{({ id }) => (
 				<Layout>
 					<DataProvider>
-						{persist => {
-							return (
-								<Entity name="Post" where={{ id }}>
-									<TextField name="publishedAt" />
-									<OneToOne field="author">
-										<Entity name="Author">
-											<TextField name="name" />
-										</Entity>
-									</OneToOne>
-									<OneToOne field="author">
-										{unlink => {
-											return (
-												<Entity name="Author">
-													<TextField name="name" />
-													<button type="button" onClick={unlink}>
-														×
-													</button>
-												</Entity>
-											)
-										}}
-									</OneToOne>
-									<OneToMany field="categories">
-										{unlink => {
-											return (
-												<Entity name="Category">
-													<OneToMany field="locales">
-														{unlink => {
-															return (
-																<Entity
-																	name="CategoryLocale"
-																	where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}
-																>
-																	<TextField name="name" />
-																	<button type="button" onClick={unlink}>
-																		×
-																	</button>
-																</Entity>
-															)
-														}}
-													</OneToMany>
-													<button type="button" onClick={unlink}>
-														×
-													</button>
-												</Entity>
-											)
-										}}
-									</OneToMany>
-									<OneToMany field="locales">
-										{unlink => {
-											return (
-												<Entity name="PostLocale">
-													<TextField name="title" />
-													<button type="button" onClick={unlink}>
-														×
-													</button>
-												</Entity>
-											)
-										}}
-									</OneToMany>
-									<button type="button" onClick={persist}>
-										Save!
-									</button>
+						<Entity name="Post" where={{ id }}>
+							<TextField name="publishedAt" label="Time" />
+							<OneToOne field="author">
+								<Entity name="Author">
+									<TextField name="name" label="Name" />
 								</Entity>
-							)
-						}}
+							</OneToOne>
+							<OneToOne field="author">
+								<Entity name="Author">
+									<TextField name="name" label="Name" />
+									<UnlinkButton />
+								</Entity>
+							</OneToOne>
+							<Repeater field="categories">
+								<Entity name="Category">
+									<OneToMany field="locales">
+										<Entity
+											name="CategoryLocale"
+											where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}
+										>
+											<TextField name="name" label="Name" />
+											<UnlinkButton />
+										</Entity>
+									</OneToMany>
+									<UnlinkButton />
+								</Entity>
+							</Repeater>
+							<Repeater field="locales">
+								<Entity name="PostLocale">
+									<TextField name="title" label="Title" />
+									<UnlinkButton />
+								</Entity>
+							</Repeater>
+							<PersistButton />
+						</Entity>
 					</DataProvider>
 				</Layout>
 			)}

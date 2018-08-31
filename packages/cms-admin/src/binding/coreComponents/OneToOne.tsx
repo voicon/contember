@@ -1,8 +1,12 @@
 import * as React from 'react'
 import { FieldName } from '../bindingTypes'
-import DataContext, { DataContextValue } from './DataContext'
+import DataBindingError from '../dao/DataBindingError'
 import EntityAccessor from '../dao/EntityAccessor'
-import OneToRelation from './OneToRelation'
+import EntityMarker from '../dao/EntityMarker'
+import ReferenceMarker from '../dao/ReferenceMarker'
+import DataContext, { DataContextValue } from './DataContext'
+import { ReferenceMarkerProvider } from './DataMarkerProvider'
+import EnforceSubtypeRelation from './EnforceSubtypeRelation'
 
 export interface OneToOneProps {
 	field: FieldName
@@ -10,29 +14,29 @@ export interface OneToOneProps {
 }
 
 export default class OneToOne extends React.Component<OneToOneProps> {
+
+	static displayName = 'OneToOne'
+
 	public render() {
 		return (
-			<OneToRelation field={this.props.field}>
-				<DataContext.Consumer>
-					{(data: DataContextValue) => {
-						if (data instanceof EntityAccessor) {
-							const field = data.data[this.props.field]
+			<DataContext.Consumer>
+				{(data: DataContextValue) => {
+					if (data instanceof EntityAccessor) {
+						const field = data.data[this.props.field]
 
-							if (field instanceof EntityAccessor) {
-								return <DataContext.Provider value={field}>{this.renderChildren(field.unlink)}</DataContext.Provider>
-							}
+						if (field instanceof EntityAccessor) {
+							return <DataContext.Provider value={field}>{this.props.children}</DataContext.Provider>
 						}
-						return this.renderChildren()
-					}}
-				</DataContext.Consumer>
-			</OneToRelation>
+					}
+					throw new DataBindingError('Corrupted data')
+				}}
+			</DataContext.Consumer>
 		)
 	}
 
-	protected renderChildren(unlink?: () => void): React.ReactNode {
-		if (typeof this.props.children === 'function') {
-			return this.props.children(unlink)
-		}
-		return this.props.children
+	public static generateReferenceMarker(props: OneToOneProps, referredEntity: EntityMarker): ReferenceMarker {
+		return new ReferenceMarker(props.field, referredEntity)
 	}
 }
+
+type EnforceDataBindingCompatibility = EnforceSubtypeRelation<typeof OneToOne, ReferenceMarkerProvider>
