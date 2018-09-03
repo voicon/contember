@@ -12,7 +12,8 @@ import {
 	EditPage,
 	PersistButton,
 	UnlinkButton,
-	Repeater
+	Repeater,
+	LogoutLink
 } from 'cms-admin'
 
 interface LayoutProps {
@@ -35,6 +36,9 @@ const Layout = ({ children }: LayoutProps) => (
 					<PageLink change={() => ({ name: 'edit_post2', params: { id: '8784918b-6615-4e12-9fe1-aac0f73a11b2' } })}>
 						Post2
 					</PageLink>
+				</li>
+				<li>
+					<LogoutLink>Logout</LogoutLink>
 				</li>
 			</ul>
 		</div>
