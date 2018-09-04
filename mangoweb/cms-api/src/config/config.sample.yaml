@@ -1,0 +1,25 @@
+tenant:
+    db:
+        host: localhost
+        port: '5432'
+        user: postgres
+        password: ''
+        database: cms-tenant
+
+projects:
+    - uuid: 1635399a-de76-4101-bd14-82d67e9d2574
+      slug: blog
+      name: Blog
+      stages:
+          - uuid: 01c8f908-6f48-4ef3-9751-9989931b42eb
+            slug: prod
+            name: Production
+          - uuid: e8b8963c-49a0-46f7-89c3-e13f97cc9d77
+            slug: prod-preview
+            name: Production Preview
+      dbCredentials:
+          host: localhost
+          port: '5432'
+          user: postgres
+          password: ''
+          database: cms-blog
