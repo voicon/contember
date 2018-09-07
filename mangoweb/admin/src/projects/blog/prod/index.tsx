@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
 	Pages,
 	Page,
-	PageLink,
 	Entity,
 	DataProvider,
 	OneToMany,
@@ -12,49 +11,21 @@ import {
 	EditPage,
 	PersistButton,
 	UnlinkButton,
-	Repeater,
-	LogoutLink
+	Repeater
 } from 'cms-admin'
 
-interface LayoutProps {
-	children: React.ReactNode
-}
-
-const Layout = ({ children }: LayoutProps) => (
-	<div>
-		<div>
-			<ul>
-				<li>
-					<PageLink change={() => ({ name: 'dashboard', params: {} })}>Dashboard</PageLink>
-				</li>
-				<li>
-					<PageLink change={() => ({ name: 'edit_post', params: { id: 'a3e98b8c-29b6-42da-a7e7-38828ac34c4c' } })}>
-						Post
-					</PageLink>
-				</li>
-				<li>
-					<PageLink change={() => ({ name: 'edit_post2', params: { id: '8784918b-6615-4e12-9fe1-aac0f73a11b2' } })}>
-						Post2
-					</PageLink>
-				</li>
-				<li>
-					<LogoutLink>Logout</LogoutLink>
-				</li>
-			</ul>
-		</div>
-		<div>{children}</div>
-	</div>
-)
+import { Layout } from './adminLayout'
 
 export default (
 	<Pages project="blog" stage="prod">
 		<Page name="dashboard">
 			{() => (
 				<Layout>
-					<h1>dashboard</h1>
+					<p />
 				</Layout>
 			)}
 		</Page>
+
 		<EditPage entity="Post" layout={Layout}>
 			<TextField name="publishedAt" />
 			<OneToOne field="author">
@@ -63,6 +34,7 @@ export default (
 				</Entity>
 			</OneToOne>
 		</EditPage>
+
 		<Page<{ edit_post2: { id: string } }> name="edit_post2">
 			{({ id }) => (
 				<Layout>
