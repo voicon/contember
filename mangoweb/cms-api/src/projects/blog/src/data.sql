@@ -47,6 +47,13 @@ INSERT INTO "post" (id, published_at, author_id)
      LIMIT 1)
   FROM unnest(ARRAY [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) t;
 
+INSERT INTO "page" (id, url_slug, title, perex, content) VALUES
+  ('79eb5a3e-91b0-4499-8aa4-c490e5313960', '/one', 'Page one', 'Perex', 'Content');
+
+INSERT INTO "featured_link" (id, title, url, color, page_id) VALUES
+  ('b6e92b52-6429-4632-9a6b-70ce982bd259', 'Google', 'https://google.com', '#0000ff', '79eb5a3e-91b0-4499-8aa4-c490e5313960'),
+  ('75577546-43f7-4440-9b25-c93aec333011', 'Seznam', 'http://seznam.cz', '#ff0000', '79eb5a3e-91b0-4499-8aa4-c490e5313960');
+
 
 INSERT INTO "post_locale" (id, title, locale, post_id)
   SELECT

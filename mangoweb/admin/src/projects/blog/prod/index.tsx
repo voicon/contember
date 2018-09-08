@@ -11,7 +11,9 @@ import {
 	EditPage,
 	PersistButton,
 	UnlinkButton,
-	Repeater
+	Repeater,
+	TextareaField,
+	RichTextField
 } from 'cms-admin'
 
 import { Layout } from './adminLayout'
@@ -25,14 +27,21 @@ export default (
 				</Layout>
 			)}
 		</Page>
-
-		<EditPage entity="Post" layout={Layout}>
-			<TextField name="publishedAt" />
-			<OneToOne field="author">
-				<Entity name="Author">
-					<TextField name="name" />
+		<EditPage entity="Page" layout={Layout}>
+			<TextField name="title" label="Title" large={true} />
+			<TextField name="urlSlug" label="URL" inlineLabel={true} />
+			<TextareaField name="perex" label="Perex" singleLine={true} />
+			<RichTextField name="content" label="Content" allowLineBreaks={false} />
+			<h2>Featured links</h2>
+			<OneToMany field="featuredLinks">
+				<Entity name="FeaturedLink">
+					<TextField name="title" label="Title" />
+					<TextField name="url" label="URL" />
+					<TextField name="color" label="Color" />
+					<hr />
 				</Entity>
-			</OneToOne>
+			</OneToMany>
+			<PersistButton />
 		</EditPage>
 
 		<Page<{ edit_post2: { id: string } }> name="edit_post2">

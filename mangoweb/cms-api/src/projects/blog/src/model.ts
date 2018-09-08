@@ -38,5 +38,21 @@ builder.entity('Site', entity =>
 )
 builder.entity('SiteSetting', entity => entity.column('url', column => column.type(Model.ColumnType.String)))
 
+builder.entity('FeaturedLink', entity =>
+	entity
+		.column('title', column => column.type(Model.ColumnType.String))
+		.column('url', column => column.type(Model.ColumnType.String))
+		.column('color', column => column.type(Model.ColumnType.String))
+)
+builder.entity('Page', entity =>
+	entity
+		.column('title', column => column.type(Model.ColumnType.String))
+		.column('urlSlug', column => column.type(Model.ColumnType.String))
+		.column('perex', column => column.type(Model.ColumnType.String))
+		.column('content', column => column.type(Model.ColumnType.String))
+		.column('featured', column => column.type(Model.ColumnType.Bool))
+		.oneHasMany('featuredLinks', relation => relation.target('FeaturedLink'))
+)
+
 const model = builder.buildSchema()
 export default model

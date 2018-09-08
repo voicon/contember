@@ -16,10 +16,10 @@ export default class Side extends React.Component {
 				</MenuList>
 				<MenuList title="Pages">
 					<MenuPageLink
-						change={() => ({ name: 'edit_post', params: { id: '14474645-d439-446c-bac3-e104a9b72a86' } })}
-						frontIcon={'page-layout'}
+						change={() => ({ name: 'edit_page', params: { id: '79eb5a3e-91b0-4499-8aa4-c490e5313960' } })}
+						frontIcon={'document'}
 					>
-						Post
+						Page
 					</MenuPageLink>
 					<MenuPageLink
 						change={() => ({ name: 'edit_post2', params: { id: '14474645-d439-446c-bac3-e104a9b72a86' } })}
