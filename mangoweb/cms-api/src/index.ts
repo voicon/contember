@@ -20,7 +20,8 @@ import { promisify } from 'util'
 					uuid: '01c8f908-6f48-4ef3-9751-9989931b42eb',
 					slug: 'prod',
 					name: 'Production',
-					schema: blogModel
+					schema: blogModel,
+					migration: ''
 				}
 			],
 
