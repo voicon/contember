@@ -2,8 +2,7 @@ import * as React from 'react'
 import { Provider } from 'react-redux'
 import Router from '../containers/router'
 import Login from './Login'
-import Link from './Link'
-import { pageRequest } from '../state/request'
+import ProjectsList from './ProjectsList'
 import RenderPromise from './RenderPromise'
 
 import { configureStore, Store } from '../store'
@@ -34,30 +33,24 @@ export default class Admin extends React.Component<AdminProps> {
 
 	render() {
 		return (
-			<div>
-				<Provider store={this.store}>
-					<Router
-						routes={{
-							login: route => (
-								<>
-									<Link requestChange={pageRequest('blog', 'prod', 'dashboard', {})}>Project</Link>
-									<Login />
-								</>
-							),
-							project_page: route => {
-								const config = this.props.configs.find(
-									({ project, stage }) => project === route.project && stage === route.stage
-								)
-								if (config) {
-									return <RenderPromise>{config.component()}</RenderPromise>
-								} else {
-									return `No such project or stage as ${route.project}/${route.stage}`
-								}
+			<Provider store={this.store}>
+				<Router
+					routes={{
+						login: route => <Login />,
+						projects_list: route => <ProjectsList configs={this.props.configs} />,
+						project_page: route => {
+							const config = this.props.configs.find(
+								({ project, stage }) => project === route.project && stage === route.stage
+							)
+							if (config) {
+								return <RenderPromise>{config.component()}</RenderPromise>
+							} else {
+								return `No such project or stage as ${route.project}/${route.stage}`
 							}
-						}}
-					/>
-				</Provider>
-			</div>
+						}
+					}}
+				/>
+			</Provider>
 		)
 	}
 }
