@@ -3,7 +3,7 @@ import {
 	Pages,
 	Page,
 	Entity,
-	SingleEntityDataProvider,
+	EntityListDataProvider,
 	OneToMany,
 	OneToOne,
 	GraphQlBuilder,
@@ -47,7 +47,7 @@ export default (
 		<Page<{ edit_post2: { id: string } }> name="edit_post2">
 			{({ id }) => (
 				<Layout>
-					<SingleEntityDataProvider where={{ id }}>
+					<EntityListDataProvider>
 						<Entity name="Post">
 							<TextField name="publishedAt" label="Time" />
 							<OneToOne field="author">
@@ -80,7 +80,7 @@ export default (
 							</Repeater>
 							<PersistButton />
 						</Entity>
-					</SingleEntityDataProvider>
+					</EntityListDataProvider>
 				</Layout>
 			)}
 		</Page>
