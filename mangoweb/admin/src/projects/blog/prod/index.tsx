@@ -3,6 +3,7 @@ import {
 	Pages,
 	Page,
 	Entity,
+	SingleEntityDataProvider,
 	EntityListDataProvider,
 	OneToMany,
 	OneToOne,
@@ -47,7 +48,7 @@ export default (
 		<Page<{ edit_post2: { id: string } }> name="edit_post2">
 			{({ id }) => (
 				<Layout>
-					<EntityListDataProvider>
+					<SingleEntityDataProvider where={{ id }}>
 						<Entity name="Post">
 							<TextField name="publishedAt" label="Time" />
 							<OneToOne field="author">
@@ -79,6 +80,23 @@ export default (
 								</Entity>
 							</Repeater>
 							<PersistButton />
+						</Entity>
+					</SingleEntityDataProvider>
+				</Layout>
+			)}
+		</Page>
+
+		<Page<{ postList: {} }> name="postList">
+			{() => (
+				<Layout>
+					<h1>All posts</h1>
+					<EntityListDataProvider>
+						<Entity name="Post">
+							<OneToMany field="locales">
+								<Entity name="PostLocale" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
+									<TextField name="title" label="Title" />
+								</Entity>
+							</OneToMany>
 						</Entity>
 					</EntityListDataProvider>
 				</Layout>
