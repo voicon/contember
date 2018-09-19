@@ -1,0 +1,5 @@
+export { RichEditorPluginConfig } from './utils'
+export { default as BOLD } from './bold'
+export { default as ITALIC } from './italic'
+export { default as UNDERLINED } from './underlined'
+export { default as LINK } from './link'

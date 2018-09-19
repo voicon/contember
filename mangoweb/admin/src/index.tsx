@@ -12,7 +12,7 @@ const reactRoot = (
 				component: () => import('./projects/blog/prod').then(r => r.default),
 				routes: {
 					dashboard: { path: '/' },
-					edit_post: { path: '/edit_post/:id' },
+					edit_page: { path: '/edit_page/:id' },
 					edit_post2: { path: '/edit_post2/:id' }
 				}
 			}
