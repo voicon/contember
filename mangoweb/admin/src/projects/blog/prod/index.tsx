@@ -11,6 +11,7 @@ import {
 	TextField,
 	EditPage,
 	PersistButton,
+	SelectField,
 	UnlinkButton,
 	Repeater,
 	TextareaField,
@@ -51,17 +52,7 @@ export default (
 					<SingleEntityDataProvider where={{ id }}>
 						<Entity name="Post">
 							<TextField name="publishedAt" label="Time" />
-							<OneToOne field="author">
-								<Entity name="Author">
-									<TextField name="name" label="Name" />
-								</Entity>
-							</OneToOne>
-							<OneToOne field="author">
-								<Entity name="Author">
-									<TextField name="name" label="Name" />
-									<UnlinkButton />
-								</Entity>
-							</OneToOne>
+							<SelectField name="author" entityName="Author" optionFieldName="name" />
 							<Repeater field="categories">
 								<Entity name="Category">
 									<OneToMany field="locales">
