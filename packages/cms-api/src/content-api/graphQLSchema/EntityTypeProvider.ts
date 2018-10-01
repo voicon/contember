@@ -5,7 +5,7 @@ import {
 	GraphQLObjectTypeConfig,
 	GraphQLOutputType,
 } from 'graphql'
-import { Acl, Model } from 'cms-common'
+import { Acl, Input, Model } from 'cms-common'
 import { acceptFieldVisitor, getEntity as getEntityFromSchema } from '../../content-schema/modelUtils'
 import singletonFactory from '../../utils/singletonFactory'
 import ColumnTypeResolver from './ColumnTypeResolver'
@@ -16,22 +16,32 @@ import WhereTypeProvider from './WhereTypeProvider'
 import Authorizator from '../../acl/Authorizator'
 import { GraphQLFieldResolver } from 'graphql/type/definition'
 import { FieldAccessVisitor } from './FieldAccessVisitor'
+import OrderByTypeProvider from './OrderByTypeProvider'
 
 export default class EntityTypeProvider {
 	private entities = singletonFactory(name => this.createEntity(name))
+
+	private aliasAwareResolver: GraphQLFieldResolver<any, any> = (source, args, context, info) => {
+		if (!info.path) {
+			return undefined
+		}
+		return source[info.path.key]
+	}
+
 	private fieldMeta = new GraphQLObjectType({
 		name: 'FieldMeta',
 		fields: {
-			readable: { type: GraphQLBoolean },
-			updatable: { type: GraphQLBoolean },
+			[Input.FieldMeta.readable]: { type: GraphQLBoolean, resolve: this.aliasAwareResolver },
+			[Input.FieldMeta.updatable]: { type: GraphQLBoolean, resolve: this.aliasAwareResolver },
 		},
 	})
 
 	constructor(
-		private schema: Model.Schema,
-		private authorizator: Authorizator,
-		private columnTypeResolver: ColumnTypeResolver,
-		private whereTypeProvider: WhereTypeProvider
+		private readonly schema: Model.Schema,
+		private readonly authorizator: Authorizator,
+		private readonly columnTypeResolver: ColumnTypeResolver,
+		private readonly whereTypeProvider: WhereTypeProvider,
+		private readonly orderByTypeProvider: OrderByTypeProvider
 	) {}
 
 	public getEntity(entityName: string): GraphQLObjectType {
@@ -54,6 +64,7 @@ export default class EntityTypeProvider {
 				name: GqlTypeName`${entityName}Meta`,
 				fields: metaFields,
 			}),
+			resolve: this.aliasAwareResolver,
 		}
 
 		for (const fieldName in entity.fields) {
@@ -74,21 +85,16 @@ export default class EntityTypeProvider {
 			const fieldTypeVisitor = new FieldTypeVisitor(this.columnTypeResolver, this)
 			const type: GraphQLOutputType = acceptFieldVisitor(this.schema, entity, fieldName, fieldTypeVisitor)
 
-			const fieldArgsVisitor = new FieldArgsVisitor(this.whereTypeProvider)
-			const fieldResolver: GraphQLFieldResolver<any, any> = (source, args, context, info) => {
-				if (!info.path) {
-					return undefined
-				}
-				return source[info.path.key]
-			}
+			const fieldArgsVisitor = new FieldArgsVisitor(this.whereTypeProvider, this.orderByTypeProvider)
+
 			fields[fieldName] = {
 				type,
 				args: acceptFieldVisitor(this.schema, entity, fieldName, fieldArgsVisitor),
-				resolve: fieldResolver,
+				resolve: this.aliasAwareResolver,
 			}
 			metaFields[fieldName] = {
 				type: this.fieldMeta,
-				resolve: fieldResolver,
+				resolve: this.aliasAwareResolver,
 			}
 		}
 		return fields

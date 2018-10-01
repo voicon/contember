@@ -2,17 +2,12 @@ import Path from './Path'
 
 class SelectHydrator {
 	private columns: Path[] = []
-	private entities: Path[] = []
 	private promises: {
 		path: Path
 		parentKeyPath: Path
 		data: PromiseLike<SelectHydrator.NestedData>
 		defaultValue: SelectHydrator.NestedDefaultValue
 	}[] = []
-
-	public addEntity(primaryPath: Path) {
-		this.entities.push(primaryPath)
-	}
 
 	public addColumn(path: Path) {
 		this.columns.push(path)
@@ -58,31 +53,16 @@ class SelectHydrator {
 	}
 
 	async hydrateRow(row: SelectHydrator.Row): Promise<SelectHydrator.ResultObject> {
-		const result: SelectHydrator.ResultObject = { _meta: {} }
-		for (let primaryPath of this.entities) {
-			if (row[primaryPath.getAlias()] === null) {
-				continue
-			}
-			primaryPath.path
-				.slice(0, primaryPath.path.length - 1)
-				.reduce((obj, part) => (obj[part] = obj[part] || { _meta: {} }), result)
-		}
+		const result: SelectHydrator.ResultObject = {}
 
 		for (let columnPath of this.columns) {
 			const path = [...columnPath.path]
 			const last: string = path.pop() as string
-			const currentObject = path.reduce((obj, part) => (obj && obj[part]) || undefined, result)
-			const readable = row[columnPath.getAlias() + SelectHydrator.ColumnFlagSuffixes.readable] !== false
-			const updatable = row[columnPath.getAlias() + SelectHydrator.ColumnFlagSuffixes.updatable]
+			const currentObject = path.reduce((obj, part) => (obj[part] = obj[part] || {}), result)
 
-			if (currentObject) {
-				currentObject._meta[last] = {
-					readable,
-					updatable,
-				}
-				currentObject[last] = readable ? row[columnPath.getAlias()] : null
-			}
+			currentObject[last] = row[columnPath.getAlias()]
 		}
+
 		for (let { path, parentKeyPath, data, defaultValue } of this.promises) {
 			const awaitedData = await data
 			const pathTmp = [...path.path]
@@ -108,10 +88,6 @@ namespace SelectHydrator {
 	export type GroupedObjects = { [groupingKey: string]: ResultObjects }
 	export type NestedData = GroupedObjects | IndexedResultObjects
 	export type NestedDefaultValue = [] | null
-	export enum ColumnFlagSuffixes {
-		readable = '__readable',
-		updatable = '__updatable',
-	}
 }
 
 export default SelectHydrator

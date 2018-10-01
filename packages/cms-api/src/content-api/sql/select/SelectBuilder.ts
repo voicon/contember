@@ -4,15 +4,19 @@ import { acceptFieldVisitor, acceptRelationTypeVisitor, getColumnName } from '..
 import SelectHydrator from './SelectHydrator'
 import Path from './Path'
 import JoinBuilder from './JoinBuilder'
-import RelationFetchVisitor from './RelationFetchVisitor'
 import Mapper from '../Mapper'
 import WhereBuilder from './WhereBuilder'
 import QueryBuilder from '../../../core/knex/QueryBuilder'
 import PredicateFactory from '../../../acl/PredicateFactory'
-import { assertNever } from 'cms-common'
+import OrderByBuilder from './OrderByBuilder'
+import RelationFetchVisitorFactory from './RelationFetchVisitorFactory'
+import LimitByGroupWrapper from '../../../core/knex/LimitByGroupWrapper'
 
 export default class SelectBuilder {
 	public readonly rows: PromiseLike<SelectHydrator.Rows>
+
+	private queryWrapper: LimitByGroupWrapper | null = null
+
 	private firer: () => void = () => {
 		throw new Error()
 	}
@@ -21,10 +25,12 @@ export default class SelectBuilder {
 		private readonly schema: Model.Schema,
 		private readonly joinBuilder: JoinBuilder,
 		private readonly whereBuilder: WhereBuilder,
+		private readonly orderByBuilder: OrderByBuilder,
 		private readonly predicateFactory: PredicateFactory,
 		private readonly mapper: Mapper,
 		private readonly qb: QueryBuilder,
-		private readonly hydrator: SelectHydrator
+		private readonly hydrator: SelectHydrator,
+		private readonly relationFetchVisitorFactory: RelationFetchVisitorFactory
 	) {
 		const blocker: Promise<void> = new Promise(resolve => (this.firer = resolve))
 		this.rows = this.createRowsPromise(blocker)
@@ -35,33 +41,54 @@ export default class SelectBuilder {
 		return await this.rows
 	}
 
-	public async select(entity: Model.Entity, input: ObjectNode<Input.ListQueryInput>, path?: Path) {
-		path = path || new Path([])
+	public async select(entity: Model.Entity, input: ObjectNode<Input.ListQueryInput>, path: Path, groupBy?: string) {
 		const promise = this.selectInternal(entity, path, input)
 		const where = input.args.where
 		if (where) {
 			this.whereBuilder.build(this.qb, entity, path, where)
 		}
+		const orderBy = input.args.orderBy
+
+		if (groupBy) {
+			const groupByColumn = getColumnName(this.schema, entity, groupBy)
+			this.queryWrapper = new LimitByGroupWrapper(
+				[path.getAlias(), groupByColumn],
+				(orderable, qb) => {
+					if (orderBy) {
+						this.orderByBuilder.build(this.qb, orderable, entity, new Path([]), orderBy)
+					}
+				},
+				input.args.offset,
+				input.args.limit
+			)
+		} else {
+			if (orderBy) {
+				this.orderByBuilder.build(this.qb, this.qb, entity, path, orderBy)
+			}
+			if (input.args.limit) {
+				this.qb.limit(input.args.limit, input.args.offset)
+			}
+		}
+
 		await promise
 	}
 
 	private async selectInternal(entity: Model.Entity, path: Path, input: ObjectNode) {
 		if (!input.fields.find(it => it.name === entity.primary && it.alias === entity.primary)) {
-			this.addColumn(path.for(entity.primaryColumn), entity.fields[entity.primary] as Model.AnyColumn)
+			this.addColumn(entity, path.for(entity.primaryColumn), entity.fields[entity.primary] as Model.AnyColumn)
 		}
 
 		const promises: Promise<void>[] = []
 		for (let field of input.fields) {
 			if (field.name === '_meta') {
+				this.processMetaFields(field as ObjectNode, path, entity)
 				continue
 			}
 
 			const promise = acceptFieldVisitor(this.schema, entity, field.name, {
 				visitColumn: async (entity, column) => {
 					const columnPath = path.for(field.alias)
-
-					this.addMetaFlag(entity, column, columnPath, Acl.Operation.read)
-					this.addColumn(columnPath, column)
+					this.addColumn(entity, columnPath, column)
 				},
 				visitRelation: async (entity, relation, targetEntity) => {
 					await this.addRelation(field as ObjectNode, path, entity)
@@ -75,43 +102,75 @@ export default class SelectBuilder {
 		await Promise.all(Object.values(promises))
 	}
 
+	private processMetaFields(field: ObjectNode, path: Path, entity: Model.Entity) {
+		for (let metaField of (field as ObjectNode).fields) {
+			const columnPath = path.for(field.alias).for(metaField.alias)
+			for (let metaInfo of (metaField as ObjectNode).fields) {
+				if (metaInfo.name === Input.FieldMeta.updatable) {
+					this.addMetaFlag(entity, metaField.name, path, columnPath.for(metaInfo.alias), Acl.Operation.update)
+				}
+				if (metaInfo.name === Input.FieldMeta.readable) {
+					this.addMetaFlag(entity, metaField.name, path, columnPath.for(metaInfo.alias), Acl.Operation.read)
+				}
+			}
+		}
+	}
+
 	private addMetaFlag(
 		entity: Model.Entity,
-		column: Model.AnyColumn,
-		path: Path,
+		fieldName: string,
+		tablePath: Path,
+		metaPath: Path,
 		operation: Acl.Operation.read | Acl.Operation.update
 	) {
-		if (entity.primary === column.name) {
+		if (entity.primary === fieldName) {
 			return
 		}
-		const fieldPredicate = this.predicateFactory.create(entity, operation, [column.name])
-
-		let suffix: string = (() => {
-			switch (operation) {
-				case Acl.Operation.read:
-					return SelectHydrator.ColumnFlagSuffixes.readable
-				case Acl.Operation.update:
-					return SelectHydrator.ColumnFlagSuffixes.updatable
-				default:
-					return assertNever(operation)
-			}
-		})()
+		const fieldPredicate = this.predicateFactory.create(entity, operation, [fieldName])
 
 		this.qb.select(
 			expr =>
 				expr.selectCondition(condition => {
-					this.whereBuilder.buildInternal(this.qb, condition, entity, path.back(), fieldPredicate)
+					this.whereBuilder.buildInternal(this.qb, condition, entity, tablePath, fieldPredicate)
+					if (condition.isEmpty()) {
+						condition.raw('true')
+					}
 				}),
-			path.getAlias() + suffix
+			metaPath.getAlias()
 		)
+		this.hydrator.addColumn(metaPath)
 	}
 
-	private addColumn(columnPath: Path, column: Model.AnyColumn): void {
+	private addColumn(entity: Model.Entity, columnPath: Path, column: Model.AnyColumn): void {
 		const tableAlias = columnPath.back().getAlias()
 		const columnAlias = columnPath.getAlias()
 
 		this.hydrator.addColumn(columnPath)
-		this.qb.select([tableAlias, column.columnName], columnAlias)
+
+		const fieldPredicate =
+			entity.primary === column.name
+				? undefined
+				: this.predicateFactory.create(entity, Acl.Operation.read, [column.name])
+
+		if (!fieldPredicate || Object.keys(fieldPredicate).length === 0) {
+			this.qb.select([tableAlias, column.columnName], columnAlias)
+		} else {
+			this.qb.select(
+				expr =>
+					expr.case(caseExpr =>
+						caseExpr
+							.when(
+								whenExpr =>
+									whenExpr.selectCondition(condition =>
+										this.whereBuilder.buildInternal(this.qb, condition, entity, columnPath.back(), fieldPredicate)
+									),
+								thenExpr => thenExpr.select([tableAlias, column.columnName])
+							)
+							.else(elseExpr => elseExpr.raw('null'))
+					),
+				columnAlias
+			)
+		}
 	}
 
 	private async addRelation(object: ObjectNode<Input.ListQueryInput>, path: Path, entity: Model.Entity) {
@@ -119,8 +178,8 @@ export default class SelectBuilder {
 			const columnName = getColumnName(this.schema, entity, fieldName)
 			return this.getColumnValues(path.for(fieldName), columnName)
 		}
-		const fetchVisitor = new RelationFetchVisitor(
-			this.schema,
+
+		const fetchVisitor = this.relationFetchVisitorFactory.create(
 			this.mapper,
 			idsGetter,
 			object,
@@ -131,18 +190,11 @@ export default class SelectBuilder {
 		acceptRelationTypeVisitor(this.schema, entity, object.name, fetchVisitor)
 	}
 
-	private addHasOne(object: ObjectNode, path: Path, entity: Model.Entity, targetEntity: Model.Entity): void {
-		//not currently used, maybe in the future
-		const targetPath = path.for(object.alias)
-
-		const primaryPath = this.joinBuilder.join(this.qb, targetPath, entity, object.name)
-		this.hydrator.addEntity(primaryPath)
-
-		this.select(targetEntity, object, targetPath)
-	}
-
 	private async createRowsPromise(blocker: PromiseLike<void>): Promise<SelectHydrator.Rows> {
 		await blocker
+		if (this.queryWrapper) {
+			return await this.queryWrapper.getResult(this.qb)
+		}
 		return await this.qb.getResult()
 	}
 

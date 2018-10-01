@@ -51,12 +51,13 @@ describe('Queries with acl', () => {
 				},
 				query: GQL`
         query {
-          PostLocales {
+          listPostLocale {
             id
             title
 	          _meta {
 		          title {
 			          readable
+			          updatable
 		          }
 	          }
           }
@@ -66,20 +67,23 @@ describe('Queries with acl', () => {
 						{
 							sql: SQL`select
                          "root_"."id" as "root_id",
-                         "root_"."locale" in ($1) as "root_title__readable",
-                         "root_"."title" as "root_title"
-                       from "post_locale" as "root_"`,
-							parameters: ['cs'],
+                         case when "root_"."locale" in ($1) then "root_"."title" else null end as "root_title",
+                         "root_"."locale" in ($2) as "root__meta_title_readable",
+                         false as "root__meta_title_updatable"
+                       from "public"."post_locale" as "root_"`,
+							parameters: ['cs', 'cs'],
 							response: [
 								{
 									root_id: testUuid(1),
-									root_title: 'foo',
-									root_title__readable: false,
+									root_title: null,
+									root__meta_title_readable: false,
+									root__meta_title_updatable: false,
 								},
 								{
 									root_id: testUuid(2),
 									root_title: 'bar',
-									root_title__readable: true,
+									root__meta_title_readable: true,
+									root__meta_title_updatable: false,
 								},
 							],
 						},
@@ -87,13 +91,14 @@ describe('Queries with acl', () => {
 				],
 				return: {
 					data: {
-						PostLocales: [
+						listPostLocale: [
 							{
 								id: testUuid(1),
 								title: null,
 								_meta: {
 									title: {
 										readable: false,
+										updatable: false,
 									},
 								},
 							},
@@ -103,6 +108,7 @@ describe('Queries with acl', () => {
 								_meta: {
 									title: {
 										readable: true,
+										updatable: false,
 									},
 								},
 							},
@@ -121,7 +127,7 @@ describe('Queries with acl', () => {
 				},
 				query: GQL`
         query {
-          PostLocales(where: {title: {eq: "foo"}}) {
+          listPostLocale(where: {title: {eq: "foo"}}) {
             id
             title
           }
@@ -131,9 +137,8 @@ describe('Queries with acl', () => {
 						{
 							sql: SQL`select
                          "root_"."id" as "root_id",
-                         "root_"."locale" in ($1) as "root_title__readable",
-                         "root_"."title" as "root_title"
-                       from "post_locale" as "root_"
+                         case when "root_"."locale" in ($1) then "root_"."title" else null end as "root_title"
+                       from "public"."post_locale" as "root_"
                        where "root_"."title" = $2 and "root_"."locale" in ($3)`,
 							parameters: ['cs', 'foo', 'cs'],
 							response: [
@@ -148,7 +153,7 @@ describe('Queries with acl', () => {
 				],
 				return: {
 					data: {
-						PostLocales: [
+						listPostLocale: [
 							{
 								id: testUuid(1),
 								title: 'foo',
@@ -168,7 +173,7 @@ describe('Queries with acl', () => {
 				},
 				query: GQL`
         query {
-          PostLocales {
+          listPostLocale {
             id
           }
         }`,
@@ -177,7 +182,7 @@ describe('Queries with acl', () => {
 						{
 							sql: SQL`select
                        "root_"."id" as "root_id"
-                     from "post_locale" as "root_"`,
+                     from "public"."post_locale" as "root_"`,
 							parameters: [],
 							response: [
 								{
@@ -189,7 +194,7 @@ describe('Queries with acl', () => {
 				],
 				return: {
 					data: {
-						PostLocales: [
+						listPostLocale: [
 							{
 								id: testUuid(1),
 							},
@@ -206,7 +211,7 @@ describe('Queries with acl', () => {
 				variables: {},
 				query: GQL`
         query {
-          PostLocales {
+          listPostLocale {
             id
             title
           }
@@ -216,9 +221,8 @@ describe('Queries with acl', () => {
 						{
 							sql: SQL`select
                          "root_"."id" as "root_id",
-                         false as "root_title__readable",
-                         "root_"."title" as "root_title"
-                       from "post_locale" as "root_"`,
+                         case when false then "root_"."title" else null end as "root_title"
+                       from "public"."post_locale" as "root_"`,
 							parameters: [],
 							response: [],
 						},
@@ -226,7 +230,7 @@ describe('Queries with acl', () => {
 				],
 				return: {
 					data: {
-						PostLocales: [],
+						listPostLocale: [],
 					},
 				},
 			})
@@ -241,7 +245,7 @@ describe('Queries with acl', () => {
 				},
 				query: GQL`
         query {
-          Posts {
+          listPost {
             locales {
               id
               title
@@ -254,7 +258,7 @@ describe('Queries with acl', () => {
 							sql: SQL`select 
                          "root_"."id" as "root_id",
                          "root_"."id" as "root_id"
-                       from "post" as "root_"`,
+                       from "public"."post" as "root_"`,
 							parameters: [],
 							response: [
 								{
@@ -269,23 +273,20 @@ describe('Queries with acl', () => {
 							sql: SQL`select
                          "root_"."post_id" as "__grouping_key",
                          "root_"."id" as "root_id",
-                         "root_"."locale" in ($1) as "root_title__readable",
-                         "root_"."title" as "root_title"
-                       from "post_locale" as "root_"
+                         case when "root_"."locale" in ($1) then "root_"."title" else null end as "root_title"
+                       from "public"."post_locale" as "root_"
                        where "root_"."post_id" in ($2, $3) and false`,
 							parameters: ['cs', testUuid(1), testUuid(2)],
 							response: [
 								{
 									__grouping_key: testUuid(1),
 									root_id: testUuid(3),
-									root_title: 'foo',
-									root_title__readable: false,
+									root_title: null,
 								},
 								{
 									__grouping_key: testUuid(2),
 									root_id: testUuid(4),
 									root_title: 'bar',
-									root_title__readable: true,
 								},
 							],
 						},
@@ -293,7 +294,7 @@ describe('Queries with acl', () => {
 				],
 				return: {
 					data: {
-						Posts: [
+						listPost: [
 							{
 								locales: [
 									{
@@ -377,7 +378,7 @@ describe('Queries with acl', () => {
 				},
 				query: GQL`
         query {
-          Posts {
+          listPost {
             id
             author {
               name
@@ -390,7 +391,7 @@ describe('Queries with acl', () => {
 							sql: SQL`select
                          "root_"."id" as "root_id",
                          "root_"."author_id" as "root_author"
-                       from "post" as "root_"`,
+                       from "public"."post" as "root_"`,
 							parameters: [],
 							response: [
 								{
@@ -408,16 +409,14 @@ describe('Queries with acl', () => {
                          "root_"."id" as "root_id",
                          "root_"."id" as "root_id",
                          "root_country"."id" as "root_country_id",
-                         "root_country"."name" in ($1) as "root_name__readable",
-                         "root_"."name" as "root_name"
-                       from "author" as "root_" left join "country" as "root_country" on "root_"."country_id" = "root_country"."id"
+                         case when "root_country"."name" in ($1) then "root_"."name" else null end as "root_name"
+                       from "public"."author" as "root_" left join "public"."country" as "root_country" on "root_"."country_id" = "root_country"."id"
                        where "root_"."id" in ($2, $3)`,
 							parameters: ['Czechia', testUuid(3), testUuid(4)],
 							response: [
 								{
 									root_id: testUuid(3),
 									root_name: 'John',
-									root_name__readable: true,
 								},
 							],
 						},
@@ -425,7 +424,7 @@ describe('Queries with acl', () => {
 				],
 				return: {
 					data: {
-						Posts: [
+						listPost: [
 							{
 								author: {
 									name: 'John',
