@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Admin } from 'cms-admin'
 import '../../src/index.sass'
+import 'file-loader?name=[name].[ext]!../../src/index.html'
 
 const reactRoot = (
 	<Admin
