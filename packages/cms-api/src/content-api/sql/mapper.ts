@@ -2,98 +2,20 @@ import * as Knex from 'knex'
 import { Input, Model } from 'cms-common'
 import { isUniqueWhere } from '../../content-schema/inputUtils'
 import { acceptEveryFieldVisitor, getColumnName, getEntity } from '../../content-schema/modelUtils'
-import { promiseAllObject } from '../../utils/promises'
-import InsertVisitor from './insertVisitor'
-import UpdateVisitor from './updateVisitor'
-import { resolveValue } from './utils'
 import KnexConnection from '../../core/knex/KnexConnection'
+import InsertBuilder from './insert/InsertBuilder'
+import InsertVisitor from './insert/InsertVisitor'
+import UpdateVisitor from './update/UpdateVisitor'
+import UpdateBuilder from './update/UpdateBuilder'
+import ObjectNode from '../graphQlResolver/ObjectNode'
+import SelectHydrator from './select/SelectHydrator'
+import SelectBuilder from './select/SelectBuilder'
+import JoinBuilder from './select/JoinBuilder'
+import WhereBuilder from './select/WhereBuilder'
+import ConditionBuilder from './select/ConditionBuilder'
+import Path from './select/Path'
 
-export class InsertBuilder {
-	private rowData: { [columnName: string]: PromiseLike<Input.ColumnValue> } = {}
-
-	private tableName: string
-	private primaryColumn: string
-	private db: Knex
-	private insertPromise: Promise<Input.PrimaryValue>
-
-	constructor(tableName: string, primaryColumn: string, db: Knex, firer: PromiseLike<void>) {
-		this.tableName = tableName
-		this.primaryColumn = primaryColumn
-		this.db = db
-		this.insertPromise = this.createInsertPromise(firer)
-	}
-
-	public addColumnData(columnName: string, value: Input.ColumnValueLike) {
-		this.rowData[columnName] = resolveValue(value)
-	}
-
-	public async insertRow(): Promise<Input.PrimaryValue> {
-		return this.insertPromise
-	}
-
-	private async createInsertPromise(firer: PromiseLike<void>) {
-		await firer
-		const qb = this.db(this.tableName)
-		const rowData = await promiseAllObject(this.rowData)
-		const returning = await qb.insert(rowData, this.primaryColumn)
-
-		return returning[0]
-	}
-}
-
-export class UpdateBuilder {
-	private rowData: { [columnName: string]: PromiseLike<Input.ColumnValue<undefined>> } = {}
-
-	private tableName: string
-	private db: Knex
-	private where: { [columnName: string]: PromiseLike<Input.ColumnValue> } = {}
-
-	private updatePromise: Promise<number>
-
-	constructor(
-		tableName: string,
-		where: { [columnName: string]: Input.ColumnValueLike },
-		db: Knex,
-		firer: PromiseLike<void>
-	) {
-		this.tableName = tableName
-		this.db = db
-		for (const columnName in where) {
-			this.where[columnName] = resolveValue(where[columnName])
-		}
-		this.updatePromise = this.createUpdatePromise(firer)
-	}
-
-	public addColumnData(columnName: string, value: Input.ColumnValueLike<undefined>) {
-		this.rowData[columnName] = resolveValue(value)
-	}
-
-	public async updateRow() {
-		return this.updatePromise
-	}
-
-	private async createUpdatePromise(firer: PromiseLike<void>) {
-		await firer
-		const qb = this.db(this.tableName)
-
-		qb.where(await promiseAllObject(this.where))
-
-		let affectedRows = 0
-
-		const rowData = await promiseAllObject(this.rowData)
-		const rowDataFiltered = Object.keys(rowData)
-			.filter(key => rowData[key] !== undefined)
-			.reduce((result: object, key: string) => ({ ...result, [key]: rowData[key] }), {})
-
-		if (Object.keys(rowDataFiltered).length > 0) {
-			affectedRows = await qb.update(rowDataFiltered)
-		}
-
-		return affectedRows
-	}
-}
-
-export class Mapper {
+export default class Mapper {
 	private schema: Model.Schema
 	private db: Knex
 
@@ -102,8 +24,14 @@ export class Mapper {
 		this.db = db
 	}
 
-	public async selectField(entityName: string, where: Input.UniqueWhere, fieldName: string) {
-		const entity = getEntity(this.schema, entityName)
+	public static run(schema: Model.Schema, db: KnexConnection, cb: (mapper: Mapper) => void) {
+		return db.transaction(trx => {
+			const mapper = new Mapper(schema, trx)
+			return cb(mapper)
+		})
+	}
+
+	public async selectField(entity: Model.Entity, where: Input.UniqueWhere, fieldName: string) {
 		const columnName = getColumnName(this.schema, entity, fieldName)
 
 		const result = await this.db
@@ -114,9 +42,66 @@ export class Mapper {
 		return result[0] !== undefined ? result[0][columnName] : undefined
 	}
 
-	public async insert(entityName: string, data: Input.CreateDataInput): Promise<Input.PrimaryValue> {
-		const entity = getEntity(this.schema, entityName)
+	public async select(entity: Model.Entity, input: ObjectNode<Input.ListQueryInput>) {
+		const hydrator = new SelectHydrator()
+		const qb = this.db.queryBuilder()
+		const rows = await this.selectRows(hydrator, qb, entity, input, selector => selector.select(entity, input))
+		return await hydrator.hydrateAll(rows)
+	}
 
+	public async selectOne(entity: Model.Entity, input: ObjectNode<Input.UniqueQueryInput>) {
+		const hydrator = new SelectHydrator()
+		const qb = this.db.queryBuilder()
+		const rows = await this.selectRows(hydrator, qb, entity, input, selector => selector.selectOne(entity, input))
+		const row = rows[0] ? await hydrator.hydrateRow(rows[0]) : null
+		return row
+	}
+
+	public async selectGrouped(entity: Model.Entity, input: ObjectNode<Input.ListQueryInput>, columnName: string) {
+		const hydrator = new SelectHydrator()
+		const qb = this.db.queryBuilder()
+		const path = new Path([])
+		const groupingKey = '__grouping_key'
+		qb.select(`${path.getAlias()}.${columnName} as ${groupingKey}`)
+
+		const rows = await this.selectRows(hydrator, qb, entity, input, selector => selector.select(entity, input))
+		return await hydrator.hydrateGroups(rows, groupingKey)
+	}
+
+	private async selectRows(
+		hydrator: SelectHydrator,
+		qb: Knex.QueryBuilder,
+		entity: Model.Entity,
+		input: ObjectNode,
+		selectHandler: (selector: SelectBuilder) => Promise<void>
+	) {
+		let resolver: (() => any) = () => {
+			throw new Error()
+		}
+		const joinBuilder = new JoinBuilder(this.schema)
+		const conditionBuilder = new ConditionBuilder()
+		const whereBuilder = new WhereBuilder(this.schema, joinBuilder, conditionBuilder)
+
+		const path = new Path([])
+		qb.from(`${entity.tableName} as ${path.getAlias()}`)
+		const selector = new SelectBuilder(
+			this.schema,
+			joinBuilder,
+			whereBuilder,
+			this,
+			qb,
+			hydrator,
+			new Promise(resolve => (resolver = resolve))
+		)
+		const selectPromise = selectHandler(selector)
+		resolver()
+		const rows = await selector.rows
+		await selectPromise
+
+		return rows
+	}
+
+	public async insert(entity: Model.Entity, data: Input.CreateDataInput): Promise<Input.PrimaryValue> {
 		let resolver: (() => any) = () => {
 			throw new Error()
 		}
@@ -136,9 +121,7 @@ export class Mapper {
 		return result
 	}
 
-	public async update(entityName: string, where: Input.UniqueWhere, data: Input.UpdateDataInput): Promise<number> {
-		const entity = getEntity(this.schema, entityName)
-
+	public async update(entity: Model.Entity, where: Input.UniqueWhere, data: Input.UpdateDataInput): Promise<number> {
 		const primaryValue = await this.getPrimaryValue(entity, where)
 		if (primaryValue === undefined) {
 			return Promise.resolve(0)
@@ -164,8 +147,7 @@ export class Mapper {
 		return await updateBuilder.updateRow()
 	}
 
-	public async delete(entityName: string, where: Input.UniqueWhere): Promise<number> {
-		const entity = getEntity(this.schema, entityName)
+	public async delete(entity: Model.Entity, where: Input.UniqueWhere): Promise<number> {
 		return await this.db(entity.tableName)
 			.where(this.getUniqueWhereArgs(entity, where))
 			.delete()
@@ -208,6 +190,22 @@ export class Mapper {
 			.delete()
 	}
 
+	public async fetchJunction(
+		relation: Model.ManyHasManyOwnerRelation,
+		values: Input.PrimaryValue[],
+		column: Model.JoiningColumn
+	): Promise<object[]> {
+		const joiningTable = relation.joiningTable
+
+		const whereColumn = column.columnName
+		const result = await this.db
+			.table(joiningTable.tableName)
+			.select([joiningTable.inverseJoiningColumn.columnName, joiningTable.joiningColumn.columnName])
+			.whereIn(whereColumn, values)
+
+		return result
+	}
+
 	public async getPrimaryValue(entity: Model.Entity, where: Input.UniqueWhere) {
 		if (where[entity.primary] !== undefined) {
 			return where[entity.primary]
@@ -237,36 +235,3 @@ export class Mapper {
 		return whereArgs
 	}
 }
-
-const insertData = (schema: Model.Schema, db: KnexConnection) => (
-	entityName: string,
-	data: Input.CreateDataInput
-): PromiseLike<Input.PrimaryValue> => {
-	return db.transaction(trx => {
-		const mapper = new Mapper(schema, trx)
-		return mapper.insert(entityName, data)
-	})
-}
-
-const updateData = (schema: Model.Schema, db: KnexConnection) => (
-	entityName: string,
-	where: Input.UniqueWhere,
-	data: Input.UpdateDataInput
-): PromiseLike<number> => {
-	return db.transaction(trx => {
-		const mapper = new Mapper(schema, trx)
-		return mapper.update(entityName, where, data)
-	})
-}
-
-const deleteData = (schema: Model.Schema, db: KnexConnection) => (
-	entityName: string,
-	where: Input.UniqueWhere
-): PromiseLike<number> => {
-	return db.transaction(trx => {
-		const mapper = new Mapper(schema, trx)
-		return mapper.delete(entityName, where)
-	})
-}
-
-export { insertData, updateData, deleteData }

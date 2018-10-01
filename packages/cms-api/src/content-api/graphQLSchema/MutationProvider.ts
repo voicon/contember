@@ -1,21 +1,15 @@
 import {
 	GraphQLBoolean,
-	GraphQLError,
 	GraphQLFieldConfig,
-	GraphQLFieldResolver,
 	GraphQLInputFieldConfig,
 	GraphQLInputFieldConfigMap,
 	GraphQLInputObjectType,
 	GraphQLNonNull
 } from 'graphql'
-import { JoinMonsterFieldMapping } from '../joinMonsterHelpers'
 import { Input, Model } from 'cms-common'
-import { isUniqueWhere } from '../../content-schema/inputUtils'
 import { acceptFieldVisitor, getEntity } from '../../content-schema/modelUtils'
-import { deleteData, insertData, updateData } from '../sql/mapper'
 import { Context } from '../types'
 import singletonFactory from '../../utils/singletonFactory'
-import buildUniqueWhere from '../whereMonster/uniqueWhereBuilder'
 import ColumnTypeResolver from './ColumnTypeResolver'
 import EntityTypeProvider from './EntityTypeProvider'
 import CreateEntityInputFieldVisitor from './mutations/CreateEntityInputFieldVisitor'
@@ -25,6 +19,7 @@ import UpdateEntityRelationInputFieldVisitor from './mutations/UpdateEntityRelat
 import { GqlTypeName } from './utils'
 import WhereTypeProvider from './WhereTypeProvider'
 import { GraphQLInputType } from 'graphql/type/definition'
+import MutationResolver from '../graphQlResolver/MutationResolver'
 
 interface RelationDefinition {
 	entityName: string
@@ -36,15 +31,9 @@ interface EntityDefinition {
 	withoutRelation?: string
 }
 
-type FieldConfig<TArgs> = JoinMonsterFieldMapping<Context, TArgs> & GraphQLFieldConfig<Context, any, TArgs>
+type FieldConfig<TArgs> = GraphQLFieldConfig<Context, any, TArgs>
 
 export default class MutationProvider {
-	private schema: Model.Schema
-	private whereTypeProvider: WhereTypeProvider
-	private entityTypeProvider: EntityTypeProvider
-	private columnTypeResolver: ColumnTypeResolver
-	private resolver: GraphQLFieldResolver<any, any>
-
 	private createEntityInputs = singletonFactory<GraphQLInputType, EntityDefinition>(id =>
 		this.createCreateEntityInput(id.entityName, id.withoutRelation)
 	)
@@ -62,18 +51,12 @@ export default class MutationProvider {
 	)
 
 	constructor(
-		schema: Model.Schema,
-		whereTypeProvider: WhereTypeProvider,
-		entityTypeProvider: EntityTypeProvider,
-		columnTypeResolver: ColumnTypeResolver,
-		resolver: GraphQLFieldResolver<any, any>
-	) {
-		this.schema = schema
-		this.whereTypeProvider = whereTypeProvider
-		this.entityTypeProvider = entityTypeProvider
-		this.columnTypeResolver = columnTypeResolver
-		this.resolver = resolver
-	}
+		private schema: Model.Schema,
+		private whereTypeProvider: WhereTypeProvider,
+		private entityTypeProvider: EntityTypeProvider,
+		private columnTypeResolver: ColumnTypeResolver,
+		private readonly mutationResolver: MutationResolver
+	) {}
 
 	public getMutations(entityName: string): { [fieldName: string]: FieldConfig<any> } {
 		return {
@@ -84,19 +67,13 @@ export default class MutationProvider {
 	}
 
 	public getCreateMutation(entityName: string): FieldConfig<Input.CreateInput> {
+		const entity = getEntity(this.schema, entityName)
 		return {
 			type: new GraphQLNonNull(this.entityTypeProvider.getEntity(entityName)),
 			args: {
 				data: { type: new GraphQLNonNull(this.getCreateEntityInput(entityName)) }
 			},
-			where: (tableName: string, args: any, context: any) => {
-				const entity = this.schema.entities[entityName]
-				return buildUniqueWhere(this.schema, entity)(tableName, { [entity.primary]: context.primary })
-			},
-			resolve: async (parent, args, context: Context, resolveInfo) => {
-				const primary = await insertData(this.schema, context.db)(entityName, args.data)
-				return await this.resolver(parent, args, { ...context, primary }, resolveInfo)
-			}
+			resolve: this.mutationResolver.resolveCreate(entity)
 		}
 	}
 
@@ -107,18 +84,7 @@ export default class MutationProvider {
 			args: {
 				where: { type: new GraphQLNonNull(this.whereTypeProvider.getEntityUniqueWhereType(entityName)) }
 			},
-			where: (tableName, args) => {
-				return buildUniqueWhere(this.schema, entity)(tableName, args.where)
-			},
-			resolve: async (parent, args, context, resolveInfo) => {
-				if (!isUniqueWhere(entity, args.where)) {
-					throw new GraphQLError('Input where is not unique')
-				}
-				const response = await this.resolver(parent, args, context, resolveInfo)
-				await deleteData(this.schema, context.db)(entityName, args.where)
-
-				return response
-			}
+			resolve: this.mutationResolver.resolveDelete(entity)
 		}
 	}
 
@@ -130,17 +96,7 @@ export default class MutationProvider {
 				where: { type: new GraphQLNonNull(this.whereTypeProvider.getEntityUniqueWhereType(entityName)) },
 				data: { type: new GraphQLNonNull(this.getUpdateEntityInput(entityName)) }
 			},
-			where: (tableName: string, args) => {
-				return buildUniqueWhere(this.schema, entity)(tableName, args.where)
-			},
-			resolve: async (parent, args, context, resolveInfo) => {
-				if (!isUniqueWhere(entity, args.where)) {
-					throw new GraphQLError('Input where is not unique')
-				}
-				await updateData(this.schema, context.db)(entityName, args.where, args.data)
-
-				return await this.resolver(parent, args, context, resolveInfo)
-			}
+			resolve: this.mutationResolver.resolveUpdate(entity)
 		}
 	}
 

@@ -84,7 +84,7 @@ namespace Input {
 	}
 
 	export interface ListQueryInput<E = never> {
-		where?: Where<E>
+		where?: Where<Condition<ColumnValue<E>>>
 	}
 
 	export type UpdateOneRelationInput<E = never> =
@@ -104,7 +104,7 @@ namespace Input {
 		| UpsertSpecifiedRelationInput<E>
 	>
 
-	export interface Condition<T> {
+	export interface Condition<T = ColumnValue> {
 		and?: Array<Condition<T>>
 		or?: Array<Condition<T>>
 		not?: Condition<T>
@@ -118,23 +118,25 @@ namespace Input {
 		lte?: T
 		gt?: T
 		gte?: T
+		never?: true
+		always?: true
 	}
 
 	export interface UniqueWhere<E = never> {
 		[field: string]: PrimaryValue<E>
 	}
 
-	export interface ComposedWhere<E = never> {
-		and?: Where<E>[]
-		or?: Where<E>[]
-		not?: Where<E>
+	export interface ComposedWhere<C> {
+		and?: Where<C>[]
+		or?: Where<C>[]
+		not?: Where<C>
 	}
 
-	interface FieldWhere<E = never> {
-		[name: string]: Condition<ColumnValue<E>> | Where<ColumnValue<E>>
+	export interface FieldWhere<C> {
+		[name: string]: C | Where<C>
 	}
 
-	export type Where<E = never> = ComposedWhere<E> & FieldWhere<E>
+	export type Where<C = Condition> = ComposedWhere<C> & FieldWhere<C>
 }
 
 export default Input

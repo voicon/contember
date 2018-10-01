@@ -37,7 +37,7 @@ import { promisify } from 'util'
 	projects.forEach(project => {
 		project.stages.forEach(stage => {
 			const pgSchemaName = 'public' // TODO: should depend on stage
-			const sql = getSqlSchema(stage.schema)
+			const sql = getSqlSchema(stage.schema.model)
 
 			const db = knex({
 				debug: false,
