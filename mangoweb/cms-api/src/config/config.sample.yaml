@@ -1,10 +1,10 @@
 tenant:
     db:
-        host: localhost
+        host: '%env.TENANT_DB_HOST%'
         port: '5432'
-        user: postgres
-        password: ''
-        database: cms-tenant
+        user: '%env.TENANT_DB_USER%'
+        password: '%env.TENANT_DB_PASSWORD%'
+        database: '%env.TENANT_DB_NAME%'
 
 projects:
     - uuid: 1635399a-de76-4101-bd14-82d67e9d2574
@@ -20,8 +20,11 @@ projects:
             name: Production Preview
             migration: '2018-08-03-092210'
       dbCredentials:
-          host: localhost
-          port: '5432'
-          user: postgres
-          password: ''
-          database: cms-blog
+        host: '%env.CMS_DB_HOST%'
+        port: '5432'
+        user: '%env.CMS_DB_USER%'
+        password: '%env.CMS_DB_PASSWORD%'
+        database: '%env.CMS_DB_NAME%'
+
+server:
+	port: '%env.SERVER_PORT%'
