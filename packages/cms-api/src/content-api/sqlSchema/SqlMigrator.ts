@@ -100,6 +100,7 @@ export default class SqlMigrator {
 				notNull: true
 			}
 		})
+		this.createEventTrigger(entity.tableName)
 	}
 
 	private removeEntity(modification: RemoveEntityModification) {
@@ -155,6 +156,11 @@ export default class SqlMigrator {
 				this.builder.createTable(
 					relation.joiningTable.tableName,
 					{
+						id: {
+							primaryKey: true,
+							type: 'uuid',
+							notNull: true
+						},
 						[relation.joiningTable.joiningColumn.columnName]: {
 							type: this.getPrimaryType(entity),
 							notNull: true,
@@ -170,13 +176,14 @@ export default class SqlMigrator {
 					},
 					{
 						constraints: {
-							primaryKey: [
+							unique: [
 								relation.joiningTable.joiningColumn.columnName,
 								relation.joiningTable.inverseJoiningColumn.columnName
 							]
 						}
 					}
 				)
+				this.createEventTrigger(relation.joiningTable.tableName)
 			},
 			visitManyHasManyInversed: () => {}
 		})
@@ -273,6 +280,19 @@ export default class SqlMigrator {
 
 	private getNewEntity(name: string): Model.Entity {
 		return this.newSchema.entities[name]
+	}
+
+	private createEventTrigger(tableName: string) {
+		this.builder.createTrigger(tableName, 'log_event', {
+			when: 'AFTER',
+			operation: ['INSERT', 'UPDATE', 'DELETE'],
+			level: 'ROW',
+			function: {
+				schema: 'system',
+				name: 'trigger_event'
+			},
+			language: ''
+		})
 	}
 
 	private getPrimaryType(entity: Model.Entity): string {
