@@ -77,9 +77,9 @@ const acl: Acl.Schema = {
 				},
 				PostLocale: {
 					predicates: {
-						locale_site: ({
-							and: [{ locale: { in: 'locale' } }, { post: { site: { in: 'site' } } }]
-						} as Input.Where<Acl.VariableCondition>) as any
+						locale_site: {
+							and: [{ locale: 'locale' }, { post: { site: 'site' } }]
+						}
 					},
 					operations: {
 						read: {

@@ -1,31 +1,38 @@
-import { Input, Model } from 'cms-common'
+import { Acl, Input, Model } from 'cms-common'
 import ObjectNode from '../../graphQlResolver/ObjectNode'
-import {
-	acceptEveryFieldVisitor,
-	acceptFieldVisitor,
-	acceptRelationTypeVisitor
-} from '../../../content-schema/modelUtils'
-import * as Knex from 'knex'
+import { acceptFieldVisitor, acceptRelationTypeVisitor, getColumnName } from '../../../content-schema/modelUtils'
 import SelectHydrator from './SelectHydrator'
 import Path from './Path'
 import JoinBuilder from './JoinBuilder'
-import HasManyFetchVisitor from './HasManyFetchVisitor'
-import Mapper from '../mapper'
+import RelationFetchVisitor from './RelationFetchVisitor'
+import Mapper from '../Mapper'
 import WhereBuilder from './WhereBuilder'
+import QueryBuilder from '../../../core/knex/QueryBuilder'
+import PredicateFactory from '../../../acl/PredicateFactory'
+import { assertNever } from 'cms-common'
 
 export default class SelectBuilder {
 	public readonly rows: PromiseLike<SelectHydrator.Rows>
+	private firer: () => void = () => {
+		throw new Error()
+	}
 
 	constructor(
 		private readonly schema: Model.Schema,
 		private readonly joinBuilder: JoinBuilder,
 		private readonly whereBuilder: WhereBuilder,
+		private readonly predicateFactory: PredicateFactory,
 		private readonly mapper: Mapper,
-		private readonly qb: Knex.QueryBuilder,
-		private readonly hydrator: SelectHydrator,
-		private readonly firer: PromiseLike<void>
+		private readonly qb: QueryBuilder,
+		private readonly hydrator: SelectHydrator
 	) {
-		this.rows = this.createRowsPromise(firer)
+		const blocker: Promise<void> = new Promise(resolve => (this.firer = resolve))
+		this.rows = this.createRowsPromise(blocker)
+	}
+
+	public async execute(): Promise<SelectHydrator.Rows> {
+		this.firer()
+		return await this.rows
 	}
 
 	public async select(entity: Model.Entity, input: ObjectNode<Input.ListQueryInput>, path?: Path) {
@@ -38,29 +45,27 @@ export default class SelectBuilder {
 		await promise
 	}
 
-	public async selectOne(entity: Model.Entity, input: ObjectNode<Input.UniqueQueryInput>, path?: Path) {
-		path = path || new Path([])
-		const promise = this.selectInternal(entity, path, input)
-		const where = input.args.where
-		if (where) {
-			this.whereBuilder.buildUnique(this.qb, entity, path, where)
-		}
-		await promise
-	}
-
 	private async selectInternal(entity: Model.Entity, path: Path, input: ObjectNode) {
+		if (!input.fields.find(it => it.name === entity.primary && it.alias === entity.primary)) {
+			this.addColumn(path.for(entity.primaryColumn), entity.fields[entity.primary] as Model.AnyColumn)
+		}
+
 		const promises: Promise<void>[] = []
 		for (let field of input.fields) {
+			if (field.name === '_meta') {
+				continue
+			}
+
 			const promise = acceptFieldVisitor(this.schema, entity, field.name, {
 				visitColumn: async (entity, column) => {
-					this.addColumn(path, column, field.alias)
+					const columnPath = path.for(field.alias)
+
+					this.addMetaFlag(entity, column, columnPath, Acl.Operation.read)
+					this.addColumn(columnPath, column)
 				},
-				visitHasMany: async (entity, relation, targetEntity) => {
-					await this.addHasMany(field as ObjectNode, path, entity, targetEntity)
+				visitRelation: async (entity, relation, targetEntity) => {
+					await this.addRelation(field as ObjectNode, path, entity)
 				},
-				visitHasOne: async (entity, relation, targetEntity) => {
-					this.addHasOne(field as ObjectNode, path, entity, targetEntity)
-				}
 			})
 			if (promise) {
 				promises.push(promise)
@@ -70,30 +75,64 @@ export default class SelectBuilder {
 		await Promise.all(Object.values(promises))
 	}
 
-	private addColumn(path: Path, column: Model.AnyColumn, alias: string): void {
-		const columnPath = path.for(alias)
-		const tableAlias = path.getAlias()
+	private addMetaFlag(
+		entity: Model.Entity,
+		column: Model.AnyColumn,
+		path: Path,
+		operation: Acl.Operation.read | Acl.Operation.update
+	) {
+		if (entity.primary === column.name) {
+			return
+		}
+		const fieldPredicate = this.predicateFactory.create(entity, operation, [column.name])
+
+		let suffix: string = (() => {
+			switch (operation) {
+				case Acl.Operation.read:
+					return SelectHydrator.ColumnFlagSuffixes.readable
+				case Acl.Operation.update:
+					return SelectHydrator.ColumnFlagSuffixes.updatable
+				default:
+					return assertNever(operation)
+			}
+		})()
+
+		this.qb.select(
+			expr =>
+				expr.selectCondition(condition => {
+					this.whereBuilder.buildInternal(this.qb, condition, entity, path.back(), fieldPredicate)
+				}),
+			path.getAlias() + suffix
+		)
+	}
+
+	private addColumn(columnPath: Path, column: Model.AnyColumn): void {
+		const tableAlias = columnPath.back().getAlias()
 		const columnAlias = columnPath.getAlias()
 
 		this.hydrator.addColumn(columnPath)
-		this.qb.select(`${tableAlias}.${column.columnName} as ${columnAlias}`)
+		this.qb.select([tableAlias, column.columnName], columnAlias)
 	}
 
-	private async addHasMany(
-		object: ObjectNode<Input.ListQueryInput>,
-		path: Path,
-		entity: Model.Entity,
-		targetEntity: Model.Entity
-	) {
-		const ids = this.getColumnValues(path.for(targetEntity.primary))
-		const fetchVisitor = new HasManyFetchVisitor(this.schema, this.mapper, ids, object)
-
-		const group = acceptRelationTypeVisitor(this.schema, entity, object.name, fetchVisitor)
-		this.hydrator.addGroupPromise(path.for(object.alias), path.for(entity.primary), group)
-		await group
+	private async addRelation(object: ObjectNode<Input.ListQueryInput>, path: Path, entity: Model.Entity) {
+		const idsGetter = (fieldName: string) => {
+			const columnName = getColumnName(this.schema, entity, fieldName)
+			return this.getColumnValues(path.for(fieldName), columnName)
+		}
+		const fetchVisitor = new RelationFetchVisitor(
+			this.schema,
+			this.mapper,
+			idsGetter,
+			object,
+			(parentKey, data, defaultValue) => {
+				this.hydrator.addPromise(path.for(object.alias), path.for(parentKey), data, defaultValue)
+			}
+		)
+		acceptRelationTypeVisitor(this.schema, entity, object.name, fetchVisitor)
 	}
 
 	private addHasOne(object: ObjectNode, path: Path, entity: Model.Entity, targetEntity: Model.Entity): void {
+		//not currently used, maybe in the future
 		const targetPath = path.for(object.alias)
 
 		const primaryPath = this.joinBuilder.join(this.qb, targetPath, entity, object.name)
@@ -102,14 +141,15 @@ export default class SelectBuilder {
 		this.select(targetEntity, object, targetPath)
 	}
 
-	private async createRowsPromise(firer: PromiseLike<void>): Promise<SelectHydrator.Rows> {
-		await firer
-		return await this.qb
+	private async createRowsPromise(blocker: PromiseLike<void>): Promise<SelectHydrator.Rows> {
+		await blocker
+		return await this.qb.getResult()
 	}
 
-	private async getColumnValues(column: Path): Promise<Input.PrimaryValue[]> {
+	private async getColumnValues(columnPath: Path, columnName: string): Promise<Input.PrimaryValue[]> {
+		this.qb.select([columnPath.back().getAlias(), columnName], columnPath.getAlias())
 		const rows = await this.rows
-		const columnAlias = column.getAlias()
-		return rows.map(it => it[columnAlias])
+		const columnAlias = columnPath.getAlias()
+		return rows.map(it => it[columnAlias]).filter((val, index, all) => all.indexOf(val) === index)
 	}
 }

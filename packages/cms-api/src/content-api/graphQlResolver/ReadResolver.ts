@@ -1,35 +1,26 @@
 import { Input, Model } from 'cms-common'
-import { Context } from '../types'
-import { GraphQLFieldResolver, GraphQLResolveInfo } from 'graphql'
-import GraphQlQueryAstFactory from './GraphQlQueryAstFactory'
-import Mapper from '../sql/mapper'
+import UniqueWhereExpander from './UniqueWhereExpander'
+import ObjectNode from './ObjectNode'
+import MapperRunner from '../sql/MapperRunner'
 
 export default class ReadResolver {
-	constructor(private readonly schema: Model.Schema) {}
+	constructor(private readonly mapperRunner: MapperRunner, private readonly uniqueWhereExpander: UniqueWhereExpander) {}
 
-	public resolveListQuery = (entity: Model.Entity): GraphQLFieldResolver<any, Context, Input.ListQueryInput> => async (
-		parent: any,
-		args: Input.ListQueryInput,
-		context: Context,
-		resolveInfo: GraphQLResolveInfo
-	) => {
-		const objectAst = new GraphQlQueryAstFactory().create(resolveInfo)
-
-		return await Mapper.run(this.schema, context.db, async mapper => {
-			return await mapper.select(entity, objectAst)
+	public async resolveListQuery(entity: Model.Entity, queryAst: ObjectNode<Input.ListQueryInput>) {
+		return await this.mapperRunner.run(async mapper => {
+			return await mapper.select(entity, queryAst)
 		})
 	}
 
-	public resolveGetQuery = (entity: Model.Entity): GraphQLFieldResolver<any, Context, Input.UniqueQueryInput> => async (
-		parent: any,
-		args: Input.UniqueQueryInput,
-		context: Context,
-		resolveInfo: GraphQLResolveInfo
-	) => {
-		const objectAst = new GraphQlQueryAstFactory().create(resolveInfo)
+	public async resolveGetQuery(entity: Model.Entity, queryAst: ObjectNode<Input.UniqueQueryInput>) {
+		const whereExpanded = this.uniqueWhereExpander.expand(entity, queryAst.args.where)
+		const queryExpanded = new ObjectNode(queryAst.name, queryAst.alias, queryAst.fields, {
+			...queryAst.args,
+			where: whereExpanded,
+		})
 
-		return await Mapper.run(this.schema, context.db, async mapper => {
-			return await mapper.selectOne(entity, objectAst)
+		return await this.mapperRunner.run(async mapper => {
+			return (await mapper.select(entity, queryExpanded))[0] || null
 		})
 	}
 }

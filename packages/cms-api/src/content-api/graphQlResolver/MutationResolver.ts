@@ -1,70 +1,78 @@
 import { Input, Model } from 'cms-common'
-import { GraphQLError, GraphQLFieldResolver, GraphQLResolveInfo } from 'graphql'
-import { Context } from '../types'
+import { GraphQLError } from 'graphql'
 import { isUniqueWhere } from '../../content-schema/inputUtils'
-import Mapper from '../sql/mapper'
-import GraphQlQueryAstFactory from './GraphQlQueryAstFactory'
 import ObjectNode from './ObjectNode'
+import UniqueWhereExpander from './UniqueWhereExpander'
+import MapperRunner from '../sql/MapperRunner'
+import Mapper from '../sql/Mapper'
+import { UserError } from 'graphql-errors'
 
 export default class MutationResolver {
-	constructor(private readonly schema: Model.Schema) {}
+	constructor(private readonly mapperRunner: MapperRunner, private readonly uniqueWhereExpander: UniqueWhereExpander) {}
 
-	public resolveUpdate = (entity: Model.Entity): GraphQLFieldResolver<any, Context, Input.UpdateInput> => async (
-		parent: any,
-		args: Input.UpdateInput,
-		context: Context,
-		info: GraphQLResolveInfo
-	) => {
-		if (!isUniqueWhere(entity, args.where)) {
+	public async resolveUpdate(entity: Model.Entity, queryAst: ObjectNode<Input.UpdateInput>) {
+		if (!isUniqueWhere(entity, queryAst.args.where)) {
 			throw new GraphQLError('Input where is not unique')
 		}
-		const objectAst = new GraphQlQueryAstFactory().create(info)
+		const whereExpanded = this.uniqueWhereExpander.expand(entity, queryAst.args.where)
+		const queryExpanded = queryAst.withArg<Input.ListQueryInput>('where', whereExpanded)
 
-		return await Mapper.run(this.schema, context.db, async mapper => {
-			await mapper.update(entity, args.where, args.data)
+		return await this.mapperRunner.run(async mapper => {
+			try {
+				await mapper.update(entity, queryAst.args.where, queryAst.args.data)
+			} catch (e) {
+				if (!(e instanceof Mapper.NoResultError)) {
+					throw e
+				}
+				throw new UserError('Mutation failed, operation denied by ACL rules')
+			}
 
-			return await mapper.selectOne(entity, objectAst)
+			return (await mapper.select(entity, queryExpanded))[0] || null
 		})
 	}
 
-	public resolveCreate = (entity: Model.Entity): GraphQLFieldResolver<any, Context, Input.CreateInput> => async (
-		parent: any,
-		args: Input.CreateInput,
-		context: Context,
-		info: GraphQLResolveInfo
-	) => {
-		const objectAst = new GraphQlQueryAstFactory().create(info)
+	public async resolveCreate(entity: Model.Entity, queryAst: ObjectNode<Input.CreateInput>) {
+		return await this.mapperRunner.run(async mapper => {
+			let primary: Input.PrimaryValue
+			try {
+				primary = await mapper.insert(entity, queryAst.args.data)
+			} catch (e) {
+				if (!(e instanceof Mapper.NoResultError)) {
+					throw e
+				}
+				throw new UserError('Mutation failed, operation denied by ACL rules')
+			}
 
-		return await Mapper.run(this.schema, context.db, async mapper => {
-			const primary = await mapper.insert(entity, args.data)
-
-			const whereArgs = { where: { [entity.primary]: primary } }
-			const objectWithArgs = new ObjectNode<Input.UniqueQueryInput>(
-				objectAst.name,
-				objectAst.alias,
-				objectAst.fields,
+			const whereArgs = { where: { [entity.primary]: { eq: primary } } }
+			const objectWithArgs = new ObjectNode<Input.ListQueryInput>(
+				queryAst.name,
+				queryAst.alias,
+				queryAst.fields,
 				whereArgs
 			)
 
-			return mapper.selectOne(entity, objectWithArgs)
+			return (await mapper.select(entity, objectWithArgs))[0] || null
 		})
 	}
 
-	public resolveDelete = (entity: Model.Entity): GraphQLFieldResolver<any, Context, Input.DeleteInput> => async (
-		parent: any,
-		args: Input.DeleteInput,
-		context: Context,
-		info: GraphQLResolveInfo
-	) => {
-		if (!isUniqueWhere(entity, args.where)) {
+	public async resolveDelete(entity: Model.Entity, queryAst: ObjectNode<Input.DeleteInput>) {
+		if (!isUniqueWhere(entity, queryAst.args.where)) {
 			throw new GraphQLError('Input where is not unique')
 		}
-		const objectAst = new GraphQlQueryAstFactory().create(info)
+		const whereExpanded = this.uniqueWhereExpander.expand(entity, queryAst.args.where)
+		const queryExpanded = queryAst.withArg<Input.ListQueryInput>('where', whereExpanded)
 
-		return await Mapper.run(this.schema, context.db, async mapper => {
-			const result = await mapper.selectOne(entity, objectAst)
+		return await this.mapperRunner.run(async mapper => {
+			const result = (await mapper.select(entity, queryExpanded))[0] || null
 
-			await mapper.delete(entity, args.where)
+			try {
+				await mapper.delete(entity, queryAst.args.where)
+			} catch (e) {
+				if (!(e instanceof Mapper.NoResultError)) {
+					throw e
+				}
+				throw new UserError('Mutation failed, operation denied by ACL rules')
+			}
 
 			return result
 		})

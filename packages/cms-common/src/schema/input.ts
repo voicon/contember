@@ -14,6 +14,20 @@ namespace Input {
 
 	export type ColumnValueLike<E = never> = GenericValueLike<ColumnValue<E>>
 
+	export enum UpdateRelationOperation {
+		connect = 'connect',
+		disconnect = 'disconnect',
+		create = 'create',
+		update = 'update',
+		upsert = 'upsert',
+		delete = 'delete'
+	}
+
+	export enum CreateRelationOperation {
+		connect = 'connect',
+		create = 'create'
+	}
+
 	export interface ConnectRelationInput<E = never> {
 		connect: UniqueWhere<E>
 	}
@@ -126,14 +140,14 @@ namespace Input {
 		[field: string]: PrimaryValue<E>
 	}
 
-	export interface ComposedWhere<C> {
+	export type ComposedWhere<C> = {
 		and?: Where<C>[]
 		or?: Where<C>[]
 		not?: Where<C>
 	}
 
-	export interface FieldWhere<C> {
-		[name: string]: C | Where<C>
+	export interface FieldWhere<C = Condition> {
+		[name: string]: C | Where<C> | undefined | Where<C>[] //last one if for ComposedWhere
 	}
 
 	export type Where<C = Condition> = ComposedWhere<C> & FieldWhere<C>

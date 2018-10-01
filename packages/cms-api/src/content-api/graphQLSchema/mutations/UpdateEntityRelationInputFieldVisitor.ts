@@ -1,21 +1,25 @@
 import { GraphQLBoolean, GraphQLInputObjectType } from 'graphql'
-import { Model } from 'cms-common'
-import MutationProvider from '../MutationProvider'
+import { Input, Model } from 'cms-common'
 import { GqlTypeName } from '../utils'
 import WhereTypeProvider from '../WhereTypeProvider'
-import { isIt } from '../../../utils/type'
+import { Accessor } from '../../../utils/accessor'
+import EntityInputProvider from './EntityInputProvider'
+import { GraphQLInputFieldConfig, GraphQLInputFieldConfigMap } from 'graphql/type/definition'
+import { acceptFieldVisitor } from '../../../content-schema/modelUtils'
+import UpdateEntityRelationAllowedOperationsVisitor from './UpdateEntityRelationAllowedOperationsVisitor'
+import { filterObject } from '../../../utils/object'
 
 export default class UpdateEntityRelationInputFieldVisitor
-	implements Model.ColumnVisitor<GraphQLInputObjectType>, Model.RelationByGenericTypeVisitor<GraphQLInputObjectType> {
-	private whereTypeBuilder: WhereTypeProvider
-	private mutationBuilder: MutationProvider
+	implements Model.ColumnVisitor<never>, Model.RelationByGenericTypeVisitor<GraphQLInputObjectType | undefined> {
+	constructor(
+		private readonly schema: Model.Schema,
+		private readonly whereTypeBuilder: WhereTypeProvider,
+		private readonly updateEntityInputProviderAccessor: Accessor<EntityInputProvider<EntityInputProvider.Type.update>>,
+		private readonly createEntityInputProvider: EntityInputProvider<EntityInputProvider.Type.create>,
+		private readonly updateEntityRelationAllowedOperationsVisitor: UpdateEntityRelationAllowedOperationsVisitor
+	) {}
 
-	constructor(schema: Model.Schema, whereTypeBuilder: WhereTypeProvider, mutationBuilder: MutationProvider) {
-		this.whereTypeBuilder = whereTypeBuilder
-		this.mutationBuilder = mutationBuilder
-	}
-
-	public visitColumn(): GraphQLInputObjectType {
+	public visitColumn(): never {
 		throw new Error()
 	}
 
@@ -24,42 +28,57 @@ export default class UpdateEntityRelationInputFieldVisitor
 		relation: Model.Relation & Model.NullableRelation,
 		targetEntity: Model.Entity,
 		targetRelation: Model.Relation | null
-	): GraphQLInputObjectType {
-		return new GraphQLInputObjectType({
-			name: GqlTypeName`${entity.name}Update${relation.name}EntityRelationInput`,
-			fields: () => {
-				const whereInput = { type: this.whereTypeBuilder.getEntityUniqueWhereType(targetEntity.name) }
+	): GraphQLInputObjectType | undefined {
+		const withoutRelation = targetRelation ? targetRelation.name : undefined
 
-				const withoutRelation = targetRelation ? targetRelation.name : undefined
-				const updateInput = { type: this.mutationBuilder.getUpdateEntityInput(targetEntity.name, withoutRelation) }
-				const createInput = { type: this.mutationBuilder.getCreateEntityInput(targetEntity.name, withoutRelation) }
-
-				return {
-					create: createInput,
-					update: updateInput,
-					upsert: {
+		const whereInput = {
+			type: this.whereTypeBuilder.getEntityUniqueWhereType(targetEntity.name),
+		}
+		const createInputType = this.createEntityInputProvider.getInput(targetEntity.name, withoutRelation)
+		const createInput = createInputType
+			? {
+					type: createInputType,
+			  }
+			: undefined
+		const updateInputType = this.updateEntityInputProviderAccessor.get().getInput(targetEntity.name, withoutRelation)
+		const updateInput = updateInputType
+			? {
+					type: updateInputType,
+			  }
+			: undefined
+		const upsertInput =
+			updateInput && createInput
+				? {
 						type: new GraphQLInputObjectType({
 							name: GqlTypeName`${entity.name}Upsert${relation.name}RelationInput`,
 							fields: () => ({
 								update: updateInput,
-								create: createInput
-							})
-						})
-					},
+								create: createInput,
+							}),
+						}),
+				  }
+				: undefined
+		const booleanInput = {
+			type: GraphQLBoolean,
+		}
 
-					connect: whereInput,
-					...(relation.nullable
-						? {
-								disconnect: {
-									type: GraphQLBoolean
-								},
-								delete: {
-									type: GraphQLBoolean
-								}
-						  }
-						: {})
-				}
-			}
+		const fields = {
+			[Input.UpdateRelationOperation.create]: createInput,
+			[Input.UpdateRelationOperation.update]: updateInput,
+			[Input.UpdateRelationOperation.upsert]: upsertInput,
+			[Input.UpdateRelationOperation.connect]: whereInput,
+			[Input.UpdateRelationOperation.disconnect]: booleanInput,
+			[Input.UpdateRelationOperation.delete]: booleanInput,
+		}
+
+		const filteredFields = this.filterAllowedOperations(entity, relation, fields)
+		if (Object.keys(filteredFields).length === 0) {
+			return undefined
+		}
+
+		return new GraphQLInputObjectType({
+			name: GqlTypeName`${entity.name}Update${relation.name}EntityRelationInput`,
+			fields: () => filteredFields,
 		})
 	}
 
@@ -68,50 +87,85 @@ export default class UpdateEntityRelationInputFieldVisitor
 		relation: Model.Relation,
 		targetEntity: Model.Entity,
 		targetRelation: Model.Relation | null
-	): GraphQLInputObjectType {
-		let canDisconnect: boolean = true
-		if (targetRelation && isIt<Model.NullableRelation>(targetRelation, 'nullable')) {
-			canDisconnect = targetRelation.nullable
+	): GraphQLInputObjectType | undefined {
+		const withoutRelation = targetRelation ? targetRelation.name : undefined
+
+		const whereInput = {
+			type: this.whereTypeBuilder.getEntityUniqueWhereType(targetEntity.name),
 		}
+		const createInputType = this.createEntityInputProvider.getInput(targetEntity.name, withoutRelation)
+		const createInput = createInputType
+			? {
+					type: createInputType,
+			  }
+			: undefined
+		const updateInputType = this.updateEntityInputProviderAccessor.get().getInput(targetEntity.name, withoutRelation)
+		const updateInput = updateInputType
+			? {
+					type: updateInputType,
+			  }
+			: undefined
 
-		return new GraphQLInputObjectType({
-			name: GqlTypeName`${entity.name}Update${relation.name}EntityRelationInput`,
-			fields: () => {
-				const withoutRelation = targetRelation ? targetRelation.name : undefined
-				const createInput = { type: this.mutationBuilder.getCreateEntityInput(targetEntity.name, withoutRelation) }
-				const updateInput = { type: this.mutationBuilder.getUpdateEntityInput(targetEntity.name, withoutRelation) }
+		const updateSpecifiedInput = updateInput
+			? {
+					type: new GraphQLInputObjectType({
+						name: GqlTypeName`${entity.name}Update${relation.name}RelationInput`,
+						fields: () => ({
+							where: whereInput,
+							data: updateInput,
+						}),
+					}),
+			  }
+			: undefined
 
-				const whereInput = { type: this.whereTypeBuilder.getEntityUniqueWhereType(targetEntity.name) }
-				return {
-					create: createInput,
-					update: {
-						type: new GraphQLInputObjectType({
-							name: GqlTypeName`${entity.name}Update${relation.name}RelationInput`,
-							fields: () => ({
-								where: whereInput,
-								data: updateInput
-							})
-						})
-					},
-					upsert: {
+		const upsertInput =
+			updateInput && createInput
+				? {
 						type: new GraphQLInputObjectType({
 							name: GqlTypeName`${entity.name}Upsert${relation.name}RelationInput`,
 							fields: () => ({
 								where: whereInput,
 								update: updateInput,
-								create: createInput
-							})
-						})
-					},
-					delete: whereInput,
-					connect: whereInput,
-					...(canDisconnect
-						? {
-								disconnect: whereInput
-						  }
-						: {})
-				}
-			}
+								create: createInput,
+							}),
+						}),
+				  }
+				: undefined
+
+		const fields = {
+			[Input.UpdateRelationOperation.create]: createInput,
+			[Input.UpdateRelationOperation.update]: updateSpecifiedInput,
+			[Input.UpdateRelationOperation.upsert]: upsertInput,
+			[Input.UpdateRelationOperation.connect]: whereInput,
+			[Input.UpdateRelationOperation.disconnect]: whereInput,
+			[Input.UpdateRelationOperation.delete]: whereInput,
+		}
+		const filteredFields = this.filterAllowedOperations(entity, relation, fields)
+		if (Object.keys(filteredFields).length === 0) {
+			return undefined
+		}
+
+		return new GraphQLInputObjectType({
+			name: GqlTypeName`${entity.name}Update${relation.name}EntityRelationInput`,
+			fields: () => filteredFields,
 		})
+	}
+
+	private filterAllowedOperations(
+		entity: Model.Entity,
+		relation: Model.Relation,
+		graphQlFields: { [key: string]: GraphQLInputFieldConfig | undefined }
+	): GraphQLInputFieldConfigMap {
+		const allowedOperations = acceptFieldVisitor(
+			this.schema,
+			entity,
+			relation.name,
+			this.updateEntityRelationAllowedOperationsVisitor
+		)
+		return filterObject<GraphQLInputFieldConfig, GraphQLInputFieldConfig | undefined>(
+			graphQlFields,
+			(key, value): value is GraphQLInputFieldConfig =>
+				allowedOperations.includes(key as Input.UpdateRelationOperation) && value !== undefined
+		)
 	}
 }

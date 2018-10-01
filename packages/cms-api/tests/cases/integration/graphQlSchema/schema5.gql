@@ -1,0 +1,122 @@
+type FieldMeta {
+  readable: Boolean
+  updatable: Boolean
+}
+
+type Mutation {
+  createRoot(data: RootCreateInput!): Root!
+  deleteRoot(where: RootUniqueWhere!): Root
+  createOneHasManyEntity(data: OneHasManyEntityCreateInput!): OneHasManyEntity!
+  deleteOneHasManyEntity(where: OneHasManyEntityUniqueWhere!): OneHasManyEntity
+}
+
+type OneHasManyEntity {
+  _meta: OneHasManyEntityMeta
+  id: UUID!
+  a: String
+  r2(where: RootWhere): Root
+}
+
+input OneHasManyEntityCreateInput {
+  a: String
+  r2: OneHasManyEntityCreateR2EntityRelationInput
+}
+
+input OneHasManyEntityCreateR2EntityRelationInput {
+  connect: RootUniqueWhere
+  create: Boolean
+}
+
+type OneHasManyEntityMeta {
+  id: FieldMeta
+  a: FieldMeta
+  r2: FieldMeta
+}
+
+input OneHasManyEntityUniqueWhere {
+  id: UUID
+}
+
+input OneHasManyEntityWhere {
+  id: UUIDCondition
+  a: StringCondition
+  r2: RootWhere
+  and: [OneHasManyEntityWhere!]
+  or: [OneHasManyEntityWhere!]
+  not: OneHasManyEntityWhere
+}
+
+input OneHasManyEntityWithoutR2CreateInput {
+  a: String
+}
+
+type Query {
+  Root(where: RootUniqueWhere!): Root
+  Roots(where: RootWhere): [Root]
+  OneHasManyEntity(where: OneHasManyEntityUniqueWhere!): OneHasManyEntity
+  OneHasManyEntitys(where: OneHasManyEntityWhere): [OneHasManyEntity]
+}
+
+type Root {
+  _meta: RootMeta
+  id: UUID!
+  r(where: OneHasManyEntityWhere): [OneHasManyEntity!]
+}
+
+input RootCreateInput {
+  r: [RootCreateREntityRelationInput!]
+}
+
+input RootCreateREntityRelationInput {
+  connect: OneHasManyEntityUniqueWhere
+  create: OneHasManyEntityWithoutR2CreateInput
+}
+
+type RootMeta {
+  id: FieldMeta
+  r: FieldMeta
+}
+
+input RootUniqueWhere {
+  id: UUID
+}
+
+input RootWhere {
+  id: UUIDCondition
+  r: OneHasManyEntityWhere
+  and: [RootWhere!]
+  or: [RootWhere!]
+  not: RootWhere
+}
+
+input StringCondition {
+  and: [StringCondition!]
+  or: [StringCondition!]
+  not: StringCondition
+  eq: String
+  null: Boolean
+  notEq: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+}
+
+scalar UUID
+
+input UUIDCondition {
+  and: [UUIDCondition!]
+  or: [UUIDCondition!]
+  not: UUIDCondition
+  eq: UUID
+  null: Boolean
+  notEq: UUID
+  in: [UUID!]
+  notIn: [UUID!]
+  lt: UUID
+  lte: UUID
+  gt: UUID
+  gte: UUID
+}

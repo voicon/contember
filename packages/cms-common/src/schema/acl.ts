@@ -25,47 +25,50 @@ namespace Acl {
 		fieldName: string
 	}
 
-	type PredicateVariable = string //{ name: string }
-	type PredicateDefinition = Input.Where<PredicateVariable>
+	export interface VariablesMap {
+		[name: string]: string | number | (string | number)[]
+	}
 
-	interface EntityPermissions {
-		predicates: { [name: string]: PredicateDefinition }
+	export type PredicateVariable = string //{ name: string }
+	export type PredicateDefinition = Input.Where<PredicateVariable | Input.Condition>
+
+	export type PredicateMap = { [name: string]: PredicateDefinition }
+
+	export interface EntityPermissions {
+		predicates: PredicateMap
 		operations: EntityOperations
 	}
 
-	interface EntityOperations {
+	export enum Operation {
+		read = 'read',
+		create = 'create',
+		update = 'update',
+		delete = 'delete'
+	}
+
+	export interface EntityOperations {
 		read?: FieldPermissions
 		create?: FieldPermissions
 		update?: FieldPermissions
-		delete?: PredicateReference
+		delete?: Predicate
 	}
 
-	type FieldPermissions = { [field: string]: PredicateReference }
-	type PredicateReference = string | true
+	export type FieldPermissions = { [field: string]: Predicate }
 
-	interface RolePermissions {
+	export type PredicateReference = string
+	export type Predicate = PredicateReference | true
+
+	export interface RolePermissions {
 		inherits?: string[]
-		entities: { [entity: string]: EntityPermissions }
+		entities: Permissions
+	}
+
+	export interface Permissions {
+		[entity: string]: EntityPermissions
 	}
 
 	export type Roles = { [role: string]: RolePermissions }
 	export type Variables = { [name: string]: Variable }
-
-	export interface VariableCondition {
-		and?: PredicateVariable
-		or?: PredicateVariable
-		not?: VariableCondition
-
-		eq?: PredicateVariable
-		null?: PredicateVariable
-		notEq?: PredicateVariable
-		in?: PredicateVariable
-		notIn?: PredicateVariable
-		lt?: PredicateVariable
-		lte?: PredicateVariable
-		gt?: PredicateVariable
-		gte?: PredicateVariable
-	}
 
 	export interface Schema {
 		variables: Acl.Variables

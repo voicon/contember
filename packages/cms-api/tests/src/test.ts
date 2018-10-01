@@ -1,23 +1,26 @@
 import { expect } from 'chai'
-import { graphql, printSchema } from 'graphql'
+import { graphql } from 'graphql'
 import { maskErrors } from 'graphql-errors'
 import * as knex from 'knex'
 import * as mockKnex from 'mock-knex'
-import GraphQlSchemaBuilder from '../../src/content-api/graphQLSchema/GraphQlSchemaBuilder'
 import { testUuid } from './testUuid'
 import * as uuid from '../../src/utils/uuid'
 import * as sinon from 'sinon'
-import { Model } from 'cms-common'
+import { Acl, Model } from 'cms-common'
 import GraphQlSchemaBuilderFactory from '../../src/content-api/graphQLSchema/GraphQlSchemaBuilderFactory'
+import AllowAllPermissionFactory from '../../src/acl/AllowAllPermissionFactory'
+import KnexConnection from '../../src/core/knex/KnexConnection'
 
 export interface SqlQuery {
 	sql: string
 	parameters?: any[]
-	response?: any[] | any
+	response: any[] | any
 }
 
 export interface Test {
-	schema: Pick<Model.Schema, 'enums' | 'entities'>
+	schema: Model.Schema
+	permissions?: Acl.Permissions
+	variables?: Acl.VariablesMap
 	query: string
 	executes: SqlQuery[]
 	return: object
@@ -26,17 +29,20 @@ export interface Test {
 export const sqlTransaction = (executes: SqlQuery[]): SqlQuery[] => {
 	return [
 		{
-			sql: 'BEGIN;'
+			sql: 'BEGIN;',
+			response: 1,
 		},
 		...executes,
 		{
-			sql: 'COMMIT;'
-		}
+			sql: 'COMMIT;',
+			response: 1,
+		},
 	]
 }
 
 export const execute = async (test: Test) => {
-	const builder = new GraphQlSchemaBuilderFactory().create(test.schema)
+	const permissions: Acl.Permissions = test.permissions || new AllowAllPermissionFactory().create(test.schema)
+	const builder = new GraphQlSchemaBuilderFactory().create(test.schema, permissions)
 	const graphQLSchema = builder.build()
 
 	// console.log(printSchema(graphQLSchema))
@@ -45,7 +51,7 @@ export const execute = async (test: Test) => {
 
 	const connection = knex({
 		// debug: true,
-		client: 'pg'
+		client: 'pg',
 	})
 
 	mockKnex.mock(connection)
@@ -58,7 +64,7 @@ export const execute = async (test: Test) => {
 	let failed: number | null = null
 	tracker.on('query', (query, step) => {
 		const queryDefinition = test.executes[step - 1]
-		if (failed === step - 1 && query.sql === 'ROLLBACK;') {
+		if (query.sql === 'ROLLBACK;') {
 			query.response([])
 			return
 		}
@@ -78,10 +84,15 @@ export const execute = async (test: Test) => {
 		}
 		query.response(queryDefinition.response || [])
 	})
-	const response = await graphql(graphQLSchema, test.query, null, { db: connection })
-	// console.log(response)
-	expect(response).deep.equal(test.return)
-	tracker.uninstall()
-
-	uuidStub.restore()
+	try {
+		const response = await graphql(graphQLSchema, test.query, null, {
+			db: new KnexConnection(connection),
+			identityVariables: test.variables || {},
+		})
+		// console.log(response)
+		expect(response).deep.equal(test.return)
+	} finally {
+		tracker.uninstall()
+		uuidStub.restore()
+	}
 }

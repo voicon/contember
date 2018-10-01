@@ -2,18 +2,45 @@ import { isIt } from '../utils/type'
 import { Model } from 'cms-common'
 
 export const getEntity = (schema: Model.Schema, entityName: string): Model.Entity => {
-	return schema.entities[entityName]
+	const entity = schema.entities[entityName]
+	if (!entity) {
+		throw new Error(`Entity ${entityName} not found`)
+	}
+	return entity
 }
 
 export const getColumnName = (schema: Model.Schema, entity: Model.Entity, fieldName: string) => {
 	return acceptFieldVisitor(schema, entity, fieldName, {
-		visitColumn: (entity, column) => column.name,
+		visitColumn: (entity, column) => column.columnName,
 		visitRelation: (entity, relation) => {
 			if (isIt<Model.JoiningColumnRelation>(relation, 'joiningColumn')) {
 				return relation.joiningColumn.columnName
 			}
 			throw new Error('Not an owning side')
-		}
+		},
+	})
+}
+
+export const getColumnType = (schema: Model.Schema, entity: Model.Entity, fieldName: string): string => {
+	return acceptFieldVisitor(schema, entity, fieldName, {
+		visitColumn: (entity, column) => column.columnType,
+		visitRelation: (entity, relation, targetEntity) => {
+			if (isIt<Model.JoiningColumnRelation>(relation, 'joiningColumn')) {
+				return getColumnType(schema, targetEntity, targetEntity.primary)
+			}
+			throw new Error('Not an owning side')
+		},
+	})
+}
+
+export const getTargetEntity = (
+	schema: Model.Schema,
+	entity: Model.Entity,
+	relationName: string
+): Model.Entity | null => {
+	return acceptFieldVisitor(schema, entity, relationName, {
+		visitColumn: () => null,
+		visitRelation: (entity, relation, targetEntity) => targetEntity,
 	})
 }
 
@@ -77,7 +104,7 @@ export const acceptFieldVisitor = <T>(
 			visitOneHasMany: visitor.visitHasMany.bind(visitor),
 			visitOneHasOneInversed: visitor.visitHasOne.bind(visitor),
 			visitOneHasOneOwner: visitor.visitHasOne.bind(visitor),
-			visitManyHasOne: visitor.visitHasOne.bind(visitor)
+			visitManyHasOne: visitor.visitHasOne.bind(visitor),
 		})
 	}
 
@@ -168,10 +195,10 @@ export const acceptRelationTypeVisitor = <T>(
 	throw new Error()
 }
 
-const isInversedRelation = (relation: Model.Relation): relation is Model.InversedRelation => {
+export const isInversedRelation = (relation: Model.Relation): relation is Model.InversedRelation => {
 	return (relation as Model.InversedRelation).ownedBy !== undefined
 }
 
-const isOwnerRelation = (relation: Model.Relation): relation is Model.OwnerRelation => {
+export const isOwnerRelation = (relation: Model.Relation): relation is Model.OwnerRelation => {
 	return !isInversedRelation(relation)
 }

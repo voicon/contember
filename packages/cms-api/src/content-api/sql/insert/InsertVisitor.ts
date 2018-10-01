@@ -1,6 +1,6 @@
 import { Input, Model } from 'cms-common'
 import { isIt } from '../../../utils/type'
-import Mapper from '../mapper'
+import Mapper from '../Mapper'
 import { uuid } from '../../../utils/uuid'
 import InsertBuilder from './InsertBuilder'
 
@@ -11,19 +11,16 @@ interface RelationInputProcessor {
 }
 
 export default class InsertVisitor implements Model.ColumnVisitor<void>, Model.RelationByTypeVisitor<PromiseLike<any>> {
-	private data: Input.CreateDataInput
-	private insertBuilder: InsertBuilder
-	private mapper: Mapper
-
-	constructor(data: Input.CreateDataInput, insertBuilder: InsertBuilder, mapper: Mapper) {
-		this.data = data
-		this.insertBuilder = insertBuilder
-		this.mapper = mapper
-	}
+	constructor(
+		private readonly schema: Model.Schema,
+		private readonly data: Input.CreateDataInput,
+		private readonly insertBuilder: InsertBuilder,
+		private readonly mapper: Mapper
+	) {}
 
 	public visitColumn(entity: Model.Entity, column: Model.AnyColumn): void {
-		this.insertBuilder.addColumnData(
-			column.columnName,
+		this.insertBuilder.addFieldValue(
+			column.name,
 			(() => {
 				if (this.data[column.name] !== undefined) {
 					return this.data[column.name] as Input.ColumnValue
@@ -73,7 +70,7 @@ export default class InsertVisitor implements Model.ColumnVisitor<void>, Model.R
 			this.data[relation.name] as Input.CreateManyRelationInput,
 			new class implements RelationInputProcessor {
 				public async connect(input: Input.UniqueWhere) {
-					const primaryInversed = await insertBuilder.insertRow()
+					const primaryInversed = await insertBuilder.insert
 					await mapper.connectJunction(
 						targetEntity,
 						targetRelation,
@@ -83,7 +80,7 @@ export default class InsertVisitor implements Model.ColumnVisitor<void>, Model.R
 				}
 
 				public async create(input: Input.CreateDataInput) {
-					const primaryInversed = await insertBuilder.insertRow()
+					const primaryInversed = await insertBuilder.insert
 					const primaryOwner = await mapper.insert(targetEntity, input)
 					await mapper.connectJunction(
 						targetEntity,
@@ -109,7 +106,7 @@ export default class InsertVisitor implements Model.ColumnVisitor<void>, Model.R
 			this.data[relation.name] as Input.CreateManyRelationInput,
 			new class implements RelationInputProcessor {
 				public async connect(input: Input.UniqueWhere) {
-					const primary = await insertBuilder.insertRow()
+					const primary = await insertBuilder.insert
 					await mapper.connectJunction(
 						entity,
 						relation,
@@ -119,7 +116,7 @@ export default class InsertVisitor implements Model.ColumnVisitor<void>, Model.R
 				}
 
 				public async create(input: Input.CreateDataInput) {
-					const primary = await insertBuilder.insertRow()
+					const primary = await insertBuilder.insert
 					const primaryInversed = await mapper.insert(targetEntity, input)
 					await mapper.connectJunction(
 						entity,
@@ -140,16 +137,17 @@ export default class InsertVisitor implements Model.ColumnVisitor<void>, Model.R
 	) {
 		const insertBuilder = this.insertBuilder
 		const mapper = this.mapper
+		const that = this
 
 		return this.processRelationInput(
 			this.data[relation.name] as Input.CreateOneRelationInput,
 			new class implements RelationInputProcessor {
 				public async connect(input: Input.UniqueWhere) {
-					insertBuilder.addColumnData(relation.joiningColumn.columnName, input[targetEntity.primary])
+					insertBuilder.addFieldValue(relation.name, input[targetEntity.primary])
 				}
 
 				public async create(input: Input.CreateDataInput) {
-					insertBuilder.addColumnData(relation.joiningColumn.columnName, mapper.insert(targetEntity, input))
+					insertBuilder.addFieldValue(relation.name, mapper.insert(targetEntity, input))
 				}
 			}()
 		)
@@ -168,21 +166,21 @@ export default class InsertVisitor implements Model.ColumnVisitor<void>, Model.R
 			this.data[relation.name] as Input.CreateManyRelationInput,
 			new class implements RelationInputProcessor {
 				public async connect(input: Input.UniqueWhere) {
-					const value = await insertBuilder.insertRow()
+					const value = await insertBuilder.insert
 					await mapper.update(targetEntity, input, {
 						[targetRelation.name]: {
-							connect: { [relation.name]: value }
-						}
+							connect: { [relation.name]: value },
+						},
 					})
 				}
 
 				public async create(input: Input.CreateDataInput) {
-					const primary = await insertBuilder.insertRow()
+					const primary = await insertBuilder.insert
 					await mapper.insert(targetEntity, {
 						...input,
 						[targetRelation.name]: {
-							connect: { [entity.primary]: primary }
-						}
+							connect: { [entity.primary]: primary },
+						},
 					})
 				}
 			}()
@@ -202,21 +200,21 @@ export default class InsertVisitor implements Model.ColumnVisitor<void>, Model.R
 			this.data[relation.name] as Input.CreateOneRelationInput,
 			new class implements RelationInputProcessor {
 				public async connect(input: Input.UniqueWhere) {
-					const value = await insertBuilder.insertRow()
+					const value = await insertBuilder.insert
 					await mapper.update(targetEntity, input, {
 						[targetRelation.name]: {
-							connect: { [entity.primary]: value }
-						}
+							connect: { [entity.primary]: value },
+						},
 					})
 				}
 
 				public async create(input: Input.CreateDataInput) {
-					const primary = await insertBuilder.insertRow()
+					const primary = await insertBuilder.insert
 					await mapper.insert(targetEntity, {
 						...input,
 						[targetRelation.name]: {
-							connect: { [entity.primary]: primary }
-						}
+							connect: { [entity.primary]: primary },
+						},
 					})
 				}
 			}()
@@ -231,16 +229,17 @@ export default class InsertVisitor implements Model.ColumnVisitor<void>, Model.R
 	) {
 		const insertBuilder = this.insertBuilder
 		const mapper = this.mapper
+		const that = this
 
 		return this.processRelationInput(
 			this.data[relation.name] as Input.CreateOneRelationInput,
 			new class implements RelationInputProcessor {
 				public async connect(input: Input.UniqueWhere) {
-					insertBuilder.addColumnData(relation.joiningColumn.columnName, input[targetEntity.primary])
+					insertBuilder.addFieldValue(relation.name, input[targetEntity.primary])
 				}
 
 				public async create(input: Input.CreateDataInput) {
-					insertBuilder.addColumnData(relation.joiningColumn.columnName, mapper.insert(targetEntity, input))
+					insertBuilder.addFieldValue(relation.name, mapper.insert(targetEntity, input))
 				}
 			}()
 		)

@@ -1,36 +1,81 @@
 import { resolveValue } from '../utils'
-import { promiseAllObject } from '../../../utils/promises'
-import * as Knex from 'knex'
-import { Input } from 'cms-common'
+import { Input, Model } from 'cms-common'
+import KnexWrapper from '../../../core/knex/KnexWrapper'
+import { Value } from '../../../core/knex/types'
+import WhereBuilder from '../select/WhereBuilder'
+import Path from '../select/Path'
+import { getColumnName, getColumnType } from '../../../content-schema/modelUtils'
+import QueryBuilder from '../../../core/knex/QueryBuilder'
+import Mapper from '../Mapper'
+
+type ColumnValue = {
+	value: PromiseLike<Input.ColumnValue>
+	columnName: string
+	columnType: string
+}
 
 export default class InsertBuilder {
-	private rowData: { [columnName: string]: PromiseLike<Input.ColumnValue> } = {}
-
-	private tableName: string
-	private primaryColumn: string
-	private db: Knex
-	private insertPromise: Promise<Input.PrimaryValue>
-
-	constructor(tableName: string, primaryColumn: string, db: Knex, firer: PromiseLike<void>) {
-		this.tableName = tableName
-		this.primaryColumn = primaryColumn
-		this.db = db
-		this.insertPromise = this.createInsertPromise(firer)
+	public readonly insert: Promise<Input.PrimaryValue>
+	private firer: (() => void) = () => {
+		throw new Error()
 	}
 
-	public addColumnData(columnName: string, value: Input.ColumnValueLike) {
-		this.rowData[columnName] = resolveValue(value)
+	private rowData: ColumnValue[] = []
+	private where: Input.Where = {}
+
+	constructor(
+		private readonly schema: Model.Schema,
+		private readonly entity: Model.Entity,
+		private readonly db: KnexWrapper,
+		private readonly whereBuilder: WhereBuilder
+	) {
+		const blocker: Promise<void> = new Promise(resolver => (this.firer = resolver))
+		this.insert = this.createInsertPromise(blocker)
 	}
 
-	public async insertRow(): Promise<Input.PrimaryValue> {
-		return this.insertPromise
+	public addFieldValue(fieldName: string, value: Input.ColumnValueLike) {
+		const columnName = getColumnName(this.schema, this.entity, fieldName)
+		const columnType = getColumnType(this.schema, this.entity, fieldName)
+		this.rowData.push({ columnName, value: resolveValue(value), columnType })
 	}
 
-	private async createInsertPromise(firer: PromiseLike<void>) {
-		await firer
-		const qb = this.db(this.tableName)
-		const rowData = await promiseAllObject(this.rowData)
-		const returning = await qb.insert(rowData, this.primaryColumn)
+	public addWhere(where: Input.Where): void {
+		this.where = { and: [where, this.where] }
+	}
+
+	public async execute(): Promise<Input.PrimaryValue> {
+		this.firer()
+		return this.insert
+	}
+
+	private async createInsertPromise(blocker: PromiseLike<void>): Promise<Input.PrimaryValue> {
+		await blocker
+
+		const resolvedValues = await Promise.all(this.rowData.map(it => it.value))
+		const resolvedData = this.rowData.map((it, index) => ({ ...it, value: resolvedValues[index] }))
+		const insertData = resolvedData.reduce<QueryBuilder.ColumnExpressionMap>(
+			(result, item) => ({ ...result, [item.columnName]: expr => expr.select(['root_', item.columnName]) }),
+			{}
+		)
+		const qb = this.db
+			.insertBuilder()
+			.with('root_', qb => {
+				resolvedData.forEach(value =>
+					qb.select(expr => expr.selectValue(value.value as Value, value.columnType), value.columnName)
+				)
+			})
+			.into(this.entity.tableName)
+			.values(insertData)
+			.from(qb => {
+				qb.from('root_')
+				this.whereBuilder.build(qb, this.entity, new Path([]), this.where)
+			})
+			.returning(this.entity.primaryColumn)
+
+		const returning = await qb.execute()
+		if (returning === null) {
+			throw new Mapper.NoResultError()
+		}
 
 		return returning[0]
 	}

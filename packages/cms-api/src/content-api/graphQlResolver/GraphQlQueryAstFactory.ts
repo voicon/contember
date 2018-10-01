@@ -4,7 +4,7 @@ import {
 	GraphQLNonNull,
 	GraphQLObjectType,
 	GraphQLOutputType,
-	GraphQLResolveInfo
+	GraphQLResolveInfo,
 } from 'graphql'
 import { SelectionSetNode } from 'graphql/language/ast'
 import FieldNode from './FieldNode'
@@ -13,7 +13,7 @@ import ObjectNode from './ObjectNode'
 import { getArgumentValues } from 'graphql/execution/values'
 
 export default class GraphQlQueryAstFactory {
-	public create(info: GraphQLResolveInfo): ObjectNode {
+	public create<Args = any>(info: GraphQLResolveInfo): ObjectNode<Args> {
 		const node = this.mergeAllFieldNodes(info.fieldNodes)
 		const parentType = info.parentType
 		if (!(parentType instanceof GraphQLObjectType)) {
@@ -43,9 +43,9 @@ export default class GraphQlQueryAstFactory {
 				...(dest.selectionSet as SelectionSetNode),
 				selections: [
 					...(dest.selectionSet ? dest.selectionSet.selections : []),
-					...(src.selectionSet ? src.selectionSet.selections : [])
-				]
-			}
+					...(src.selectionSet ? src.selectionSet.selections : []),
+				],
+			},
 		}
 	}
 
