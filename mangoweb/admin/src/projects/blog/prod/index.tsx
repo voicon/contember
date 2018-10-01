@@ -68,7 +68,6 @@ export default (
 									<TextField name="title" label="Title" />
 								</Entity>
 							</ToMany>
-							<PersistButton />
 						</Entity>
 					</SingleEntityDataProvider>
 				</Layout>
@@ -86,7 +85,6 @@ export default (
 									<TextField name="title" label="Title" />
 								</Entity>
 							</ToMany>
-							<PersistButton />
 						</Entity>
 					</EntityListDataProvider>
 				</Layout>
