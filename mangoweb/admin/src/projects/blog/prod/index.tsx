@@ -53,24 +53,21 @@ export default (
 					<SingleEntityDataProvider where={{ id }}>
 						<Entity name="Post">
 							<TextField name="publishedAt" label="Time" />
-							<SelectField name="author" entityName="Author" optionFieldName="name" />
-							<Repeater field="categories">
+							<SelectField name="author" label="Author" entityName="Author" optionFieldName="name" />
+							<ToMany field="categories">
 								<Entity name="Category">
 									<ToMany field="locales">
 										<Entity name="CategoryLocale" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
 											<TextField name="name" label="Name" />
-											<UnlinkButton />
 										</Entity>
 									</ToMany>
-									<UnlinkButton />
 								</Entity>
-							</Repeater>
-							<Repeater field="locales">
+							</ToMany>
+							<ToMany field="locales">
 								<Entity name="PostLocale">
 									<TextField name="title" label="Title" />
-									<UnlinkButton />
 								</Entity>
-							</Repeater>
+							</ToMany>
 							<PersistButton />
 						</Entity>
 					</SingleEntityDataProvider>
