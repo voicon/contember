@@ -4,7 +4,9 @@
 	"private": true,
 	"scripts": {
 		"build": "tsc --build --verbose tsconfig.modern.json",
-		"start": "dotenv -- nodemon --watch dist --ext js --delay 500ms dist/src/index.js"
+		"start": "dotenv -- nodemon --watch dist --ext js --delay 500ms dist/src/index.js",
+		"migrations:continue": "migrations-continue src/config/config.yaml",
+		"migrations:reset": "migrations-clear src/config/config.yaml && migrations-continue src/config/config.yaml"
 	},
 	"dependencies": {
 		"cms-api": "^0.0.0",
