@@ -5,8 +5,8 @@ import {
 	Entity,
 	SingleEntityDataProvider,
 	EntityListDataProvider,
-	OneToMany,
-	OneToOne,
+	ToMany,
+	ToOne,
 	GraphQlBuilder,
 	TextField,
 	EditPage,
@@ -35,14 +35,15 @@ export default (
 			<TextareaField name="perex" label="Perex" singleLine={true} />
 			<RichTextField name="content" label="Content" allowLineBreaks={false} />
 			<h2>Featured links</h2>
-			<OneToMany field="featuredLinks">
+			<Repeater field="featuredLinks">
 				<Entity name="FeaturedLink">
 					<TextField name="title" label="Title" />
 					<TextField name="url" label="URL" />
 					<TextField name="color" label="Color" />
+					<UnlinkButton />
 					<hr />
 				</Entity>
-			</OneToMany>
+			</Repeater>
 			<PersistButton />
 		</EditPage>
 
@@ -55,12 +56,12 @@ export default (
 							<SelectField name="author" entityName="Author" optionFieldName="name" />
 							<Repeater field="categories">
 								<Entity name="Category">
-									<OneToMany field="locales">
+									<ToMany field="locales">
 										<Entity name="CategoryLocale" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
 											<TextField name="name" label="Name" />
 											<UnlinkButton />
 										</Entity>
-									</OneToMany>
+									</ToMany>
 									<UnlinkButton />
 								</Entity>
 							</Repeater>
@@ -83,11 +84,12 @@ export default (
 					<h1>All posts</h1>
 					<EntityListDataProvider>
 						<Entity name="Post">
-							<OneToMany field="locales">
+							<ToMany field="locales">
 								<Entity name="PostLocale" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
 									<TextField name="title" label="Title" />
 								</Entity>
-							</OneToMany>
+							</ToMany>
+							<PersistButton />
 						</Entity>
 					</EntityListDataProvider>
 				</Layout>
