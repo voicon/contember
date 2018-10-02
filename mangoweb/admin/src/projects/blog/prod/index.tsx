@@ -10,9 +10,7 @@ import {
 	GraphQlBuilder,
 	TextField,
 	EditPage,
-	PersistButton,
 	SelectField,
-	UnlinkButton,
 	Repeater,
 	TextareaField,
 	RichTextField
@@ -40,11 +38,9 @@ export default (
 					<TextField name="title" label="Title" />
 					<TextField name="url" label="URL" />
 					<TextField name="color" label="Color" />
-					<UnlinkButton />
 					<hr />
 				</Entity>
 			</Repeater>
-			<PersistButton />
 		</EditPage>
 
 		<Page<{ edit_post2: { id: string } }> name="edit_post2">
