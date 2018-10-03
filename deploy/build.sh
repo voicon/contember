@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e
+
 ECR="831119889470.dkr.ecr.eu-central-1.amazonaws.com"
 
 ecr-login
