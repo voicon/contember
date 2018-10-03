@@ -14,11 +14,11 @@ projects:
           - uuid: 01c8f908-6f48-4ef3-9751-9989931b42eb
             slug: prod
             name: Production
-            migration: '2018-08-03-092210'
+            migration: '2018-09-03-112008'
           - uuid: e8b8963c-49a0-46f7-89c3-e13f97cc9d77
             slug: prod-preview
             name: Production Preview
-            migration: '2018-08-03-092210'
+            migration: '2018-09-03-112008'
       dbCredentials:
         host: '%env.CMS_DB_HOST%'
         port: '5432'

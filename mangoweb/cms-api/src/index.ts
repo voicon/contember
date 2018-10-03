@@ -1,9 +1,9 @@
-import * as knex from 'knex'
 import blogModel from './projects/blog/src/model'
-import { CompositionRoot, getSqlSchema, parseConfig, Project } from 'cms-api'
+import { CompositionRoot, parseConfig, Project } from 'cms-api'
 import * as fs from 'fs'
 import * as path from 'path'
 import { promisify } from 'util';
+import { Schema } from 'cms-common'
 
 (async () => {
 	const fsRead = promisify(fs.readFile)
@@ -11,43 +11,18 @@ import { promisify } from 'util';
 	const file = await fsRead(path.dirname(__filename) + '/../../src/config/config.yaml', { encoding: 'utf8' })
 	const config = parseConfig(file)
 
+	const schemaMap: { [projectSlug: string]: Schema } = {
+		blog: blogModel
+	}
+
 	const projects: Array<Project> = config.projects.map(project => (
 		{
 			...project,
 			stages: project.stages.map(stage => ({
 				...stage,
-				schema: blogModel,
+				schema: schemaMap[project.slug],
 			}))
 		}))
-
-	projects.forEach(project => {
-		project.stages.forEach(stage => {
-			const pgSchemaName = 'public' // TODO: should depend on stage
-			const sql = getSqlSchema(stage.schema.model)
-
-			const db = knex({
-				debug: false,
-				client: 'pg',
-				connection: {
-					host: project.dbCredentials.host,
-					port: project.dbCredentials.port,
-					user: project.dbCredentials.user,
-					password: project.dbCredentials.password,
-					database: project.dbCredentials.database
-				}
-			})
-
-			console.log(`Rebuilding schema ${project.dbCredentials.database}.${pgSchemaName}`)
-			db.transaction(async () => {
-				await db.raw(`DROP SCHEMA IF EXISTS ${pgSchemaName} CASCADE`)
-				await db.raw(`CREATE SCHEMA ${pgSchemaName}`)
-				await db.raw(sql)
-				await db.raw(
-					await fsRead(path.join(__dirname, `../../src/projects/${project.slug}/src/data.sql`), { encoding: 'utf8' })
-				)
-			})
-		})
-	})
 
 	const compositionRoot = new CompositionRoot()
 	const httpServer = compositionRoot.composeServer(config.tenant.db, projects)
@@ -55,10 +30,9 @@ import { promisify } from 'util';
 		console.log(`Tenant API running on http://localhost:${config.server.port}/tenant`)
 		projects.forEach(project => {
 			project.stages.forEach(stage => {
+				const url = `http://localhost:${config.server.port}/content/${project.slug}/${stage.slug}`
 				console.log(
-					`Content API for project ${project.slug} and stage ${stage.slug} running on http://localhost:${
-						config.server.port
-					}/content/${project.slug}/${stage.slug}`
+					`Content API for project ${project.slug} and stage ${stage.slug} running on ${url}`
 				)
 			})
 		})
