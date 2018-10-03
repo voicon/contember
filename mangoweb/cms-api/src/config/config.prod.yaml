@@ -20,11 +20,11 @@ projects:
             name: Production Preview
             migration: '2018-09-03-112008'
       dbCredentials:
-        host: '%env.CMS_DB_HOST%'
+        host: '%env.BLOG_DB_HOST%'
         port: '5432'
-        user: '%env.CMS_DB_USER%'
-        password: '%env.CMS_DB_PASSWORD%'
-        database: '%env.CMS_DB_NAME%'
+        user: '%env.BLOG_DB_USER%'
+        password: '%env.BLOG_DB_PASSWORD%'
+        database: '%env.BLOG_DB_NAME%'
 
 server:
 	port: '%env.SERVER_PORT%'
