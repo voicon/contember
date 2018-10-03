@@ -19,6 +19,7 @@ build:
   artifacts:
     paths:
       - mangoweb/admin/node_modules
+      - mangoweb/admin/public
       - mangoweb/cms-api/dist
       - mangoweb/cms-api/node_modules
       - node_modules
