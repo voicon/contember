@@ -1,6 +1,11 @@
 stages:
   - test:build
   - test:run
+  - deploy:build
+  - deploy:helm
+
+variables:
+  DOCKER_HOST: tcp://gitlab-prod-dind-svc:2375
 
 build:
   stage: test:build
@@ -14,6 +19,7 @@ build:
   artifacts:
     paths:
       - mangoweb/admin/node_modules
+      - mangoweb/admin/public
       - mangoweb/cms-api/dist
       - mangoweb/cms-api/node_modules
       - node_modules
@@ -36,3 +42,59 @@ prettier:
   image: node:10
   script:
     - npm run prettier:lint
+
+build:docker:
+  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/docker-ecr:1.1
+  stage: deploy:build
+  only:
+    refs:
+      - /^deploy\/.*$/
+  variables:
+    VERSION: "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
+  script:
+    - sh deploy/resolve-symlinks.sh
+    - sh deploy/build.sh
+
+deploy:beta:api:
+  stage: deploy:helm
+  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/deploy:5.18
+  dependencies: []
+
+  only:
+    refs:
+      - deploy/beta
+  variables:
+    GIT_STRATEGY: none # do not clone repo
+    MGW_CLUSTER: beta
+    RELEASE_NAME: cms-beta-api
+    VALUES: '{"version": "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"}'
+
+  environment:
+    name: beta-api
+    url: https://cms-api.mgw.cz
+
+  script:
+    - /usr/bin/deploy
+
+
+deploy:beta:admin:
+  stage: deploy:helm
+  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/deploy:5.18
+  dependencies: []
+
+  only:
+    refs:
+      - deploy/beta
+
+  variables:
+    GIT_STRATEGY: none # do not clone repo
+    MGW_CLUSTER: beta
+    RELEASE_NAME: cms-beta-admin
+    VALUES: '{"version": "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"}'
+
+  environment:
+    name: beta-admin
+    url: https://cms-admin.mgw.cz
+
+  script:
+    - /usr/bin/deploy

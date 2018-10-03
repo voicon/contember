@@ -1,5 +1,7 @@
 create extension if not EXISTS "uuid-ossp";
 
+SET tenant.identity_id = '11111111-1111-1111-1111-111111111111';
+
 INSERT INTO "category" (id) VALUES
   (uuid_generate_v4()),
   (uuid_generate_v4()),

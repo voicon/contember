@@ -3,10 +3,12 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"build": "tsc --build --verbose tsconfig.modern.json",
+		"build": "tsc --build",
 		"start": "dotenv -- nodemon --watch dist --ext js --delay 500ms dist/src/index.js",
 		"migrations:continue": "migrations-continue src/config/config.yaml",
-		"migrations:reset": "migrations-clear src/config/config.yaml && migrations-continue src/config/config.yaml"
+		"migrations:reset": "migrations-clear src/config/config.yaml && migrations-continue src/config/config.yaml",
+		"migrations:generate": "npm run build && migrations-generate",
+		"init": "init src/config/config.yaml src/projects"
 	},
 	"dependencies": {
 		"cms-api": "^0.0.0",

@@ -8,7 +8,7 @@
 		"ts:watch": "tsc --build --verbose --watch",
 		"ts:clean": "tsc --build --clean",
 		"prebuild": "lerna run prebuild",
-		"build": "npm run ts:build",
+		"build": "lerna run build",
 		"test": "lerna run test",
 		"prettier:lint": "prettier --list-different --ignore-path \".gitignore\" \"**/*.{ts,tsx,json}\" ",
 		"prettier:fix": "prettier --write --ignore-path \".gitignore\" \"**/*.{ts,tsx,json}\" "

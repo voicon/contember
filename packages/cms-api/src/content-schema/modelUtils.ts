@@ -23,7 +23,8 @@ export const getColumnName = (schema: Model.Schema, entity: Model.Entity, fieldN
 
 export const getColumnType = (schema: Model.Schema, entity: Model.Entity, fieldName: string): string => {
 	return acceptFieldVisitor(schema, entity, fieldName, {
-		visitColumn: (entity, column) => column.columnType,
+		//@todo solve enum handling properly maybe we should distinguish between domain and column type
+		visitColumn: (entity, column) => (column.type === Model.ColumnType.Enum ? 'text' : column.columnType),
 		visitRelation: (entity, relation, targetEntity) => {
 			if (isIt<Model.JoiningColumnRelation>(relation, 'joiningColumn')) {
 				return getColumnType(schema, targetEntity, targetEntity.primary)
@@ -202,3 +203,5 @@ export const isInversedRelation = (relation: Model.Relation): relation is Model.
 export const isOwnerRelation = (relation: Model.Relation): relation is Model.OwnerRelation => {
 	return !isInversedRelation(relation)
 }
+
+export const emptySchema: Model.Schema = { entities: {}, enums: {} }

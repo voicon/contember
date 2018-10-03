@@ -1,5 +1,6 @@
 var path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 
 // variables
@@ -15,7 +16,7 @@ module.exports = ({ production }) => ({
 	devtool: production ? 'source-map' : 'cheap-module-source-map',
 	output: {
 		path: outPath,
-		publicPath: '/dist/',
+		publicPath: '/',
 		filename: '[name].js'
 	},
 	target: 'web',
@@ -65,6 +66,9 @@ module.exports = ({ production }) => ({
 		process: false
 	},
 	plugins: [
+		new HtmlWebpackPlugin({
+			template: '../../src/index.html'
+		}),
 		new MiniCssExtractPlugin({
 			filename: '[name].css'
 		}),

@@ -280,6 +280,43 @@ describe('Queries', () => {
 		})
 	})
 
+	it('Post with author query with no result', async () => {
+		await execute({
+			schema: new SchemaBuilder()
+				.entity('Post', entity => entity.manyHasOne('author', relation => relation.target('Author')))
+				.entity('Author', entity => entity.column('name', column => column.type(Model.ColumnType.String)))
+				.buildSchema(),
+			query: GQL`
+        query {
+          listPost {
+            id
+            author {
+              id
+              name
+            }
+          }
+        }`,
+			executes: [
+				...sqlTransaction([
+					{
+						sql: SQL`
+              select
+                "root_"."id" as "root_id",
+                "root_"."author_id" as "root_author"
+              from "public"."post" as "root_"
+						`,
+						response: [],
+					},
+				]),
+			],
+			return: {
+				data: {
+					listPost: [],
+				},
+			},
+		})
+	})
+
 	it('Sites with settings (one-has-one owner)', async () => {
 		await execute({
 			schema: new SchemaBuilder()
@@ -1302,7 +1339,7 @@ describe('Queries', () => {
            order by "root_"."title" asc)
           select
             "data".*
-          from "public"."data"
+          from "data"
           where
             "data"."rowNumber_" > $4 and "data"."rowNumber_" <= $5`,
 					parameters: [testUuid(1), testUuid(2), 'cs', 1, 3],
@@ -1417,7 +1454,7 @@ describe('Queries', () => {
            where "root_"."locale" = $1 and "root_"."author_id" in ($2, $3)
            order by "root_"."title" asc)
           select "data".*
-          from "public"."data"
+          from "data"
           where "data"."rowNumber_" > $4 and "data"."rowNumber_" <= $5`,
 					parameters: ['cs', testUuid(1), testUuid(2), 1, 3],
 					response: [

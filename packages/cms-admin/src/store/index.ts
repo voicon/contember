@@ -18,8 +18,8 @@ export interface Services {
 
 export function createServices(): Services {
 	const localStorageManager = new LocalStorageManager()
-	const tenantClient = new GraphqlClient('http://localhost:4000/tenant')
-	const contentClientFactory = new ContentClientFactory('http://localhost:4000')
+	const tenantClient = new GraphqlClient('https://cms-api.mgw.cz/tenant')
+	const contentClientFactory = new ContentClientFactory('https://cms-api.mgw.cz')
 	return {
 		localStorageManager,
 		tenantClient,
