@@ -27,4 +27,4 @@ projects:
         database: '%env.BLOG_DB_NAME%'
 
 server:
-	port: '%env.SERVER_PORT%'
+    port: '%env.SERVER_PORT%'
