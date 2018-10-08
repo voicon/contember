@@ -25,6 +25,12 @@ projects:
         user: '%env.BLOG_DB_USER%'
         password: '%env.BLOG_DB_PASSWORD%'
         database: '%env.BLOG_DB_NAME%'
+      s3:
+        bucket: 'cms-api.mgw.cz'
+        prefix: 'dev'
+        credentials:
+          key: 'AKIAIO53JZYNOKXXYMDA'
+          secret: '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'
 
 server:
     port: '%env.SERVER_PORT%'
