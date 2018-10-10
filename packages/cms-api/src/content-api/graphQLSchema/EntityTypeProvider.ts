@@ -17,8 +17,9 @@ import Authorizator from '../../acl/Authorizator'
 import { GraphQLFieldResolver } from 'graphql/type/definition'
 import { FieldAccessVisitor } from './FieldAccessVisitor'
 import OrderByTypeProvider from './OrderByTypeProvider'
+import EntityFieldsProvider from '../extensions/EntityFieldsProvider'
 
-export default class EntityTypeProvider {
+class EntityTypeProvider {
 	private entities = singletonFactory(name => this.createEntity(name))
 
 	private aliasAwareResolver: GraphQLFieldResolver<any, any> = (source, args, context, info) => {
@@ -41,7 +42,8 @@ export default class EntityTypeProvider {
 		private readonly authorizator: Authorizator,
 		private readonly columnTypeResolver: ColumnTypeResolver,
 		private readonly whereTypeProvider: WhereTypeProvider,
-		private readonly orderByTypeProvider: OrderByTypeProvider
+		private readonly orderByTypeProvider: OrderByTypeProvider,
+		private readonly entityFieldProviders: { [key: string]: EntityFieldsProvider }
 	) {}
 
 	public getEntity(entityName: string): GraphQLObjectType {
@@ -57,9 +59,22 @@ export default class EntityTypeProvider {
 
 	private getEntityFields(entityName: string) {
 		const entity = getEntityFromSchema(this.schema, entityName)
-		const fields: { [field: string]: GraphQLFieldConfig<any, any> } = {}
-		const metaFields: { [field: string]: GraphQLFieldConfig<any, any> } = {}
-		fields['_meta'] = {
+		const accessVisitor = new FieldAccessVisitor(Acl.Operation.read, this.authorizator)
+		const accessibleFields = Object.keys(entity.fields).filter(fieldName =>
+			acceptFieldVisitor(this.schema, entity, fieldName, accessVisitor)
+		)
+		const metaFields: { [field: string]: GraphQLFieldConfig<any, any> } = accessibleFields.reduce(
+			(result, fieldName) => ({
+				...result,
+				[fieldName]: {
+					type: this.fieldMeta,
+					resolve: this.aliasAwareResolver,
+				},
+			}),
+			{}
+		)
+
+		const metaField = {
 			type: new GraphQLObjectType({
 				name: GqlTypeName`${entityName}Meta`,
 				fields: metaFields,
@@ -67,36 +82,39 @@ export default class EntityTypeProvider {
 			resolve: this.aliasAwareResolver,
 		}
 
-		for (const fieldName in entity.fields) {
-			if (!entity.fields.hasOwnProperty(fieldName)) {
-				continue
-			}
-			if (
-				!acceptFieldVisitor(
-					this.schema,
-					entity,
-					fieldName,
-					new FieldAccessVisitor(Acl.Operation.read, this.authorizator)
-				)
-			) {
-				continue
-			}
+		const fields: { [field: string]: GraphQLFieldConfig<any, any> } = accessibleFields.reduce(
+			(result, fieldName) => {
+				const fieldTypeVisitor = new FieldTypeVisitor(this.columnTypeResolver, this)
+				const type: GraphQLOutputType = acceptFieldVisitor(this.schema, entity, fieldName, fieldTypeVisitor)
 
-			const fieldTypeVisitor = new FieldTypeVisitor(this.columnTypeResolver, this)
-			const type: GraphQLOutputType = acceptFieldVisitor(this.schema, entity, fieldName, fieldTypeVisitor)
-
-			const fieldArgsVisitor = new FieldArgsVisitor(this.whereTypeProvider, this.orderByTypeProvider)
-
-			fields[fieldName] = {
-				type,
-				args: acceptFieldVisitor(this.schema, entity, fieldName, fieldArgsVisitor),
-				resolve: this.aliasAwareResolver,
+				const fieldArgsVisitor = new FieldArgsVisitor(this.whereTypeProvider, this.orderByTypeProvider)
+				return {
+					...result,
+					[fieldName]: {
+						type,
+						args: acceptFieldVisitor(this.schema, entity, fieldName, fieldArgsVisitor),
+						resolve: this.aliasAwareResolver,
+					},
+				}
+			},
+			{
+				_meta: metaField,
 			}
-			metaFields[fieldName] = {
-				type: this.fieldMeta,
-				resolve: this.aliasAwareResolver,
-			}
-		}
-		return fields
+		)
+
+		return Object.entries(this.entityFieldProviders)
+			.map(([key, provider]) =>
+				Object.entries(provider.getFields(entity, accessibleFields))
+					.map(
+						([fieldName, fieldConfig]): [string, GraphQLFieldConfig<any, any> & { meta: any }] => [
+							fieldName,
+							{ ...fieldConfig, meta: { ...(fieldConfig.meta || {}), extensionKey: key } },
+						]
+					)
+					.reduce((result, [name, value]) => ({ ...result, [name]: value }), {})
+			)
+			.reduce((result, providerFields) => ({ ...result, ...providerFields }), fields)
 	}
 }
+
+export default EntityTypeProvider

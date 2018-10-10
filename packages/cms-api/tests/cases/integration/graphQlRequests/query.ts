@@ -95,8 +95,8 @@ describe('Queries', () => {
 				...sqlTransaction([
 					{
 						sql: SQL`select
-                       "root_"."id" as "root_id",
-                       "root_"."title" as "root_heading"
+                       "root_"."title" as "root_heading",
+                       "root_"."id" as "root_id"
                      from "public"."post" as "root_"
                      where "root_"."id" = $1`,
 						response: [{ root_heading: 'Hello' }],
@@ -323,7 +323,7 @@ describe('Queries', () => {
 				.entity('Site', entity =>
 					entity
 						.column('name', column => column.type(Model.ColumnType.String))
-						.manyHasOne('setting', relation => relation.target('SiteSetting'))
+						.oneHasOne('setting', relation => relation.target('SiteSetting'))
 				)
 				.entity('SiteSetting', entity => entity.column('url', column => column.type(Model.ColumnType.String)))
 				.buildSchema(),
@@ -772,8 +772,8 @@ describe('Queries', () => {
 					{
 						sql: SQL`select
                        "root_"."id" as "root_id",
-                       "root_"."id" as "root_id",
-                       "root_"."name" as "root_name"
+                       "root_"."name" as "root_name",
+                       "root_"."id" as "root_id"
                      from "public"."author" as "root_"
                      where "root_"."id" in ($1, $2)
 						`,
@@ -1580,13 +1580,13 @@ describe('Queries', () => {
 			executes: sqlTransaction([
 				{
 					sql: SQL`select
-                     "root_"."id" as "root_id",
                      "root_"."id" as "root_idx",
                      "root_"."name" as "root_name1",
                      "root_"."name" as "root_name2",
                      true as "root_meta_name1_readable1",
                      true as "root_meta_name1_readable2",
-                     "root_"."name" = $1 as "root_meta_name1_updatable1"
+                     "root_"."name" = $1 as "root_meta_name1_updatable1",
+                     "root_"."id" as "root_id"
                    from "public"."author" as "root_"`,
 					parameters: ['John'],
 					response: [
@@ -1683,6 +1683,68 @@ describe('Queries', () => {
 							id: testUuid(1),
 							name: 'John',
 							posts: [],
+						},
+					],
+				},
+			},
+		})
+	})
+
+	it('reduced has many', async () => {
+		await execute({
+			schema: new SchemaBuilder()
+				.entity('Post', e =>
+					e.column('publishedAt', c => c.type(Model.ColumnType.DateTime)).oneHasMany('locales', r =>
+						r.ownedBy('post').target('PostLocale', e =>
+							e
+								.unique(['locale', 'post'])
+								.column('locale', c => c.type(Model.ColumnType.String))
+								.column('title', c => c.type(Model.ColumnType.String))
+						)
+					)
+				)
+				.buildSchema(),
+			query: GQL`				
+        query {
+          listPost {
+	          id
+	          localesByLocale(by: {locale: "cs"}) {
+		          id
+	          }
+          }
+        }`,
+			executes: sqlTransaction([
+				{
+					sql: SQL`select
+                     "root_"."id" as "root_id",
+                     "root_"."id" as "root_id"
+                   from "public"."post" as "root_"`,
+					parameters: [],
+					response: [{ root_id: testUuid(1) }, { root_id: testUuid(2) }],
+				},
+				{
+					sql: SQL`select
+                     "root_"."post_id" as "root_post",
+                     "root_"."id" as "root_id"
+                   from "public"."post_locale" as "root_"
+                   where "root_"."locale" = $1 and "root_"."post_id" in ($2, $3)`,
+					parameters: ['cs', testUuid(1), testUuid(2)],
+					response: [
+						{ root_post: testUuid(1), root_id: testUuid(11) },
+						{ root_post: testUuid(2), root_id: testUuid(12) },
+					],
+				},
+			]),
+			return: {
+				data: {
+					listPost: [
+						{
+							id: testUuid(1),
+							localesByLocale: { id: testUuid(11) },
+						},
+						{
+							id: testUuid(2),
+							localesByLocale: { id: testUuid(12) },
 						},
 					],
 				},

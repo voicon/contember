@@ -16,14 +16,21 @@ import MutationResolver from './MutationResolver'
 import JunctionTableManager from '../sql/JunctionTableManager'
 import OrderByBuilder from '../sql/select/OrderByBuilder'
 import JunctionFetcher from '../sql/select/JunctionFetcher'
-import RelationFetchVisitorFactory from '../sql/select/RelationFetchVisitorFactory'
 import Mapper from '../sql/Mapper'
 import { Accessor } from '../../utils/accessor'
+import FieldsVisitorFactory from '../sql/select/handlers/FieldsVisitorFactory'
+import QueryBuilder from '../../core/knex/QueryBuilder'
+import SelectHydrator from '../sql/select/SelectHydrator'
+import SelectBuilder from '../sql/select/SelectBuilder'
+import MetaHandler from '../sql/select/handlers/MetaHandler'
+import HasManyToHasOneReducerExecutionHandler from '../extensions/hasManyToHasOneReducer/HasManyToHasOneReducerExecutionHandler'
+import HasManyToHasOneReducer from '../extensions/hasManyToHasOneReducer/HasManyToHasOneReducer'
 
 class ExecutionContainerFactory {
 	constructor(private readonly schema: Model.Schema, private readonly permissions: Acl.Permissions) {}
 
 	public create(context: Context): Container<{ readResolver: ReadResolver; mutationResolver: MutationResolver }> {
+		const that = this
 		const innerDic = new Container.Builder({})
 			.addService('db', () => context.db.wrapper())
 
@@ -47,21 +54,47 @@ class ExecutionContainerFactory {
 			)
 			.addService('mapperAccessor', () => new Accessor<Mapper>())
 			.addService(
-				'relationFetchVisitorFactory',
-				({ junctionFetcher, mapperAccessor }) =>
-					new RelationFetchVisitorFactory(this.schema, junctionFetcher, mapperAccessor)
+				'fieldsVisitorFactory',
+				({ junctionFetcher, mapperAccessor, predicateFactory, whereBuilder }) =>
+					new FieldsVisitorFactory(this.schema, junctionFetcher, mapperAccessor, predicateFactory, whereBuilder)
 			)
 			.addService(
+				'metaHandler',
+				({ whereBuilder, predicateFactory }) => new MetaHandler(whereBuilder, predicateFactory)
+			)
+			.addService('uniqueWhereExpander', () => new UniqueWhereExpander(this.schema))
+			.addService(
+				'hasManyToHasOneReducer',
+				({ mapperAccessor }) => new HasManyToHasOneReducerExecutionHandler(this.schema, mapperAccessor)
+			)
+			.addService('selectHandlers', ({ hasManyToHasOneReducer }) => ({
+				[HasManyToHasOneReducer.extensionName]: hasManyToHasOneReducer,
+			}))
+			.addService(
 				'selectBuilderFactory',
-				({ joinBuilder, whereBuilder, orderByBuilder, predicateFactory, relationFetchVisitorFactory }) =>
-					new SelectBuilderFactory(
-						this.schema,
-						joinBuilder,
-						whereBuilder,
-						orderByBuilder,
-						predicateFactory,
-						relationFetchVisitorFactory
-					)
+				({
+					joinBuilder,
+					whereBuilder,
+					orderByBuilder,
+					predicateFactory,
+					fieldsVisitorFactory,
+					metaHandler,
+					selectHandlers,
+				}) =>
+					new class implements SelectBuilderFactory {
+						create(qb: QueryBuilder, hydrator: SelectHydrator): SelectBuilder {
+							return new SelectBuilder(
+								that.schema,
+								whereBuilder,
+								orderByBuilder,
+								metaHandler,
+								qb,
+								hydrator,
+								fieldsVisitorFactory,
+								selectHandlers
+							)
+						}
+					}()
 			)
 			.addService(
 				'insertBuilderFactory',
@@ -71,7 +104,6 @@ class ExecutionContainerFactory {
 				'updateBuilderFactory',
 				({ whereBuilder, db }) => new UpdateBuilderFactory(this.schema, whereBuilder, db)
 			)
-			.addService('uniqueWhereExpander', () => new UniqueWhereExpander(this.schema))
 
 			.addService('connectJunctionHandler', ({ db }) => new JunctionTableManager.JunctionConnectHandler(db))
 			.addService('disconnectJunctionHandler', ({ db }) => new JunctionTableManager.JunctionDisconnectHandler(db))
