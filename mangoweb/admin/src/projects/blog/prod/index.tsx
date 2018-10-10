@@ -3,6 +3,7 @@ import {
 	Pages,
 	Page,
 	Entity,
+	EntityCreator,
 	SingleEntityDataProvider,
 	EntityListDataProvider,
 	ToMany,
