@@ -1,4 +1,5 @@
 import blogModel from './projects/blog/src/model'
+import mangowebModel from './projects/mangoweb/src/model'
 import { CompositionRoot, parseConfig, Project } from 'cms-api'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -11,7 +12,8 @@ import { Schema } from 'cms-common'
 	const config = parseConfig(file)
 
 	const schemaMap: { [projectSlug: string]: Schema } = {
-		blog: blogModel
+		blog: blogModel,
+		mangoweb: mangowebModel
 	}
 
 	const projects: Array<Project> = config.projects.map(project => ({
