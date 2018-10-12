@@ -74,7 +74,8 @@ module.exports = ({ production }) => ({
 		}),
 		new webpack.DefinePlugin({
 			'process.env': {
-				NODE_ENV: JSON.stringify('development')
+				NODE_ENV: JSON.stringify('development'),
+				SERVER_URL: JSON.stringify(production ? 'https://cms-api.mgw.cz' : 'http://localhost:4000'),
 			}
 		})
 	]
