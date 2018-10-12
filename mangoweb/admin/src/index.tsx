@@ -14,7 +14,7 @@ const reactRoot = (
 					dashboard: { path: '/' },
 					edit_page: { path: '/edit_page/:id' },
 					edit_post2: { path: '/edit_post2/:id' },
-					postList: { path: '/postList'},
+					postList: { path: '/postList' }
 				}
 			}
 		]}
