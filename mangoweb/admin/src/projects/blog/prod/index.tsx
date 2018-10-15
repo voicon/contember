@@ -53,9 +53,9 @@ export default (
 								<TextField name="name" label="Name" />
 							</ToMany>
 						</ToMany>
-						<ToMany field="locales">
+						<ToOne field="locales" reducedBy={{ locale: new GraphQlBuilder.Literal('cs') }}>
 							<TextField name="title" label="Title" />
-						</ToMany>
+						</ToOne>
 					</SingleEntityDataProvider>
 				</Layout>
 			)}
