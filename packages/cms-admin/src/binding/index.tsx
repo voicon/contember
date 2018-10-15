@@ -1,10 +1,23 @@
-import DataProvider from './coreComponents/DataProvider'
 import Entity from './coreComponents/Entity'
-import OneToMany from './coreComponents/OneToMany'
-import OneToOne from './coreComponents/OneToOne'
+import EntityCreator from './coreComponents/EntityCreator'
+import EntityListDataProvider from './coreComponents/EntityListDataProvider'
+import SingleEntityDataProvider from './coreComponents/SingleEntityDataProvider'
+import ToMany from './coreComponents/ToMany'
+import ToOne from './coreComponents/ToOne'
 import FieldAccessor from './dao/FieldAccessor'
+import SelectField from './facade/SelectField'
 import UnlinkButton from './facade/UnlinkButton'
 
-export { Entity, FieldAccessor, DataProvider, OneToMany, OneToOne, UnlinkButton }
+export {
+	Entity,
+	EntityCreator,
+	EntityListDataProvider,
+	FieldAccessor,
+	ToOne,
+	ToMany,
+	SelectField,
+	SingleEntityDataProvider,
+	UnlinkButton
+}
 
 export * from './facade'

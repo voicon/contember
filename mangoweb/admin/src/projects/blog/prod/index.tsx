@@ -3,14 +3,15 @@ import {
 	Pages,
 	Page,
 	Entity,
-	DataProvider,
-	OneToMany,
-	OneToOne,
+	EntityCreator,
+	SingleEntityDataProvider,
+	EntityListDataProvider,
+	ToMany,
+	ToOne,
 	GraphQlBuilder,
 	TextField,
 	EditPage,
-	PersistButton,
-	UnlinkButton,
+	SelectField,
 	Repeater,
 	TextareaField,
 	RichTextField
@@ -33,54 +34,42 @@ export default (
 			<TextareaField name="perex" label="Perex" singleLine={true} />
 			<RichTextField name="content" label="Content" allowLineBreaks={false} />
 			<h2>Featured links</h2>
-			<OneToMany field="featuredLinks">
-				<Entity name="FeaturedLink">
-					<TextField name="title" label="Title" />
-					<TextField name="url" label="URL" />
-					<TextField name="color" label="Color" />
-					<hr />
-				</Entity>
-			</OneToMany>
-			<PersistButton />
+			<Repeater field="featuredLinks">
+				<TextField name="title" label="Title" />
+				<TextField name="url" label="URL" />
+				<TextField name="color" label="Color" />
+				<hr />
+			</Repeater>
 		</EditPage>
 
 		<Page<{ edit_post2: { id: string } }> name="edit_post2">
 			{({ id }) => (
 				<Layout>
-					<DataProvider>
-						<Entity name="Post" where={{ id }}>
-							<TextField name="publishedAt" label="Time" />
-							<OneToOne field="author">
-								<Entity name="Author">
-									<TextField name="name" label="Name" />
-								</Entity>
-							</OneToOne>
-							<OneToOne field="author">
-								<Entity name="Author">
-									<TextField name="name" label="Name" />
-									<UnlinkButton />
-								</Entity>
-							</OneToOne>
-							<Repeater field="categories">
-								<Entity name="Category">
-									<OneToMany field="locales">
-										<Entity name="CategoryLocale" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
-											<TextField name="name" label="Name" />
-											<UnlinkButton />
-										</Entity>
-									</OneToMany>
-									<UnlinkButton />
-								</Entity>
-							</Repeater>
-							<Repeater field="locales">
-								<Entity name="PostLocale">
-									<TextField name="title" label="Title" />
-									<UnlinkButton />
-								</Entity>
-							</Repeater>
-							<PersistButton />
-						</Entity>
-					</DataProvider>
+					<SingleEntityDataProvider name="Post" where={{ id }}>
+						<TextField name="publishedAt" label="Time" />
+						<SelectField name="author" label="Author" entityName="Author" optionFieldName="name" />
+						<ToMany field="categories">
+							<ToMany field="locales" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
+								<TextField name="name" label="Name" />
+							</ToMany>
+						</ToMany>
+						<ToOne field="locales" reducedBy={{ locale: new GraphQlBuilder.Literal('cs') }}>
+							<TextField name="title" label="Title" />
+						</ToOne>
+					</SingleEntityDataProvider>
+				</Layout>
+			)}
+		</Page>
+
+		<Page<{ postList: {} }> name="postList">
+			{() => (
+				<Layout>
+					<h1>All posts</h1>
+					<EntityListDataProvider name="Post">
+						<ToMany field="locales" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
+							<TextField name="title" label="Title" />
+						</ToMany>
+					</EntityListDataProvider>
 				</Layout>
 			)}
 		</Page>

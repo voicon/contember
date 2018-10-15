@@ -23,6 +23,8 @@ build:
       - mangoweb/cms-api/dist
       - mangoweb/cms-api/node_modules
       - node_modules
+      - packages/cms-admin/dist
+      - packages/cms-admin/node_modules
       - packages/cms-api/dist
       - packages/cms-api/node_modules
       - packages/cms-common/dist

@@ -27,6 +27,9 @@ export default class Side extends React.Component {
 					>
 						Post2
 					</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'postList', params: {} })} frontIcon={'page-layout'}>
+						All Posts
+					</MenuPageLink>
 				</MenuList>
 			</Menu>
 		)

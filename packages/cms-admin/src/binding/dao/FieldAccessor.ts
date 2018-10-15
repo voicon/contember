@@ -1,9 +1,9 @@
-import { FieldName } from '../bindingTypes'
+import { FieldName, Scalar } from '../bindingTypes'
 
-export default class FieldAccessor<T = any> {
+export default class FieldAccessor<Persisted extends Scalar = Scalar, Produced extends Persisted = Persisted> {
 	constructor(
 		public readonly fieldName: FieldName,
-		public readonly currentValue: T,
-		public readonly onChange?: (newValue: T) => void
+		public readonly currentValue: Persisted,
+		public readonly onChange?: (newValue: Produced) => void
 	) {}
 }

@@ -10,14 +10,26 @@ export default class ListQueryBuilder {
 		return new ListQueryBuilder(this.objectBuilder.argument('where', where))
 	}
 
+	by(where: Input.UniqueWhere<Literal>) {
+		return new ListQueryBuilder(this.objectBuilder.argument('by', where))
+	}
+
 	column(name: string) {
 		return new ListQueryBuilder(this.objectBuilder.field(name))
 	}
 
-	relation(name: string, builder: ListQueryBuilder | ((builder: ListQueryBuilder) => ListQueryBuilder)) {
+	relation(
+		name: string,
+		builder: ListQueryBuilder | ((builder: ListQueryBuilder) => ListQueryBuilder),
+		alias?: string
+	) {
 		if (!(builder instanceof ListQueryBuilder)) {
 			builder = builder(new ListQueryBuilder())
 		}
-		return new ListQueryBuilder(this.objectBuilder.object(name, builder.objectBuilder))
+
+		const [objectName, objectBuilder] =
+			typeof alias === 'string' ? [alias, builder.objectBuilder.name(name)] : [name, builder.objectBuilder]
+
+		return new ListQueryBuilder(this.objectBuilder.object(objectName, objectBuilder))
 	}
 }

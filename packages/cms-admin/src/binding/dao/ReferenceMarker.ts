@@ -1,6 +1,33 @@
+import { GraphQlBuilder } from 'cms-client'
+import { Input } from 'cms-common'
 import { FieldName } from '../bindingTypes'
-import EntityMarker from './EntityMarker'
+import PlaceholderGenerator from '../model/PlaceholderGenerator'
+import EntityFields from './EntityFields'
 
-export default class ReferenceMarker {
-	constructor(public readonly name: FieldName, public readonly reference: EntityMarker) {}
+class ReferenceMarker {
+	private _placeholderName?: string
+
+	constructor(
+		public readonly fieldName: FieldName,
+		public readonly expectedCount: ReferenceMarker.ExpectedCount,
+		public readonly fields: EntityFields,
+		public readonly where?: Input.Where<GraphQlBuilder.Literal>,
+		public readonly reducedBy?: Input.UniqueWhere<GraphQlBuilder.Literal>
+	) {}
+
+	public get placeholderName(): string {
+		if (!this._placeholderName) {
+			this._placeholderName = PlaceholderGenerator.generateReferenceMarkerPlaceholder(this)
+		}
+		return this._placeholderName
+	}
 }
+
+namespace ReferenceMarker {
+	export enum ExpectedCount {
+		One,
+		Many
+	}
+}
+
+export default ReferenceMarker
