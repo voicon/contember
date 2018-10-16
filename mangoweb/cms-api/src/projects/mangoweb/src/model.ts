@@ -143,7 +143,15 @@ builder.entity('Reference', entity =>
 				.ownedBy('reference')
 				.ownerNotNull()
 		)
-		.column('order')
+		.column('order', column => column.type(Model.ColumnType.Int))
+)
+
+builder.entity('ReferencesPage', entity =>
+	entity
+		.oneHasOne('language', relation => relation.target('Language'))
+		.column('title')
+		.column('quote')
+		.oneHasOne('seo', relation => relation.target('PageSeo'))
 )
 
 builder.entity('ContactLocationLocale', entity =>
