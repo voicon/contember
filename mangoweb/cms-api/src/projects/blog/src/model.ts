@@ -6,9 +6,12 @@ builder.enum('siteVisibility', ['visible', 'hidden'])
 builder.enum('locale', ['cs', 'en'])
 
 builder.entity('Author', entity => entity.column('name', column => column.type(Model.ColumnType.String)))
-builder.entity('Category', entity => entity.oneHasMany('locales', relation => relation.target('CategoryLocale')))
+builder.entity('Category', entity =>
+	entity.oneHasMany('locales', relation => relation.target('CategoryLocale').ownedBy('category'))
+)
 builder.entity('CategoryLocale', entity =>
 	entity
+		.unique(['category', 'locale'])
 		.column('name', column => column.type(Model.ColumnType.String))
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 )

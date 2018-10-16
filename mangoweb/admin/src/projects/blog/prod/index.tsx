@@ -49,13 +49,9 @@ export default (
 						<TextField name="publishedAt" label="Time" />
 						<SelectField name="author" label="Author" entityName="Author" optionFieldName="name" />
 						<ToMany field="categories">
-							<ToMany field="locales" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
-								<TextField name="name" label="Name" />
-							</ToMany>
+							<TextField name="locales(locale=cs).name" label="Name" />
 						</ToMany>
-						<ToOne field="locales" reducedBy={{ locale: new GraphQlBuilder.Literal('cs') }}>
-							<TextField name="title" label="Title" />
-						</ToOne>
+						<TextField name="locales(locale=cs).title" label="Title" />
 					</SingleEntityDataProvider>
 				</Layout>
 			)}
