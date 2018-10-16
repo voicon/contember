@@ -31,6 +31,20 @@ projects:
         credentials:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
+    - uuid: 2b71cf74-5271-4142-b258-b2ce14722187
+      slug: mangoweb
+      name: manGoweb
+      stages:
+          - uuid: 7c78c41a-6a71-4adc-ae9a-0b8592480619
+            slug: beta
+            name: Beta
+            migration: '2018-09-05-095810'
+      dbCredentials:
+        host: '%env.MANGOWEB_DB_HOST%'
+        port: '5432'
+        user: '%env.MANGOWEB_DB_USER%'
+        password: '%env.MANGOWEB_DB_PASSWORD%'
+        database: '%env.MANGOWEB_DB_NAME%'
 
 server:
     port: '%env.SERVER_PORT%'
