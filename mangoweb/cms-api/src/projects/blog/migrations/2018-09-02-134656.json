@@ -1,0 +1,46 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "Category",
+			"fieldName": "locales"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "CategoryLocale",
+			"owningSide": {
+				"name": "category",
+				"target": "Category",
+				"inversedBy": "locales",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "category_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locales",
+				"ownedBy": "category",
+				"type": "OneHasMany",
+				"target": "CategoryLocale"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "CategoryLocale",
+			"fieldName": "Category"
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "CategoryLocale",
+			"unique": {
+				"fields": [
+					"category",
+					"locale"
+				],
+				"name": "unique_category_locale"
+			}
+		}
+	]
+}
