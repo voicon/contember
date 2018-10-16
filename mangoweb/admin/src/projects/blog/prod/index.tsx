@@ -7,7 +7,7 @@ import {
 	SingleEntityDataProvider,
 	EntityListDataProvider,
 	ToMany,
-	ToOne,
+	SideDimensions,
 	GraphQlBuilder,
 	TextField,
 	EditPage,
@@ -48,10 +48,14 @@ export default (
 					<SingleEntityDataProvider name="Post" where={{ id }}>
 						<TextField name="publishedAt" label="Time" />
 						<SelectField name="author" label="Author" entityName="Author" optionFieldName="name" />
-						<ToMany field="categories">
-							<TextField name="locales(locale=cs).name" label="Name" />
-						</ToMany>
-						<TextField name="locales(locale=cs).title" label="Title" />
+						<SideDimensions dimension="lang" variableName="currentLang" variables={{
+							locale: env => `locales(locale=${env.getValue('currentLang')})`
+						}}>
+							<Repeater field="categories">
+								<TextField name="$locale.name" label="Name" />
+							</Repeater>
+							<TextField name="$locale.title" label="Title" />
+						</SideDimensions>
 					</SingleEntityDataProvider>
 				</Layout>
 			)}
