@@ -50,16 +50,24 @@ export default (
 						<SelectField name="author" label="Author" entityName="Author" optionFieldName="name" />
 
 						<Repeater field="categories">
-							<SideDimensions dimension="lang" variableName="currentLang" variables={{
-								locale: env => `locales(locale=${env.getValue('currentLang')})`
-							}}>
+							<SideDimensions
+								dimension="lang"
+								variableName="currentLang"
+								variables={{
+									locale: env => `locales(locale=${env.getValue('currentLang')})`
+								}}
+							>
 								<TextField name="$locale.name" label="Name" />
 							</SideDimensions>
 						</Repeater>
 
-						<SideDimensions dimension="lang" variableName="currentLang" variables={{
-							locale: env => `locales(locale=${env.getValue('currentLang')})`
-						}}>
+						<SideDimensions
+							dimension="lang"
+							variableName="currentLang"
+							variables={{
+								locale: env => `locales(locale=${env.getValue('currentLang')})`
+							}}
+						>
 							<TextField name="$locale.title" label="Title" />
 						</SideDimensions>
 					</SingleEntityDataProvider>
