@@ -15,9 +15,7 @@
 			"modification": "createUniqueConstraint",
 			"entityName": "FrontPage",
 			"unique": {
-				"fields": [
-					"unique"
-				],
+				"fields": ["unique"],
 				"name": "unique_unique"
 			}
 		},
