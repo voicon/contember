@@ -3,6 +3,25 @@
 		{
 			"modification": "createEntity",
 			"entity": {
+				"name": "Image",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "image",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
 				"name": "Language",
 				"primary": "id",
 				"primaryColumn": "id",
@@ -41,10 +60,10 @@
 		{
 			"modification": "createEntity",
 			"entity": {
-				"name": "FrontPageLocation",
+				"name": "FrontPageLocationLocale",
 				"primary": "id",
 				"primaryColumn": "id",
-				"tableName": "front_page_location",
+				"tableName": "front_page_location_locale",
 				"fields": {
 					"id": {
 						"name": "id",
@@ -64,6 +83,25 @@
 				"primary": "id",
 				"primaryColumn": "id",
 				"tableName": "front_page_reference_tile",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "FrontPageReferenceTileLocale",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "front_page_reference_tile_locale",
 				"fields": {
 					"id": {
 						"name": "id",
@@ -288,6 +326,25 @@
 		{
 			"modification": "createEntity",
 			"entity": {
+				"name": "ReferencesPage",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "references_page",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
 				"name": "ContactLocationLocale",
 				"primary": "id",
 				"primaryColumn": "id",
@@ -345,12 +402,28 @@
 		{
 			"modification": "createEnum",
 			"enumName": "one",
-			"values": ["one"]
+			"values": [
+				"one"
+			]
 		},
 		{
 			"modification": "createEnum",
 			"enumName": "location",
-			"values": ["prague", "london"]
+			"values": [
+				"prague",
+				"london"
+			]
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Image",
+			"field": {
+				"name": "url",
+				"columnName": "url",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
 		},
 		{
 			"modification": "createColumn",
@@ -378,7 +451,9 @@
 			"modification": "createUniqueConstraint",
 			"entityName": "Language",
 			"unique": {
-				"fields": ["slug"],
+				"fields": [
+					"slug"
+				],
 				"name": "unique_slug"
 			}
 		},
@@ -388,7 +463,7 @@
 			"field": {
 				"name": "unique",
 				"columnName": "unique",
-				"nullable": true,
+				"nullable": false,
 				"type": "Enum",
 				"columnType": "one",
 				"enumName": "one"
@@ -406,12 +481,22 @@
 			}
 		},
 		{
+			"modification": "createUniqueConstraint",
+			"entityName": "FrontPage",
+			"unique": {
+				"fields": [
+					"unique"
+				],
+				"name": "unique_unique"
+			}
+		},
+		{
 			"modification": "createColumn",
-			"entityName": "FrontPageLocation",
+			"entityName": "FrontPageLocationLocale",
 			"field": {
 				"name": "location",
 				"columnName": "location",
-				"nullable": true,
+				"nullable": false,
 				"type": "Enum",
 				"columnType": "location",
 				"enumName": "location"
@@ -419,7 +504,7 @@
 		},
 		{
 			"modification": "createColumn",
-			"entityName": "FrontPageLocation",
+			"entityName": "FrontPageLocationLocale",
 			"field": {
 				"name": "title",
 				"columnName": "title",
@@ -430,7 +515,7 @@
 		},
 		{
 			"modification": "createColumn",
-			"entityName": "FrontPageLocation",
+			"entityName": "FrontPageLocationLocale",
 			"field": {
 				"name": "text",
 				"columnName": "text",
@@ -441,12 +526,12 @@
 		},
 		{
 			"modification": "createRelation",
-			"entityName": "FrontPageLocation",
+			"entityName": "FrontPageLocationLocale",
 			"owningSide": {
 				"name": "FrontPageLocale",
 				"target": "FrontPageLocale",
 				"inversedBy": "locations",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"joiningColumn": {
 					"columnName": "front_page_locale_id",
@@ -457,40 +542,21 @@
 				"name": "locations",
 				"ownedBy": "FrontPageLocale",
 				"type": "OneHasMany",
-				"target": "FrontPageLocation"
+				"target": "FrontPageLocationLocale"
 			}
 		},
 		{
-			"modification": "createColumn",
+			"modification": "createRelation",
 			"entityName": "FrontPageReferenceTile",
-			"field": {
-				"name": "label",
-				"columnName": "label",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "FrontPageReferenceTile",
-			"field": {
+			"owningSide": {
 				"name": "image",
-				"columnName": "image",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "FrontPageReferenceTile",
-			"field": {
-				"name": "linkTarget",
-				"columnName": "link_target",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "image_id",
+					"onDelete": "restrict"
+				}
 			}
 		},
 		{
@@ -500,7 +566,7 @@
 				"name": "FrontPageLocale",
 				"target": "FrontPageLocale",
 				"inversedBy": "references",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"joiningColumn": {
 					"columnName": "front_page_locale_id",
@@ -515,11 +581,57 @@
 			}
 		},
 		{
+			"modification": "createRelation",
+			"entityName": "FrontPageReferenceTileLocale",
+			"owningSide": {
+				"name": "FrontPageReferenceTile",
+				"target": "FrontPageReferenceTile",
+				"inversedBy": "locales",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "front_page_reference_tile_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locales",
+				"ownedBy": "FrontPageReferenceTile",
+				"type": "OneHasMany",
+				"target": "FrontPageReferenceTileLocale"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageReferenceTileLocale",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
 			"modification": "createColumn",
-			"entityName": "FrontPageFeaturedClient",
+			"entityName": "FrontPageReferenceTileLocale",
 			"field": {
-				"name": "image",
-				"columnName": "image",
+				"name": "label",
+				"columnName": "label",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FrontPageReferenceTileLocale",
+			"field": {
+				"name": "linkTarget",
+				"columnName": "link_target",
 				"nullable": true,
 				"type": "String",
 				"columnType": "text"
@@ -529,21 +641,46 @@
 			"modification": "createRelation",
 			"entityName": "FrontPageFeaturedClient",
 			"owningSide": {
-				"name": "FrontPageLocale",
-				"target": "FrontPageLocale",
+				"name": "FrontPage",
+				"target": "FrontPage",
 				"inversedBy": "featuredClients",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"joiningColumn": {
-					"columnName": "front_page_locale_id",
+					"columnName": "front_page_id",
 					"onDelete": "restrict"
 				}
 			},
 			"inverseSide": {
 				"name": "featuredClients",
-				"ownedBy": "FrontPageLocale",
+				"ownedBy": "FrontPage",
 				"type": "OneHasMany",
 				"target": "FrontPageFeaturedClient"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageFeaturedClient",
+			"owningSide": {
+				"name": "image",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "image_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FrontPageFeaturedClient",
+			"field": {
+				"name": "label",
+				"columnName": "label",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
 			}
 		},
 		{
@@ -612,14 +749,17 @@
 			}
 		},
 		{
-			"modification": "createColumn",
+			"modification": "createRelation",
 			"entityName": "PageSeo",
-			"field": {
+			"owningSide": {
 				"name": "ogImage",
-				"columnName": "og_image",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "og_image_id",
+					"onDelete": "restrict"
+				}
 			}
 		},
 		{
@@ -648,8 +788,29 @@
 			"modification": "createRelation",
 			"entityName": "FrontPageLocale",
 			"owningSide": {
+				"name": "FrontPage",
+				"target": "FrontPage",
+				"inversedBy": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "front_page_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locale",
+				"ownedBy": "FrontPage",
+				"type": "OneHasMany",
+				"target": "FrontPageLocale"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageLocale",
+			"owningSide": {
 				"name": "language",
-				"nullable": true,
+				"nullable": false,
 				"type": "OneHasOne",
 				"target": "Language",
 				"joiningColumn": {
@@ -773,7 +934,7 @@
 			"entityName": "FrontPageLocale",
 			"owningSide": {
 				"name": "seo",
-				"nullable": true,
+				"nullable": false,
 				"type": "OneHasOne",
 				"target": "PageSeo",
 				"joiningColumn": {
@@ -820,7 +981,7 @@
 			"entityName": "MenuItem",
 			"owningSide": {
 				"name": "language",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"target": "Language",
 				"joiningColumn": {
@@ -834,7 +995,7 @@
 			"entityName": "TeamPage",
 			"owningSide": {
 				"name": "language",
-				"nullable": true,
+				"nullable": false,
 				"type": "OneHasOne",
 				"target": "Language",
 				"joiningColumn": {
@@ -859,7 +1020,7 @@
 			"entityName": "TeamPage",
 			"owningSide": {
 				"name": "seo",
-				"nullable": true,
+				"nullable": false,
 				"type": "OneHasOne",
 				"target": "PageSeo",
 				"joiningColumn": {
@@ -872,8 +1033,8 @@
 			"modification": "createColumn",
 			"entityName": "Person",
 			"field": {
-				"name": "imageBig",
-				"columnName": "image_big",
+				"name": "shortName",
+				"columnName": "short_name",
 				"nullable": true,
 				"type": "String",
 				"columnType": "text"
@@ -883,11 +1044,50 @@
 			"modification": "createColumn",
 			"entityName": "Person",
 			"field": {
-				"name": "imageSquare",
-				"columnName": "image_square",
+				"name": "longName",
+				"columnName": "long_name",
 				"nullable": true,
 				"type": "String",
 				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Person",
+			"owningSide": {
+				"name": "imageBig",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "image_big_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Person",
+			"owningSide": {
+				"name": "imageSquare",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "image_square_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Person",
+			"field": {
+				"name": "faceOffset",
+				"columnName": "face_offset",
+				"nullable": true,
+				"type": "Double",
+				"columnType": "double precision"
 			}
 		},
 		{
@@ -968,13 +1168,24 @@
 			}
 		},
 		{
+			"modification": "createColumn",
+			"entityName": "Person",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": true,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
 			"modification": "createRelation",
 			"entityName": "PersonLocale",
 			"owningSide": {
 				"name": "person",
 				"target": "Person",
 				"inversedBy": "locale",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"joiningColumn": {
 					"columnName": "person_id",
@@ -993,7 +1204,7 @@
 			"entityName": "PersonLocale",
 			"owningSide": {
 				"name": "language",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"target": "Language",
 				"joiningColumn": {
@@ -1017,28 +1228,6 @@
 			"modification": "createColumn",
 			"entityName": "PersonLocale",
 			"field": {
-				"name": "shortName",
-				"columnName": "short_name",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "PersonLocale",
-			"field": {
-				"name": "longName",
-				"columnName": "long_name",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "PersonLocale",
-			"field": {
 				"name": "text",
 				"columnName": "text",
 				"nullable": true,
@@ -1050,7 +1239,10 @@
 			"modification": "createUniqueConstraint",
 			"entityName": "PersonLocale",
 			"unique": {
-				"fields": ["language", "person"],
+				"fields": [
+					"language",
+					"person"
+				],
 				"name": "unique_language_person"
 			}
 		},
@@ -1059,7 +1251,7 @@
 			"entityName": "WhatWeDo",
 			"owningSide": {
 				"name": "language",
-				"nullable": true,
+				"nullable": false,
 				"type": "OneHasOne",
 				"target": "Language",
 				"joiningColumn": {
@@ -1125,10 +1317,24 @@
 		},
 		{
 			"modification": "createRelation",
+			"entityName": "WhatWeDo",
+			"owningSide": {
+				"name": "seo",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "PageSeo",
+				"joiningColumn": {
+					"columnName": "seo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
 			"entityName": "ReferenceLocale",
 			"owningSide": {
 				"name": "language",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"target": "Language",
 				"joiningColumn": {
@@ -1188,7 +1394,7 @@
 				"name": "reference",
 				"target": "Reference",
 				"inversedBy": "locale",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"joiningColumn": {
 					"columnName": "reference_id",
@@ -1203,11 +1409,61 @@
 			}
 		},
 		{
+			"modification": "createRelation",
+			"entityName": "Reference",
+			"owningSide": {
+				"name": "image",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "image_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
 			"modification": "createColumn",
 			"entityName": "Reference",
 			"field": {
-				"name": "image",
-				"columnName": "image",
+				"name": "order",
+				"columnName": "order",
+				"nullable": true,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ReferencesPage",
+			"owningSide": {
+				"name": "language",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ReferencesPage",
+			"field": {
+				"name": "title",
+				"columnName": "title",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ReferencesPage",
+			"field": {
+				"name": "quote",
+				"columnName": "quote",
 				"nullable": true,
 				"type": "String",
 				"columnType": "text"
@@ -1215,10 +1471,24 @@
 		},
 		{
 			"modification": "createRelation",
+			"entityName": "ReferencesPage",
+			"owningSide": {
+				"name": "seo",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "PageSeo",
+				"joiningColumn": {
+					"columnName": "seo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
 			"entityName": "ContactLocationLocale",
 			"owningSide": {
 				"name": "language",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"target": "Language",
 				"joiningColumn": {
@@ -1234,7 +1504,7 @@
 				"name": "contactLocation",
 				"target": "ContactLocation",
 				"inversedBy": "locale",
-				"nullable": true,
+				"nullable": false,
 				"type": "ManyHasOne",
 				"joiningColumn": {
 					"columnName": "contact_location_id",
@@ -1252,7 +1522,10 @@
 			"modification": "createUniqueConstraint",
 			"entityName": "ContactLocationLocale",
 			"unique": {
-				"fields": ["contactLocation", "language"],
+				"fields": [
+					"contactLocation",
+					"language"
+				],
 				"name": "unique_contactLocation_language"
 			}
 		},
@@ -1347,6 +1620,17 @@
 		},
 		{
 			"modification": "createColumn",
+			"entityName": "ContactLocation",
+			"field": {
+				"name": "slug",
+				"columnName": "slug",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
 			"entityName": "ContactPageLocale",
 			"field": {
 				"name": "buttonUrl",
@@ -1372,7 +1656,7 @@
 			"entityName": "ContactPageLocale",
 			"owningSide": {
 				"name": "seo",
-				"nullable": true,
+				"nullable": false,
 				"type": "OneHasOne",
 				"target": "PageSeo",
 				"joiningColumn": {
@@ -1386,7 +1670,7 @@
 			"entityName": "ContactPageLocale",
 			"owningSide": {
 				"name": "language",
-				"nullable": true,
+				"nullable": false,
 				"type": "OneHasOne",
 				"target": "Language",
 				"joiningColumn": {
