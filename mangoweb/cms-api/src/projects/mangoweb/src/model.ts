@@ -84,6 +84,8 @@ builder.entity('TeamPage', entity =>
 
 builder.entity('Person', entity =>
 	entity
+		.column('shortName')
+		.column('longName')
 		.column('imageBig')
 		.column('imageSquare')
 		.column('faceOffset', column => column.type(Model.ColumnType.Double))
@@ -108,8 +110,6 @@ builder.entity('PersonLocale', entity =>
 		.unique(['language', 'person'])
 		.manyHasOne('language', relation => relation.target('Language').notNull())
 		.column('position')
-		.column('shortName')
-		.column('longName')
 		.column('text')
 )
 
