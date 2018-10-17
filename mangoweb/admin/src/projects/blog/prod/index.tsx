@@ -48,12 +48,18 @@ export default (
 					<SingleEntityDataProvider name="Post" where={{ id }}>
 						<TextField name="publishedAt" label="Time" />
 						<SelectField name="author" label="Author" entityName="Author" optionFieldName="name" />
+
+						<Repeater field="categories">
+							<SideDimensions dimension="lang" variableName="currentLang" variables={{
+								locale: env => `locales(locale=${env.getValue('currentLang')})`
+							}}>
+								<TextField name="$locale.name" label="Name" />
+							</SideDimensions>
+						</Repeater>
+
 						<SideDimensions dimension="lang" variableName="currentLang" variables={{
 							locale: env => `locales(locale=${env.getValue('currentLang')})`
 						}}>
-							<Repeater field="categories">
-								<TextField name="$locale.name" label="Name" />
-							</Repeater>
 							<TextField name="$locale.title" label="Title" />
 						</SideDimensions>
 					</SingleEntityDataProvider>
