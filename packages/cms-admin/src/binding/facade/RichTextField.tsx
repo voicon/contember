@@ -19,8 +19,8 @@ export default class RichTextField extends React.Component<RichTextFieldProps> {
 	static displayName = 'RichTextField'
 
 	public render() {
-		return Parser.generateWrappedField(this.props.name, fieldName => (
-			<Field name={fieldName}>
+		return (
+			<Field name={this.props.name}>
 				{(data: FieldAccessor<string>): React.ReactNode => {
 					return (
 						<RichEditor
@@ -31,7 +31,7 @@ export default class RichTextField extends React.Component<RichTextFieldProps> {
 					)
 				}}
 			</Field>
-		))
+		)
 	}
 
 	private generateOnChange = (data: FieldAccessor<string>) => (val: string) => {

@@ -20,8 +20,8 @@ export default class TextAreaField extends React.Component<TextAreaFieldProps> {
 	static displayName = 'TextAreaField'
 
 	public render() {
-		return Parser.generateWrappedField(this.props.name, fieldName => (
-			<Field name={fieldName}>
+		return (
+			<Field name={this.props.name}>
 				{(data: FieldAccessor<string>): React.ReactNode => {
 					return (
 						<FormGroup label={this.props.label}>
@@ -35,7 +35,7 @@ export default class TextAreaField extends React.Component<TextAreaFieldProps> {
 					)
 				}}
 			</Field>
-		))
+		)
 	}
 
 	private generateOnChange = (data: FieldAccessor<string>) => (e: ChangeEvent<HTMLTextAreaElement>) => {
