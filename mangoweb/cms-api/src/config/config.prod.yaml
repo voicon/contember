@@ -45,6 +45,12 @@ projects:
         user: '%env.MANGOWEB_DB_USER%'
         password: '%env.MANGOWEB_DB_PASSWORD%'
         database: '%env.MANGOWEB_DB_NAME%'
+      s3:
+        bucket: 'cms-api.mgw.cz'
+        prefix: 'mangoweb'
+        credentials:
+          key: 'AKIAIO53JZYNOKXXYMDA'
+          secret: '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'
 
 server:
     port: '%env.SERVER_PORT%'
