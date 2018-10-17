@@ -10,8 +10,8 @@
 		"prebuild": "lerna run prebuild",
 		"build": "lerna run build",
 		"test": "lerna run test",
-		"prettier:lint": "prettier --list-different --ignore-path \".gitignore\" \"**/*.{ts,tsx,json}\" ",
-		"prettier:fix": "prettier --write --ignore-path \".gitignore\" \"**/*.{ts,tsx,json}\" "
+		"prettier:lint": "prettier --list-different \"**/*.{ts,tsx,json}\" ",
+		"prettier:fix": "prettier --write \"**/*.{ts,tsx,json}\" "
 	},
 	"devDependencies": {
 		"lerna": "^2.11.0",

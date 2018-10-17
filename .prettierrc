@@ -12,10 +12,10 @@
       }
     },
     {
-		  "files": "packages/cms-api/**/*.ts",
-		  "options": {
+      "files": "packages/cms-api/**/*.ts",
+      "options": {
         "trailingComma": "es5"
-		  }
+      }
     }
   ]
 }
