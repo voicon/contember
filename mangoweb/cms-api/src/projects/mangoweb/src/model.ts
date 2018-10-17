@@ -5,6 +5,8 @@ const builder = new SchemaBuilder()
 builder.enum('one', ['one'])
 builder.enum('location', ['prague', 'london'])
 
+builder.entity('Image', entity => entity.column('url'))
+
 builder.entity('Language', entity =>
 	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('name')
 )
@@ -18,10 +20,11 @@ builder.entity('FrontPage', entity =>
 				.notNull()
 		)
 		.column('vimeoId')
+		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
 		.oneHasMany('locale', relation => relation.target('FrontPageLocale').ownerNotNull())
 )
 
-builder.entity('FrontPageLocation', entity =>
+builder.entity('FrontPageLocationLocale', entity =>
 	entity
 		.column('location', column => column.type(Model.ColumnType.Enum, { enumName: 'location' }).notNull())
 		.column('title')
@@ -30,19 +33,28 @@ builder.entity('FrontPageLocation', entity =>
 
 builder.entity('FrontPageReferenceTile', entity =>
 	entity
+		.manyHasOne('image', relation => relation.target('Image').notNull())
+		.oneHasMany('locales', relation => relation.target('FrontPageReferenceTileLocale').ownerNotNull())
+)
+builder.entity('FrontPageReferenceTileLocale', entity =>
+	entity
+		.manyHasOne('language', relation => relation.target('Language').notNull())
 		.column('label')
-		.column('image')
 		.column('linkTarget')
 )
 
-builder.entity('FrontPageFeaturedClient', entity => entity.column('image').column('label'))
+builder.entity('FrontPageFeaturedClient', entity =>
+	entity.manyHasOne('image', relation => relation.target('Image').notNull()).column('label')
+)
+
 builder.entity('FrontPageButton', entity => entity.column('label').column('url'))
 
 builder.entity('PageSeo', entity =>
 	entity
 		.column('title')
 		.column('description')
-		.column('ogImage')
+
+		.manyHasOne('ogImage', relation => relation.target('Image').notNull())
 		.column('ogTitle')
 		.column('ogDescription')
 )
@@ -58,9 +70,8 @@ builder.entity('FrontPageLocale', entity =>
 		.column('buttonLabel')
 		.column('buttonUrl')
 		.column('locationsTitle')
-		.oneHasMany('locations', relation => relation.target('FrontPageLocation').ownerNotNull())
+		.oneHasMany('locations', relation => relation.target('FrontPageLocationLocale').ownerNotNull())
 		.column('featuredClientsText')
-		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
 		.column('contactButtonLabel')
 		.column('contactButtonUrl')
 		.oneHasMany('buttons', relation => relation.target('FrontPageButton'))
@@ -86,8 +97,8 @@ builder.entity('Person', entity =>
 	entity
 		.column('shortName')
 		.column('longName')
-		.column('imageBig')
-		.column('imageSquare')
+		.manyHasOne('imageBig', relation => relation.target('Image').notNull())
+		.manyHasOne('imageSquare', relation => relation.target('Image').notNull())
 		.column('faceOffset', column => column.type(Model.ColumnType.Double))
 		.column('phoneNumber')
 		.column('email')
@@ -136,7 +147,7 @@ builder.entity('ReferenceLocale', entity =>
 // Todo: Allow video references
 builder.entity('Reference', entity =>
 	entity
-		.column('image')
+		.manyHasOne('image', relation => relation.target('Image').notNull())
 		.oneHasMany('locale', relation =>
 			relation
 				.target('ReferenceLocale')
