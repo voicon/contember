@@ -10,12 +10,20 @@ builder.entity('Language', entity =>
 )
 
 builder.entity('FrontPage', entity =>
-	entity.column('unique', column => column.type(Model.ColumnType.Enum, { enumName: 'one' })).column('vimeoId')
+	entity
+		.column('unique', column =>
+			column
+				.type(Model.ColumnType.Enum, { enumName: 'one' })
+				.unique()
+				.notNull()
+		)
+		.column('vimeoId')
+		.oneHasMany('locale', relation => relation.target('FrontPageLocale').ownerNotNull())
 )
 
 builder.entity('FrontPageLocation', entity =>
 	entity
-		.column('location', column => column.type(Model.ColumnType.Enum, { enumName: 'location' }))
+		.column('location', column => column.type(Model.ColumnType.Enum, { enumName: 'location' }).notNull())
 		.column('title')
 		.column('text')
 )
@@ -27,7 +35,7 @@ builder.entity('FrontPageReferenceTile', entity =>
 		.column('linkTarget')
 )
 
-builder.entity('FrontPageFeaturedClient', entity => entity.column('image'))
+builder.entity('FrontPageFeaturedClient', entity => entity.column('image').column('label'))
 builder.entity('FrontPageButton', entity => entity.column('label').column('url'))
 
 builder.entity('PageSeo', entity =>
@@ -41,22 +49,22 @@ builder.entity('PageSeo', entity =>
 
 builder.entity('FrontPageLocale', entity =>
 	entity
-		.oneHasOne('language', relation => relation.target('Language'))
+		.oneHasOne('language', relation => relation.target('Language').notNull())
 		.column('introShort')
 		.column('introMain')
 		.column('introLong')
 		.column('referencesTitle')
-		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile'))
+		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile').ownerNotNull())
 		.column('buttonLabel')
 		.column('buttonUrl')
 		.column('locationsTitle')
-		.oneHasMany('locations', relation => relation.target('FrontPageLocation'))
+		.oneHasMany('locations', relation => relation.target('FrontPageLocation').ownerNotNull())
 		.column('featuredClientsText')
-		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient'))
+		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
 		.column('contactButtonLabel')
 		.column('contactButtonUrl')
 		.oneHasMany('buttons', relation => relation.target('FrontPageButton'))
-		.oneHasOne('seo', relation => relation.target('PageSeo'))
+		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
 )
 
 builder.entity('MenuItem', entity =>
@@ -64,20 +72,21 @@ builder.entity('MenuItem', entity =>
 		.column('label')
 		.column('url')
 		.column('order', column => column.type(Model.ColumnType.Int))
-		.manyHasOne('language', relation => relation.target('Language'))
+		.manyHasOne('language', relation => relation.target('Language').notNull())
 )
 
 builder.entity('TeamPage', entity =>
 	entity
-		.oneHasOne('language', relation => relation.target('Language'))
+		.oneHasOne('language', relation => relation.target('Language').notNull())
 		.column('title')
-		.oneHasOne('seo', relation => relation.target('PageSeo'))
+		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
 )
 
 builder.entity('Person', entity =>
 	entity
 		.column('imageBig')
 		.column('imageSquare')
+		.column('faceOffset', column => column.type(Model.ColumnType.Double))
 		.column('phoneNumber')
 		.column('email')
 		.column('facebook')
@@ -85,13 +94,19 @@ builder.entity('Person', entity =>
 		.column('likendin')
 		.column('github')
 		.column('instagram')
-		.oneHasMany('locale', relation => relation.target('PersonLocale').ownedBy('person'))
+		.column('order', column => column.type(Model.ColumnType.Int))
+		.oneHasMany('locale', relation =>
+			relation
+				.target('PersonLocale')
+				.ownedBy('person')
+				.ownerNotNull()
+		)
 )
 
 builder.entity('PersonLocale', entity =>
 	entity
 		.unique(['language', 'person'])
-		.manyHasOne('language', relation => relation.target('Language'))
+		.manyHasOne('language', relation => relation.target('Language').notNull())
 		.column('position')
 		.column('shortName')
 		.column('longName')
@@ -100,17 +115,18 @@ builder.entity('PersonLocale', entity =>
 
 builder.entity('WhatWeDo', entity =>
 	entity
-		.oneHasOne('language', relation => relation.target('Language'))
+		.oneHasOne('language', relation => relation.target('Language').notNull())
 		.column('title')
 		.column('quote')
 		.column('text')
 		.column('buttonLabel')
 		.column('buttonUrl')
+		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
 )
 
 builder.entity('ReferenceLocale', entity =>
 	entity
-		.manyHasOne('language', relation => relation.target('Language'))
+		.manyHasOne('language', relation => relation.target('Language').notNull())
 		.column('title')
 		.column('url')
 		.column('urlLabel')
@@ -119,11 +135,21 @@ builder.entity('ReferenceLocale', entity =>
 
 // Todo: Allow video references
 builder.entity('Reference', entity =>
-	entity.column('image').oneHasMany('locale', relation => relation.target('ReferenceLocale').ownedBy('reference'))
+	entity
+		.column('image')
+		.oneHasMany('locale', relation =>
+			relation
+				.target('ReferenceLocale')
+				.ownedBy('reference')
+				.ownerNotNull()
+		)
+		.column('order')
 )
 
 builder.entity('ContactLocationLocale', entity =>
-	entity.unique(['contactLocation', 'language']).manyHasOne('language', relation => relation.target('Language'))
+	entity
+		.unique(['contactLocation', 'language'])
+		.manyHasOne('language', relation => relation.target('Language').notNull())
 )
 
 builder.entity('ContactLocation', entity =>
@@ -136,15 +162,21 @@ builder.entity('ContactLocation', entity =>
 		.column('bottomTitle')
 		.column('company')
 		.column('text')
-		.oneHasMany('locale', relation => relation.target('ContactLocationLocale').ownedBy('contactLocation'))
+		.column('slug', column => column.type(Model.ColumnType.String) /*.unique()*/)
+		.oneHasMany('locale', relation =>
+			relation
+				.target('ContactLocationLocale')
+				.ownedBy('contactLocation')
+				.ownerNotNull()
+		)
 )
 
 builder.entity('ContactPageLocale', entity =>
 	entity
 		.column('buttonUrl')
 		.column('buttonLabel')
-		.oneHasOne('seo', relation => relation.target('PageSeo'))
-		.oneHasOne('language', relation => relation.target('Language'))
+		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
+		.oneHasOne('language', relation => relation.target('Language').notNull())
 )
 
 const model = builder.buildSchema()

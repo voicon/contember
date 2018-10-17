@@ -1,0 +1,491 @@
+{
+	"modifications": [
+		{
+			"modification": "updateColumnDefinition",
+			"entityName": "FrontPage",
+			"fieldName": "unique",
+			"definition": {
+				"nullable": false,
+				"type": "Enum",
+				"columnType": "one",
+				"enumName": "one"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "FrontPage",
+			"unique": {
+				"fields": [
+					"unique"
+				],
+				"name": "unique_unique"
+			}
+		},
+		{
+			"modification": "updateColumnDefinition",
+			"entityName": "FrontPageLocation",
+			"fieldName": "location",
+			"definition": {
+				"nullable": false,
+				"type": "Enum",
+				"columnType": "location",
+				"enumName": "location"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageLocation",
+			"fieldName": "FrontPageLocale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageLocation",
+			"owningSide": {
+				"name": "FrontPageLocale",
+				"target": "FrontPageLocale",
+				"inversedBy": "locations",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "front_page_locale_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locations",
+				"ownedBy": "FrontPageLocale",
+				"type": "OneHasMany",
+				"target": "FrontPageLocation"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageReferenceTile",
+			"fieldName": "FrontPageLocale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageReferenceTile",
+			"owningSide": {
+				"name": "FrontPageLocale",
+				"target": "FrontPageLocale",
+				"inversedBy": "references",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "front_page_locale_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "references",
+				"ownedBy": "FrontPageLocale",
+				"type": "OneHasMany",
+				"target": "FrontPageReferenceTile"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FrontPageFeaturedClient",
+			"field": {
+				"name": "label",
+				"columnName": "label",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageFeaturedClient",
+			"fieldName": "FrontPageLocale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageFeaturedClient",
+			"owningSide": {
+				"name": "FrontPageLocale",
+				"target": "FrontPageLocale",
+				"inversedBy": "featuredClients",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "front_page_locale_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "featuredClients",
+				"ownedBy": "FrontPageLocale",
+				"type": "OneHasMany",
+				"target": "FrontPageFeaturedClient"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageLocale",
+			"owningSide": {
+				"name": "FrontPage",
+				"target": "FrontPage",
+				"inversedBy": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "front_page_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locale",
+				"ownedBy": "FrontPage",
+				"type": "OneHasMany",
+				"target": "FrontPageLocale"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageLocale",
+			"fieldName": "language"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageLocale",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageLocale",
+			"fieldName": "seo"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageLocale",
+			"owningSide": {
+				"name": "seo",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "PageSeo",
+				"joiningColumn": {
+					"columnName": "seo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "MenuItem",
+			"fieldName": "language"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "MenuItem",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "TeamPage",
+			"fieldName": "language"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "TeamPage",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "TeamPage",
+			"fieldName": "seo"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "TeamPage",
+			"owningSide": {
+				"name": "seo",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "PageSeo",
+				"joiningColumn": {
+					"columnName": "seo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Person",
+			"field": {
+				"name": "faceOffset",
+				"columnName": "face_offset",
+				"nullable": true,
+				"type": "Double",
+				"columnType": "double precision"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Person",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": true,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "PersonLocale",
+			"fieldName": "person"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "PersonLocale",
+			"owningSide": {
+				"name": "person",
+				"target": "Person",
+				"inversedBy": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "person_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locale",
+				"ownedBy": "person",
+				"type": "OneHasMany",
+				"target": "PersonLocale"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "PersonLocale",
+			"fieldName": "language"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "PersonLocale",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDo",
+			"fieldName": "language"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDo",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDo",
+			"owningSide": {
+				"name": "seo",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "PageSeo",
+				"joiningColumn": {
+					"columnName": "seo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ReferenceLocale",
+			"fieldName": "language"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ReferenceLocale",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ReferenceLocale",
+			"fieldName": "reference"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ReferenceLocale",
+			"owningSide": {
+				"name": "reference",
+				"target": "Reference",
+				"inversedBy": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "reference_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locale",
+				"ownedBy": "reference",
+				"type": "OneHasMany",
+				"target": "ReferenceLocale"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Reference",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactLocationLocale",
+			"fieldName": "language"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactLocationLocale",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactLocationLocale",
+			"fieldName": "contactLocation"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactLocationLocale",
+			"owningSide": {
+				"name": "contactLocation",
+				"target": "ContactLocation",
+				"inversedBy": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "contact_location_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locale",
+				"ownedBy": "contactLocation",
+				"type": "OneHasMany",
+				"target": "ContactLocationLocale"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocation",
+			"field": {
+				"name": "slug",
+				"columnName": "slug",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactPageLocale",
+			"fieldName": "seo"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactPageLocale",
+			"owningSide": {
+				"name": "seo",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "PageSeo",
+				"joiningColumn": {
+					"columnName": "seo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactPageLocale",
+			"fieldName": "language"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactPageLocale",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		}
+	]
+}
