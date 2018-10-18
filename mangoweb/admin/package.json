@@ -7,6 +7,7 @@
 		"build": "tsc --build && webpack --env.production --colors"
 	},
 	"dependencies": {
+		"@blueprintjs/core": "^3.7.0",
 		"@blueprintjs/icons": "^3.0.0",
 		"cms-admin": "0.0.0",
 		"react": "^16.4.1",
