@@ -38,7 +38,7 @@ export default (
 			<PageLinkById change={id => ({ name: 'edit_person', params: { id } })}>Edit this mofo</PageLinkById>
 		</ListPage>
 		<CreatePage entity="Person">
-			<H1>Create new team member</H1>
+			<H1>Create a new team member</H1>
 			{personForm}
 		</CreatePage>
 		<EditPage entity="Person">
