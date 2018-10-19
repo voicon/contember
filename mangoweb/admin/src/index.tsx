@@ -16,6 +16,17 @@ const reactRoot = (
 					edit_post2: { path: '/edit_post2/:id' },
 					postList: { path: '/postList' }
 				}
+			},
+			{
+				project: 'mangoweb',
+				stage: 'preview',
+				component: () => import('./projects/mangoweb/preview').then(r => r.default),
+				routes: {
+					dashboard: { path: '/' },
+					list_person: { path: '/team-members' },
+					create_person: { path: '/team-members/create-new' },
+					edit_person: { path: '/team-members/member-:id' },
+				}
 			}
 		]}
 	/>
