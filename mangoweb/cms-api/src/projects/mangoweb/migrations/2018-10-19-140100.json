@@ -71,7 +71,42 @@
 		{
 			"modification": "removeField",
 			"entityName": "FrontPageLocale",
+			"fieldName": "language"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageLocale",
+			"owningSide": {
+				"name": "language",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "language_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageLocale",
 			"fieldName": "FrontPage"
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "FrontPageLocale",
+			"unique": {
+				"fields": [
+					"frontPage",
+					"language"
+				],
+				"name": "unique_frontPage_language"
+			}
+		},
+		{
+			"modification": "removeUniqueConstraint",
+			"entityName": "FrontPageLocale",
+			"constraintName": "unique_language"
 		},
 		{
 			"modification": "createUniqueConstraint",

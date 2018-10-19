@@ -70,8 +70,8 @@ builder.entity('PageSeo', entity =>
 
 builder.entity('FrontPageLocale', entity =>
 	entity
-		// .unique(['frontPage', 'language'])
-		.oneHasOne('language', relation => relation.target('Language').notNull())
+		.unique(['frontPage', 'language'])
+		.manyHasOne('language', relation => relation.target('Language').notNull())
 		.column('introShort')
 		.column('introMain')
 		.column('introLong')
