@@ -18,7 +18,8 @@ import {
 	Repeater,
 	TextareaField,
 	RichTextField,
-	PageLinkById, FieldText
+	PageLinkById,
+	FieldText
 } from 'cms-admin'
 
 import { Layout } from './adminLayout'
@@ -42,7 +43,9 @@ export default (
 			{personForm}
 		</CreatePage>
 		<EditPage entity="Person">
-			<H1>Edit <FieldText name="shortName" /></H1>
+			<H1>
+				Edit <FieldText name="shortName" />
+			</H1>
 			{personForm}
 		</EditPage>
 	</Pages>

@@ -25,7 +25,7 @@ const reactRoot = (
 					dashboard: { path: '/' },
 					list_person: { path: '/team-members' },
 					create_person: { path: '/team-members/create-new' },
-					edit_person: { path: '/team-members/member-:id' },
+					edit_person: { path: '/team-members/member-:id' }
 				}
 			}
 		]}
