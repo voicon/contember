@@ -1,0 +1,88 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "FrontPage",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageReferenceTile",
+			"fieldName": "locales"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageReferenceTileLocale",
+			"owningSide": {
+				"name": "frontPageReference",
+				"target": "FrontPageReferenceTile",
+				"inversedBy": "locales",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "front_page_reference_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locales",
+				"ownedBy": "frontPageReference",
+				"type": "OneHasMany",
+				"target": "FrontPageReferenceTileLocale"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageReferenceTileLocale",
+			"fieldName": "FrontPageReferenceTile"
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "FrontPageReferenceTileLocale",
+			"unique": {
+				"fields": [
+					"frontPageReference",
+					"language"
+				],
+				"name": "unique_frontPageReference_language"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageLocale",
+			"owningSide": {
+				"name": "frontPage",
+				"target": "FrontPage",
+				"inversedBy": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "front_page_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locale",
+				"ownedBy": "frontPage",
+				"type": "OneHasMany",
+				"target": "FrontPageLocale"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageLocale",
+			"fieldName": "FrontPage"
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ReferenceLocale",
+			"unique": {
+				"fields": [
+					"reference",
+					"language"
+				],
+				"name": "unique_reference_language"
+			}
+		}
+	]
+}

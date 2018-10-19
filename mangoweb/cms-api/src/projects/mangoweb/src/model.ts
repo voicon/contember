@@ -21,7 +21,12 @@ builder.entity('FrontPage', entity =>
 		)
 		.column('vimeoId')
 		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
-		.oneHasMany('locale', relation => relation.target('FrontPageLocale').ownerNotNull())
+		.oneHasMany('locale', relation =>
+			relation
+				.target('FrontPageLocale')
+				.ownerNotNull()
+				.ownedBy('frontPage')
+		)
 )
 
 builder.entity('FrontPageLocationLocale', entity =>
@@ -32,12 +37,16 @@ builder.entity('FrontPageLocationLocale', entity =>
 )
 
 builder.entity('FrontPageReferenceTile', entity =>
-	entity
-		.manyHasOne('image', relation => relation.target('Image').notNull())
-		.oneHasMany('locales', relation => relation.target('FrontPageReferenceTileLocale').ownerNotNull())
+	entity.manyHasOne('image', relation => relation.target('Image').notNull()).oneHasMany('locales', relation =>
+		relation
+			.target('FrontPageReferenceTileLocale')
+			.ownerNotNull()
+			.ownedBy('frontPageReference')
+	)
 )
 builder.entity('FrontPageReferenceTileLocale', entity =>
 	entity
+		.unique(['frontPageReference', 'language'])
 		.manyHasOne('language', relation => relation.target('Language').notNull())
 		.column('label')
 		.column('linkTarget')
@@ -61,6 +70,7 @@ builder.entity('PageSeo', entity =>
 
 builder.entity('FrontPageLocale', entity =>
 	entity
+		// .unique(['frontPage', 'language'])
 		.oneHasOne('language', relation => relation.target('Language').notNull())
 		.column('introShort')
 		.column('introMain')
@@ -137,6 +147,7 @@ builder.entity('WhatWeDo', entity =>
 
 builder.entity('ReferenceLocale', entity =>
 	entity
+		.unique(['reference', 'language'])
 		.manyHasOne('language', relation => relation.target('Language').notNull())
 		.column('title')
 		.column('url')
