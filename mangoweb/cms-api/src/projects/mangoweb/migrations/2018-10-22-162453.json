@@ -1,0 +1,15 @@
+{
+	"modifications": [
+		{
+			"modification": "updateEnum",
+			"enumName": "page",
+			"values": [
+				"frontPage",
+				"team",
+				"whatWeDo",
+				"references",
+				"contact"
+			]
+		}
+	]
+}
