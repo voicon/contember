@@ -27,7 +27,7 @@ builder.entity('FrontPage', entity =>
 		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile').ownerNotNull())
 		.oneHasMany('locations', relation => relation.target('FrontPageLocation').ownerNotNull())
 		.oneHasMany('buttons', relation => relation.target('FrontPageButton').ownerNotNull())
-		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
+		.oneHasOne('seo', relation => relation.target('PageSeo').inversedNotNull())
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FrontPageLocale')
@@ -109,7 +109,7 @@ builder.entity('FrontPageButtonLocale', entity =>
 )
 
 builder.entity('PageSeo', entity =>
-	entity.manyHasOne('ogImage', relation => relation.target('Image').notNull()).oneHasMany('locales', relation =>
+	entity.oneHasOne('ogImage', relation => relation.target('Image').notNull()).oneHasMany('locales', relation =>
 		relation
 			.target('PageSeoLocale')
 			.ownerNotNull()

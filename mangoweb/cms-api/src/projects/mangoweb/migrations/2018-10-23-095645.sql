@@ -19,11 +19,11 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "front_page_location"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
-CREATE TABLE "branch_location_locale" (
+CREATE TABLE "front_page_location_locale" (
   "id" uuid PRIMARY KEY NOT NULL
 );
 CREATE TRIGGER "log_event"
-  AFTER INSERT OR UPDATE OR DELETE ON "branch_location_locale"
+  AFTER INSERT OR UPDATE OR DELETE ON "front_page_location_locale"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
 CREATE TABLE "front_page_reference_tile" (
@@ -204,7 +204,7 @@ CREATE TRIGGER "log_event"
 CREATE DOMAIN "one" AS text CHECK (VALUE IN('one'));
 CREATE DOMAIN "location" AS text CHECK (VALUE IN('prague','london'));
 CREATE DOMAIN "locale" AS text CHECK (VALUE IN('cs','en'));
-CREATE DOMAIN "page" AS text CHECK (VALUE IN('home','team','whatWeDo','references','contact'));
+CREATE DOMAIN "page" AS text CHECK (VALUE IN('frontPage','team','whatWeDo','references','contact'));
 ALTER TABLE "image"
   ADD "url" text;
 ALTER TABLE "front_page"
@@ -212,7 +212,7 @@ ALTER TABLE "front_page"
 ALTER TABLE "front_page"
   ADD "vimeo_id" text;
 ALTER TABLE "front_page"
-  ADD "seo_id" uuid UNIQUE NOT NULL REFERENCES "page_seo"("id") ON DELETE restrict;
+  ADD "seo_id" uuid UNIQUE REFERENCES "page_seo"("id") ON DELETE restrict;
 ALTER TABLE "front_page"
   ADD CONSTRAINT "unique_unique" UNIQUE ("unique");
 ALTER TABLE "front_page_location"
@@ -222,15 +222,17 @@ ALTER TABLE "front_page_location"
   ADD "location" "location" NOT NULL;
 ALTER TABLE "front_page_location"
   ADD CONSTRAINT "unique_location" UNIQUE ("location");
-ALTER TABLE "branch_location_locale"
-  ADD "branch_location_id" uuid NOT NULL REFERENCES "front_page_location"("id") ON DELETE restrict;
-CREATE  INDEX  "branch_location_locale_branch_location_id_index" ON "branch_location_locale" ("branch_location_id");
-ALTER TABLE "branch_location_locale"
+ALTER TABLE "front_page_location_locale"
+  ADD "front_page_location_id" uuid NOT NULL REFERENCES "front_page_location"("id") ON DELETE restrict;
+CREATE  INDEX  "front_page_location_locale_front_page_location_id_index" ON "front_page_location_locale" ("front_page_location_id");
+ALTER TABLE "front_page_location_locale"
   ADD "locale" "locale";
-ALTER TABLE "branch_location_locale"
+ALTER TABLE "front_page_location_locale"
   ADD "title" text;
-ALTER TABLE "branch_location_locale"
+ALTER TABLE "front_page_location_locale"
   ADD "text" text;
+ALTER TABLE "front_page_location_locale"
+  ADD CONSTRAINT "unique_frontPageLocation_locale" UNIQUE ("front_page_location_id", "locale");
 ALTER TABLE "front_page_reference_tile"
   ADD "front_page_id" uuid NOT NULL REFERENCES "front_page"("id") ON DELETE restrict;
 CREATE  INDEX  "front_page_reference_tile_front_page_id_index" ON "front_page_reference_tile" ("front_page_id");
@@ -278,8 +280,7 @@ ALTER TABLE "front_page_button_locale"
 ALTER TABLE "front_page_button_locale"
   ADD CONSTRAINT "unique_frontPageButton_locale" UNIQUE ("front_page_button_id", "locale");
 ALTER TABLE "page_seo"
-  ADD "og_image_id" uuid NOT NULL REFERENCES "image"("id") ON DELETE restrict;
-CREATE  INDEX  "page_seo_og_image_id_index" ON "page_seo" ("og_image_id");
+  ADD "og_image_id" uuid UNIQUE NOT NULL REFERENCES "image"("id") ON DELETE restrict;
 ALTER TABLE "page_seo_locale"
   ADD "page_seo_id" uuid NOT NULL REFERENCES "page_seo"("id") ON DELETE restrict;
 CREATE  INDEX  "page_seo_locale_page_seo_id_index" ON "page_seo_locale" ("page_seo_id");

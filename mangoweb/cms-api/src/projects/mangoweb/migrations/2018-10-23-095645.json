@@ -60,10 +60,10 @@
 		{
 			"modification": "createEntity",
 			"entity": {
-				"name": "BranchLocationLocale",
+				"name": "FrontPageLocationLocale",
 				"primary": "id",
 				"primaryColumn": "id",
-				"tableName": "branch_location_locale",
+				"tableName": "front_page_location_locale",
 				"fields": {
 					"id": {
 						"name": "id",
@@ -578,7 +578,7 @@
 			"modification": "createEnum",
 			"enumName": "page",
 			"values": [
-				"home",
+				"frontPage",
 				"team",
 				"whatWeDo",
 				"references",
@@ -624,7 +624,7 @@
 			"entityName": "FrontPage",
 			"owningSide": {
 				"name": "seo",
-				"nullable": false,
+				"nullable": true,
 				"type": "OneHasOne",
 				"target": "PageSeo",
 				"joiningColumn": {
@@ -688,28 +688,28 @@
 		},
 		{
 			"modification": "createRelation",
-			"entityName": "BranchLocationLocale",
+			"entityName": "FrontPageLocationLocale",
 			"owningSide": {
-				"name": "branchLocation",
+				"name": "frontPageLocation",
 				"target": "FrontPageLocation",
 				"inversedBy": "locales",
 				"nullable": false,
 				"type": "ManyHasOne",
 				"joiningColumn": {
-					"columnName": "branch_location_id",
+					"columnName": "front_page_location_id",
 					"onDelete": "restrict"
 				}
 			},
 			"inverseSide": {
 				"name": "locales",
-				"ownedBy": "branchLocation",
+				"ownedBy": "frontPageLocation",
 				"type": "OneHasMany",
-				"target": "BranchLocationLocale"
+				"target": "FrontPageLocationLocale"
 			}
 		},
 		{
 			"modification": "createColumn",
-			"entityName": "BranchLocationLocale",
+			"entityName": "FrontPageLocationLocale",
 			"field": {
 				"name": "locale",
 				"columnName": "locale",
@@ -721,7 +721,7 @@
 		},
 		{
 			"modification": "createColumn",
-			"entityName": "BranchLocationLocale",
+			"entityName": "FrontPageLocationLocale",
 			"field": {
 				"name": "title",
 				"columnName": "title",
@@ -732,13 +732,24 @@
 		},
 		{
 			"modification": "createColumn",
-			"entityName": "BranchLocationLocale",
+			"entityName": "FrontPageLocationLocale",
 			"field": {
 				"name": "text",
 				"columnName": "text",
 				"nullable": true,
 				"type": "String",
 				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "FrontPageLocationLocale",
+			"unique": {
+				"fields": [
+					"frontPageLocation",
+					"locale"
+				],
+				"name": "unique_frontPageLocation_locale"
 			}
 		},
 		{
@@ -1025,7 +1036,7 @@
 			"owningSide": {
 				"name": "ogImage",
 				"nullable": false,
-				"type": "ManyHasOne",
+				"type": "OneHasOne",
 				"target": "Image",
 				"joiningColumn": {
 					"columnName": "og_image_id",
