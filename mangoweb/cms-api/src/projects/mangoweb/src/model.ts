@@ -46,14 +46,15 @@ builder.entity('FrontPageLocation', entity =>
 		)
 		.oneHasMany('locales', relation =>
 			relation
-				.target('BranchLocationLocale')
+				.target('FrontPageLocationLocale')
 				.ownerNotNull()
-				.ownedBy('branchLocation')
+				.ownedBy('frontPageLocation')
 		)
 )
 
-builder.entity('BranchLocationLocale', entity =>
+builder.entity('FrontPageLocationLocale', entity =>
 	entity
+		.unique(['frontPageLocation', 'locale'])
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
 		.column('text')
