@@ -1,0 +1,46 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "FrontPage",
+			"fieldName": "references"
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FrontPageReferenceTile",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": true,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageReferenceTile",
+			"owningSide": {
+				"name": "FrontPageLocale",
+				"target": "FrontPageLocale",
+				"inversedBy": "references",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "front_page_locale_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "references",
+				"ownedBy": "FrontPageLocale",
+				"type": "OneHasMany",
+				"target": "FrontPageReferenceTile"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageReferenceTile",
+			"fieldName": "FrontPage"
+		}
+	]
+}

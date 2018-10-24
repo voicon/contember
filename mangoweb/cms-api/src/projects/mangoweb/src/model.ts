@@ -24,7 +24,6 @@ builder.entity('FrontPage', entity =>
 		)
 		.column('vimeoId')
 		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
-		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile').ownerNotNull())
 		.oneHasMany('locations', relation => relation.target('FrontPageLocation').ownerNotNull())
 		.oneHasMany('buttons', relation => relation.target('FrontPageButton').ownerNotNull())
 		.oneHasOne('seo', relation => relation.target('PageSeo').inversedNotNull())
@@ -61,12 +60,15 @@ builder.entity('FrontPageLocationLocale', entity =>
 )
 
 builder.entity('FrontPageReferenceTile', entity =>
-	entity.manyHasOne('image', relation => relation.target('Image').notNull()).oneHasMany('locales', relation =>
-		relation
-			.target('FrontPageReferenceTileLocale')
-			.ownerNotNull()
-			.ownedBy('frontPageReferenceTile')
-	)
+	entity
+		.manyHasOne('image', relation => relation.target('Image').notNull())
+		.column('order', column => column.type(Model.ColumnType.Int))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('FrontPageReferenceTileLocale')
+				.ownerNotNull()
+				.ownedBy('frontPageReferenceTile')
+		)
 )
 builder.entity('FrontPageReferenceTileLocale', entity =>
 	entity
@@ -141,6 +143,7 @@ builder.entity('FrontPageLocale', entity =>
 		.column('featuredClientsText')
 		.column('contactButtonLabel')
 		.column('contactButtonUrl')
+		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile').ownerNotNull())
 )
 
 builder.entity('MenuItem', entity =>
