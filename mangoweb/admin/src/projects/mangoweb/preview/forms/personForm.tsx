@@ -1,6 +1,7 @@
-import { H2 } from '@blueprintjs/core'
-import { NumberField, RichTextField, SideDimensions, TextField } from 'cms-admin'
+import { H2, H3 } from '@blueprintjs/core'
+import { NumberField, RichTextField, SideDimensions, TextField, Variable } from 'cms-admin'
 import * as React from 'react'
+import { LangDimension } from '../dimensions'
 import createImageField from './createImageField'
 
 const personForm = (
@@ -12,9 +13,14 @@ const personForm = (
 			dimension="lang"
 			variableName="currentLang"
 			variables={{
-				locale: env => `locale(locale=${env.getValue('currentLang')})`
+				locale: env => `locale(locale=${env.getValue('currentLang')})`,
+				heading: env => ({
+					en: 'English',
+					cs: 'Czech',
+				}[env.getValue('currentLang') as LangDimension]),
 			}}
 		>
+			<H3><Variable name="heading" /></H3>
 			<TextField name="$locale.position" label="Position" />
 			<RichTextField name="$locale.text" label="Short bio" />
 		</SideDimensions>
