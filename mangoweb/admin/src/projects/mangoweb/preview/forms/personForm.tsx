@@ -13,7 +13,7 @@ const personForm = (
 			dimension="lang"
 			variableName="currentLang"
 			variables={{
-				locale: env => `locale(locale=${env.getValue('currentLang')})`,
+				locale: env => `locales(locale=${env.getValue('currentLang')})`,
 				heading: env => ({
 					en: 'English',
 					cs: 'Czech',
@@ -22,7 +22,7 @@ const personForm = (
 		>
 			<H3><Variable name="heading" /></H3>
 			<TextField name="$locale.position" label="Position" />
-			<RichTextField name="$locale.text" label="Short bio" />
+			<RichTextField name="$locale.bio" label="Short bio" />
 		</SideDimensions>
 
 		<H2>Photos</H2>
