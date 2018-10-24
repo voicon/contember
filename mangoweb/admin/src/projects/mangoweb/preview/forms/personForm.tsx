@@ -1,5 +1,5 @@
 import { H2 } from '@blueprintjs/core'
-import { NumberField, TextField } from 'cms-admin'
+import { NumberField, RichTextField, SideDimensions, TextField } from 'cms-admin'
 import * as React from 'react'
 import createImageField from './createImageField'
 
@@ -8,6 +8,16 @@ const personForm = (
 		<H2>Basics</H2>
 		<TextField name="shortName" label="Short name" />
 		<TextField name="longName" label="Full name" />
+		<SideDimensions
+			dimension="lang"
+			variableName="currentLang"
+			variables={{
+				locale: env => `locale(locale=${env.getValue('currentLang')})`
+			}}
+		>
+			<TextField name="$locale.position" label="Position" />
+			<RichTextField name="$locale.text" label="Short bio" />
+		</SideDimensions>
 
 		<H2>Photos</H2>
 		{createImageField('imageBig', 'Large image')}
