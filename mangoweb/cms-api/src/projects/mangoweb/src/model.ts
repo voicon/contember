@@ -1,15 +1,18 @@
 import { SchemaBuilder } from 'cms-api'
-import { Acl, Input, Model, Schema } from 'cms-common'
+import { Acl, Model, Schema } from 'cms-common'
 
 const builder = new SchemaBuilder()
 builder.enum('one', ['one'])
 builder.enum('location', ['prague', 'london'])
+builder.enum('locale', ['cs', 'en'])
+builder.enum('page', ['frontPage', 'team', 'whatWeDo', 'references', 'contact'])
 
 builder.entity('Image', entity => entity.column('url'))
 
-builder.entity('Language', entity =>
-	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('name')
-)
+// TODO: We can use this once #62 is resolved
+//builder.entity('Language', entity =>
+//	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('name')
+//)
 
 builder.entity('FrontPage', entity =>
 	entity
@@ -21,12 +24,37 @@ builder.entity('FrontPage', entity =>
 		)
 		.column('vimeoId')
 		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
-		.oneHasMany('locale', relation => relation.target('FrontPageLocale').ownerNotNull())
+		.oneHasMany('locations', relation => relation.target('FrontPageLocation').ownerNotNull())
+		.oneHasMany('buttons', relation => relation.target('FrontPageButton').ownerNotNull())
+		.oneHasOne('seo', relation => relation.target('PageSeo').inversedNotNull())
+		.oneHasMany('locales', relation =>
+			relation
+				.target('FrontPageLocale')
+				.ownerNotNull()
+				.ownedBy('frontPage')
+		)
+)
+
+builder.entity('FrontPageLocation', entity =>
+	entity
+		.column('location', column =>
+			column
+				.type(Model.ColumnType.Enum, { enumName: 'location' })
+				.notNull()
+				.unique()
+		)
+		.oneHasMany('locales', relation =>
+			relation
+				.target('FrontPageLocationLocale')
+				.ownerNotNull()
+				.ownedBy('frontPageLocation')
+		)
 )
 
 builder.entity('FrontPageLocationLocale', entity =>
 	entity
-		.column('location', column => column.type(Model.ColumnType.Enum, { enumName: 'location' }).notNull())
+		.unique(['frontPageLocation', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
 		.column('text')
 )
@@ -34,63 +62,123 @@ builder.entity('FrontPageLocationLocale', entity =>
 builder.entity('FrontPageReferenceTile', entity =>
 	entity
 		.manyHasOne('image', relation => relation.target('Image').notNull())
-		.oneHasMany('locales', relation => relation.target('FrontPageReferenceTileLocale').ownerNotNull())
+		.column('order', column => column.type(Model.ColumnType.Int))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('FrontPageReferenceTileLocale')
+				.ownerNotNull()
+				.ownedBy('frontPageReferenceTile')
+		)
 )
 builder.entity('FrontPageReferenceTileLocale', entity =>
 	entity
-		.manyHasOne('language', relation => relation.target('Language').notNull())
+		.unique(['frontPageReferenceTile', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('label')
 		.column('linkTarget')
 )
 
 builder.entity('FrontPageFeaturedClient', entity =>
-	entity.manyHasOne('image', relation => relation.target('Image').notNull()).column('label')
+	entity.manyHasOne('image', relation => relation.target('Image').notNull()).oneHasMany('locales', relation =>
+		relation
+			.target('FrontPageFeaturedClientLocale')
+			.ownerNotNull()
+			.ownedBy('frontPageFeaturedClient')
+	)
 )
 
-builder.entity('FrontPageButton', entity => entity.column('label').column('url'))
+builder.entity('FrontPageFeaturedClientLocale', entity =>
+	entity
+		.unique(['frontPageFeaturedClient', 'locale'])
+		.column('label')
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+)
+
+builder.entity('FrontPageButton', entity =>
+	entity.column('url').oneHasMany('locales', relation =>
+		relation
+			.target('FrontPageButtonLocale')
+			.ownerNotNull()
+			.ownedBy('frontPageButton')
+	)
+)
+
+builder.entity('FrontPageButtonLocale', entity =>
+	entity
+		.unique(['frontPageButton', 'locale'])
+		.column('label')
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+)
 
 builder.entity('PageSeo', entity =>
+	entity.oneHasOne('ogImage', relation => relation.target('Image').notNull()).oneHasMany('locales', relation =>
+		relation
+			.target('PageSeoLocale')
+			.ownerNotNull()
+			.ownedBy('pageSeo')
+	)
+)
+
+builder.entity('PageSeoLocale', entity =>
 	entity
+		.unique(['pageSeo', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
 		.column('description')
-
-		.manyHasOne('ogImage', relation => relation.target('Image').notNull())
 		.column('ogTitle')
 		.column('ogDescription')
 )
 
 builder.entity('FrontPageLocale', entity =>
 	entity
-		.oneHasOne('language', relation => relation.target('Language').notNull())
+		.unique(['frontPage', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('introShort')
 		.column('introMain')
 		.column('introLong')
 		.column('referencesTitle')
-		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile').ownerNotNull())
 		.column('buttonLabel')
 		.column('buttonUrl')
 		.column('locationsTitle')
-		.oneHasMany('locations', relation => relation.target('FrontPageLocationLocale').ownerNotNull())
 		.column('featuredClientsText')
 		.column('contactButtonLabel')
 		.column('contactButtonUrl')
-		.oneHasMany('buttons', relation => relation.target('FrontPageButton'))
-		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
+		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile').ownerNotNull())
 )
 
 builder.entity('MenuItem', entity =>
 	entity
-		.column('label')
-		.column('url')
+		.column('page', column => column.type(Model.ColumnType.Enum, { enumName: 'page' }).unique())
 		.column('order', column => column.type(Model.ColumnType.Int))
-		.manyHasOne('language', relation => relation.target('Language').notNull())
+		.oneHasMany('locales', relation =>
+			relation
+				.target('MenuItemLocale')
+				.ownerNotNull()
+				.ownedBy('menuItem')
+		)
+)
+
+builder.entity('MenuItemLocale', entity =>
+	entity
+		.unique(['menuItem', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.column('label')
 )
 
 builder.entity('TeamPage', entity =>
+	entity.oneHasOne('seo', relation => relation.target('PageSeo').notNull()).oneHasMany('locales', relation =>
+		relation
+			.target('TeamPageLocale')
+			.ownerNotNull()
+			.ownedBy('teamPage')
+	)
+)
+
+builder.entity('TeamPageLocale', entity =>
 	entity
-		.oneHasOne('language', relation => relation.target('Language').notNull())
+		.unique(['teamPage', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
-		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
 )
 
 builder.entity('Person', entity =>
@@ -108,7 +196,7 @@ builder.entity('Person', entity =>
 		.column('github')
 		.column('instagram')
 		.column('order', column => column.type(Model.ColumnType.Int))
-		.oneHasMany('locale', relation =>
+		.oneHasMany('locales', relation =>
 			relation
 				.target('PersonLocale')
 				.ownedBy('person')
@@ -118,26 +206,38 @@ builder.entity('Person', entity =>
 
 builder.entity('PersonLocale', entity =>
 	entity
-		.unique(['language', 'person'])
-		.manyHasOne('language', relation => relation.target('Language').notNull())
+		.unique(['locale', 'person'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('position')
-		.column('text')
+		.column('bio')
 )
 
-builder.entity('WhatWeDo', entity =>
+builder.entity('WhatWeDoPage', entity =>
 	entity
-		.oneHasOne('language', relation => relation.target('Language').notNull())
-		.column('title')
-		.column('quote')
-		.column('text')
-		.column('buttonLabel')
+		.oneHasMany('locales', relation =>
+			relation
+				.target('WhatWeDoPageLocale')
+				.ownedBy('whatWeDoPage')
+				.ownerNotNull()
+		)
 		.column('buttonUrl')
 		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
 )
 
+builder.entity('WhatWeDoPageLocale', entity =>
+	entity
+		.unique(['whatWeDoPage', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.column('title')
+		.column('quote')
+		.column('text')
+		.column('buttonLabel')
+)
+
 builder.entity('ReferenceLocale', entity =>
 	entity
-		.manyHasOne('language', relation => relation.target('Language').notNull())
+		.unique(['reference', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
 		.column('url')
 		.column('urlLabel')
@@ -148,7 +248,7 @@ builder.entity('ReferenceLocale', entity =>
 builder.entity('Reference', entity =>
 	entity
 		.manyHasOne('image', relation => relation.target('Image').notNull())
-		.oneHasMany('locale', relation =>
+		.oneHasMany('locales', relation =>
 			relation
 				.target('ReferenceLocale')
 				.ownedBy('reference')
@@ -158,22 +258,26 @@ builder.entity('Reference', entity =>
 )
 
 builder.entity('ReferencesPage', entity =>
+	entity.oneHasOne('seo', relation => relation.target('PageSeo')).oneHasMany('locales', relation =>
+		relation
+			.target('ReferencesPageLocale')
+			.ownedBy('referencesPage')
+			.ownerNotNull()
+	)
+)
+
+builder.entity('ReferencesPageLocale', entity =>
 	entity
-		.oneHasOne('language', relation => relation.target('Language'))
+		.unique(['referencesPage', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
 		.column('quote')
-		.oneHasOne('seo', relation => relation.target('PageSeo'))
 )
 
 builder.entity('ContactLocationLocale', entity =>
 	entity
-		.unique(['contactLocation', 'language'])
-		.manyHasOne('language', relation => relation.target('Language').notNull())
-)
-
-builder.entity('ContactLocation', entity =>
-	entity
-		.column('location', column => column.type(Model.ColumnType.Enum, { enumName: 'location' }))
+		.unique(['contactLocation', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('topTitle')
 		.column('address')
 		.column('email')
@@ -181,8 +285,13 @@ builder.entity('ContactLocation', entity =>
 		.column('bottomTitle')
 		.column('company')
 		.column('text')
+)
+
+builder.entity('ContactLocation', entity =>
+	entity
+		.column('location', column => column.type(Model.ColumnType.Enum, { enumName: 'location' }).unique())
 		.column('slug', column => column.type(Model.ColumnType.String) /*.unique()*/)
-		.oneHasMany('locale', relation =>
+		.oneHasMany('locales', relation =>
 			relation
 				.target('ContactLocationLocale')
 				.ownedBy('contactLocation')
@@ -190,12 +299,21 @@ builder.entity('ContactLocation', entity =>
 		)
 )
 
+builder.entity('ContactPage', entity =>
+	entity.oneHasOne('seo', relation => relation.target('PageSeo').notNull()).oneHasMany('locales', relation =>
+		relation
+			.target('ContactPageLocale')
+			.ownedBy('contactPage')
+			.ownerNotNull()
+	)
+)
+
 builder.entity('ContactPageLocale', entity =>
 	entity
+		.unique(['contactPage', 'locale'])
 		.column('buttonUrl')
 		.column('buttonLabel')
-		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
-		.oneHasOne('language', relation => relation.target('Language').notNull())
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 )
 
 const model = builder.buildSchema()
