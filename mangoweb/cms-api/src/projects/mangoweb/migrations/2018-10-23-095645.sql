@@ -466,7 +466,7 @@ ALTER TABLE "contact_location"
 ALTER TABLE "contact_location"
   ADD "slug" text;
 ALTER TABLE "contact_location"
-  ADD CONSTRAINT "unique_location" UNIQUE ("location");
+  ADD CONSTRAINT "unique_location2" UNIQUE ("location");
 ALTER TABLE "contact_page"
   ADD "seo_id" uuid UNIQUE NOT NULL REFERENCES "page_seo"("id") ON DELETE restrict;
 ALTER TABLE "contact_page_locale"
