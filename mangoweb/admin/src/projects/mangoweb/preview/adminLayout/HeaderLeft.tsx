@@ -1,5 +1,5 @@
+import { LinkWithAlert, PageLink } from 'cms-admin'
 import * as React from 'react'
-import { LinkWithAlert } from 'cms-admin'
 
 export default class HeaderLeft extends React.Component {
 	render() {
@@ -8,7 +8,7 @@ export default class HeaderLeft extends React.Component {
 
 		return (
 			<>
-				<a href="#">This is Hranipex</a>
+				<PageLink change={() => ({ name: 'dashboard' })}>manGoweb</PageLink>
 				{' Langs: '}
 				<LinkWithAlert
 					requestChange={r => ({ ...r, dimensions: { lang: ['cs'] } })}

@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { LayoutDefault } from 'cms-admin'
+import HeaderLeft from './HeaderLeft'
 import Side from './Side'
 
 const layout = {
 	header: {
-		left: false,
+		left: <HeaderLeft />,
 		right: false
 	},
 	side: <Side />
