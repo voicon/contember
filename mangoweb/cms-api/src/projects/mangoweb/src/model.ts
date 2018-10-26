@@ -1,4 +1,4 @@
-import { SchemaBuilder } from 'cms-api'
+import { SchemaBuilder, AllowAllPermissionFactory } from 'cms-api'
 import { Acl, Model, Schema } from 'cms-common'
 
 const builder = new SchemaBuilder()
@@ -319,7 +319,9 @@ builder.entity('ContactPageLocale', entity =>
 const model = builder.buildSchema()
 const acl: Acl.Schema = {
 	variables: {},
-	roles: {}
+	roles: {
+		admin: { entities: new AllowAllPermissionFactory().create(model) }
+	}
 }
 
 const schema: Schema = {
