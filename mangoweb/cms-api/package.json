@@ -4,11 +4,10 @@
 	"private": true,
 	"scripts": {
 		"build": "tsc --build",
-		"start": "dotenv -- nodemon --watch dist --ext js --delay 500ms dist/src/index.js",
-		"migrations:continue": "migrations-continue src/config/config.yaml",
-		"migrations:reset": "migrations-clear src/config/config.yaml && migrations-continue src/config/config.yaml",
-		"migrations:generate": "npm run build && migrations-generate",
-		"init": "init src/config/config.yaml src/projects"
+		"start": "dotenv -- nodemon --watch dist --ext js --delay 500ms ./node_modules/.bin/console start",
+		"console": "dotenv -- console",
+		"reset": "dotenv -- console drop && dotenv -- console engine:migrations:continue && dotenv -- console init",
+		"sync": "dotenv -- console engine:migrations:continue && dotenv -- console init"
 	},
 	"dependencies": {
 		"cms-api": "^0.0.0",
