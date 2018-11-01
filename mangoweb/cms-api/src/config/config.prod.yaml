@@ -38,7 +38,7 @@ projects:
           - uuid: 7c78c41a-6a71-4adc-ae9a-0b8592480619
             slug: preview
             name: Preview
-            migration: '2018-11-01-112200'
+            migration: '2018-11-01-135058'
       dbCredentials:
         host: '%env.MANGOWEB_DB_HOST%'
         port: '5432'

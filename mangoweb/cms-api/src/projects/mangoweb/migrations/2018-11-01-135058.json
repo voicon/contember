@@ -79,10 +79,10 @@
 		{
 			"modification": "createEntity",
 			"entity": {
-				"name": "Location",
+				"name": "ContactLocation",
 				"primary": "id",
 				"primaryColumn": "id",
-				"tableName": "location",
+				"tableName": "contact_location",
 				"fields": {
 					"id": {
 						"name": "id",
@@ -98,10 +98,86 @@
 		{
 			"modification": "createEntity",
 			"entity": {
-				"name": "LocationLocale",
+				"name": "ContactLocationLocale",
 				"primary": "id",
 				"primaryColumn": "id",
-				"tableName": "location_locale",
+				"tableName": "contact_location_locale",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "Footer",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "footer",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "FooterLocale",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "footer_locale",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "FooterButton",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "footer_button",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "FooterButtonLocale",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "footer_button_locale",
 				"fields": {
 					"id": {
 						"name": "id",
@@ -178,44 +254,6 @@
 				"primary": "id",
 				"primaryColumn": "id",
 				"tableName": "front_page_featured_client_locale",
-				"fields": {
-					"id": {
-						"name": "id",
-						"columnName": "id",
-						"nullable": false,
-						"type": "Uuid",
-						"columnType": "uuid"
-					}
-				},
-				"unique": {}
-			}
-		},
-		{
-			"modification": "createEntity",
-			"entity": {
-				"name": "FrontPageButton",
-				"primary": "id",
-				"primaryColumn": "id",
-				"tableName": "front_page_button",
-				"fields": {
-					"id": {
-						"name": "id",
-						"columnName": "id",
-						"nullable": false,
-						"type": "Uuid",
-						"columnType": "uuid"
-					}
-				},
-				"unique": {}
-			}
-		},
-		{
-			"modification": "createEntity",
-			"entity": {
-				"name": "FrontPageButtonLocale",
-				"primary": "id",
-				"primaryColumn": "id",
-				"tableName": "front_page_button_locale",
 				"fields": {
 					"id": {
 						"name": "id",
@@ -497,44 +535,6 @@
 		{
 			"modification": "createEntity",
 			"entity": {
-				"name": "ContactLocationLocale",
-				"primary": "id",
-				"primaryColumn": "id",
-				"tableName": "contact_location_locale",
-				"fields": {
-					"id": {
-						"name": "id",
-						"columnName": "id",
-						"nullable": false,
-						"type": "Uuid",
-						"columnType": "uuid"
-					}
-				},
-				"unique": {}
-			}
-		},
-		{
-			"modification": "createEntity",
-			"entity": {
-				"name": "ContactLocation",
-				"primary": "id",
-				"primaryColumn": "id",
-				"tableName": "contact_location",
-				"fields": {
-					"id": {
-						"name": "id",
-						"columnName": "id",
-						"nullable": false,
-						"type": "Uuid",
-						"columnType": "uuid"
-					}
-				},
-				"unique": {}
-			}
-		},
-		{
-			"modification": "createEntity",
-			"entity": {
 				"name": "ContactPage",
 				"primary": "id",
 				"primaryColumn": "id",
@@ -616,27 +616,6 @@
 				"nullable": true,
 				"type": "String",
 				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createRelation",
-			"entityName": "Video",
-			"owningSide": {
-				"name": "FrontPage",
-				"target": "FrontPage",
-				"inversedBy": "inHouseVideos",
-				"nullable": true,
-				"type": "ManyHasOne",
-				"joiningColumn": {
-					"columnName": "front_page_id",
-					"onDelete": "restrict"
-				}
-			},
-			"inverseSide": {
-				"name": "inHouseVideos",
-				"ownedBy": "FrontPage",
-				"type": "OneHasMany",
-				"target": "Video"
 			}
 		},
 		{
@@ -834,17 +813,6 @@
 			"modification": "createColumn",
 			"entityName": "FrontPageLocale",
 			"field": {
-				"name": "contactButtonText",
-				"columnName": "contact_button_text",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "FrontPageLocale",
-			"field": {
 				"name": "videosTitle",
 				"columnName": "videos_title",
 				"nullable": true,
@@ -864,50 +832,51 @@
 			}
 		},
 		{
-			"modification": "createRelation",
-			"entityName": "Location",
-			"owningSide": {
-				"name": "FrontPage",
-				"target": "FrontPage",
-				"inversedBy": "locations",
-				"nullable": false,
-				"type": "ManyHasOne",
-				"joiningColumn": {
-					"columnName": "front_page_id",
-					"onDelete": "restrict"
-				}
-			},
-			"inverseSide": {
-				"name": "locations",
-				"ownedBy": "FrontPage",
-				"type": "OneHasMany",
-				"target": "Location"
+			"modification": "createColumn",
+			"entityName": "ContactLocation",
+			"field": {
+				"name": "email",
+				"columnName": "email",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocation",
+			"field": {
+				"name": "phoneNumber",
+				"columnName": "phone_number",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
 			}
 		},
 		{
 			"modification": "createRelation",
-			"entityName": "LocationLocale",
+			"entityName": "ContactLocationLocale",
 			"owningSide": {
-				"name": "location",
-				"target": "Location",
+				"name": "contactLocation",
+				"target": "ContactLocation",
 				"inversedBy": "locales",
 				"nullable": false,
 				"type": "ManyHasOne",
 				"joiningColumn": {
-					"columnName": "location_id",
+					"columnName": "contact_location_id",
 					"onDelete": "restrict"
 				}
 			},
 			"inverseSide": {
 				"name": "locales",
-				"ownedBy": "location",
+				"ownedBy": "contactLocation",
 				"type": "OneHasMany",
-				"target": "LocationLocale"
+				"target": "ContactLocationLocale"
 			}
 		},
 		{
 			"modification": "createColumn",
-			"entityName": "LocationLocale",
+			"entityName": "ContactLocationLocale",
 			"field": {
 				"name": "locale",
 				"columnName": "locale",
@@ -919,7 +888,7 @@
 		},
 		{
 			"modification": "createColumn",
-			"entityName": "LocationLocale",
+			"entityName": "ContactLocationLocale",
 			"field": {
 				"name": "title",
 				"columnName": "title",
@@ -930,10 +899,32 @@
 		},
 		{
 			"modification": "createColumn",
-			"entityName": "LocationLocale",
+			"entityName": "ContactLocationLocale",
 			"field": {
-				"name": "text",
-				"columnName": "text",
+				"name": "entity",
+				"columnName": "entity",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocationLocale",
+			"field": {
+				"name": "address",
+				"columnName": "address",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocationLocale",
+			"field": {
+				"name": "additionalText",
+				"columnName": "additional_text",
 				"nullable": true,
 				"type": "String",
 				"columnType": "text"
@@ -941,13 +932,177 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
-			"entityName": "LocationLocale",
+			"entityName": "ContactLocationLocale",
 			"unique": {
 				"fields": [
-					"location",
+					"contactLocation",
 					"locale"
 				],
-				"name": "unique_LocationLocale_location_locale_3eac0e"
+				"name": "unique_ContactLocationLocale_contactLocation_locale_da4389"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Footer",
+			"field": {
+				"name": "unique",
+				"columnName": "unique",
+				"nullable": false,
+				"type": "Enum",
+				"columnType": "one",
+				"enumName": "one"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "Footer",
+			"unique": {
+				"fields": [
+					"unique"
+				],
+				"name": "unique_Footer_unique_c0f335"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FooterLocale",
+			"owningSide": {
+				"name": "footer",
+				"target": "Footer",
+				"inversedBy": "locales",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "footer_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locales",
+				"ownedBy": "footer",
+				"type": "OneHasMany",
+				"target": "FooterLocale"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FooterLocale",
+			"field": {
+				"name": "locale",
+				"columnName": "locale",
+				"nullable": true,
+				"type": "Enum",
+				"columnType": "locale",
+				"enumName": "locale"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FooterLocale",
+			"field": {
+				"name": "contactButtonText",
+				"columnName": "contact_button_text",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "FooterLocale",
+			"unique": {
+				"fields": [
+					"footer",
+					"locale"
+				],
+				"name": "unique_FooterLocale_footer_locale_95872c"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FooterButton",
+			"owningSide": {
+				"name": "Footer",
+				"target": "Footer",
+				"inversedBy": "buttons",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "footer_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "buttons",
+				"ownedBy": "Footer",
+				"type": "OneHasMany",
+				"target": "FooterButton"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FooterButton",
+			"field": {
+				"name": "url",
+				"columnName": "url",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FooterButtonLocale",
+			"owningSide": {
+				"name": "footerButton",
+				"target": "FooterButton",
+				"inversedBy": "locales",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "footer_button_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "locales",
+				"ownedBy": "footerButton",
+				"type": "OneHasMany",
+				"target": "FooterButtonLocale"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FooterButtonLocale",
+			"field": {
+				"name": "label",
+				"columnName": "label",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FooterButtonLocale",
+			"field": {
+				"name": "locale",
+				"columnName": "locale",
+				"nullable": true,
+				"type": "Enum",
+				"columnType": "locale",
+				"enumName": "locale"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "FooterButtonLocale",
+			"unique": {
+				"fields": [
+					"footerButton",
+					"locale"
+				],
+				"name": "unique_FooterButtonLocale_footerButton_locale_2bb1d7"
 			}
 		},
 		{
@@ -1150,93 +1305,6 @@
 					"locale"
 				],
 				"name": "unique_FrontPageFeaturedClientLocale_frontPageFeaturedClient_locale_db0ddb"
-			}
-		},
-		{
-			"modification": "createRelation",
-			"entityName": "FrontPageButton",
-			"owningSide": {
-				"name": "FrontPage",
-				"target": "FrontPage",
-				"inversedBy": "buttons",
-				"nullable": false,
-				"type": "ManyHasOne",
-				"joiningColumn": {
-					"columnName": "front_page_id",
-					"onDelete": "restrict"
-				}
-			},
-			"inverseSide": {
-				"name": "buttons",
-				"ownedBy": "FrontPage",
-				"type": "OneHasMany",
-				"target": "FrontPageButton"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "FrontPageButton",
-			"field": {
-				"name": "url",
-				"columnName": "url",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createRelation",
-			"entityName": "FrontPageButtonLocale",
-			"owningSide": {
-				"name": "frontPageButton",
-				"target": "FrontPageButton",
-				"inversedBy": "locales",
-				"nullable": false,
-				"type": "ManyHasOne",
-				"joiningColumn": {
-					"columnName": "front_page_button_id",
-					"onDelete": "restrict"
-				}
-			},
-			"inverseSide": {
-				"name": "locales",
-				"ownedBy": "frontPageButton",
-				"type": "OneHasMany",
-				"target": "FrontPageButtonLocale"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "FrontPageButtonLocale",
-			"field": {
-				"name": "label",
-				"columnName": "label",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "FrontPageButtonLocale",
-			"field": {
-				"name": "locale",
-				"columnName": "locale",
-				"nullable": true,
-				"type": "Enum",
-				"columnType": "locale",
-				"enumName": "locale"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "FrontPageButtonLocale",
-			"unique": {
-				"fields": [
-					"frontPageButton",
-					"locale"
-				],
-				"name": "unique_FrontPageButtonLocale_frontPageButton_locale_2174c9"
 			}
 		},
 		{
@@ -2057,160 +2125,6 @@
 					"locale"
 				],
 				"name": "unique_ReferencesPageLocale_referencesPage_locale_a824e1"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocationLocale",
-			"field": {
-				"name": "locale",
-				"columnName": "locale",
-				"nullable": true,
-				"type": "Enum",
-				"columnType": "locale",
-				"enumName": "locale"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocationLocale",
-			"field": {
-				"name": "topTitle",
-				"columnName": "top_title",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocationLocale",
-			"field": {
-				"name": "address",
-				"columnName": "address",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocationLocale",
-			"field": {
-				"name": "email",
-				"columnName": "email",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocationLocale",
-			"field": {
-				"name": "phone",
-				"columnName": "phone",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocationLocale",
-			"field": {
-				"name": "bottomTitle",
-				"columnName": "bottom_title",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocationLocale",
-			"field": {
-				"name": "company",
-				"columnName": "company",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocationLocale",
-			"field": {
-				"name": "text",
-				"columnName": "text",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createRelation",
-			"entityName": "ContactLocationLocale",
-			"owningSide": {
-				"name": "contactLocation",
-				"target": "ContactLocation",
-				"inversedBy": "locales",
-				"nullable": false,
-				"type": "ManyHasOne",
-				"joiningColumn": {
-					"columnName": "contact_location_id",
-					"onDelete": "restrict"
-				}
-			},
-			"inverseSide": {
-				"name": "locales",
-				"ownedBy": "contactLocation",
-				"type": "OneHasMany",
-				"target": "ContactLocationLocale"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "ContactLocationLocale",
-			"unique": {
-				"fields": [
-					"contactLocation",
-					"locale"
-				],
-				"name": "unique_ContactLocationLocale_contactLocation_locale_da4389"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocation",
-			"field": {
-				"name": "location",
-				"columnName": "location",
-				"nullable": true,
-				"type": "Enum",
-				"columnType": "location",
-				"enumName": "location"
-			}
-		},
-		{
-			"modification": "createColumn",
-			"entityName": "ContactLocation",
-			"field": {
-				"name": "slug",
-				"columnName": "slug",
-				"nullable": true,
-				"type": "String",
-				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "ContactLocation",
-			"unique": {
-				"fields": [
-					"location"
-				],
-				"name": "unique_ContactLocation_location_95b0ef"
 			}
 		},
 		{

@@ -26,18 +26,46 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "front_page_locale"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
-CREATE TABLE "location" (
+CREATE TABLE "contact_location" (
   "id" uuid PRIMARY KEY NOT NULL
 );
 CREATE TRIGGER "log_event"
-  AFTER INSERT OR UPDATE OR DELETE ON "location"
+  AFTER INSERT OR UPDATE OR DELETE ON "contact_location"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
-CREATE TABLE "location_locale" (
+CREATE TABLE "contact_location_locale" (
   "id" uuid PRIMARY KEY NOT NULL
 );
 CREATE TRIGGER "log_event"
-  AFTER INSERT OR UPDATE OR DELETE ON "location_locale"
+  AFTER INSERT OR UPDATE OR DELETE ON "contact_location_locale"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"();
+CREATE TABLE "footer" (
+  "id" uuid PRIMARY KEY NOT NULL
+);
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "footer"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"();
+CREATE TABLE "footer_locale" (
+  "id" uuid PRIMARY KEY NOT NULL
+);
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "footer_locale"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"();
+CREATE TABLE "footer_button" (
+  "id" uuid PRIMARY KEY NOT NULL
+);
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "footer_button"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"();
+CREATE TABLE "footer_button_locale" (
+  "id" uuid PRIMARY KEY NOT NULL
+);
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "footer_button_locale"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
 CREATE TABLE "front_page_reference_tile" (
@@ -66,20 +94,6 @@ CREATE TABLE "front_page_featured_client_locale" (
 );
 CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "front_page_featured_client_locale"
-  FOR EACH ROW
-  EXECUTE PROCEDURE "system"."trigger_event"();
-CREATE TABLE "front_page_button" (
-  "id" uuid PRIMARY KEY NOT NULL
-);
-CREATE TRIGGER "log_event"
-  AFTER INSERT OR UPDATE OR DELETE ON "front_page_button"
-  FOR EACH ROW
-  EXECUTE PROCEDURE "system"."trigger_event"();
-CREATE TABLE "front_page_button_locale" (
-  "id" uuid PRIMARY KEY NOT NULL
-);
-CREATE TRIGGER "log_event"
-  AFTER INSERT OR UPDATE OR DELETE ON "front_page_button_locale"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
 CREATE TABLE "page_seo" (
@@ -180,20 +194,6 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "references_page_locale"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
-CREATE TABLE "contact_location_locale" (
-  "id" uuid PRIMARY KEY NOT NULL
-);
-CREATE TRIGGER "log_event"
-  AFTER INSERT OR UPDATE OR DELETE ON "contact_location_locale"
-  FOR EACH ROW
-  EXECUTE PROCEDURE "system"."trigger_event"();
-CREATE TABLE "contact_location" (
-  "id" uuid PRIMARY KEY NOT NULL
-);
-CREATE TRIGGER "log_event"
-  AFTER INSERT OR UPDATE OR DELETE ON "contact_location"
-  FOR EACH ROW
-  EXECUTE PROCEDURE "system"."trigger_event"();
 CREATE TABLE "contact_page" (
   "id" uuid PRIMARY KEY NOT NULL
 );
@@ -215,9 +215,6 @@ ALTER TABLE "image"
   ADD "url" text;
 ALTER TABLE "video"
   ADD "vimeo_id" text;
-ALTER TABLE "video"
-  ADD "front_page_id" uuid REFERENCES "front_page"("id") ON DELETE restrict;
-CREATE  INDEX  "video_front_page_id_index" ON "video" ("front_page_id");
 ALTER TABLE "front_page"
   ADD "unique" "one" NOT NULL;
 ALTER TABLE "front_page"
@@ -248,25 +245,55 @@ ALTER TABLE "front_page_locale"
 ALTER TABLE "front_page_locale"
   ADD "featured_clients_title" text;
 ALTER TABLE "front_page_locale"
-  ADD "contact_button_text" text;
-ALTER TABLE "front_page_locale"
   ADD "videos_title" text;
 ALTER TABLE "front_page_locale"
   ADD CONSTRAINT "unique_FrontPageLocale_frontPage_locale_7c31c3" UNIQUE ("front_page_id", "locale");
-ALTER TABLE "location"
-  ADD "front_page_id" uuid NOT NULL REFERENCES "front_page"("id") ON DELETE restrict;
-CREATE  INDEX  "location_front_page_id_index" ON "location" ("front_page_id");
-ALTER TABLE "location_locale"
-  ADD "location_id" uuid NOT NULL REFERENCES "location"("id") ON DELETE restrict;
-CREATE  INDEX  "location_locale_location_id_index" ON "location_locale" ("location_id");
-ALTER TABLE "location_locale"
+ALTER TABLE "contact_location"
+  ADD "email" text;
+ALTER TABLE "contact_location"
+  ADD "phone_number" text;
+ALTER TABLE "contact_location_locale"
+  ADD "contact_location_id" uuid NOT NULL REFERENCES "contact_location"("id") ON DELETE restrict;
+CREATE  INDEX  "contact_location_locale_contact_location_id_index" ON "contact_location_locale" ("contact_location_id");
+ALTER TABLE "contact_location_locale"
   ADD "locale" "locale";
-ALTER TABLE "location_locale"
+ALTER TABLE "contact_location_locale"
   ADD "title" text;
-ALTER TABLE "location_locale"
-  ADD "text" text;
-ALTER TABLE "location_locale"
-  ADD CONSTRAINT "unique_LocationLocale_location_locale_3eac0e" UNIQUE ("location_id", "locale");
+ALTER TABLE "contact_location_locale"
+  ADD "entity" text;
+ALTER TABLE "contact_location_locale"
+  ADD "address" text;
+ALTER TABLE "contact_location_locale"
+  ADD "additional_text" text;
+ALTER TABLE "contact_location_locale"
+  ADD CONSTRAINT "unique_ContactLocationLocale_contactLocation_locale_da4389" UNIQUE ("contact_location_id", "locale");
+ALTER TABLE "footer"
+  ADD "unique" "one" NOT NULL;
+ALTER TABLE "footer"
+  ADD CONSTRAINT "unique_Footer_unique_c0f335" UNIQUE ("unique");
+ALTER TABLE "footer_locale"
+  ADD "footer_id" uuid NOT NULL REFERENCES "footer"("id") ON DELETE restrict;
+CREATE  INDEX  "footer_locale_footer_id_index" ON "footer_locale" ("footer_id");
+ALTER TABLE "footer_locale"
+  ADD "locale" "locale";
+ALTER TABLE "footer_locale"
+  ADD "contact_button_text" text;
+ALTER TABLE "footer_locale"
+  ADD CONSTRAINT "unique_FooterLocale_footer_locale_95872c" UNIQUE ("footer_id", "locale");
+ALTER TABLE "footer_button"
+  ADD "footer_id" uuid NOT NULL REFERENCES "footer"("id") ON DELETE restrict;
+CREATE  INDEX  "footer_button_footer_id_index" ON "footer_button" ("footer_id");
+ALTER TABLE "footer_button"
+  ADD "url" text;
+ALTER TABLE "footer_button_locale"
+  ADD "footer_button_id" uuid NOT NULL REFERENCES "footer_button"("id") ON DELETE restrict;
+CREATE  INDEX  "footer_button_locale_footer_button_id_index" ON "footer_button_locale" ("footer_button_id");
+ALTER TABLE "footer_button_locale"
+  ADD "label" text;
+ALTER TABLE "footer_button_locale"
+  ADD "locale" "locale";
+ALTER TABLE "footer_button_locale"
+  ADD CONSTRAINT "unique_FooterButtonLocale_footerButton_locale_2bb1d7" UNIQUE ("footer_button_id", "locale");
 ALTER TABLE "front_page_reference_tile"
   ADD "front_page_locale_id" uuid NOT NULL REFERENCES "front_page_locale"("id") ON DELETE restrict;
 CREATE  INDEX  "front_page_reference_tile_front_page_locale_id_index" ON "front_page_reference_tile" ("front_page_locale_id");
@@ -301,20 +328,6 @@ ALTER TABLE "front_page_featured_client_locale"
   ADD "locale" "locale";
 ALTER TABLE "front_page_featured_client_locale"
   ADD CONSTRAINT "unique_FrontPageFeaturedClientLocale_frontPageFeaturedClient_locale_db0ddb" UNIQUE ("front_page_featured_client_id", "locale");
-ALTER TABLE "front_page_button"
-  ADD "front_page_id" uuid NOT NULL REFERENCES "front_page"("id") ON DELETE restrict;
-CREATE  INDEX  "front_page_button_front_page_id_index" ON "front_page_button" ("front_page_id");
-ALTER TABLE "front_page_button"
-  ADD "url" text;
-ALTER TABLE "front_page_button_locale"
-  ADD "front_page_button_id" uuid NOT NULL REFERENCES "front_page_button"("id") ON DELETE restrict;
-CREATE  INDEX  "front_page_button_locale_front_page_button_id_index" ON "front_page_button_locale" ("front_page_button_id");
-ALTER TABLE "front_page_button_locale"
-  ADD "label" text;
-ALTER TABLE "front_page_button_locale"
-  ADD "locale" "locale";
-ALTER TABLE "front_page_button_locale"
-  ADD CONSTRAINT "unique_FrontPageButtonLocale_frontPageButton_locale_2174c9" UNIQUE ("front_page_button_id", "locale");
 ALTER TABLE "page_seo"
   ADD "og_image_id" uuid UNIQUE NOT NULL REFERENCES "image"("id") ON DELETE restrict;
 ALTER TABLE "page_seo_locale"
@@ -449,33 +462,6 @@ ALTER TABLE "references_page_locale"
   ADD "quote" text;
 ALTER TABLE "references_page_locale"
   ADD CONSTRAINT "unique_ReferencesPageLocale_referencesPage_locale_a824e1" UNIQUE ("references_page_id", "locale");
-ALTER TABLE "contact_location_locale"
-  ADD "locale" "locale";
-ALTER TABLE "contact_location_locale"
-  ADD "top_title" text;
-ALTER TABLE "contact_location_locale"
-  ADD "address" text;
-ALTER TABLE "contact_location_locale"
-  ADD "email" text;
-ALTER TABLE "contact_location_locale"
-  ADD "phone" text;
-ALTER TABLE "contact_location_locale"
-  ADD "bottom_title" text;
-ALTER TABLE "contact_location_locale"
-  ADD "company" text;
-ALTER TABLE "contact_location_locale"
-  ADD "text" text;
-ALTER TABLE "contact_location_locale"
-  ADD "contact_location_id" uuid NOT NULL REFERENCES "contact_location"("id") ON DELETE restrict;
-CREATE  INDEX  "contact_location_locale_contact_location_id_index" ON "contact_location_locale" ("contact_location_id");
-ALTER TABLE "contact_location_locale"
-  ADD CONSTRAINT "unique_ContactLocationLocale_contactLocation_locale_da4389" UNIQUE ("contact_location_id", "locale");
-ALTER TABLE "contact_location"
-  ADD "location" "location";
-ALTER TABLE "contact_location"
-  ADD "slug" text;
-ALTER TABLE "contact_location"
-  ADD CONSTRAINT "unique_ContactLocation_location_95b0ef" UNIQUE ("location");
 ALTER TABLE "contact_page"
   ADD "seo_id" uuid UNIQUE NOT NULL REFERENCES "page_seo"("id") ON DELETE restrict;
 ALTER TABLE "contact_page_locale"

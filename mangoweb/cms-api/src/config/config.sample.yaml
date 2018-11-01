@@ -18,7 +18,7 @@ projects:
           - uuid: e8b8963c-49a0-46f7-89c3-e13f97cc9d77
             slug: prod-preview
             name: Production Preview
-            migration: '2018-09-03-112008'
+            migration: '2018-11-01-131019'
       dbCredentials:
         host: '%env.CMS_DB_HOST%'
         port: '5432'
@@ -38,7 +38,7 @@ projects:
           - uuid: 7c78c41a-6a71-4adc-ae9a-0b8592480619
             slug: preview
             name: Preview
-            migration: '2018-11-01-112200'
+            migration: '2018-11-01-135058'
       dbCredentials:
         host: '%env.MANGOWEB_DB_HOST%'
         port: '5432'
