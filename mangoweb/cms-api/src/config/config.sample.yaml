@@ -31,6 +31,26 @@ projects:
         credentials:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
+    - uuid: 2b71cf74-5271-4142-b258-b2ce14722187
+      slug: mangoweb
+      name: manGoweb
+      stages:
+          - uuid: 7c78c41a-6a71-4adc-ae9a-0b8592480619
+            slug: preview
+            name: Preview
+            migration: '2018-11-01-112200'
+      dbCredentials:
+        host: '%env.MANGOWEB_DB_HOST%'
+        port: '5432'
+        user: '%env.MANGOWEB_DB_USER%'
+        password: '%env.MANGOWEB_DB_PASSWORD%'
+        database: '%env.MANGOWEB_DB_NAME%'
+      s3:
+        bucket: 'cms-api.mgw.cz'
+        prefix: 'dev'
+        credentials:
+          key: 'AKIAIO53JZYNOKXXYMDA'
+          secret: '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'
 
 server:
     port: '%env.SERVER_PORT%'

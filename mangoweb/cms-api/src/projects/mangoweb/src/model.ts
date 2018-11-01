@@ -3,11 +3,12 @@ import { Acl, Model, Schema } from 'cms-common'
 
 const builder = new SchemaBuilder()
 builder.enum('one', ['one'])
-builder.enum('location', ['prague', 'london'])
 builder.enum('locale', ['cs', 'en'])
 builder.enum('page', ['frontPage', 'team', 'whatWeDo', 'references', 'contact'])
 
 builder.entity('Image', entity => entity.column('url'))
+
+builder.entity('Video', entity => entity.column('vimeoId'))
 
 // TODO: We can use this once #62 is resolved
 //builder.entity('Language', entity =>
@@ -22,11 +23,12 @@ builder.entity('FrontPage', entity =>
 				.unique()
 				.notNull()
 		)
-		.column('vimeoId')
+		.oneHasOne('introVideo', relation => relation.target('Video').notNull())
 		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
-		.oneHasMany('locations', relation => relation.target('FrontPageLocation').ownerNotNull())
+		.oneHasMany('locations', relation => relation.target('Location').ownerNotNull())
 		.oneHasMany('buttons', relation => relation.target('FrontPageButton').ownerNotNull())
 		.oneHasOne('seo', relation => relation.target('PageSeo').inversedNotNull())
+		.oneHasMany('inHouseVideos', relation => relation.target('Video'))
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FrontPageLocale')
@@ -35,25 +37,36 @@ builder.entity('FrontPage', entity =>
 		)
 )
 
-builder.entity('FrontPageLocation', entity =>
+builder.entity('FrontPageLocale', entity =>
 	entity
-		.column('location', column =>
-			column
-				.type(Model.ColumnType.Enum, { enumName: 'location' })
-				.notNull()
-				.unique()
-		)
+		.unique(['frontPage', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.column('introLabel')
+		.column('introHeading')
+		.column('introBubbleText')
+		.column('whatWeDoLabel')
+		.column('whatWeDoTitle')
+		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile').ownerNotNull())
+		.column('whatWeDoAlso')
+		.column('featuredClientsLabel')
+		.column('featuredClientsTitle')
+		.column('contactButtonText')
+		.column('videosTitle')
+)
+
+builder.entity('Location', entity =>
+	entity
 		.oneHasMany('locales', relation =>
 			relation
-				.target('FrontPageLocationLocale')
+				.target('LocationLocale')
 				.ownerNotNull()
-				.ownedBy('frontPageLocation')
+				.ownedBy('location')
 		)
 )
 
-builder.entity('FrontPageLocationLocale', entity =>
+builder.entity('LocationLocale', entity =>
 	entity
-		.unique(['frontPageLocation', 'locale'])
+		.unique(['location', 'locale'])
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
 		.column('text')
@@ -127,23 +140,6 @@ builder.entity('PageSeoLocale', entity =>
 		.column('description')
 		.column('ogTitle')
 		.column('ogDescription')
-)
-
-builder.entity('FrontPageLocale', entity =>
-	entity
-		.unique(['frontPage', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('introShort')
-		.column('introMain')
-		.column('introLong')
-		.column('referencesTitle')
-		.column('buttonLabel')
-		.column('buttonUrl')
-		.column('locationsTitle')
-		.column('featuredClientsText')
-		.column('contactButtonLabel')
-		.column('contactButtonUrl')
-		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile').ownerNotNull())
 )
 
 builder.entity('MenuItem', entity =>
