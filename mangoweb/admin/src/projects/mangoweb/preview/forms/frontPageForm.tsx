@@ -2,26 +2,48 @@ import { H2, H3 } from '@blueprintjs/core'
 import { RichTextField, SideDimensions, TextField, Variable } from 'cms-admin'
 import * as React from 'react'
 import { LangDimension } from '../dimensions'
-
+import createVideoField from './createVideoField'
 
 const frontPageForm = (
 	<>
 		<H2>Intro</H2>
-		<TextField name="vimeoId" label="Vimeo ID for the title video"/>
+		{createVideoField('introVideo', 'Vimeo ID for the title video')}
 		<SideDimensions
 			dimension="lang"
 			variableName="currentLang"
 			variables={{
 				locale: env => `locales(locale=${env.getValue('currentLang')})`,
-				heading: env => ({
-					en: 'English',
-					cs: 'Czech',
-				}[env.getValue('currentLang') as LangDimension]),
+				flag: env =>
+					({
+						en: <>🇬🇧</>,
+						cs: <>🇨🇿</>
+					}[env.getValue('currentLang') as LangDimension])
 			}}
 		>
-			<H3><Variable name="heading" /></H3>
-			<TextField name="$locale.introShort" label="Position" />
-			<RichTextField name="$locale.introLong" label="Short bio" />
+			<TextField
+				name="$locale.introLabel"
+				label={
+					<>
+						<Variable name="flag" /> Label
+					</>
+				}
+			/>
+			<TextField
+				name="$locale.introHeading"
+				label={
+					<>
+						<Variable name="flag" /> Heading
+					</>
+				}
+			/>
+			<RichTextField
+				name="$locale.introBubbleText"
+				label={
+					<>
+						<Variable name="flag" /> Bubble text
+					</>
+				}
+			/>
 		</SideDimensions>
 	</>
 )

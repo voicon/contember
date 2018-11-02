@@ -16,14 +16,21 @@ export default (
 			</Callout>
 		</GenericPage>
 
-		{/*<EditPage entity="FrontPage">
-			<H1>Front page</H1>
+		<EditPage
+			entity="FrontPage"
+			rendererProps={{
+				title: 'Front Page'
+			}}
+		>
 			{frontPageForm}
-		</EditPage>*/}
+		</EditPage>
 
-		<MultiEditPage entity="ContactLocation" rendererProps={{
-			title: 'Contact Locations'
-		}}>
+		<MultiEditPage
+			entity="ContactLocation"
+			rendererProps={{
+				title: 'Contact Locations'
+			}}
+		>
 			{contactLocationForm}
 		</MultiEditPage>
 
@@ -31,14 +38,24 @@ export default (
 			<FieldText name="shortName" />
 			<PageLinkById change={id => ({ name: 'edit_person', params: { id } })}>Edit this mofo</PageLinkById>
 		</ListPage>
-		<CreatePage entity="Person" rendererProps={{
-			title: 'Create a new team member'
-		}}>
+		<CreatePage
+			entity="Person"
+			rendererProps={{
+				title: 'Create a new team member'
+			}}
+		>
 			{personForm}
 		</CreatePage>
-		<EditPage entity="Person" rendererProps={{
-			title: <>Edit <FieldText name="shortName" /></>
-		}}>
+		<EditPage
+			entity="Person"
+			rendererProps={{
+				title: (
+					<>
+						Edit <FieldText name="shortName" />
+					</>
+				)
+			}}
+		>
 			{personForm}
 		</EditPage>
 	</Pages>
