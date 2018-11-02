@@ -23,7 +23,7 @@ builder.entity('FrontPage', entity =>
 				.unique()
 				.notNull()
 		)
-		.oneHasOne('introVideo', relation => relation.target('Video').notNull())
+		.oneHasOne('introVideo', relation => relation.target('Video'))
 		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
 		.oneHasOne('seo', relation => relation.target('PageSeo').inversedNotNull())
 		.oneHasMany('locales', relation =>
@@ -116,7 +116,7 @@ builder.entity('FooterButtonLocale', entity =>
 
 builder.entity('FrontPageReferenceTile', entity =>
 	entity
-		.manyHasOne('image', relation => relation.target('Image').notNull())
+		.manyHasOne('image', relation => relation.target('Image'))
 		.column('order', column => column.type(Model.ColumnType.Int))
 		.oneHasMany('locales', relation =>
 			relation
@@ -134,7 +134,7 @@ builder.entity('FrontPageReferenceTileLocale', entity =>
 )
 
 builder.entity('FrontPageFeaturedClient', entity =>
-	entity.manyHasOne('image', relation => relation.target('Image').notNull()).oneHasMany('locales', relation =>
+	entity.manyHasOne('image', relation => relation.target('Image')).oneHasMany('locales', relation =>
 		relation
 			.target('FrontPageFeaturedClientLocale')
 			.ownerNotNull()
@@ -150,7 +150,7 @@ builder.entity('FrontPageFeaturedClientLocale', entity =>
 )
 
 builder.entity('PageSeo', entity =>
-	entity.oneHasOne('ogImage', relation => relation.target('Image').notNull()).oneHasMany('locales', relation =>
+	entity.oneHasOne('ogImage', relation => relation.target('Image')).oneHasMany('locales', relation =>
 		relation
 			.target('PageSeoLocale')
 			.ownerNotNull()
@@ -188,7 +188,7 @@ builder.entity('MenuItemLocale', entity =>
 )
 
 builder.entity('TeamPage', entity =>
-	entity.oneHasOne('seo', relation => relation.target('PageSeo').notNull()).oneHasMany('locales', relation =>
+	entity.oneHasOne('seo', relation => relation.target('PageSeo')).oneHasMany('locales', relation =>
 		relation
 			.target('TeamPageLocale')
 			.ownerNotNull()
@@ -207,8 +207,8 @@ builder.entity('Person', entity =>
 	entity
 		.column('shortName')
 		.column('longName')
-		.manyHasOne('imageBig', relation => relation.target('Image').notNull())
-		.manyHasOne('imageSquare', relation => relation.target('Image').notNull())
+		.manyHasOne('imageBig', relation => relation.target('Image'))
+		.manyHasOne('imageSquare', relation => relation.target('Image'))
 		.column('faceOffset', column => column.type(Model.ColumnType.Double))
 		.column('phoneNumber')
 		.column('email')
@@ -243,7 +243,7 @@ builder.entity('WhatWeDoPage', entity =>
 				.ownerNotNull()
 		)
 		.column('buttonUrl')
-		.oneHasOne('seo', relation => relation.target('PageSeo').notNull())
+		.oneHasOne('seo', relation => relation.target('PageSeo'))
 )
 
 builder.entity('WhatWeDoPageLocale', entity =>
@@ -269,7 +269,7 @@ builder.entity('ReferenceLocale', entity =>
 // Todo: Allow video references
 builder.entity('Reference', entity =>
 	entity
-		.manyHasOne('image', relation => relation.target('Image').notNull())
+		.manyHasOne('image', relation => relation.target('Image'))
 		.oneHasMany('locales', relation =>
 			relation
 				.target('ReferenceLocale')
@@ -297,7 +297,7 @@ builder.entity('ReferencesPageLocale', entity =>
 )
 
 builder.entity('ContactPage', entity =>
-	entity.oneHasOne('seo', relation => relation.target('PageSeo').notNull()).oneHasMany('locales', relation =>
+	entity.oneHasOne('seo', relation => relation.target('PageSeo')).oneHasMany('locales', relation =>
 		relation
 			.target('ContactPageLocale')
 			.ownedBy('contactPage')
