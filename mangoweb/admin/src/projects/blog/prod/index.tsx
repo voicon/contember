@@ -13,7 +13,7 @@ import {
 	EditPage,
 	SelectField,
 	Repeater,
-	TextareaField,
+	TextAreaField,
 	RichTextField
 } from 'cms-admin'
 
@@ -31,7 +31,7 @@ export default (
 		<EditPage entity="Page" layout={Layout}>
 			<TextField name="title" label="Title" large={true} />
 			<TextField name="urlSlug" label="URL" inlineLabel={true} />
-			<TextareaField name="perex" label="Perex" singleLine={true} />
+			<TextAreaField name="perex" label="Perex" singleLine={true} />
 			<RichTextField name="content" label="Content" allowLineBreaks={false} />
 			<h2>Featured links</h2>
 			<Repeater field="featuredLinks">
