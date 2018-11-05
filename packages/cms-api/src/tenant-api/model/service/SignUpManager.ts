@@ -2,43 +2,24 @@ import QueryHandler from '../../../core/query/QueryHandler'
 import KnexQueryable from '../../../core/knex/KnexQueryable'
 import PersonByEmailQuery from '../queries/PersonByEmailQuery'
 import { SignUpErrorCode } from '../../schema/types'
-import KnexConnection from '../../../core/knex/KnexConnection'
-import * as uuid from 'uuid'
-import * as bcrypt from 'bcrypt'
+import KnexWrapper from '../../../core/knex/KnexWrapper'
+import CreateIdentityCommand from '../commands/CreateIdentityCommand'
+import CreatePersonCommand from '../commands/CreatePersonCommand'
 
 class SignUpManager {
-	constructor(private readonly queryHandler: QueryHandler<KnexQueryable>, private readonly db: KnexConnection) {}
+	constructor(private readonly queryHandler: QueryHandler<KnexQueryable>, private readonly db: KnexWrapper) {}
 
-	async signUp(email: string, password: string): Promise<SignUpManager.SignUpResult> {
+	async signUp(email: string, password: string, roles: string[] = []): Promise<SignUpManager.SignUpResult> {
 		if (await this.isEmailAlreadyUsed(email)) {
 			return new SignUpManager.SignUpResultError([SignUpErrorCode.EMAIL_ALREADY_EXISTS])
 		}
-
-		const identityId = uuid.v4()
-		const personId = uuid.v4()
-
-		await this.db.transaction(async () => {
-			await this.db
-				.queryBuilder()
-				.into('tenant.identity')
-				.insert({
-					id: identityId,
-					parent_id: null,
-					roles: JSON.stringify([]), // TODO: try without JSON.stringify
-				})
-
-			await this.db
-				.queryBuilder()
-				.into('tenant.person')
-				.insert({
-					id: personId,
-					email: email,
-					password_hash: await bcrypt.hash(password, 10),
-					identity_id: identityId,
-				})
+		const [identityId, personId] = await this.db.transaction(async wrapper => {
+			const identityId = await new CreateIdentityCommand(roles).execute(wrapper)
+			const personId = await new CreatePersonCommand(identityId, email, password).execute(wrapper)
+			return [identityId, personId]
 		})
 
-		return new SignUpManager.SignUpResultOk(personId)
+		return new SignUpManager.SignUpResultOk(personId, identityId)
 	}
 
 	private async isEmailAlreadyUsed(email: string): Promise<boolean> {
@@ -52,11 +33,13 @@ namespace SignUpManager {
 
 	export class SignUpResultOk {
 		readonly ok = true
-		constructor(public readonly personId: string) {}
+
+		constructor(public readonly personId: string, public readonly identityId: string) {}
 	}
 
 	export class SignUpResultError {
 		readonly ok = false
+
 		constructor(public readonly errors: Array<SignUpErrorCode>) {}
 	}
 }

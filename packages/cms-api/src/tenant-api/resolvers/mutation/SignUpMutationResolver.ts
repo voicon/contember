@@ -6,12 +6,17 @@ import QueryHandler from '../../../core/query/QueryHandler'
 import KnexQueryable from '../../../core/knex/KnexQueryable'
 import PersonByIdQuery from '../../model/queries/PersonByIdQuery'
 import ImplementationException from '../../../core/exceptions/ImplementationException'
-import ProjectsByPersonQuery from '../../model/queries/ProjectsByPersonQuery'
+import ProjectsByIdentityQuery from '../../model/queries/ProjectsByIdentityQuery'
+import Actions from '../../model/authorization/Actions'
+import { ForbiddenError } from 'apollo-server-koa'
+import AuthorizationScope from '../../../core/authorization/AuthorizationScope'
+import ApiKeyManager from '../../model/service/ApiKeyManager'
 
 export default class SignUpMutationResolver implements MutationResolvers.Resolvers {
 	constructor(
 		private readonly signUpManager: SignUpManager,
-		private readonly queryHandler: QueryHandler<KnexQueryable>
+		private readonly queryHandler: QueryHandler<KnexQueryable>,
+		private readonly apiKeyManager: ApiKeyManager
 	) {}
 
 	async signUp(
@@ -20,6 +25,9 @@ export default class SignUpMutationResolver implements MutationResolvers.Resolve
 		context: ResolverContext,
 		info: GraphQLResolveInfo
 	): Promise<SignUpResponse> {
+		if (!(await context.isAllowed(new AuthorizationScope.Global(), Actions.PERSON_SIGN_UP))) {
+			throw new ForbiddenError('You are not allowed to sign up')
+		}
 		const result = await this.signUpManager.signUp(args.email, args.password)
 
 		if (!result.ok) {
@@ -31,12 +39,14 @@ export default class SignUpMutationResolver implements MutationResolvers.Resolve
 
 		const [personRow, projectRows] = await Promise.all([
 			this.queryHandler.fetch(new PersonByIdQuery(result.personId)),
-			this.queryHandler.fetch(new ProjectsByPersonQuery(result.personId)),
+			this.queryHandler.fetch(new ProjectsByIdentityQuery(result.identityId)),
 		])
 
 		if (personRow === null) {
 			throw new ImplementationException()
 		}
+
+		await this.apiKeyManager.disableOneOffApiKey(context.apiKeyId)
 
 		return {
 			ok: true,
@@ -45,7 +55,10 @@ export default class SignUpMutationResolver implements MutationResolvers.Resolve
 				person: {
 					id: personRow.id,
 					email: personRow.email,
-					projects: projectRows,
+					identity: {
+						id: result.identityId,
+						projects: projectRows,
+					},
 				},
 			},
 		}

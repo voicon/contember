@@ -8,13 +8,47 @@ const schema: DocumentNode = gql`
 	}
 
 	type Query {
-		me: Person!
+		me: Identity!
 	}
 
 	type Mutation {
+		setup(superadmin: AdminCredentials!): SetupResponse
 		signUp(email: String!, password: String!): SignUpResponse
 		signIn(email: String!, password: String!): SignInResponse
-		addProjectMember(projectId: String!, personId: String!): AddProjectMemberResponse
+		addProjectMember(projectId: String!, identityId: String!, roles: [String!]!): AddProjectMemberResponse
+		updateProjectMemberVariables(
+			projectId: String!
+			identityId: String!
+			variables: [VariableUpdate!]!
+		): UpdateProjectMemberVariablesResponse
+	}
+
+	# === setUp ===
+
+	input AdminCredentials {
+		email: String!
+		password: String!
+	}
+
+	type SetupResponse {
+		ok: Boolean!
+		errors: [SetupErrorCode!]!
+		result: SetupResult
+	}
+
+	type SetupError {
+		code: SetupErrorCode!
+		endPersonMessage: String
+		developerMessage: String
+	}
+
+	enum SetupErrorCode {
+		SETUP_ALREADY_DONE
+	}
+
+	type SetupResult {
+		superadmin: Person!
+		loginKey: ApiKey!
 	}
 
 	# === signUp ===
@@ -75,20 +109,66 @@ const schema: DocumentNode = gql`
 
 	enum AddProjectMemberErrorCode {
 		PROJECT_NOT_FOUND
-		PERSON_NOT_FOUND
+		IDENTITY_NOT_FOUND
 		ALREADY_MEMBER
+	}
+
+	# === updateProjectMemberVariables ===
+
+	input VariableUpdate {
+		name: String!
+		values: [String!]!
+	}
+
+	type UpdateProjectMemberVariablesResponse {
+		ok: Boolean!
+		errors: [UpdateProjectMemberVariablesError!]!
+	}
+
+	type UpdateProjectMemberVariablesError {
+		code: UpdateProjectMemberVariablesErrorCode!
+		endUserMessage: String
+		developerMessage: String
+	}
+
+	enum UpdateProjectMemberVariablesErrorCode {
+		PROJECT_NOT_FOUND
+		IDENTITY_NOT_FOUND
+		VARIABLE_NOT_FOUND
 	}
 
 	# === common ===
 	type Person {
 		id: String!
 		email: String!
+		identity: IdentityWithoutPerson!
+	}
+
+	type PersonWithoutIdentity {
+		id: String!
+		email: String!
+	}
+
+	type Identity {
+		id: String!
+		projects: [Project!]!
+		person: PersonWithoutIdentity
+	}
+
+	type IdentityWithoutPerson {
+		id: String!
 		projects: [Project!]!
 	}
 
 	type Project {
 		id: String!
 		name: String!
+	}
+
+	type ApiKey {
+		id: String!
+		token: String!
+		identity: Identity!
 	}
 `
 

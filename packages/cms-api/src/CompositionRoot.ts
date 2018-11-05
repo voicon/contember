@@ -1,7 +1,5 @@
 import * as knex from 'knex'
 import * as Koa from 'koa'
-import { ApolloServer } from 'apollo-server-koa'
-import typeDefs from './tenant-api/schema/tenant.graphql'
 import SignInMutationResolver from './tenant-api/resolvers/mutation/SignInMutationResolver'
 import KnexConnection from './core/knex/KnexConnection'
 import QueryHandler from './core/query/QueryHandler'
@@ -20,6 +18,15 @@ import ContentMiddlewareFactory from './http/ContentMiddlewareFactory'
 import GraphQlSchemaBuilderFactory from './content-api/graphQLSchema/GraphQlSchemaBuilderFactory'
 import { DatabaseCredentials } from './tenant-api/config'
 import S3 from './utils/S3'
+import AddProjectMemberMutationResolver from './tenant-api/resolvers/mutation/AddProjectMemberMutationResolver'
+import ResolverFactory from './tenant-api/resolvers/ResolverFactory'
+import TimerMiddlewareFactory from './http/TimerMiddlewareFactory'
+import TenantApolloServerFactory from './http/TenantApolloServerFactory'
+import SetupMutationResolver from './tenant-api/resolvers/mutation/SetupMutationResolver'
+import Authorizator from './core/authorization/Authorizator'
+import AccessEvaluator from './core/authorization/AccessEvalutator'
+import PermissionsFactory from './tenant-api/model/authorization/PermissionsFactory'
+import UpdateProjectMemberVariablesMutationResolver from './tenant-api/resolvers/mutation/UpdateProjectMemberVariablesMutationResolver'
 
 export type ProjectContainer = Container<{
 	project: Project
@@ -43,12 +50,14 @@ class CompositionRoot {
 			.addService('tenantMiddleware', ({ tenantContainer }) =>
 				new TenantMiddlewareFactory(tenantContainer.get('apolloServer')).create()
 			)
-			.addService('contentMiddleware', ({ projectContainers }) =>
-				new ContentMiddlewareFactory(projectContainers).create()
+			.addService('contentMiddleware', ({ projectContainers, tenantContainer }) =>
+				new ContentMiddlewareFactory(projectContainers, tenantContainer.get('projectMemberManager')).create()
 			)
+			.addService('timerMiddleware', () => new TimerMiddlewareFactory().create())
 
-			.addService('koa', ({ authMiddleware, tenantMiddleware, contentMiddleware }) => {
+			.addService('koa', ({ authMiddleware, tenantMiddleware, contentMiddleware, timerMiddleware }) => {
 				const app = new Koa()
+				app.use(timerMiddleware)
 				app.use(authMiddleware)
 				app.use(tenantMiddleware)
 				app.use(contentMiddleware)
@@ -85,13 +94,13 @@ class CompositionRoot {
 		})
 	}
 
-	private createTenantContainer(tenantDbCredentials: DatabaseCredentials) {
+	createTenantContainer(tenantDbCredentials: DatabaseCredentials) {
 		return new Container.Builder({})
 
 			.addService('knexConnection', () => {
 				return new KnexConnection(
 					knex({
-						debug: false,
+						debug: true,
 						client: 'pg',
 						connection: tenantDbCredentials,
 					}),
@@ -112,22 +121,23 @@ class CompositionRoot {
 
 			.addService(
 				'apiKeyManager',
-				({ queryHandler, knexConnection }) => new ApiKeyManager(queryHandler, knexConnection)
+				({ queryHandler, knexConnection }) => new ApiKeyManager(queryHandler, knexConnection.wrapper())
 			)
 			.addService(
 				'signUpManager',
-				({ queryHandler, knexConnection }) => new SignUpManager(queryHandler, knexConnection)
+				({ queryHandler, knexConnection }) => new SignUpManager(queryHandler, knexConnection.wrapper())
 			)
 			.addService('signInManager', ({ queryHandler, apiKeyManager }) => new SignInManager(queryHandler, apiKeyManager))
 			.addService(
 				'projectMemberManager',
-				({ queryHandler, knexConnection }) => new ProjectMemberManager(queryHandler, knexConnection)
+				({ queryHandler, knexConnection }) => new ProjectMemberManager(queryHandler, knexConnection.wrapper())
 			)
 
 			.addService('meQueryResolver', ({ queryHandler }) => new MeQueryResolver(queryHandler))
 			.addService(
 				'signUpMutationResolver',
-				({ signUpManager, queryHandler }) => new SignUpMutationResolver(signUpManager, queryHandler)
+				({ signUpManager, queryHandler, apiKeyManager }) =>
+					new SignUpMutationResolver(signUpManager, queryHandler, apiKeyManager)
 			)
 			.addService(
 				'signInMutationResolver',
@@ -135,28 +145,44 @@ class CompositionRoot {
 			)
 			.addService(
 				'addProjectMemberMutationResolver',
-				({ queryHandler, knexConnection }) => new ProjectMemberManager(queryHandler, knexConnection)
+				({ projectMemberManager }) => new AddProjectMemberMutationResolver(projectMemberManager)
+			)
+			.addService(
+				'setupMutationResolver',
+				({ signUpManager, apiKeyManager, queryHandler }) =>
+					new SetupMutationResolver(signUpManager, queryHandler, apiKeyManager)
+			)
+			.addService(
+				'updateProjectMemberVariablesMutationResolver',
+				({ projectMemberManager }) => new UpdateProjectMemberVariablesMutationResolver(projectMemberManager)
 			)
 
 			.addService(
 				'resolvers',
-				({ meQueryResolver, signUpMutationResolver, signInMutationResolver, addProjectMemberMutationResolver }) => {
-					return {
-						Query: {
-							me: meQueryResolver.me.bind(meQueryResolver),
-						},
-						Mutation: {
-							signUp: signUpMutationResolver.signUp.bind(signUpMutationResolver),
-							signIn: signInMutationResolver.signIn.bind(signInMutationResolver),
-							addProjectMember: addProjectMemberMutationResolver.addProjectMember.bind(
-								addProjectMemberMutationResolver
-							),
-						},
-					}
+				({
+					meQueryResolver,
+					signUpMutationResolver,
+					signInMutationResolver,
+					addProjectMemberMutationResolver,
+					setupMutationResolver,
+					updateProjectMemberVariablesMutationResolver,
+				}) => {
+					return new ResolverFactory(
+						meQueryResolver,
+						signUpMutationResolver,
+						signInMutationResolver,
+						addProjectMemberMutationResolver,
+						setupMutationResolver,
+						updateProjectMemberVariablesMutationResolver
+					).create()
 				}
 			)
+			.addService('accessEvaluator', ({}) => new AccessEvaluator.PermissionEvaluator(new PermissionsFactory().create()))
+			.addService('authorizator', ({ accessEvaluator }) => new Authorizator.Default(accessEvaluator))
 
-			.addService('apolloServer', ({ resolvers }) => new ApolloServer({ typeDefs, resolvers }))
+			.addService('apolloServer', ({ resolvers, projectMemberManager, authorizator }) =>
+				new TenantApolloServerFactory(resolvers, projectMemberManager, authorizator).create()
+			)
 			.build()
 	}
 }

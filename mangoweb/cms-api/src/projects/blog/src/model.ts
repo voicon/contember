@@ -1,5 +1,5 @@
-import { SchemaBuilder } from 'cms-api'
-import { Acl, Input, Model, Schema } from 'cms-common'
+import { SchemaBuilder, AllowAllPermissionFactory } from 'cms-api'
+import { Acl, Model, Schema } from 'cms-common'
 
 const builder = new SchemaBuilder()
 builder.enum('siteVisibility', ['visible', 'hidden'])
@@ -64,6 +64,7 @@ const acl: Acl.Schema = {
 		site: { type: Acl.VariableType.entity, entityName: 'Site' }
 	},
 	roles: {
+		admin: { entities: new AllowAllPermissionFactory().create(model) },
 		editor: {
 			entities: {
 				Post: {
