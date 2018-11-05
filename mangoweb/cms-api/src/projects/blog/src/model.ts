@@ -7,7 +7,12 @@ builder.enum('locale', ['cs', 'en'])
 
 builder.entity('Author', entity => entity.column('name', column => column.type(Model.ColumnType.String)))
 builder.entity('Category', entity =>
-	entity.oneHasMany('locales', relation => relation.target('CategoryLocale').ownedBy('category').onDelete(Model.OnDelete.cascade))
+	entity.oneHasMany('locales', relation =>
+		relation
+			.target('CategoryLocale')
+			.ownedBy('category')
+			.onDelete(Model.OnDelete.cascade)
+	)
 )
 builder.entity('CategoryLocale', entity =>
 	entity
@@ -18,9 +23,19 @@ builder.entity('CategoryLocale', entity =>
 builder.entity('Post', entity =>
 	entity
 		.column('publishedAt', column => column.type(Model.ColumnType.DateTime))
-		.manyHasOne('author', relation => relation.target('Author').inversedBy('posts').onDelete(Model.OnDelete.setNull))
+		.manyHasOne('author', relation =>
+			relation
+				.target('Author')
+				.inversedBy('posts')
+				.onDelete(Model.OnDelete.setNull)
+		)
 		.manyHasMany('categories', relation => relation.target('Category').inversedBy('posts'))
-		.oneHasMany('locales', relation => relation.target('PostLocale').ownedBy('post').onDelete(Model.OnDelete.cascade))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('PostLocale')
+				.ownedBy('post')
+				.onDelete(Model.OnDelete.cascade)
+		)
 		.oneHasMany('sites', relation => relation.target('PostSite'))
 )
 builder.entity('PostLocale', entity =>
@@ -97,7 +112,7 @@ const acl: Acl.Schema = {
 						}
 					}
 				}
-			},
+			}
 		},
 		deleter: {
 			entities: {
@@ -111,13 +126,13 @@ const acl: Acl.Schema = {
 						update: {
 							locales: true
 						},
-						delete: true,
+						delete: true
 					}
 				},
 				PostLocale: {
 					predicates: {
 						cs_locale: {
-							and: [{ locale: {eq: 'cs'} }]
+							and: [{ locale: { eq: 'cs' } }]
 						}
 					},
 					operations: {
@@ -126,7 +141,7 @@ const acl: Acl.Schema = {
 							title: true,
 							content: true
 						},
-						delete: 'cs_locale',
+						delete: 'cs_locale'
 					}
 				}
 			}
