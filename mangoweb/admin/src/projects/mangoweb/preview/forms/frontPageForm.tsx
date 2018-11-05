@@ -2,7 +2,7 @@ import { H2, H3 } from '@blueprintjs/core'
 import { RichTextField, SideDimensions, TextField, Variable } from 'cms-admin'
 import * as React from 'react'
 import { LangDimension } from '../dimensions'
-import createVideoField from './createVideoField'
+import { createVideoField } from './createVideoField'
 
 const frontPageForm = (
 	<>
