@@ -1,20 +1,25 @@
-import { Button } from '@blueprintjs/core'
 import * as React from 'react'
-import DataContext, { DataContextValue } from '../coreComponents/DataContext'
-import EnforceSubtypeRelation from '../coreComponents/EnforceSubtypeRelation'
-import { ReferenceMarkerProvider } from '../coreComponents/MarkerProvider'
-import ToMany, { ToManyProps } from '../coreComponents/ToMany'
-import EntityAccessor from '../dao/EntityAccessor'
-import EntityCollectionAccessor from '../dao/EntityCollectionAccessor'
-import EntityFields from '../dao/EntityFields'
-import EntityForRemovalAccessor from '../dao/EntityForRemovalAccessor'
-import ReferenceMarker from '../dao/ReferenceMarker'
-import PlaceholderGenerator from '../model/PlaceholderGenerator'
-import UnlinkButton from './UnlinkButton'
+import {
+	DataContext,
+	DataContextValue,
+	EnforceSubtypeRelation,
+	ReferenceMarkerProvider,
+	ToMany,
+	ToManyProps
+} from '../coreComponents'
+import {
+	EntityAccessor,
+	EntityCollectionAccessor,
+	EntityFields,
+	EntityForRemovalAccessor,
+	ReferenceMarker
+} from '../dao'
+import { AddNewButton } from './buttons'
+import { UnlinkButton } from './buttons/UnlinkButton'
 
 export interface RepeaterProps extends ToManyProps {}
 
-export default class Repeater extends React.Component<RepeaterProps> {
+export class Repeater extends React.Component<RepeaterProps> {
 	static displayName = 'Repeater'
 
 	public render() {
@@ -22,7 +27,11 @@ export default class Repeater extends React.Component<RepeaterProps> {
 			<DataContext.Consumer>
 				{(data: DataContextValue) => {
 					if (data instanceof EntityAccessor) {
-						const field = data.data[PlaceholderGenerator.getReferencePlaceholder(this.props.field, this.props.where)]
+						const field = data.data.getField(
+							this.props.field,
+							ReferenceMarker.ExpectedCount.PossiblyMany,
+							this.props.where
+						)
 
 						if (field instanceof EntityCollectionAccessor) {
 							return (
@@ -36,9 +45,7 @@ export default class Repeater extends React.Component<RepeaterProps> {
 												</DataContext.Provider>
 											)
 									)}
-									<Button icon="plus" onClick={field.appendNew}>
-										Add new
-									</Button>
+									<AddNewButton addNew={field.addNew} />
 								</>
 							)
 						}

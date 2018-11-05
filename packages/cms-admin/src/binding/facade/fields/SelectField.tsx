@@ -2,19 +2,17 @@ import { FormGroup, HTMLSelect, IFormGroupProps } from '@blueprintjs/core'
 import { GraphQlBuilder } from 'cms-client'
 import { Input } from 'cms-common'
 import * as React from 'react'
-import { EntityName, FieldName } from '../bindingTypes'
-import DataContext, { DataContextValue } from '../coreComponents/DataContext'
-import EnforceSubtypeRelation from '../coreComponents/EnforceSubtypeRelation'
-import EntityListDataProvider from '../coreComponents/EntityListDataProvider'
-import Field from '../coreComponents/Field'
-import { SyntheticChildrenProvider } from '../coreComponents/MarkerProvider'
-import ToOne from '../coreComponents/ToOne'
-import AccessorTreeRoot from '../dao/AccessorTreeRoot'
-import DataBindingError from '../dao/DataBindingError'
-import EntityAccessor from '../dao/EntityAccessor'
-import EntityCollectionAccessor from '../dao/EntityCollectionAccessor'
-import FieldAccessor from '../dao/FieldAccessor'
-import PlaceholderGenerator from '../model/PlaceholderGenerator'
+import { EntityName, FieldName } from '../../bindingTypes'
+import {
+	DataContext,
+	DataContextValue,
+	EnforceSubtypeRelation,
+	EntityListDataProvider,
+	Field,
+	SyntheticChildrenProvider,
+	ToOne
+} from '../../coreComponents'
+import { AccessorTreeRoot, DataBindingError, EntityAccessor, EntityCollectionAccessor, FieldAccessor } from '../../dao'
 
 export interface SelectFieldProps {
 	name: FieldName
@@ -24,7 +22,7 @@ export interface SelectFieldProps {
 	where?: Input.Where<GraphQlBuilder.Literal>
 }
 
-export default class SelectField extends React.Component<SelectFieldProps> {
+export class SelectField extends React.Component<SelectFieldProps> {
 	public static displayName = 'SelectField'
 
 	public render() {
@@ -32,8 +30,8 @@ export default class SelectField extends React.Component<SelectFieldProps> {
 			<DataContext.Consumer>
 				{(data: DataContextValue) => {
 					if (data instanceof EntityAccessor) {
-						const fieldAccessor = data.data[PlaceholderGenerator.getMarkerTreePlaceholder(this.props.name)]
-						const currentValueEntity = data.data[PlaceholderGenerator.getFieldPlaceholder(this.props.name)]
+						const fieldAccessor = data.data.getTreeRoot(this.props.name)
+						const currentValueEntity = data.data.getField(this.props.name)
 
 						// TODO this fails when `currentValueEntity` is `null` which may legitimately happen.
 						if (!(fieldAccessor instanceof AccessorTreeRoot) || !(currentValueEntity instanceof EntityAccessor)) {
@@ -57,7 +55,7 @@ export default class SelectField extends React.Component<SelectFieldProps> {
 											newAccessor && currentValueEntity.replaceWith(newAccessor)
 										}}
 										options={normalizedData.map(datum => {
-											const optionField = datum.data[this.props.optionFieldName]
+											const optionField = datum.data.getField(this.props.optionFieldName)
 
 											if (!(optionField instanceof FieldAccessor)) {
 												throw new DataBindingError('Corrupted data')

@@ -1,14 +1,14 @@
-import * as React from 'react'
 import { Lexer, Parser as ChevrotainParser } from 'chevrotain'
 import { GraphQlBuilder } from 'cms-client'
 import { Input } from 'cms-common'
+import * as React from 'react'
 import { FieldName } from '../bindingTypes'
-import ToOne, { ToOneProps } from '../coreComponents/ToOne'
-import Environment from '../dao/Environment'
-import QueryLanguageError from './QueryLanguageError'
-import tokenList, { tokens } from './tokenList'
+import { ToOne, ToOneProps } from '../coreComponents'
+import { Environment } from '../dao'
+import { QueryLanguageError } from './QueryLanguageError'
+import { tokenList, tokens } from './tokenList'
 
-export default class Parser extends ChevrotainParser {
+export class Parser extends ChevrotainParser {
 	private static lexer = new Lexer(tokenList)
 	private static parser = new Parser()
 
@@ -135,14 +135,18 @@ export default class Parser extends ChevrotainParser {
 		const lexingResult = Parser.lexer.tokenize(input)
 
 		if (lexingResult.errors.length !== 0) {
-			throw new QueryLanguageError(lexingResult.errors[0].message)
+			throw new QueryLanguageError(
+				`Failed to tokenize '${input}'.\n\n${lexingResult.errors.map(i => i.message).join('\n')}`
+			)
 		}
 
 		Parser.parser.input = lexingResult.tokens
 		const expression = Parser.parser.relationExpression()
 
 		if (Parser.parser.errors.length !== 0) {
-			throw new QueryLanguageError(Parser.parser.errors[0].message)
+			throw new QueryLanguageError(
+				`Failed to parse '${input}'.\n\n${Parser.parser.errors.map(i => i.message).join('\n')}`
+			)
 		}
 
 		return expression

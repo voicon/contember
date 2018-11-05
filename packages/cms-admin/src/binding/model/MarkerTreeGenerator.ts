@@ -1,20 +1,21 @@
 import { assertNever } from 'cms-common'
 import * as React from 'react'
-import { SelectedDimension } from '../../state/request'
 import { FieldName } from '../bindingTypes'
-import MarkerProvider from '../coreComponents/MarkerProvider'
-import DataBindingError from '../dao/DataBindingError'
-import EntityFields from '../dao/EntityFields'
-import Environment from '../dao/Environment'
-import FieldMarker from '../dao/FieldMarker'
-import Marker from '../dao/Marker'
-import MarkerTreeRoot from '../dao/MarkerTreeRoot'
-import ReferenceMarker from '../dao/ReferenceMarker'
+import { MarkerProvider } from '../coreComponents'
+import {
+	DataBindingError,
+	EntityFields,
+	Environment,
+	FieldMarker,
+	Marker,
+	MarkerTreeRoot,
+	ReferenceMarker
+} from '../dao'
 
 type NodeResult = FieldMarker | MarkerTreeRoot | ReferenceMarker
 type RawNodeResult = NodeResult | NodeResult[] | undefined
 
-export default class MarkerTreeGenerator {
+export class MarkerTreeGenerator {
 	public constructor(
 		private sourceTree: React.ReactNode,
 		private environment: Environment = new Environment({
@@ -116,22 +117,25 @@ export default class MarkerTreeGenerator {
 
 			if ('generateReferenceMarker' in dataMarker && dataMarker.generateReferenceMarker) {
 				if (children) {
-					const reference = dataMarker.generateReferenceMarker(
+					const referenceMarker = dataMarker.generateReferenceMarker(
 						node.props,
 						this.mapNodeResultToEntityFields(this.processNode(children, environment)),
 						environment
 					)
 
-					if (reference.reducedBy) {
-						const fields = Object.keys(reference.reducedBy)
+					for (const placeholderName in referenceMarker.references) {
+						const reference = referenceMarker.references[placeholderName]
+						if (reference.reducedBy) {
+							const fields = Object.keys(reference.reducedBy)
 
-						if (fields.length !== 1) {
-							// TODO this will change in future
-							throw new DataBindingError(`Relation can only be reduced by exactly one field.`)
+							if (fields.length !== 1) {
+								// TODO this will change in future
+								throw new DataBindingError(`Relation can only be reduced by exactly one field.`)
+							}
 						}
 					}
 
-					return reference
+					return referenceMarker
 				}
 				throw new DataBindingError(`Each ${node.type.displayName} component must have children.`)
 			}
@@ -185,18 +189,27 @@ export default class MarkerTreeGenerator {
 			if (fresh instanceof FieldMarker) {
 				return this.rejectRelationScalarCombo(original.fieldName)
 			} else if (fresh instanceof ReferenceMarker) {
-				if (original.expectedCount === fresh.expectedCount) {
-					for (const placeholderName in fresh.fields) {
-						original.fields[placeholderName] =
-							placeholderName in original.fields
-								? this.mergeMarkers(original.fields[placeholderName], fresh.fields[placeholderName])
-								: fresh.fields[placeholderName]
+				for (const placeholderName in fresh.references) {
+					const namePresentInOriginal = placeholderName in original.references
+
+					if (!namePresentInOriginal) {
+						original.references[placeholderName] = {
+							placeholderName,
+							fields: {},
+							where: fresh.references[placeholderName].where,
+							reducedBy: fresh.references[placeholderName].reducedBy,
+							expectedCount: fresh.references[placeholderName].expectedCount
+						}
 					}
 
-					return original
-				} else {
-					throw new DataBindingError(`Cannot combine hasOne and hasMany relations for field '${original.fieldName}'.`)
+					original.references[placeholderName].fields = namePresentInOriginal
+						? this.mergeEntityFields(
+								original.references[placeholderName].fields,
+								fresh.references[placeholderName].fields
+						  )
+						: fresh.references[placeholderName].fields
 				}
+				return original
 			} else if (fresh instanceof MarkerTreeRoot) {
 				throw new DataBindingError() // TODO msg
 			} else {
@@ -207,6 +220,16 @@ export default class MarkerTreeGenerator {
 		} else {
 			return assertNever(original)
 		}
+	}
+
+	private mergeEntityFields(original: EntityFields, fresh: EntityFields): EntityFields {
+		for (const placeholderName in fresh) {
+			original[placeholderName] =
+				placeholderName in original
+					? this.mergeMarkers(original[placeholderName], fresh[placeholderName])
+					: fresh[placeholderName]
+		}
+		return original
 	}
 
 	private reportInvalidTreeError(marker: FieldMarker | ReferenceMarker | undefined): never {

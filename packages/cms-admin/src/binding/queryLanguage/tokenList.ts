@@ -9,7 +9,7 @@ export const tokens = {
 
 	Identifier: createToken({
 		name: 'Identifier',
-		pattern: /[a-zA-z]\w*/
+		pattern: /[a-zA-Z]\w*/
 	}),
 
 	Variable: createToken({
@@ -84,4 +84,4 @@ const tokenList = [
 	tokens.Equals
 ]
 
-export default tokenList
+export { tokenList }

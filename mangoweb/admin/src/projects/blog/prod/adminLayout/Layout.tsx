@@ -11,7 +11,7 @@ const layout = {
 	side: <Side />
 }
 
-export default class Layout extends React.Component<{ children: React.ReactNode }> {
+export default class Layout extends React.Component {
 	render() {
 		return <LayoutDefault {...layout} content={this.props.children} />
 	}

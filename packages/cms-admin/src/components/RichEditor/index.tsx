@@ -1,13 +1,13 @@
-import * as React from 'react'
-import { Editor, Plugin, EditorProps } from 'slate-react'
-import { isKeyHotkey } from 'is-hotkey'
-import HtmlSerializer from 'slate-html-serializer'
-import { Value, Change } from 'slate'
-import { ActionButton, Toolbar } from './utils'
-import { PARAGRAPH_RULE } from './rules'
-import { RichEditorPluginConfig, BOLD, ITALIC, UNDERLINED, LINK } from './configs'
-import { FormGroup, Classes } from '@blueprintjs/core'
+import { Classes, FormGroup, IFormGroupProps } from '@blueprintjs/core'
 import cn from 'classnames'
+import { isKeyHotkey } from 'is-hotkey'
+import * as React from 'react'
+import { Change, Value } from 'slate'
+import HtmlSerializer from 'slate-html-serializer'
+import { Editor, EditorProps, Plugin } from 'slate-react'
+import { BOLD, ITALIC, LINK, RichEditorPluginConfig, UNDERLINED } from './configs'
+import { PARAGRAPH_RULE } from './rules'
+import { ActionButton, Toolbar } from './utils'
 
 const DEFAULT_NODE = 'paragraph'
 
@@ -20,6 +20,7 @@ export interface RichEditorProps {
 	value: string
 	allowLineBreaks?: boolean
 	onChange: (value: string) => void
+	label?: IFormGroupProps['label']
 }
 
 export interface RichTextFieldState {
@@ -44,7 +45,7 @@ export default class RichEditor extends React.Component<RichEditorProps, RichTex
 	public render() {
 		return (
 			<div className="editor">
-				<FormGroup label="Content">
+				<FormGroup label={this.props.label}>
 					<Toolbar>
 						<ActionButton config={BOLD} icon="bold" value={this.state.value} onChange={this.onChange} />
 						<ActionButton config={ITALIC} icon="italic" value={this.state.value} onChange={this.onChange} />

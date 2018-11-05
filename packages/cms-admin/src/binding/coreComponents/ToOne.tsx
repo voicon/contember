@@ -2,12 +2,9 @@ import { GraphQlBuilder } from 'cms-client'
 import { Input } from 'cms-common'
 import * as React from 'react'
 import { FieldName } from '../bindingTypes'
-import EntityAccessor from '../dao/EntityAccessor'
-import EntityFields from '../dao/EntityFields'
-import ReferenceMarker from '../dao/ReferenceMarker'
-import PlaceholderGenerator from '../model/PlaceholderGenerator'
-import DataContext, { DataContextValue } from './DataContext'
-import EnforceSubtypeRelation from './EnforceSubtypeRelation'
+import { EntityAccessor, EntityFields, ReferenceMarker } from '../dao'
+import { DataContext, DataContextValue } from './DataContext'
+import { EnforceSubtypeRelation } from './EnforceSubtypeRelation'
 import { ReferenceMarkerProvider } from './MarkerProvider'
 
 export interface ToOneProps {
@@ -16,7 +13,7 @@ export interface ToOneProps {
 	where?: Input.Where<GraphQlBuilder.Literal>
 }
 
-export default class ToOne extends React.Component<ToOneProps> {
+class ToOne extends React.Component<ToOneProps> {
 	static displayName = 'ToOne'
 
 	public render() {
@@ -24,13 +21,15 @@ export default class ToOne extends React.Component<ToOneProps> {
 			<DataContext.Consumer>
 				{(data: DataContextValue) => {
 					if (data instanceof EntityAccessor) {
-						const field =
-							data.data[
-								PlaceholderGenerator.getReferencePlaceholder(this.props.field, this.props.where, this.props.reducedBy)
-							]
+						const field = data.data.getField(
+							this.props.field,
+							ReferenceMarker.ExpectedCount.UpToOne,
+							this.props.where,
+							this.props.reducedBy
+						)
 
 						if (field instanceof EntityAccessor) {
-							return <DataContext.Provider value={field}>{this.props.children}</DataContext.Provider>
+							return <ToOne.ToOneInner accessor={field}>{this.props.children}</ToOne.ToOneInner>
 						}
 					}
 				}}
@@ -39,8 +38,22 @@ export default class ToOne extends React.Component<ToOneProps> {
 	}
 
 	public static generateReferenceMarker(props: ToOneProps, fields: EntityFields): ReferenceMarker {
-		return new ReferenceMarker(props.field, ReferenceMarker.ExpectedCount.One, fields, props.where, props.reducedBy)
+		return new ReferenceMarker(props.field, ReferenceMarker.ExpectedCount.UpToOne, fields, props.where, props.reducedBy)
 	}
 }
+
+namespace ToOne {
+	export interface ToOneInnerProps {
+		accessor: EntityAccessor
+	}
+
+	export class ToOneInner extends React.PureComponent<ToOneInnerProps> {
+		public render() {
+			return <DataContext.Provider value={this.props.accessor}>{this.props.children}</DataContext.Provider>
+		}
+	}
+}
+
+export { ToOne }
 
 type EnforceDataBindingCompatibility = EnforceSubtypeRelation<typeof ToOne, ReferenceMarkerProvider>

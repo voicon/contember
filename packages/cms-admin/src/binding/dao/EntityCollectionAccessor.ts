@@ -1,9 +1,9 @@
-import EntityAccessor from './EntityAccessor'
-import EntityForRemovalAccessor from './EntityForRemovalAccessor'
+import { EntityAccessor } from './EntityAccessor'
+import { EntityForRemovalAccessor } from './EntityForRemovalAccessor'
 
-export default class EntityCollectionAccessor {
+export class EntityCollectionAccessor {
 	public constructor(
 		public readonly entities: Array<EntityAccessor | EntityForRemovalAccessor | undefined>, // Undefined is a "hole" after an non-persisted entity
-		public readonly appendNew?: () => void
+		public readonly addNew?: () => void
 	) {}
 }

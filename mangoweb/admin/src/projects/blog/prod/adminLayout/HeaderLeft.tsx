@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { LinkWithAlert } from 'cms-admin'
 
-export default class Content extends React.Component {
+export default class HeaderLeft extends React.Component {
 	render() {
 		const alert = <p>You are about to leave the form with potentially unsaved changes.</p>
 		const cancelText = 'Cancel'
