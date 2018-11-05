@@ -7,7 +7,7 @@ builder.enum('locale', ['cs', 'en'])
 
 builder.entity('Author', entity => entity.column('name', column => column.type(Model.ColumnType.String)))
 builder.entity('Category', entity =>
-	entity.oneHasMany('locales', relation => relation.target('CategoryLocale').ownedBy('category'))
+	entity.oneHasMany('locales', relation => relation.target('CategoryLocale').ownedBy('category').onDelete(Model.OnDelete.cascade))
 )
 builder.entity('CategoryLocale', entity =>
 	entity
@@ -18,9 +18,9 @@ builder.entity('CategoryLocale', entity =>
 builder.entity('Post', entity =>
 	entity
 		.column('publishedAt', column => column.type(Model.ColumnType.DateTime))
-		.manyHasOne('author', relation => relation.target('Author').inversedBy('posts'))
+		.manyHasOne('author', relation => relation.target('Author').inversedBy('posts').onDelete(Model.OnDelete.setNull))
 		.manyHasMany('categories', relation => relation.target('Category').inversedBy('posts'))
-		.oneHasMany('locales', relation => relation.target('PostLocale').ownedBy('post'))
+		.oneHasMany('locales', relation => relation.target('PostLocale').ownedBy('post').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('sites', relation => relation.target('PostSite'))
 )
 builder.entity('PostLocale', entity =>
@@ -32,12 +32,12 @@ builder.entity('PostLocale', entity =>
 builder.entity('PostSite', entity =>
 	entity
 		.column('visibility', column => column.type(Model.ColumnType.Enum, { enumName: 'siteVisibility' }))
-		.manyHasOne('site', relation => relation.target('Site'))
+		.manyHasOne('site', relation => relation.target('Site').onDelete(Model.OnDelete.cascade))
 )
 builder.entity('Site', entity =>
 	entity
 		.column('name', column => column.type(Model.ColumnType.String))
-		.oneHasOne('setting', relation => relation.target('SiteSetting'))
+		.oneHasOne('setting', relation => relation.target('SiteSetting').onDelete(Model.OnDelete.cascade))
 )
 builder.entity('SiteSetting', entity => entity.column('url', column => column.type(Model.ColumnType.String)))
 
@@ -95,6 +95,38 @@ const acl: Acl.Schema = {
 							title: 'locale_site',
 							content: 'locale_site'
 						}
+					}
+				}
+			},
+		},
+		deleter: {
+			entities: {
+				Post: {
+					predicates: {},
+					operations: {
+						read: {
+							id: true,
+							locales: true
+						},
+						update: {
+							locales: true
+						},
+						delete: true,
+					}
+				},
+				PostLocale: {
+					predicates: {
+						cs_locale: {
+							and: [{ locale: {eq: 'cs'} }]
+						}
+					},
+					operations: {
+						read: {
+							id: true,
+							title: true,
+							content: true
+						},
+						delete: 'cs_locale',
 					}
 				}
 			}
