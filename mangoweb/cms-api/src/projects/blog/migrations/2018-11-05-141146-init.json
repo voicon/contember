@@ -193,12 +193,18 @@
 		{
 			"modification": "createEnum",
 			"enumName": "siteVisibility",
-			"values": ["visible", "hidden"]
+			"values": [
+				"visible",
+				"hidden"
+			]
 		},
 		{
 			"modification": "createEnum",
 			"enumName": "locale",
-			"values": ["cs", "en"]
+			"values": [
+				"cs",
+				"en"
+			]
 		},
 		{
 			"modification": "createColumn",
@@ -215,19 +221,19 @@
 			"modification": "createRelation",
 			"entityName": "CategoryLocale",
 			"owningSide": {
-				"name": "Category",
+				"name": "category",
 				"target": "Category",
 				"inversedBy": "locales",
 				"nullable": true,
 				"type": "ManyHasOne",
 				"joiningColumn": {
 					"columnName": "category_id",
-					"onDelete": "restrict"
+					"onDelete": "cascade"
 				}
 			},
 			"inverseSide": {
 				"name": "locales",
-				"ownedBy": "Category",
+				"ownedBy": "category",
 				"type": "OneHasMany",
 				"target": "CategoryLocale"
 			}
@@ -277,7 +283,7 @@
 				"target": "Author",
 				"joiningColumn": {
 					"columnName": "author_id",
-					"onDelete": "restrict"
+					"onDelete": "set null"
 				}
 			},
 			"inverseSide": {
@@ -325,7 +331,7 @@
 				"type": "ManyHasOne",
 				"joiningColumn": {
 					"columnName": "post_id",
-					"onDelete": "restrict"
+					"onDelete": "cascade"
 				}
 			},
 			"inverseSide": {
@@ -356,14 +362,6 @@
 				"nullable": true,
 				"type": "String",
 				"columnType": "text"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "PostLocale",
-			"unique": {
-				"fields": ["post", "locale"],
-				"name": "unique_post_locale"
 			}
 		},
 		{
@@ -409,7 +407,7 @@
 				"target": "Site",
 				"joiningColumn": {
 					"columnName": "site_id",
-					"onDelete": "restrict"
+					"onDelete": "cascade"
 				}
 			}
 		},
@@ -434,7 +432,7 @@
 				"target": "SiteSetting",
 				"joiningColumn": {
 					"columnName": "setting_id",
-					"onDelete": "restrict"
+					"onDelete": "cascade"
 				}
 			}
 		},
@@ -556,6 +554,38 @@
 				"nullable": true,
 				"type": "Bool",
 				"columnType": "boolean"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "CategoryLocale",
+			"unique": {
+				"fields": [
+					"category",
+					"locale"
+				],
+				"name": "unique_CategoryLocale_category_locale_7a1d47"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "PostLocale",
+			"unique": {
+				"fields": [
+					"post",
+					"locale"
+				],
+				"name": "unique_PostLocale_post_locale_5759e8"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "Site",
+			"unique": {
+				"fields": [
+					"setting"
+				],
+				"name": "unique_Site_setting_8653a0"
 			}
 		}
 	]
