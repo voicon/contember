@@ -46,6 +46,8 @@ class ContentMiddlewareFactory {
 			const contentKoa = new Koa()
 
 			contentKoa.use(new PlaygroundMiddlewareFactory().create())
+			contentKoa.use(corsMiddleware())
+			contentKoa.use(bodyParser())
 
 			contentKoa.use(
 				async (
@@ -94,8 +96,6 @@ class ContentMiddlewareFactory {
 						ctx.state.timer('done')
 
 						const apolloKoa = new Koa()
-						apolloKoa.use(corsMiddleware())
-						apolloKoa.use(bodyParser())
 						const server = this.createApolloServer(dataSchema, projectVariables)
 						server.applyMiddleware({
 							app: apolloKoa,
