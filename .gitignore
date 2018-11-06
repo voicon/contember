@@ -1,3 +1,4 @@
+/mangoweb/admin/config.local.json
 /mangoweb/*/dist
 /mangoweb/*/node_modules
 /packages/*/dist
