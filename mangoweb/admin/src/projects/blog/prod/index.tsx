@@ -80,7 +80,7 @@ export default (
 				<Layout>
 					<h1>All posts</h1>
 					<EntityListDataProvider name="Post">
-						<ToMany field="locales" where={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
+						<ToMany field="locales" filter={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
 							<TextField name="title" label="Title" />
 						</ToMany>
 					</EntityListDataProvider>
