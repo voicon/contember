@@ -1,25 +1,14 @@
-import { H2, H3 } from '@blueprintjs/core'
-import { RichTextField, SideDimensions, TextField, Variable } from 'cms-admin'
+import { H2 } from '@blueprintjs/core'
+import { RichTextField, TextField, Variable } from 'cms-admin'
 import * as React from 'react'
-import { LangDimension } from '../dimensions'
-import { createVideoField } from './createVideoField'
+import { LocaleSideDimension } from '../components/LocaleSideDimension'
+import { VideoField } from '../components/VideoField'
 
 const frontPageForm = (
 	<>
 		<H2>Intro</H2>
-		{createVideoField('introVideo', 'Vimeo ID for the title video')}
-		<SideDimensions
-			dimension="lang"
-			variableName="currentLang"
-			variables={{
-				locale: env => `locales(locale=${env.getValue('currentLang')})`,
-				flag: env =>
-					({
-						en: <>🇬🇧</>,
-						cs: <>🇨🇿</>
-					}[env.getValue('currentLang') as LangDimension])
-			}}
-		>
+		<VideoField name="introVideo" label="URL of the title video" />
+		<LocaleSideDimension>
 			<TextField
 				name="$locale.introLabel"
 				label={
@@ -44,7 +33,7 @@ const frontPageForm = (
 					</>
 				}
 			/>
-		</SideDimensions>
+		</LocaleSideDimension>
 	</>
 )
 
