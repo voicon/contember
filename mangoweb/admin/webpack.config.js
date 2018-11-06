@@ -1,4 +1,5 @@
 var path = require('path')
+const fs = require('fs')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
@@ -6,6 +7,7 @@ const webpack = require('webpack')
 // variables
 var sourcePath = path.join(__dirname, './dist/src')
 var outPath = path.join(__dirname, './public')
+const config = require('./config.local.json')
 
 module.exports = ({ production }) => ({
 	context: sourcePath,
@@ -72,10 +74,11 @@ module.exports = ({ production }) => ({
 		new MiniCssExtractPlugin({
 			filename: '[name].css'
 		}),
-		new webpack.DefinePlugin({
+		new webpack.DefinePlugin({ // If you modify these, also update cms-admin/src/types/window.d.ts
 			'process.env': {
 				NODE_ENV: JSON.stringify('development'),
-				SERVER_URL: JSON.stringify(production ? 'https://cms-api.mgw.cz' : 'http://localhost:4000'),
+				SERVER_URL: JSON.stringify(production ? config.contentApi.production : config.contentApi.dev),
+				LOGIN_TOKEN: JSON.stringify(config.loginToken),
 			}
 		})
 	]
