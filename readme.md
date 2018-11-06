@@ -44,9 +44,93 @@ npm run test
 * prerequisites
   * running `npm run ts:watch` in background
   * creating PostgreSQL database
-  * importing `packages/cms-api/src/tenant-api/schema/tenant.sql`
   * creating `mangoweb/cms-api/.env` (you can use `(cd mangoweb/cms-api && cp example.env .env && nano .env)`)
+  
+Use `mangoweb/admin/config.sample.json` to create `config.local.json` in the same directory. Don't worry about hte login key for the time being.
 
 ```sh
 (cd mangoweb/cms-api && npm run start)
 ```
+
+### Create super-admin
+
+* prerequisites
+  * performing the steps described in the _Start API_ section.
+  
+Go to the tenant api, by default [http://localhost:4000/tenant](http://localhost:4000/tenant). 
+
+Set the following http header:
+```json
+{ "Authorization": "Bearer 12345123451234512345"}
+```
+…and create the super admin:
+```graphql
+mutation {
+  setup(superadmin: { email: "admin@example.com", password: "123" }) {
+    ok
+    result {
+      superadmin {
+        id
+      }
+      loginKey {
+        id
+        token
+        identity {
+          id
+        }
+      }
+    }
+  }
+}
+```
+
+Change the authorization header to the login key token:
+
+```json
+{ "Authorization": "Bearer YOUR_LOGIN_TOKEN"}
+```
+
+…and proceed to sign in:
+
+```graphql
+mutation {
+  signIn(email: "admin@example.com", password: "123") {
+    ok
+    result {
+      token
+      person {
+        identity {
+          id
+        }
+      }
+    }
+  }
+}
+```
+
+Now change the authorization header to the resulting token:
+
+```json
+{ "Authorization": "Bearer YOUR_AUTHORIZATION_TOKEN"}
+```
+
+…and add yourself to any project. The `identityId` is what you've just obtained in the previous mutation. The `projectId` is in `mangoweb/cms-admin/src/config/config.yaml` (be careful not to use the stage id).
+
+```graphql
+mutation {
+  addProjectMember(
+    identityId: "YOUR_IDENTITY_ID"
+    projectId: "YOUR_PROJECT_ID"
+    roles: ["admin"]
+  ) {
+    ok
+    errors {
+      code
+      endUserMessage
+      developerMessage
+    }
+  }
+}
+```
+
+Lastly, update the login token in `mangoweb/admin/config.local.json` and restart the servers. You should now be able to login normally as well as use the content api.
