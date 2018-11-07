@@ -1,47 +1,17 @@
-import { RichTextField, TextField, Variable } from 'cms-admin'
+import { RichTextField, TextField } from 'cms-admin'
 import * as React from 'react'
-import { langDimension } from './langDimension'
+import { LocaleSideDimension } from '../components/LocaleSideDimension'
 
 const contactLocationForm = (
 	<>
 		<TextField name="email" label="E-mail" />
 		<TextField name="phoneNumber" label="Phone number" />
-		{langDimension(
-			<>
-				<TextField
-					name="$locale.title"
-					label={
-						<>
-							<Variable name="flag" /> Title
-						</>
-					}
-				/>
-				<TextField
-					name="$locale.entity"
-					label={
-						<>
-							<Variable name="flag" /> Legal entity
-						</>
-					}
-				/>
-				<RichTextField
-					name="$locale.address"
-					label={
-						<>
-							<Variable name="flag" /> Address
-						</>
-					}
-				/>
-				<RichTextField
-					name="$locale.additionalText"
-					label={
-						<>
-							<Variable name="flag" /> Additional info
-						</>
-					}
-				/>
-			</>
-		)}
+		<LocaleSideDimension>
+			<TextField name="$locale.title" label="Title" />
+			<TextField name="$locale.entity" label="Legal entity" />
+			<RichTextField name="$locale.address" label="Address" />
+			<RichTextField name="$locale.additionalText" label="Additional info" />
+		</LocaleSideDimension>
 	</>
 )
 

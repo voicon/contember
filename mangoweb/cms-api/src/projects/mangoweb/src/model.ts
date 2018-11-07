@@ -8,7 +8,7 @@ builder.enum('page', ['frontPage', 'team', 'whatWeDo', 'references', 'contact'])
 
 builder.entity('Image', entity => entity.column('url'))
 
-builder.entity('Video', entity => entity.column('vimeoId'))
+builder.entity('Video', entity => entity.column('src'))
 
 // TODO: We can use this once #62 is resolved
 //builder.entity('Language', entity =>
@@ -43,7 +43,6 @@ builder.entity('FrontPageLocale', entity =>
 		.column('introBubbleText')
 		.column('whatWeDoLabel')
 		.column('whatWeDoTitle')
-		.oneHasMany('references', relation => relation.target('FrontPageReferenceTile').ownerNotNull())
 		.column('whatWeDoAlso')
 		.column('featuredClientsLabel')
 		.column('featuredClientsTitle')
@@ -112,25 +111,6 @@ builder.entity('FooterButtonLocale', entity =>
 		.unique(['footerButton', 'locale'])
 		.column('label')
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-)
-
-builder.entity('FrontPageReferenceTile', entity =>
-	entity
-		.manyHasOne('image', relation => relation.target('Image'))
-		.column('order', column => column.type(Model.ColumnType.Int))
-		.oneHasMany('locales', relation =>
-			relation
-				.target('FrontPageReferenceTileLocale')
-				.ownerNotNull()
-				.ownedBy('frontPageReferenceTile')
-		)
-)
-builder.entity('FrontPageReferenceTileLocale', entity =>
-	entity
-		.unique(['frontPageReferenceTile', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('label')
-		.column('linkTarget')
 )
 
 builder.entity('FrontPageFeaturedClient', entity =>
@@ -234,6 +214,36 @@ builder.entity('PersonLocale', entity =>
 		.column('bio')
 )
 
+builder.entity('WhatWeDo', entity =>
+	entity
+		.column('frontPageOrder', column => column.type(Model.ColumnType.Int))
+		.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('WhatWeDoLocale')
+				.ownedBy('whatWeDo')
+				.ownerNotNull()
+		)
+)
+
+builder.entity('WhatWeDoLocale', entity =>
+	entity
+		.unique(['whatWeDo', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.column('activity')
+		.oneHasOne('featuredImage', relation => relation.target('Image'))
+		.column('descriptionHeading')
+		.oneHasOne('featuredVideo', relation => relation.target('Video'))
+		.oneHasMany('description', relation => relation.target('WhatWeDoDescription'))
+)
+
+builder.entity('WhatWeDoDescription', entity =>
+	entity
+		.column('heading')
+		.oneHasOne('image', relation => relation.target('Image'))
+		.column('description')
+)
+
 builder.entity('WhatWeDoPage', entity =>
 	entity
 		.oneHasMany('locales', relation =>
@@ -242,7 +252,6 @@ builder.entity('WhatWeDoPage', entity =>
 				.ownedBy('whatWeDoPage')
 				.ownerNotNull()
 		)
-		.column('buttonUrl')
 		.oneHasOne('seo', relation => relation.target('PageSeo'))
 )
 
@@ -251,32 +260,6 @@ builder.entity('WhatWeDoPageLocale', entity =>
 		.unique(['whatWeDoPage', 'locale'])
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
-		.column('quote')
-		.column('text')
-		.column('buttonLabel')
-)
-
-builder.entity('ReferenceLocale', entity =>
-	entity
-		.unique(['reference', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('title')
-		.column('url')
-		.column('urlLabel')
-		.column('caseStudyUrl')
-)
-
-// Todo: Allow video references
-builder.entity('Reference', entity =>
-	entity
-		.manyHasOne('image', relation => relation.target('Image'))
-		.oneHasMany('locales', relation =>
-			relation
-				.target('ReferenceLocale')
-				.ownedBy('reference')
-				.ownerNotNull()
-		)
-		.column('order', column => column.type(Model.ColumnType.Int))
 )
 
 builder.entity('ReferencesPage', entity =>
@@ -294,6 +277,26 @@ builder.entity('ReferencesPageLocale', entity =>
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
 		.column('quote')
+		.oneHasMany('references', relation =>
+			relation
+				.target('Reference')
+				.ownedBy('referencesPage')
+				.ownerNotNull()
+		)
+)
+
+builder.entity(
+	'Reference',
+	entity =>
+		entity
+			.manyHasOne('image', relation => relation.target('Image'))
+			.manyHasOne('video', relation => relation.target('Video'))
+			.column('order', column => column.type(Model.ColumnType.Int))
+			.column('title')
+			.column('isFeatured', column => column.type(Model.ColumnType.Bool))
+			.column('url')
+			.column('urlLabel')
+	// TODO case studies
 )
 
 builder.entity('ContactPage', entity =>
@@ -308,9 +311,27 @@ builder.entity('ContactPage', entity =>
 builder.entity('ContactPageLocale', entity =>
 	entity
 		.unique(['contactPage', 'locale'])
-		.column('buttonUrl')
-		.column('buttonLabel')
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.column('contactUsButtonLabel')
+		.column('userMessageLabel')
+		.column('userPhoneLabel')
+		.column('contactFormButtonText')
+		.column('contactFormSuccessMessage')
+		.column('contactFormErrorMessage')
+)
+
+builder.entity('Contact', entity =>
+	entity
+		.column('unique', column =>
+			column
+				.type(Model.ColumnType.Enum, { enumName: 'one' })
+				.unique()
+				.notNull()
+		)
+		.column('facebook')
+		.column('linkedIn')
+		.column('instagram')
+		.column('twitter')
 )
 
 const model = builder.buildSchema()

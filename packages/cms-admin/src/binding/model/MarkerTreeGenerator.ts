@@ -83,7 +83,7 @@ export class MarkerTreeGenerator {
 			children = node.props.children
 
 			if (typeof node.type === 'symbol' || typeof node.type === 'string') {
-				// React.Fragment or other non-component
+				// React.Fragment, React.Portal or other non-component
 				return this.processNode(children, environment)
 			}
 
@@ -145,9 +145,6 @@ export class MarkerTreeGenerator {
 			}
 
 			return undefined
-		} else if ('children' in node) {
-			// React Portal
-			children = node.children
 		}
 
 		return this.processNode(children, environment)
@@ -196,7 +193,7 @@ export class MarkerTreeGenerator {
 						original.references[placeholderName] = {
 							placeholderName,
 							fields: {},
-							where: fresh.references[placeholderName].where,
+							filter: fresh.references[placeholderName].filter,
 							reducedBy: fresh.references[placeholderName].reducedBy,
 							expectedCount: fresh.references[placeholderName].expectedCount
 						}
