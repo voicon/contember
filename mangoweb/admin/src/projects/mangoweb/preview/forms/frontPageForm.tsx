@@ -1,5 +1,5 @@
 import { H2 } from '@blueprintjs/core'
-import { RichTextField, TextField, Variable } from 'cms-admin'
+import { RichTextField, TextField } from 'cms-admin'
 import * as React from 'react'
 import { LocaleSideDimension } from '../components/LocaleSideDimension'
 import { VideoField } from '../components/VideoField'
@@ -11,27 +11,15 @@ const frontPageForm = (
 		<LocaleSideDimension>
 			<TextField
 				name="$locale.introLabel"
-				label={
-					<>
-						<Variable name="flag" /> Label
-					</>
-				}
+				label="Label"
 			/>
 			<TextField
 				name="$locale.introHeading"
-				label={
-					<>
-						<Variable name="flag" /> Heading
-					</>
-				}
+				label="Heading"
 			/>
 			<RichTextField
 				name="$locale.introBubbleText"
-				label={
-					<>
-						<Variable name="flag" /> Bubble text
-					</>
-				}
+				label="Bubble text"
 			/>
 		</LocaleSideDimension>
 	</>

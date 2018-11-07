@@ -1,4 +1,4 @@
-import { RichTextField, TextField, Variable } from 'cms-admin'
+import { RichTextField, TextField } from 'cms-admin'
 import * as React from 'react'
 import { LocaleSideDimension } from '../components/LocaleSideDimension'
 
@@ -9,35 +9,19 @@ const contactLocationForm = (
 		<LocaleSideDimension>
 			<TextField
 				name="$locale.title"
-				label={
-					<>
-						<Variable name="flag" /> Title
-					</>
-				}
+				label="Title"
 			/>
 			<TextField
 				name="$locale.entity"
-				label={
-					<>
-						<Variable name="flag" /> Legal entity
-					</>
-				}
+				label="Legal entity"
 			/>
 			<RichTextField
 				name="$locale.address"
-				label={
-					<>
-						<Variable name="flag" /> Address
-					</>
-				}
+				label="Address"
 			/>
 			<RichTextField
 				name="$locale.additionalText"
-				label={
-					<>
-						<Variable name="flag" /> Additional info
-					</>
-				}
+				label="Additional info"
 			/>
 		</LocaleSideDimension>
 	</>
