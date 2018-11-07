@@ -277,20 +277,26 @@ builder.entity('ReferencesPageLocale', entity =>
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('title')
 		.column('quote')
-		.oneHasMany('references', relation => relation.target('Reference').ownedBy('referencesPage')
-			.ownerNotNull())
+		.oneHasMany('references', relation =>
+			relation
+				.target('Reference')
+				.ownedBy('referencesPage')
+				.ownerNotNull()
+		)
 )
 
-builder.entity('Reference', entity =>
-	entity
-		.manyHasOne('image', relation => relation.target('Image'))
-		.manyHasOne('video', relation => relation.target('Video'))
-		.column('order', column => column.type(Model.ColumnType.Int))
-		.column('title')
-		.column('isFeatured', column => column.type(Model.ColumnType.Bool))
-		.column('url')
-		.column('urlLabel')
-		// TODO case studies
+builder.entity(
+	'Reference',
+	entity =>
+		entity
+			.manyHasOne('image', relation => relation.target('Image'))
+			.manyHasOne('video', relation => relation.target('Video'))
+			.column('order', column => column.type(Model.ColumnType.Int))
+			.column('title')
+			.column('isFeatured', column => column.type(Model.ColumnType.Bool))
+			.column('url')
+			.column('urlLabel')
+	// TODO case studies
 )
 
 builder.entity('ContactPage', entity =>

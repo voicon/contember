@@ -9,18 +9,9 @@ const frontPageForm = (
 		<H2>Intro</H2>
 		<VideoField name="introVideo" label="URL of the title video" />
 		<LocaleSideDimension>
-			<TextField
-				name="$locale.introLabel"
-				label="Label"
-			/>
-			<TextField
-				name="$locale.introHeading"
-				label="Heading"
-			/>
-			<RichTextField
-				name="$locale.introBubbleText"
-				label="Bubble text"
-			/>
+			<TextField name="$locale.introLabel" label="Label" />
+			<TextField name="$locale.introHeading" label="Heading" />
+			<RichTextField name="$locale.introBubbleText" label="Bubble text" />
 		</LocaleSideDimension>
 	</>
 )
