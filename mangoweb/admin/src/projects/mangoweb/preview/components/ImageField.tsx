@@ -1,12 +1,12 @@
 import * as React from 'react'
-import { Component, TextField, TextFieldProps } from 'cms-admin'
+import { Component, UploadField, UploadFieldOwnProps } from 'cms-admin'
 
-interface ImageFieldProps extends TextFieldProps {}
+interface ImageFieldProps extends UploadFieldOwnProps {}
 
 export const ImageField = Component(
 	class extends React.Component<ImageFieldProps> {
 		public static render(props: ImageFieldProps) {
-			return <TextField {...props} name={`${props.name}.url`} />
+			return <UploadField {...props} name={`${props.name}.url`} />
 		}
 	}
 )
