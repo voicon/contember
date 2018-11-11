@@ -30,7 +30,7 @@ export default class Side extends React.Component {
 					</MenuPageLink>
 				</MenuList>
 				<MenuList title="Team">
-					<MenuPageLink change={() => ({ name: 'list_person' })} frontIcon="people">
+					<MenuPageLink change={() => ({ name: 'multiEdit_person' })} frontIcon="people">
 						Member list
 					</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'create_person' })} frontIcon="person">

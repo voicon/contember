@@ -1,5 +1,14 @@
 import { Callout, H1, Intent } from '@blueprintjs/core'
-import { CreatePage, EditPage, MultiEditPage, FieldText, GenericPage, ListPage, PageLinkById, Pages } from 'cms-admin'
+import {
+	CreatePage,
+	EditPage,
+	FieldText,
+	GenericPage,
+	MultiEditPage,
+	NumberField,
+	PageLinkById,
+	Pages
+} from 'cms-admin'
 import * as React from 'react'
 
 import { Layout } from './adminLayout'
@@ -34,10 +43,15 @@ export default (
 			{contactLocationForm}
 		</MultiEditPage>
 
-		<ListPage entity="Person">
+		<MultiEditPage entity="Person" rendererProps={{
+			sortable: {
+				sortBy: 'order'
+			}
+		}}>
 			<FieldText name="shortName" />
 			<PageLinkById change={id => ({ name: 'edit_person', params: { id } })}>Edit this mofo</PageLinkById>
-		</ListPage>
+			<NumberField name="order" />
+		</MultiEditPage>
 		<CreatePage
 			entity="Person"
 			rendererProps={{

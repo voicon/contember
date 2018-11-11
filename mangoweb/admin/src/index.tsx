@@ -28,7 +28,7 @@ const reactRoot = (
 					multiEdit_contactLocation: { path: '/contact-locations' },
 					edit_footer: { path: '/footer' },
 
-					list_person: { path: '/team-members' },
+					multiEdit_person: { path: '/team-members' },
 					create_person: { path: '/team-members/create-new' },
 					edit_person: { path: '/team-members/member-:id' }
 				}
