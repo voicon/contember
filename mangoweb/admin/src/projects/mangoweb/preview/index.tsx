@@ -43,11 +43,14 @@ export default (
 			{contactLocationForm}
 		</MultiEditPage>
 
-		<MultiEditPage entity="Person" rendererProps={{
-			sortable: {
-				sortBy: 'order'
-			}
-		}}>
+		<MultiEditPage
+			entity="Person"
+			rendererProps={{
+				sortable: {
+					sortBy: 'order'
+				}
+			}}
+		>
 			<FieldText name="shortName" />
 			<PageLinkById change={id => ({ name: 'edit_person', params: { id } })}>Edit this mofo</PageLinkById>
 		</MultiEditPage>
