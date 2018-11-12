@@ -1,21 +1,19 @@
-import * as React from 'react'
 import {
-	Pages,
-	Page,
-	Entity,
-	EntityCreator,
-	SingleEntityDataProvider,
-	EntityListDataProvider,
-	ToMany,
-	SideDimensions,
-	GraphQlBuilder,
-	TextField,
 	EditPage,
-	SelectField,
+	EntityListDataProvider,
+	Literal,
+	Page,
+	Pages,
 	Repeater,
+	RichTextField,
+	SelectField,
+	SideDimensions,
+	SingleEntityDataProvider,
 	TextAreaField,
-	RichTextField
+	TextField,
+	ToMany
 } from 'cms-admin'
+import * as React from 'react'
 
 import { Layout } from './adminLayout'
 
@@ -80,7 +78,7 @@ export default (
 				<Layout>
 					<h1>All posts</h1>
 					<EntityListDataProvider name="Post">
-						<ToMany field="locales" filter={{ locale: { eq: new GraphQlBuilder.Literal('cs') } }}>
+						<ToMany field="locales" filter={{ locale: { eq: new Literal('cs') } }}>
 							<TextField name="title" label="Title" />
 						</ToMany>
 					</EntityListDataProvider>
