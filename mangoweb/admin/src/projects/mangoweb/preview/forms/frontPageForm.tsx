@@ -24,6 +24,7 @@ const frontPageForm = (
 				field="whatWeDo"
 				sortBy="frontPageOrder"
 				filter={{ locale: { eq: new VariableLiteral('currentLang') } }}
+				label="Our activities"
 			>
 				{/* TODO */}
 				<TextField name="activity" label="Activity" />
@@ -36,7 +37,7 @@ const frontPageForm = (
 		<LocaleSideDimension>
 			<TextField name="$locale.featuredClientsLabel" label="Label" />
 			<TextField name="$locale.featuredClientsTitle" label="Title" />
-			<SortableRepeater field="$locale.featuredClients" sortBy="order">
+			<SortableRepeater field="$locale.featuredClients" sortBy="order" label="Client logos">
 				<ImageField name="image" label="Logo" />
 			</SortableRepeater>
 		</LocaleSideDimension>
