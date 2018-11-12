@@ -24,7 +24,7 @@ builder.entity('FrontPage', entity =>
 				.notNull()
 		)
 		.oneHasOne('introVideo', relation => relation.target('Video'))
-		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
+		.oneHasMany('whatWeDo', relation => relation.target('WhatWeDo'))
 		.oneHasOne('seo', relation => relation.target('PageSeo').inversedNotNull())
 		.oneHasMany('locales', relation =>
 			relation
@@ -46,6 +46,7 @@ builder.entity('FrontPageLocale', entity =>
 		.column('whatWeDoAlso')
 		.column('featuredClientsLabel')
 		.column('featuredClientsTitle')
+		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
 		.column('videosTitle')
 )
 
@@ -114,19 +115,9 @@ builder.entity('FooterButtonLocale', entity =>
 )
 
 builder.entity('FrontPageFeaturedClient', entity =>
-	entity.manyHasOne('image', relation => relation.target('Image')).oneHasMany('locales', relation =>
-		relation
-			.target('FrontPageFeaturedClientLocale')
-			.ownerNotNull()
-			.ownedBy('frontPageFeaturedClient')
-	)
-)
-
-builder.entity('FrontPageFeaturedClientLocale', entity =>
 	entity
-		.unique(['frontPageFeaturedClient', 'locale'])
-		.column('label')
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('image', relation => relation.target('Image'))
+		.column('order', column => column.type(Model.ColumnType.Int))
 )
 
 builder.entity('PageSeo', entity =>
@@ -216,20 +207,9 @@ builder.entity('PersonLocale', entity =>
 
 builder.entity('WhatWeDo', entity =>
 	entity
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('frontPageOrder', column => column.type(Model.ColumnType.Int))
 		.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
-		.oneHasMany('locales', relation =>
-			relation
-				.target('WhatWeDoLocale')
-				.ownedBy('whatWeDo')
-				.ownerNotNull()
-		)
-)
-
-builder.entity('WhatWeDoLocale', entity =>
-	entity
-		.unique(['whatWeDo', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('activity')
 		.oneHasOne('featuredImage', relation => relation.target('Image'))
 		.column('descriptionHeading')
