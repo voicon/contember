@@ -22,9 +22,6 @@ export default class Side extends React.Component {
 					>
 						Front page
 					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'multiEdit_contactLocation' })} frontIcon="envelope">
-						Contact locations
-					</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'edit_footer' })} frontIcon="widget-footer">
 						Footer
 					</MenuPageLink>
@@ -35,6 +32,14 @@ export default class Side extends React.Component {
 					</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'create_person' })} frontIcon="person">
 						Create new
+					</MenuPageLink>
+				</MenuList>
+				<MenuList title="Contact">
+					{/*<MenuPageLink change={() => ({ name: 'edit_contactPage' })} frontIcon="envelope">
+						Contact page
+					</MenuPageLink>*/}
+					<MenuPageLink change={() => ({ name: 'multiEdit_contactLocation' })} frontIcon="locate">
+						Contact locations
 					</MenuPageLink>
 				</MenuList>
 			</Menu>
