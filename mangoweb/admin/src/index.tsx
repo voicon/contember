@@ -39,7 +39,7 @@ const reactRoot = (
 					edit_referencesPage: { path: '/references-page' },
 
 					edit_contactPage: { path: '/contact-page' },
-					multiEdit_contactLocation: { path: '/contact-locations' },
+					multiEdit_contactLocation: { path: '/contact-locations' }
 				}
 			}
 		]}
