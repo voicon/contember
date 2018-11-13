@@ -25,11 +25,20 @@ export default class Side extends React.Component {
 					<MenuPageLink change={() => ({ name: 'multiEdit_menuItem' })} frontIcon="menu">
 						Menu
 					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'edit_footer', params: { unique: new GraphQlBuilder.Literal('one') } })} frontIcon="widget-footer">
+					<MenuPageLink
+						change={() => ({ name: 'edit_footer', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="widget-footer"
+					>
 						Footer
 					</MenuPageLink>
 				</MenuList>
 				<MenuList title="Team">
+					<MenuPageLink
+						change={() => ({ name: 'edit_teamPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="mugshot"
+					>
+						Team page
+					</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'multiEdit_person' })} frontIcon="people">
 						Member list
 					</MenuPageLink>
@@ -37,10 +46,32 @@ export default class Side extends React.Component {
 						Create new
 					</MenuPageLink>
 				</MenuList>
+				<MenuList title="What we do">
+					<MenuPageLink
+						change={() => ({ name: 'edit_whatWeDoPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="oil-field"
+					>
+						What we do page
+					</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'multiEdit_whatWeDo' })} frontIcon="briefcase">
+						What we do
+					</MenuPageLink>
+				</MenuList>
+				<MenuList title="References">
+					<MenuPageLink
+						change={() => ({ name: 'edit_referencesPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="thumbs-up"
+					>
+						References page
+					</MenuPageLink>
+				</MenuList>
 				<MenuList title="Contact">
-					{/*<MenuPageLink change={() => ({ name: 'edit_contactPage' })} frontIcon="envelope">
+					<MenuPageLink
+						change={() => ({ name: 'edit_contactPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="envelope"
+					>
 						Contact page
-					</MenuPageLink>*/}
+					</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'multiEdit_contactLocation' })} frontIcon="locate">
 						Contact locations
 					</MenuPageLink>

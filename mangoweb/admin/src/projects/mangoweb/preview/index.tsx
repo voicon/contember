@@ -35,20 +35,22 @@ export default (
 				sortable: {
 					sortBy: 'order'
 				},
-				beforeContent: <Callout icon="warning-sign" intent="warning" title="Behold!">
-					<p>
-						Due to CMS limitations, you cannot (yet) explicitly choose which link points to which page. As a
-						workaround, the <strong>order</strong> of the items is interpreted as follows:
-					</p>
-					<OL>
-						<li>Front page</li>
-						<li>Team</li>
-						<li>What we do</li>
-						<li>References</li>
-						<li>Contact</li>
-					</OL>
-					<p>Sorry about that.</p>
-				</Callout>
+				beforeContent: (
+					<Callout icon="warning-sign" intent="warning" title="Behold!">
+						<p>
+							Due to CMS limitations, you cannot (yet) explicitly choose which link points to which page. As a
+							workaround, the <strong>order</strong> of the items is interpreted as follows:
+						</p>
+						<OL>
+							<li>Front page</li>
+							<li>Team</li>
+							<li>What we do</li>
+							<li>References</li>
+							<li>Contact</li>
+						</OL>
+						<p>Sorry about that.</p>
+					</Callout>
+				)
 			}}
 		>
 			{menuItemForm}
@@ -63,14 +65,7 @@ export default (
 			{footerForm}
 		</EditPage>
 
-		<MultiEditPage
-			entity="ContactLocation"
-			rendererProps={{
-				title: 'Contact Locations'
-			}}
-		>
-			{contactLocationForm}
-		</MultiEditPage>
+		{/* ---- */}
 
 		<MultiEditPage
 			entity="Person"
@@ -83,14 +78,6 @@ export default (
 		>
 			{personListForm}
 		</MultiEditPage>
-		<CreatePage
-			entity="Person"
-			rendererProps={{
-				title: 'Create a new team member'
-			}}
-		>
-			{personForm}
-		</CreatePage>
 		<EditPage
 			entity="Person"
 			rendererProps={{
@@ -103,5 +90,28 @@ export default (
 		>
 			{personForm}
 		</EditPage>
+		<CreatePage
+			entity="Person"
+			rendererProps={{
+				title: 'Create a new team member'
+			}}
+		>
+			{personForm}
+		</CreatePage>
+
+		{/* ---- */}
+
+		{/* ---- */}
+
+		{/* ---- */}
+
+		<MultiEditPage
+			entity="ContactLocation"
+			rendererProps={{
+				title: 'Contact Locations'
+			}}
+		>
+			{contactLocationForm}
+		</MultiEditPage>
 	</Pages>
 )
