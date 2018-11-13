@@ -99,12 +99,15 @@ builder.entity('FooterLocale', entity =>
 )
 
 builder.entity('FooterButton', entity =>
-	entity.column('url').oneHasMany('locales', relation =>
-		relation
-			.target('FooterButtonLocale')
-			.ownerNotNull()
-			.ownedBy('footerButton')
-	)
+	entity
+		.column('url')
+		.column('order', column => column.type(Model.ColumnType.Int))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('FooterButtonLocale')
+				.ownerNotNull()
+				.ownedBy('footerButton')
+		)
 )
 
 builder.entity('FooterButtonLocale', entity =>

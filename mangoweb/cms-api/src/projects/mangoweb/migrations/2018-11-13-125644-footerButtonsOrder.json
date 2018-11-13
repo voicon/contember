@@ -1,0 +1,15 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "FooterButton",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": true,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		}
+	]
+}
