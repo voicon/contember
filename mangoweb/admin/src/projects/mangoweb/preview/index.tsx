@@ -5,7 +5,6 @@ import {
 	FieldText,
 	GenericPage,
 	MultiEditPage,
-	NumberField,
 	PageLinkById,
 	Pages
 } from 'cms-admin'
@@ -13,6 +12,7 @@ import * as React from 'react'
 
 import { Layout } from './adminLayout'
 import contactLocationForm from './forms/contactLocationForm'
+import footerForm from './forms/footerForm'
 import frontPageForm from './forms/frontPageForm'
 import personForm from './forms/personForm'
 
@@ -32,6 +32,15 @@ export default (
 			}}
 		>
 			{frontPageForm}
+		</EditPage>
+
+		<EditPage
+			entity="Footer"
+			rendererProps={{
+				title: 'Footer'
+			}}
+		>
+			{footerForm}
 		</EditPage>
 
 		<MultiEditPage
