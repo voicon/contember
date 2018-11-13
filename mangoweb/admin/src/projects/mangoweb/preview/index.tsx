@@ -1,5 +1,5 @@
-import { Callout, H1, H2, Intent, OL } from '@blueprintjs/core'
-import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, PageLinkById, Pages } from 'cms-admin'
+import { Callout, H1, Intent, OL } from '@blueprintjs/core'
+import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, Pages } from 'cms-admin'
 import * as React from 'react'
 
 import { Layout } from './adminLayout'
@@ -8,6 +8,7 @@ import footerForm from './forms/footerForm'
 import frontPageForm from './forms/frontPageForm'
 import { menuItemForm } from './forms/menuItemForm'
 import personForm from './forms/personForm'
+import { personListForm } from './forms/personListForm'
 
 export default (
 	<Pages project="mangoweb" stage="prod" layout={Layout}>
@@ -74,13 +75,13 @@ export default (
 		<MultiEditPage
 			entity="Person"
 			rendererProps={{
+				title: 'Team members',
 				sortable: {
 					sortBy: 'order'
 				}
 			}}
 		>
-			<FieldText name="shortName" />
-			<PageLinkById change={id => ({ name: 'edit_person', params: { id } })}>Edit this mofo</PageLinkById>
+			{personListForm}
 		</MultiEditPage>
 		<CreatePage
 			entity="Person"

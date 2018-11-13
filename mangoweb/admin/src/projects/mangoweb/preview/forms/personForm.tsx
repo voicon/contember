@@ -29,9 +29,6 @@ const personForm = (
 		<TextField name="likendin" label="LinkedIn" />
 		<TextField name="github" label="GitHub" />
 		<TextField name="instagram" label="Instagram" />
-
-		<H2>Miscellaneous</H2>
-		<NumberField name="order" label="Order" />
 	</>
 )
 
