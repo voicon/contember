@@ -22,6 +22,9 @@ export default class Side extends React.Component {
 					>
 						Front page
 					</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'multiEdit_menuItem' })} frontIcon="menu">
+						Menu
+					</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'edit_footer', params: { unique: new GraphQlBuilder.Literal('one') } })} frontIcon="widget-footer">
 						Footer
 					</MenuPageLink>

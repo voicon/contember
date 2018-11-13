@@ -25,12 +25,14 @@ const reactRoot = (
 					dashboard: { path: '/' },
 
 					edit_frontPage: { path: '/front-page' },
-					multiEdit_contactLocation: { path: '/contact-locations' },
+					multiEdit_menuItem: { path: '/menu' },
 					edit_footer: { path: '/footer' },
 
 					multiEdit_person: { path: '/team-members' },
 					create_person: { path: '/team-members/create-new' },
-					edit_person: { path: '/team-members/member-:id' }
+					edit_person: { path: '/team-members/member-:id' },
+
+					multiEdit_contactLocation: { path: '/contact-locations' },
 				}
 			}
 		]}

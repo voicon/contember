@@ -1,19 +1,12 @@
-import { Callout, H1, Intent } from '@blueprintjs/core'
-import {
-	CreatePage,
-	EditPage,
-	FieldText,
-	GenericPage,
-	MultiEditPage,
-	PageLinkById,
-	Pages
-} from 'cms-admin'
+import { Callout, H1, H2, Intent, OL } from '@blueprintjs/core'
+import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, PageLinkById, Pages } from 'cms-admin'
 import * as React from 'react'
 
 import { Layout } from './adminLayout'
 import contactLocationForm from './forms/contactLocationForm'
 import footerForm from './forms/footerForm'
 import frontPageForm from './forms/frontPageForm'
+import { menuItemForm } from './forms/menuItemForm'
 import personForm from './forms/personForm'
 
 export default (
@@ -33,6 +26,32 @@ export default (
 		>
 			{frontPageForm}
 		</EditPage>
+
+		<MultiEditPage
+			entity="MenuItem"
+			rendererProps={{
+				title: 'Menu',
+				sortable: {
+					sortBy: 'order'
+				},
+				beforeContent: <Callout icon="warning-sign" intent="warning" title="Behold!">
+					<p>
+						Due to CMS limitations, you cannot (yet) explicitly choose which link points to which page. As a
+						workaround, the <strong>order</strong> of the items is interpreted as follows:
+					</p>
+					<OL>
+						<li>Front page</li>
+						<li>Team</li>
+						<li>What we do</li>
+						<li>References</li>
+						<li>Contact</li>
+					</OL>
+					<p>Sorry about that.</p>
+				</Callout>
+			}}
+		>
+			{menuItemForm}
+		</MultiEditPage>
 
 		<EditPage
 			entity="Footer"
