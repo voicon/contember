@@ -33,16 +33,16 @@ export default class Side extends React.Component {
 					</MenuPageLink>
 				</MenuList>
 				<MenuList title="Team">
-					<MenuPageLink
+					{/*<MenuPageLink
 						change={() => ({ name: 'edit_teamPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
 						frontIcon="mugshot"
 					>
 						Team page
-					</MenuPageLink>
+					</MenuPageLink>*/}
 					<MenuPageLink change={() => ({ name: 'multiEdit_person' })} frontIcon="people">
-						Member list
+						Member order
 					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'create_person' })} frontIcon="person">
+					<MenuPageLink change={() => ({ name: 'create_person' })} frontIcon="new-person">
 						Create new
 					</MenuPageLink>
 				</MenuList>

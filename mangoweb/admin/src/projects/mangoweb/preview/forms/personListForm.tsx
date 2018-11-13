@@ -3,7 +3,7 @@ import * as React from 'react'
 
 const personListForm = (
 	<>
-		<TextField name="shortName" label="ShortName" />
+		<TextField name="longName" label="Full name" />
 		<PageLinkById change={id => ({ name: 'edit_person', params: { id } })}>Edit</PageLinkById>
 	</>
 )

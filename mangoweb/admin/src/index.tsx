@@ -28,7 +28,7 @@ const reactRoot = (
 					multiEdit_menuItem: { path: '/menu' },
 					edit_footer: { path: '/footer' },
 
-					edit_teamPage: { path: '/team-page' },
+					//edit_teamPage: { path: '/team-page' },
 					multiEdit_person: { path: '/team-members' },
 					create_person: { path: '/team-members/create-new' },
 					edit_person: { path: '/team-members/member-:id' },
