@@ -170,19 +170,6 @@ builder.entity('TeamPage', entity =>
 				.notNull()
 		)
 		.oneHasOne('seo', relation => relation.target('PageSeo'))
-		.oneHasMany('locales', relation =>
-			relation
-				.target('TeamPageLocale')
-				.ownerNotNull()
-				.ownedBy('teamPage')
-		)
-)
-
-builder.entity('TeamPageLocale', entity =>
-	entity
-		.unique(['teamPage', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('title')
 )
 
 builder.entity('Person', entity =>

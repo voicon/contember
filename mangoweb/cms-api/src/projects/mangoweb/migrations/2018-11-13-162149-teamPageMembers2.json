@@ -1,0 +1,14 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "TeamPage",
+			"fieldName": "teamMembers"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "Person",
+			"fieldName": "TeamPage"
+		}
+	]
+}
