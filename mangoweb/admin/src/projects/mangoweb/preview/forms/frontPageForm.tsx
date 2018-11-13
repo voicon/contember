@@ -26,9 +26,7 @@ const frontPageForm = (
 				filter={{ locale: { eq: new VariableLiteral('currentLang') } }}
 				label="Our activities"
 			>
-				{/* TODO */}
 				<TextField name="activity" label="Activity" />
-				<ImageField name="featuredImage" label="Image" />
 			</SortableRepeater>
 			<RichTextField name="$locale.whatWeDoAlso" label="Additional activities description" />
 		</LocaleSideDimension>
@@ -41,6 +39,7 @@ const frontPageForm = (
 				<ImageField name="image" label="Logo" />
 			</SortableRepeater>
 		</LocaleSideDimension>
+		{/* TODO seo */}
 	</>
 )
 
