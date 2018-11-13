@@ -1,0 +1,92 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "TeamPage",
+			"field": {
+				"name": "unique",
+				"columnName": "unique",
+				"nullable": false,
+				"type": "Enum",
+				"columnType": "one",
+				"enumName": "one"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "WhatWeDoPage",
+			"field": {
+				"name": "unique",
+				"columnName": "unique",
+				"nullable": false,
+				"type": "Enum",
+				"columnType": "one",
+				"enumName": "one"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ReferencesPage",
+			"field": {
+				"name": "unique",
+				"columnName": "unique",
+				"nullable": false,
+				"type": "Enum",
+				"columnType": "one",
+				"enumName": "one"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPage",
+			"field": {
+				"name": "unique",
+				"columnName": "unique",
+				"nullable": false,
+				"type": "Enum",
+				"columnType": "one",
+				"enumName": "one"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "TeamPage",
+			"unique": {
+				"fields": [
+					"unique"
+				],
+				"name": "unique_TeamPage_unique_0e4023"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "WhatWeDoPage",
+			"unique": {
+				"fields": [
+					"unique"
+				],
+				"name": "unique_WhatWeDoPage_unique_9d1f47"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ReferencesPage",
+			"unique": {
+				"fields": [
+					"unique"
+				],
+				"name": "unique_ReferencesPage_unique_82b3b9"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ContactPage",
+			"unique": {
+				"fields": [
+					"unique"
+				],
+				"name": "unique_ContactPage_unique_510597"
+			}
+		}
+	]
+}

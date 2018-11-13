@@ -162,12 +162,20 @@ builder.entity('MenuItemLocale', entity =>
 )
 
 builder.entity('TeamPage', entity =>
-	entity.oneHasOne('seo', relation => relation.target('PageSeo')).oneHasMany('locales', relation =>
-		relation
-			.target('TeamPageLocale')
-			.ownerNotNull()
-			.ownedBy('teamPage')
-	)
+	entity
+		.column('unique', column =>
+			column
+				.type(Model.ColumnType.Enum, { enumName: 'one' })
+				.unique()
+				.notNull()
+		)
+		.oneHasOne('seo', relation => relation.target('PageSeo'))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('TeamPageLocale')
+				.ownerNotNull()
+				.ownedBy('teamPage')
+		)
 )
 
 builder.entity('TeamPageLocale', entity =>
@@ -229,6 +237,12 @@ builder.entity('WhatWeDoDescription', entity =>
 
 builder.entity('WhatWeDoPage', entity =>
 	entity
+		.column('unique', column =>
+			column
+				.type(Model.ColumnType.Enum, { enumName: 'one' })
+				.unique()
+				.notNull()
+		)
 		.oneHasMany('locales', relation =>
 			relation
 				.target('WhatWeDoPageLocale')
@@ -246,12 +260,20 @@ builder.entity('WhatWeDoPageLocale', entity =>
 )
 
 builder.entity('ReferencesPage', entity =>
-	entity.oneHasOne('seo', relation => relation.target('PageSeo')).oneHasMany('locales', relation =>
-		relation
-			.target('ReferencesPageLocale')
-			.ownedBy('referencesPage')
-			.ownerNotNull()
-	)
+	entity
+		.column('unique', column =>
+			column
+				.type(Model.ColumnType.Enum, { enumName: 'one' })
+				.unique()
+				.notNull()
+		)
+		.oneHasOne('seo', relation => relation.target('PageSeo'))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('ReferencesPageLocale')
+				.ownedBy('referencesPage')
+				.ownerNotNull()
+		)
 )
 
 builder.entity('ReferencesPageLocale', entity =>
@@ -283,12 +305,20 @@ builder.entity(
 )
 
 builder.entity('ContactPage', entity =>
-	entity.oneHasOne('seo', relation => relation.target('PageSeo')).oneHasMany('locales', relation =>
-		relation
-			.target('ContactPageLocale')
-			.ownedBy('contactPage')
-			.ownerNotNull()
-	)
+	entity
+		.column('unique', column =>
+			column
+				.type(Model.ColumnType.Enum, { enumName: 'one' })
+				.unique()
+				.notNull()
+		)
+		.oneHasOne('seo', relation => relation.target('PageSeo'))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('ContactPageLocale')
+				.ownedBy('contactPage')
+				.ownerNotNull()
+		)
 )
 
 builder.entity('ContactPageLocale', entity =>
