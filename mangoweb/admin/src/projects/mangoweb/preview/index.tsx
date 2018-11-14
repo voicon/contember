@@ -3,7 +3,7 @@ import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, PageLink, 
 import { GraphQlBuilder } from 'cms-client'
 import * as React from 'react'
 import { Layout } from './adminLayout'
-import contactLocationForm from './forms/contactLocationForm'
+import { contactForm } from './forms/contactForm'
 import footerForm from './forms/footerForm'
 import frontPageForm from './forms/frontPageForm'
 import { menuItemForm } from './forms/menuItemForm'
@@ -155,13 +155,21 @@ export default (
 
 		{/* ---- */}
 
-		<MultiEditPage
-			entity="ContactLocation"
+		<EditPage
+			entity="ContactPage"
 			rendererProps={{
-				title: 'Contact Locations'
+				title: 'Contact page'
 			}}
 		>
-			{contactLocationForm}
-		</MultiEditPage>
+			todo contact page
+		</EditPage>
+		<EditPage
+			entity="Contact"
+			rendererProps={{
+				title: 'Contact information'
+			}}
+		>
+			{contactForm}
+		</EditPage>
 	</Pages>
 )

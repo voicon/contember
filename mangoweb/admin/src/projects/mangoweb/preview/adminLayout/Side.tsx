@@ -72,8 +72,11 @@ export default class Side extends React.Component {
 					>
 						Contact page
 					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'multiEdit_contactLocation' })} frontIcon="locate">
-						Contact locations
+					<MenuPageLink
+						change={() => ({ name: 'edit_contact', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="phone"
+					>
+						Contact info
 					</MenuPageLink>
 				</MenuList>
 			</Menu>
