@@ -28,6 +28,7 @@ projects:
       s3:
         bucket: 'cms-api.mgw.cz'
         prefix: 'dev'
+        region: 'eu-central-1'
         credentials:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
@@ -48,6 +49,7 @@ projects:
       s3:
         bucket: 'cms-api.mgw.cz'
         prefix: 'mangoweb'
+        region: 'eu-central-1'
         credentials:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
