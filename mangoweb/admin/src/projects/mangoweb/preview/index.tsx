@@ -1,7 +1,7 @@
 import { Callout, H1, Intent, OL } from '@blueprintjs/core'
-import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, Pages } from 'cms-admin'
+import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, PageLink, Pages } from 'cms-admin'
+import { GraphQlBuilder } from 'cms-client'
 import * as React from 'react'
-
 import { Layout } from './adminLayout'
 import contactLocationForm from './forms/contactLocationForm'
 import footerForm from './forms/footerForm'
@@ -9,6 +9,7 @@ import frontPageForm from './forms/frontPageForm'
 import { menuItemForm } from './forms/menuItemForm'
 import personForm from './forms/personForm'
 import { personListForm } from './forms/personListForm'
+import { whatWeDoOrderForm } from './forms/whatWeDoOrderForm'
 
 export default (
 	<Pages project="mangoweb" stage="prod" layout={Layout}>
@@ -100,6 +101,41 @@ export default (
 		</CreatePage>
 
 		{/* ---- */}
+
+		<EditPage
+			entity="WhatWeDoPage"
+			rendererProps={{
+				title: 'What we do page'
+			}}
+		>
+			foo
+		</EditPage>
+		<MultiEditPage
+			entity="WhatWeDo"
+			rendererProps={{
+				title: 'What we do',
+				beforeContent: (
+					<Callout intent="none" icon="info-sign" title="Info">
+						<p>From here, you can sort the items as they appear on the what we do page.</p>
+						<p>
+							To edit the front page order, or add new items{' '}
+							<PageLink
+								change={() => ({ name: 'edit_frontPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+							>
+								edit the front page
+							</PageLink>
+							.
+						</p>
+					</Callout>
+				),
+				enableAddingNew: false,
+				sortable: {
+					sortBy: 'whatWeDoPageOrder'
+				}
+			}}
+		>
+			{whatWeDoOrderForm}
+		</MultiEditPage>
 
 		{/* ---- */}
 

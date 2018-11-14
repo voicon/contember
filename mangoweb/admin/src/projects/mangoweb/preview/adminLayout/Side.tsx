@@ -54,7 +54,7 @@ export default class Side extends React.Component {
 						What we do page
 					</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'multiEdit_whatWeDo' })} frontIcon="briefcase">
-						What we do
+						What we do order
 					</MenuPageLink>
 				</MenuList>
 				<MenuList title="References">

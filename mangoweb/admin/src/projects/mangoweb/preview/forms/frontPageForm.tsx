@@ -1,10 +1,11 @@
 import { H2 } from '@blueprintjs/core'
-import { RichTextField, SortableRepeater, TextField } from 'cms-admin'
+import { HiddenField, RichTextField, SortableRepeater, TextField } from 'cms-admin'
 import { VariableLiteral } from 'cms-admin/dist/src/binding/dao/VariableLiteral'
 import * as React from 'react'
 import { ImageField } from '../components/ImageField'
 import { LocaleSideDimension } from '../components/LocaleSideDimension'
 import { VideoField } from '../components/VideoField'
+import { whatWeDoOrderForm } from './whatWeDoOrderForm'
 
 const frontPageForm = (
 	<>
@@ -26,7 +27,8 @@ const frontPageForm = (
 				filter={{ locale: { eq: new VariableLiteral('currentLang') } }}
 				label="Our activities"
 			>
-				<TextField name="activity" label="Activity" />
+				<HiddenField defaultValue={new VariableLiteral('currentLang')} name="locale" />
+				{whatWeDoOrderForm}
 			</SortableRepeater>
 			<RichTextField name="$locale.whatWeDoAlso" label="Additional activities description" />
 		</LocaleSideDimension>
