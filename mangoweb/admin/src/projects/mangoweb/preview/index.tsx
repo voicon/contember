@@ -9,6 +9,7 @@ import frontPageForm from './forms/frontPageForm'
 import { menuItemForm } from './forms/menuItemForm'
 import personForm from './forms/personForm'
 import { personListForm } from './forms/personListForm'
+import { whatWeDoForm } from './forms/whatWeDoForm'
 import { whatWeDoOrderForm } from './forms/whatWeDoOrderForm'
 
 export default (
@@ -136,6 +137,18 @@ export default (
 		>
 			{whatWeDoOrderForm}
 		</MultiEditPage>
+		<EditPage
+			entity="WhatWeDo"
+			rendererProps={{
+				title: (
+					<>
+						Edit <FieldText name="activity" />
+					</>
+				)
+			}}
+		>
+			{whatWeDoForm}
+		</EditPage>
 
 		{/* ---- */}
 
