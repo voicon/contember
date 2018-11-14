@@ -15,6 +15,7 @@ import {
 	whatWeDoPageForm
 } from './forms'
 import { footerForm } from './forms/'
+import { referencesPageForm } from './forms/referencesPageForm'
 
 export default (
 	<Pages project="mangoweb" stage="prod" layout={Layout}>
@@ -162,7 +163,7 @@ export default (
 				title: 'References page'
 			}}
 		>
-			todo references
+			{referencesPageForm}
 		</EditPage>
 
 		{/* ---- */}
