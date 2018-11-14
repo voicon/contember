@@ -3,16 +3,18 @@ import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, PageLink, 
 import { GraphQlBuilder } from 'cms-client'
 import * as React from 'react'
 import { Layout } from './adminLayout'
-import { contactForm } from './forms/contactForm'
-import { contactPageForm } from './forms/contactPageForm'
-import footerForm from './forms/footerForm'
-import frontPageForm from './forms/frontPageForm'
-import { menuItemForm } from './forms/menuItemForm'
-import personForm from './forms/personForm'
-import { personListForm } from './forms/personListForm'
-import { whatWeDoForm } from './forms/whatWeDoForm'
-import { whatWeDoOrderForm } from './forms/whatWeDoOrderForm'
-import { whatWeDoPageForm } from './forms/whatWeDoPageForm'
+import {
+	contactForm,
+	contactPageForm,
+	frontPageForm,
+	menuItemForm,
+	personForm,
+	personListForm,
+	whatWeDoForm,
+	whatWeDoOrderForm,
+	whatWeDoPageForm
+} from './forms'
+import { footerForm } from './forms/'
 
 export default (
 	<Pages project="mangoweb" stage="prod" layout={Layout}>
@@ -153,6 +155,15 @@ export default (
 		</EditPage>
 
 		{/* ---- */}
+
+		<EditPage
+			entity="ReferencesPage"
+			rendererProps={{
+				title: 'References page'
+			}}
+		>
+			todo references
+		</EditPage>
 
 		{/* ---- */}
 

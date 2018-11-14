@@ -1,10 +1,9 @@
 import { H2 } from '@blueprintjs/core'
 import { NumberField, RichTextField, TextField } from 'cms-admin'
 import * as React from 'react'
-import { ImageField } from '../components/ImageField'
-import { LocaleSideDimension } from '../components/LocaleSideDimension'
+import { ImageField, LocaleSideDimension } from '../components'
 
-const personForm = (
+export const personForm = (
 	<>
 		<H2>Basics</H2>
 		<TextField name="shortName" label="Short name" />
@@ -31,5 +30,3 @@ const personForm = (
 		<TextField name="instagram" label="Instagram" />
 	</>
 )
-
-export default personForm

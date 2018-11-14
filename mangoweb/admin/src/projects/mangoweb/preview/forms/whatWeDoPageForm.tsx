@@ -1,6 +1,6 @@
 import { TextField } from 'cms-admin'
 import * as React from 'react'
-import { LocaleSideDimension } from '../components/LocaleSideDimension'
+import { LocaleSideDimension } from '../components'
 
 export const whatWeDoPageForm = (
 	<>

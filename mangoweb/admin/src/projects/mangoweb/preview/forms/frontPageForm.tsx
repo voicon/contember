@@ -2,12 +2,10 @@ import { H2 } from '@blueprintjs/core'
 import { HiddenField, RichTextField, SortableRepeater, TextField } from 'cms-admin'
 import { VariableLiteral } from 'cms-admin/dist/src/binding/dao/VariableLiteral'
 import * as React from 'react'
-import { ImageField } from '../components/ImageField'
-import { LocaleSideDimension } from '../components/LocaleSideDimension'
-import { VideoField } from '../components/VideoField'
+import { ImageField, LocaleSideDimension, VideoField } from '../components'
 import { whatWeDoOrderForm } from './whatWeDoOrderForm'
 
-const frontPageForm = (
+export const frontPageForm = (
 	<>
 		<H2>Intro</H2>
 		<VideoField name="introVideo" label="URL of the title video" />
@@ -44,5 +42,3 @@ const frontPageForm = (
 		{/* TODO seo */}
 	</>
 )
-
-export default frontPageForm

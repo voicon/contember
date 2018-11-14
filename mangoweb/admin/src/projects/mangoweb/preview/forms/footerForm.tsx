@@ -1,9 +1,9 @@
 import { H2 } from '@blueprintjs/core'
 import { SortableRepeater, TextField } from 'cms-admin'
 import * as React from 'react'
-import { LocaleSideDimension } from '../components/LocaleSideDimension'
+import { LocaleSideDimension } from '../components'
 
-const footerForm = (
+export const footerForm = (
 	<>
 		<H2>Contact us button</H2>
 		<LocaleSideDimension>
@@ -19,5 +19,3 @@ const footerForm = (
 		</SortableRepeater>
 	</>
 )
-
-export default footerForm
