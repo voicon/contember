@@ -50,28 +50,6 @@ builder.entity('FrontPageLocale', entity =>
 		.column('videosTitle')
 )
 
-builder.entity('ContactLocation', entity =>
-	entity
-		.column('email')
-		.column('phoneNumber')
-		.oneHasMany('locales', relation =>
-			relation
-				.target('ContactLocationLocale')
-				.ownerNotNull()
-				.ownedBy('contactLocation')
-		)
-)
-
-builder.entity('ContactLocationLocale', entity =>
-	entity
-		.unique(['contactLocation', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('title')
-		.column('entity')
-		.column('address')
-		.column('additionalText')
-)
-
 builder.entity('Footer', entity =>
 	entity
 		.column('unique', column =>
@@ -332,6 +310,29 @@ builder.entity('Contact', entity =>
 		.column('linkedIn')
 		.column('instagram')
 		.column('twitter')
+		.oneHasMany('locations', relation => relation.target('ContactLocation'))
+)
+
+builder.entity('ContactLocation', entity =>
+	entity
+		.column('email')
+		.column('phoneNumber')
+		.oneHasMany('locales', relation =>
+			relation
+				.target('ContactLocationLocale')
+				.ownerNotNull()
+				.ownedBy('contactLocation')
+		)
+)
+
+builder.entity('ContactLocationLocale', entity =>
+	entity
+		.unique(['contactLocation', 'locale'])
+		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.column('title')
+		.column('entity')
+		.column('address')
+		.column('additionalText')
 )
 
 const model = builder.buildSchema()
