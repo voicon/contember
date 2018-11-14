@@ -3,7 +3,6 @@ import { TextField } from 'cms-admin'
 import * as React from 'react'
 import { LocaleSideDimension } from '../components'
 
-
 export const contactPageForm = (
 	<>
 		<H2>General</H2>

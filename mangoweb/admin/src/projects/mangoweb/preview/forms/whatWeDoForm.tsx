@@ -2,7 +2,6 @@ import { Repeater, RichTextField, TextField } from 'cms-admin'
 import * as React from 'react'
 import { ImageField } from '../components'
 
-
 export const whatWeDoForm = (
 	<>
 		<TextField name="activity" label="What we do" />

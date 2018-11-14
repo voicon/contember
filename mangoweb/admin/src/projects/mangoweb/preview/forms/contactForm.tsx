@@ -3,7 +3,6 @@ import { Repeater, RichTextField, TextField } from 'cms-admin'
 import * as React from 'react'
 import { LocaleSideDimension } from '../components'
 
-
 export const contactForm = (
 	<>
 		<H2>Channels</H2>
