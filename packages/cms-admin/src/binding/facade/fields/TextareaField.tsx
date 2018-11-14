@@ -14,15 +14,15 @@ export interface TextAreaFieldProps {
 	singleLine?: boolean
 }
 
-export class TextAreaField extends React.Component<TextAreaFieldProps> {
+export class TextAreaField extends React.PureComponent<TextAreaFieldProps> {
 	static displayName = 'TextAreaField'
 
 	public render() {
 		return (
 			<Field name={this.props.name}>
-				{(data: FieldAccessor<string>): React.ReactNode => {
+				{(data: FieldAccessor<string>, env): React.ReactNode => {
 					return (
-						<FormGroup label={this.props.label}>
+						<FormGroup label={env.applySystemMiddleware('labelMiddleware', this.props.label)}>
 							<TextArea
 								value={data.currentValue}
 								onChange={this.generateOnChange(data)}
@@ -42,8 +42,11 @@ export class TextAreaField extends React.Component<TextAreaFieldProps> {
 	}
 
 	public static generateSyntheticChildren(props: TextFieldProps): React.ReactNode {
-		return Parser.generateWrappedField(props.name, fieldName => <Field name={fieldName} />)
+		return Parser.generateWrappedNode(props.name, fieldName => <Field name={fieldName} />)
 	}
 }
 
-type EnforceDataBindingCompatibility = EnforceSubtypeRelation<typeof TextAreaField, SyntheticChildrenProvider>
+type EnforceDataBindingCompatibility = EnforceSubtypeRelation<
+	typeof TextAreaField,
+	SyntheticChildrenProvider<TextAreaFieldProps>
+>

@@ -9,7 +9,7 @@ interface PageLinkByIdProps<P extends AnyParams> {
 	Component?: React.ComponentType<InnerProps>
 }
 
-export class PageLinkById<P extends AnyParams> extends React.Component<PageLinkByIdProps<P>> {
+export class PageLinkById<P extends AnyParams> extends React.PureComponent<PageLinkByIdProps<P>> {
 	public render() {
 		return (
 			<DataContext.Consumer>
@@ -17,7 +17,7 @@ export class PageLinkById<P extends AnyParams> extends React.Component<PageLinkB
 					if (data instanceof EntityAccessor) {
 						const id = data.primaryKey
 
-						if (id) {
+						if (typeof id === 'string') {
 							return (
 								<PageLink change={() => this.props.change(id)} Component={this.props.Component}>
 									{this.props.children}

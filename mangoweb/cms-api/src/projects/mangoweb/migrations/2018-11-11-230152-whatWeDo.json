@@ -1,0 +1,121 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "WhatWeDo",
+			"field": {
+				"name": "locale",
+				"columnName": "locale",
+				"nullable": true,
+				"type": "Enum",
+				"columnType": "locale",
+				"enumName": "locale"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "WhatWeDo",
+			"field": {
+				"name": "activity",
+				"columnName": "activity",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDo",
+			"owningSide": {
+				"name": "featuredImage",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "featured_image_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "WhatWeDo",
+			"field": {
+				"name": "descriptionHeading",
+				"columnName": "description_heading",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDo",
+			"owningSide": {
+				"name": "featuredVideo",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Video",
+				"joiningColumn": {
+					"columnName": "featured_video_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDo",
+			"fieldName": "locales"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDoDescription",
+			"owningSide": {
+				"name": "WhatWeDo",
+				"target": "WhatWeDo",
+				"inversedBy": "description",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "what_we_do_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "description",
+				"ownedBy": "WhatWeDo",
+				"type": "OneHasMany",
+				"target": "WhatWeDoDescription"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDoDescription",
+			"fieldName": "WhatWeDoLocale"
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "WhatWeDo",
+			"unique": {
+				"fields": [
+					"featuredImage"
+				],
+				"name": "unique_WhatWeDo_featuredImage_8a7052"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "WhatWeDo",
+			"unique": {
+				"fields": [
+					"featuredVideo"
+				],
+				"name": "unique_WhatWeDo_featuredVideo_02d684"
+			}
+		},
+		{
+			"modification": "removeEntity",
+			"entityName": "WhatWeDoLocale"
+		}
+	]
+}

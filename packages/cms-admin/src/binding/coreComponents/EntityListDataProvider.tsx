@@ -1,11 +1,10 @@
-import { GraphQlBuilder } from 'cms-client'
-import { Input } from 'cms-common'
 import * as React from 'react'
 import Dimensions from '../../components/Dimensions'
 import { SelectedDimension } from '../../state/request'
-import { EntityName, FieldName } from '../bindingTypes'
+import { EntityName, FieldName, Filter } from '../bindingTypes'
 import { EnvironmentContext } from '../coreComponents'
 import { Environment, MarkerTreeRoot } from '../dao'
+import { DefaultRenderer } from '../facade/renderers'
 import { MarkerTreeGenerator } from '../model'
 import { DataRendererProps, getDataProvider } from './DataProvider'
 import { EnforceSubtypeRelation } from './EnforceSubtypeRelation'
@@ -14,12 +13,12 @@ import { MarkerTreeRootProvider } from './MarkerProvider'
 interface EntityListDataProviderProps<DRP> {
 	name: EntityName
 	associatedField?: FieldName
-	filter?: Input.Where<GraphQlBuilder.Literal>
+	filter?: Filter
 	renderer?: React.ComponentClass<DRP & DataRendererProps>
 	rendererProps?: DRP
 }
 
-export class EntityListDataProvider<DRP> extends React.Component<EntityListDataProviderProps<DRP>> {
+export class EntityListDataProvider<DRP> extends React.PureComponent<EntityListDataProviderProps<DRP>> {
 	public static displayName = 'EntityListDataProvider'
 
 	public render() {
@@ -27,8 +26,15 @@ export class EntityListDataProvider<DRP> extends React.Component<EntityListDataP
 			<Dimensions>
 				{(dimensions: SelectedDimension) => {
 					const environment = new Environment({ dimensions })
+					const Renderer = this.props.renderer || DefaultRenderer
 					const markerTreeGenerator = new MarkerTreeGenerator(
-						<EntityListDataProvider {...this.props}>{this.props.children}</EntityListDataProvider>,
+						(
+							<EntityListDataProvider {...this.props}>
+								<Renderer {...this.props.rendererProps} data={undefined}>
+									{this.props.children}
+								</Renderer>
+							</EntityListDataProvider>
+						),
 						environment
 					)
 					const DataProvider = getDataProvider<DRP>()
@@ -65,4 +71,7 @@ export class EntityListDataProvider<DRP> extends React.Component<EntityListDataP
 	}
 }
 
-type EnforceDataBindingCompatibility = EnforceSubtypeRelation<typeof EntityListDataProvider, MarkerTreeRootProvider>
+type EnforceDataBindingCompatibility = EnforceSubtypeRelation<
+	typeof EntityListDataProvider,
+	MarkerTreeRootProvider<EntityListDataProviderProps<any>>
+>

@@ -10,9 +10,11 @@ import {
 	EntityForRemovalAccessor,
 	FieldAccessor,
 	FieldMarker,
+	MarkerTreeConstraints,
 	MarkerTreeRoot,
 	ReferenceMarker,
-	RootAccessor
+	RootAccessor,
+	SingleEntityTreeConstraints
 } from '../dao'
 
 type Queries = 'get' | 'list'
@@ -35,7 +37,8 @@ export class MutationGenerator {
 				this.persistedData ? this.persistedData[this.currentData.id] : undefined,
 				this.markerTree.entityName,
 				this.markerTree.fields,
-				this.currentData.root
+				this.currentData.root,
+				this.markerTree.constraints
 			)
 			return builder.getGql()
 		} catch (e) {
@@ -48,6 +51,7 @@ export class MutationGenerator {
 		entityName: EntityName,
 		entityFields: EntityFields,
 		entity: RootAccessor,
+		constraints?: MarkerTreeConstraints,
 		queryBuilder?: QueryBuilder
 	): QueryBuilder {
 		if (!queryBuilder) {
@@ -55,13 +59,13 @@ export class MutationGenerator {
 		}
 
 		if (entity instanceof EntityAccessor) {
-			if (entity.primaryKey === undefined) {
-				queryBuilder = this.addCreateMutation(entity, entityName, entityFields, queryBuilder)
+			if (entity.primaryKey instanceof EntityAccessor.UnpersistedEntityID) {
+				queryBuilder = this.addCreateMutation(entity, entityName, entityFields, constraints, queryBuilder)
 			} else if (data && !Array.isArray(data)) {
-				queryBuilder = this.addUpdateMutation(entity, entityName, entityFields, data, queryBuilder)
+				queryBuilder = this.addUpdateMutation(entity, entityName, entityFields, data, constraints, queryBuilder)
 			}
 		} else if (entity instanceof EntityForRemovalAccessor) {
-			queryBuilder = this.addDeleteMutation(entity, entityName, queryBuilder)
+			queryBuilder = this.addDeleteMutation(entity, entityName, constraints, queryBuilder)
 		} else if (entity instanceof EntityCollectionAccessor) {
 			if (Array.isArray(data) || data === undefined) {
 				const entityCount = entity.entities.length
@@ -75,6 +79,7 @@ export class MutationGenerator {
 							entityName,
 							entityFields,
 							currentEntity,
+							constraints,
 							queryBuilder
 						)
 					} else if (currentEntity === undefined) {
@@ -95,6 +100,7 @@ export class MutationGenerator {
 	private addDeleteMutation(
 		entity: EntityForRemovalAccessor,
 		entityName: EntityName,
+		constraints?: MarkerTreeConstraints,
 		queryBuilder?: QueryBuilder
 	): QueryBuilder {
 		if (!queryBuilder) {
@@ -105,7 +111,13 @@ export class MutationGenerator {
 			`delete${entityName}`,
 			builder => {
 				builder = builder.column(MutationGenerator.PRIMARY_KEY_NAME)
-				return builder.where({ [MutationGenerator.PRIMARY_KEY_NAME]: entity.primaryKey })
+
+				let where = {}
+				if (constraints && constraints.whereType === 'unique') {
+					where = constraints.where
+				}
+
+				return builder.where({ ...where, [MutationGenerator.PRIMARY_KEY_NAME]: entity.primaryKey })
 			},
 			`delete${entityName}_${this.primaryKeyToAlias(entity.primaryKey)}`
 		)
@@ -116,6 +128,7 @@ export class MutationGenerator {
 		entityName: EntityName,
 		entityFields: EntityFields,
 		data: ReceivedEntityData<undefined>,
+		constraints?: MarkerTreeConstraints,
 		queryBuilder?: QueryBuilder
 	): QueryBuilder {
 		if (!queryBuilder) {
@@ -124,7 +137,7 @@ export class MutationGenerator {
 
 		const primaryKey = entity.primaryKey
 
-		if (!primaryKey || !data) {
+		if (primaryKey instanceof EntityAccessor.UnpersistedEntityID || !data) {
 			return queryBuilder
 		}
 
@@ -132,7 +145,13 @@ export class MutationGenerator {
 			`update${entityName}`,
 			builder => {
 				builder = builder.column(MutationGenerator.PRIMARY_KEY_NAME)
-				builder = builder.where({ [MutationGenerator.PRIMARY_KEY_NAME]: primaryKey })
+
+				let where = {}
+				if (constraints && constraints.whereType === 'unique') {
+					where = constraints.where
+				}
+
+				builder = builder.where({ ...where, [MutationGenerator.PRIMARY_KEY_NAME]: primaryKey })
 
 				return builder.data(builder => this.registerUpdateMutationPart(entity, entityFields, data, builder))
 			},
@@ -144,6 +163,7 @@ export class MutationGenerator {
 		entity: EntityAccessor,
 		entityName: EntityName,
 		entityFields: EntityFields,
+		constraints?: MarkerTreeConstraints,
 		queryBuilder?: QueryBuilder
 	): QueryBuilder {
 		if (!queryBuilder) {
@@ -155,7 +175,15 @@ export class MutationGenerator {
 			builder => {
 				builder = builder.column(MutationGenerator.PRIMARY_KEY_NAME)
 
-				return builder.data(builder => this.registerCreateMutationPart(entity, entityFields, builder))
+				return builder.data(
+					this.registerCreateMutationPart(
+						entity,
+						entityFields,
+						new CrudQueryBuilder.CreateDataBuilder(
+							constraints && constraints.whereType === 'unique' ? constraints.where : undefined
+						)
+					)
+				)
 			},
 			`create${entityName}_${(this.createCounter++).toFixed(0)}`
 		)
@@ -214,7 +242,7 @@ export class MutationGenerator {
 						builder = builder.one(placeholderName, builder => {
 							const { accessor, reference } = accessorReference[0]
 
-							if (accessor.primaryKey === undefined) {
+							if (accessor.primaryKey instanceof EntityAccessor.UnpersistedEntityID) {
 								const innerBuilder = new CrudQueryBuilder.CreateDataBuilder(reference.reducedBy)
 								return builder.create(this.registerCreateMutationPart(accessor, reference.fields, innerBuilder))
 							} else {
@@ -229,7 +257,7 @@ export class MutationGenerator {
 						for (const referencePair of accessorReference) {
 							const { accessor, reference } = referencePair
 
-							if (accessor.primaryKey === undefined) {
+							if (accessor.primaryKey instanceof EntityAccessor.UnpersistedEntityID) {
 								const innerBuilder = new CrudQueryBuilder.CreateDataBuilder(reference.reducedBy)
 								builder = builder.create(this.registerCreateMutationPart(accessor, reference.fields, innerBuilder))
 							} else {
@@ -321,7 +349,7 @@ export class MutationGenerator {
 							const { accessor, reference, persistedField } = accessorReference[0]
 
 							if (accessor instanceof EntityAccessor) {
-								if (accessor.primaryKey === undefined) {
+								if (accessor.primaryKey instanceof EntityAccessor.UnpersistedEntityID) {
 									const innerBuilder = new CrudQueryBuilder.CreateDataBuilder(reference.reducedBy)
 									return builder.create(this.registerCreateMutationPart(accessor, reference.fields, innerBuilder))
 								} else {
@@ -354,7 +382,7 @@ export class MutationGenerator {
 							const { accessor, reference, persistedField } = referencePair
 
 							if (accessor instanceof EntityAccessor) {
-								if (accessor.primaryKey === undefined) {
+								if (accessor.primaryKey instanceof EntityAccessor.UnpersistedEntityID) {
 									const innerBuilder = new CrudQueryBuilder.CreateDataBuilder(reference.reducedBy)
 									builder = builder.create(this.registerCreateMutationPart(accessor, reference.fields, innerBuilder))
 								} else {

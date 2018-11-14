@@ -13,19 +13,19 @@ export interface RichTextFieldProps {
 	allowLineBreaks?: boolean
 }
 
-export class RichTextField extends React.Component<RichTextFieldProps> {
+export class RichTextField extends React.PureComponent<RichTextFieldProps> {
 	static displayName = 'RichTextField'
 
 	public render() {
 		return (
 			<Field name={this.props.name}>
-				{(data: FieldAccessor<string | null, string>): React.ReactNode => {
+				{(data: FieldAccessor<string | null, string>, env): React.ReactNode => {
 					return (
 						<RichEditor
 							onChange={this.generateOnChange(data)}
 							value={data.currentValue || ''}
 							allowLineBreaks={this.props.allowLineBreaks}
-							label={this.props.label}
+							label={env.applySystemMiddleware('labelMiddleware', this.props.label)}
 						/>
 					)
 				}}
@@ -38,8 +38,11 @@ export class RichTextField extends React.Component<RichTextFieldProps> {
 	}
 
 	public static generateSyntheticChildren(props: TextFieldProps, environment: Environment): React.ReactNode {
-		return Parser.generateWrappedField(props.name, fieldName => <Field name={fieldName} />, environment)
+		return Parser.generateWrappedNode(props.name, fieldName => <Field name={fieldName} />, environment)
 	}
 }
 
-type EnforceDataBindingCompatibility = EnforceSubtypeRelation<typeof RichTextField, SyntheticChildrenProvider>
+type EnforceDataBindingCompatibility = EnforceSubtypeRelation<
+	typeof RichTextField,
+	SyntheticChildrenProvider<RichTextFieldProps>
+>

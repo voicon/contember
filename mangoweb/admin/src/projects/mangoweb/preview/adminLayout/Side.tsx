@@ -22,19 +22,61 @@ export default class Side extends React.Component {
 					>
 						Front page
 					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'multiEdit_contactLocation' })} frontIcon="envelope">
-						Contact locations
+					<MenuPageLink change={() => ({ name: 'multiEdit_menuItem' })} frontIcon="menu">
+						Menu
 					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'edit_footer' })} frontIcon="widget-footer">
+					<MenuPageLink
+						change={() => ({ name: 'edit_footer', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="widget-footer"
+					>
 						Footer
 					</MenuPageLink>
 				</MenuList>
 				<MenuList title="Team">
-					<MenuPageLink change={() => ({ name: 'list_person' })} frontIcon="people">
-						Member list
+					{/*<MenuPageLink
+						change={() => ({ name: 'edit_teamPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="mugshot"
+					>
+						Team page
+					</MenuPageLink>*/}
+					<MenuPageLink change={() => ({ name: 'multiEdit_person' })} frontIcon="people">
+						Member order
 					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'create_person' })} frontIcon="person">
+					<MenuPageLink change={() => ({ name: 'create_person' })} frontIcon="new-person">
 						Create new
+					</MenuPageLink>
+				</MenuList>
+				<MenuList title="What we do">
+					<MenuPageLink
+						change={() => ({ name: 'edit_whatWeDoPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="oil-field"
+					>
+						What we do page
+					</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'multiEdit_whatWeDo' })} frontIcon="briefcase">
+						What we do order
+					</MenuPageLink>
+				</MenuList>
+				<MenuList title="References">
+					<MenuPageLink
+						change={() => ({ name: 'edit_referencesPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="thumbs-up"
+					>
+						References page
+					</MenuPageLink>
+				</MenuList>
+				<MenuList title="Contact">
+					<MenuPageLink
+						change={() => ({ name: 'edit_contactPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="envelope"
+					>
+						Contact page
+					</MenuPageLink>
+					<MenuPageLink
+						change={() => ({ name: 'edit_contact', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="phone"
+					>
+						Contact info
 					</MenuPageLink>
 				</MenuList>
 			</Menu>

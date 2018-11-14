@@ -13,7 +13,7 @@ export interface TextFieldProps {
 	inlineLabel?: boolean
 }
 
-export class TextField extends React.Component<TextFieldProps> {
+export class TextField extends React.PureComponent<TextFieldProps> {
 	static displayName = 'TextField'
 
 	public render() {
@@ -40,8 +40,11 @@ export class TextField extends React.Component<TextFieldProps> {
 	}
 
 	public static generateSyntheticChildren(props: TextFieldProps, environment: Environment): React.ReactNode {
-		return Parser.generateWrappedField(props.name, fieldName => <Field name={fieldName} />, environment)
+		return Parser.generateWrappedNode(props.name, fieldName => <Field name={fieldName} />, environment)
 	}
 }
 
-type EnforceDataBindingCompatibility = EnforceSubtypeRelation<typeof TextField, SyntheticChildrenProvider>
+type EnforceDataBindingCompatibility = EnforceSubtypeRelation<
+	typeof TextField,
+	SyntheticChildrenProvider<TextFieldProps>
+>

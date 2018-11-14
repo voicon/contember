@@ -25,12 +25,22 @@ const reactRoot = (
 					dashboard: { path: '/' },
 
 					edit_frontPage: { path: '/front-page' },
-					multiEdit_contactLocation: { path: '/contact-locations' },
+					multiEdit_menuItem: { path: '/menu' },
 					edit_footer: { path: '/footer' },
 
-					list_person: { path: '/team-members' },
+					//edit_teamPage: { path: '/team-page' },
+					multiEdit_person: { path: '/team-members' },
 					create_person: { path: '/team-members/create-new' },
-					edit_person: { path: '/team-members/member-:id' }
+					edit_person: { path: '/team-members/member-:id' },
+
+					edit_whatWeDoPage: { path: '/whatWeDo-page' },
+					multiEdit_whatWeDo: { path: '/whatWeDo' },
+					edit_whatWeDo: { path: '/whatWeDo/:id' },
+
+					edit_referencesPage: { path: '/references-page' },
+
+					edit_contactPage: { path: '/contact-page' },
+					edit_contact: { path: '/contact-information' }
 				}
 			}
 		]}

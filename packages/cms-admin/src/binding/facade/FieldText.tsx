@@ -8,7 +8,7 @@ interface FieldTextProps {
 	name: string
 }
 
-export class FieldText extends React.Component<FieldTextProps> {
+export class FieldText extends React.PureComponent<FieldTextProps> {
 	public static displayName = 'FieldText'
 
 	public render() {
@@ -16,8 +16,11 @@ export class FieldText extends React.Component<FieldTextProps> {
 	}
 
 	public static generateSyntheticChildren(props: TextFieldProps, environment: Environment): React.ReactNode {
-		return Parser.generateWrappedField(props.name, fieldName => <Field name={fieldName} />, environment)
+		return Parser.generateWrappedNode(props.name, fieldName => <Field name={fieldName} />, environment)
 	}
 }
 
-type EnforceDataBindingCompatibility = EnforceSubtypeRelation<typeof FieldText, SyntheticChildrenProvider>
+type EnforceDataBindingCompatibility = EnforceSubtypeRelation<
+	typeof FieldText,
+	SyntheticChildrenProvider<FieldTextProps>
+>

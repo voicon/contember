@@ -1,3 +1,4 @@
+import { GraphQlBuilder } from 'cms-client'
 import { assertNever } from 'cms-common'
 import { FieldName, ReceivedData, ReceivedEntityData, Scalar } from '../bindingTypes'
 import {
@@ -49,7 +50,7 @@ export class AccessorTreeGenerator {
 					tree.fields,
 					(fieldName, newData) => {
 						const entityAccessor = entityAccessors[i]
-						if (entityAccessor) {
+						if (entityAccessor instanceof EntityAccessor) {
 							entityAccessors[i] = this.withUpdatedField(entityAccessor, fieldName, newData)
 							updateData(createAccessorTreeRoot())
 						}
@@ -64,7 +65,7 @@ export class AccessorTreeGenerator {
 
 						if (entityAccessor) {
 							const primaryKey = entityAccessor.primaryKey
-							if (primaryKey) {
+							if (typeof primaryKey === 'string') {
 								entityAccessors[i] = new EntityForRemovalAccessor(
 									primaryKey,
 									entityAccessor.data,
@@ -78,9 +79,10 @@ export class AccessorTreeGenerator {
 						}
 					}
 				)
-			const entityAccessors: Array<EntityAccessor | undefined> = (data && data.length ? data : [undefined]).map(
-				(datum, i) => createEntityAccessor(i, datum)
-			)
+			const entityAccessors: Array<EntityAccessor | EntityForRemovalAccessor | undefined> = (data && data.length
+				? data
+				: [undefined]
+			).map((datum, i) => createEntityAccessor(i, datum))
 			return createAccessorTreeRoot()
 		} else {
 			const createAccessorTreeRoot = (): AccessorTreeRoot => new AccessorTreeRoot(tree, entityAccessor, tree.entityName)
@@ -88,9 +90,11 @@ export class AccessorTreeGenerator {
 				data,
 				tree.fields,
 				(fieldName, newData) => {
-					entityAccessor = this.withUpdatedField(entityAccessor, fieldName, newData)
+					if (entityAccessor instanceof EntityAccessor) {
+						entityAccessor = this.withUpdatedField(entityAccessor, fieldName, newData)
 
-					updateData(createAccessorTreeRoot())
+						updateData(createAccessorTreeRoot())
+					}
 				},
 				newEntityAccessor => {
 					entityAccessor = newEntityAccessor
@@ -98,7 +102,7 @@ export class AccessorTreeGenerator {
 					updateData(createAccessorTreeRoot())
 				},
 				() => {
-					if (entityAccessor.primaryKey) {
+					if (typeof entityAccessor.primaryKey === 'string') {
 						entityAccessor = new EntityForRemovalAccessor(
 							entityAccessor.primaryKey,
 							entityAccessor.data,
@@ -157,8 +161,14 @@ export class AccessorTreeGenerator {
 							)
 						}
 					} else if (reference.expectedCount === ReferenceMarker.ExpectedCount.PossiblyMany) {
-						if (Array.isArray(fieldData) || fieldData === undefined) {
-							entityData[referencePlaceholder] = this.generateManyReference(fieldData, reference, onUpdate)
+						if (fieldData === undefined) {
+							entityData[referencePlaceholder] = this.generateManyReference(undefined, reference, onUpdate)
+						} else if (Array.isArray(fieldData)) {
+							entityData[referencePlaceholder] = this.generateManyReference(
+								fieldData.length === 0 ? undefined : fieldData,
+								reference,
+								onUpdate
+							)
 						} else if (typeof fieldData === 'object') {
 							// Intentionally allowing `fieldData === null` here as well since this should only happen when a *hasOne
 							// relation is unlinked, e.g. a Person does not have a linked Nationality.
@@ -190,13 +200,13 @@ export class AccessorTreeGenerator {
 							`Perhaps you wanted to use a <SingleReference />?`
 					)
 				} else {
-					const onChange = (newValue: Scalar) => {
+					const onChange = (newValue: Scalar | GraphQlBuilder.Literal) => {
 						onUpdate(placeholderName, new FieldAccessor(placeholderName, newValue, onChange))
 					}
 					// `fieldData` will be `undefined` when a repeater creates a clone based on no data.
 					entityData[placeholderName] = new FieldAccessor(
 						placeholderName,
-						fieldData === undefined ? null : fieldData,
+						fieldData === undefined ? field.defaultValue || null : fieldData,
 						onChange
 					)
 				}
@@ -244,24 +254,28 @@ export class AccessorTreeGenerator {
 		reference: ReferenceMarker.Reference,
 		onUpdate: OnUpdate
 	): EntityCollectionAccessor {
+		const update = () => {
+			onUpdate(
+				reference.placeholderName,
+				(collectionAccessor = new EntityCollectionAccessor(collectionAccessor.entities, collectionAccessor.addNew))
+			)
+		}
 		const generateNewAccessor = (i: number): EntityAccessor => {
 			return this.updateFields(
 				Array.isArray(fieldData) ? fieldData[i] : undefined,
 				reference.fields,
 				(updatedField: FieldName, updatedData: EntityData.FieldData) => {
 					const entityAccessor = collectionAccessor.entities[i]
-					if (entityAccessor) {
+					if (entityAccessor instanceof EntityAccessor) {
 						collectionAccessor.entities[i] = this.withUpdatedField(entityAccessor, updatedField, updatedData)
-
-						onUpdate(reference.placeholderName, collectionAccessor)
+						update()
 					}
 				},
 				replacement => {
 					const entityAccessor = collectionAccessor.entities[i]
-					if (entityAccessor) {
+					if (entityAccessor instanceof EntityAccessor) {
 						collectionAccessor.entities[i] = this.asDifferentEntity(entityAccessor, replacement)
-
-						onUpdate(reference.placeholderName, collectionAccessor)
+						update()
 					}
 				},
 				() => {
@@ -269,23 +283,23 @@ export class AccessorTreeGenerator {
 					if (currentEntity instanceof EntityAccessor) {
 						const id = currentEntity.primaryKey
 
-						if (id === undefined) {
-							collectionAccessor.entities[i] = undefined
-						} else {
+						if (typeof id === 'string') {
 							collectionAccessor.entities[i] = new EntityForRemovalAccessor(
 								id,
 								currentEntity.data,
 								currentEntity.replaceWith
 							)
+						} else {
+							collectionAccessor.entities[i] = undefined
 						}
-						onUpdate(reference.placeholderName, collectionAccessor)
+						update()
 					}
 				}
 			)
 		}
-		const collectionAccessor = new EntityCollectionAccessor([], () => {
+		let collectionAccessor = new EntityCollectionAccessor([], () => {
 			collectionAccessor.entities.push(generateNewAccessor(collectionAccessor.entities.length))
-			onUpdate(reference.placeholderName, collectionAccessor)
+			update()
 		})
 
 		if (!Array.isArray(fieldData)) {

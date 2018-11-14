@@ -1,31 +1,16 @@
 import { H2 } from '@blueprintjs/core'
-import { NumberField, RichTextField, TextField, Variable } from 'cms-admin'
+import { NumberField, RichTextField, TextField } from 'cms-admin'
 import * as React from 'react'
-import { ImageField } from '../components/ImageField'
-import { LocaleSideDimension } from '../components/LocaleSideDimension'
+import { ImageField, LocaleSideDimension } from '../components'
 
-const personForm = (
+export const personForm = (
 	<>
 		<H2>Basics</H2>
 		<TextField name="shortName" label="Short name" />
 		<TextField name="longName" label="Full name" />
 		<LocaleSideDimension>
-			<TextField
-				name="$locale.position"
-				label={
-					<>
-						<Variable name="flag" /> Position
-					</>
-				}
-			/>
-			<RichTextField
-				name="$locale.bio"
-				label={
-					<>
-						<Variable name="flag" /> Short bio
-					</>
-				}
-			/>
+			<TextField name="$locale.position" label="Position" />
+			<RichTextField name="$locale.bio" label="Short bio" />
 		</LocaleSideDimension>
 
 		<H2>Photos</H2>
@@ -43,10 +28,5 @@ const personForm = (
 		<TextField name="likendin" label="LinkedIn" />
 		<TextField name="github" label="GitHub" />
 		<TextField name="instagram" label="Instagram" />
-
-		<H2>Miscellaneous</H2>
-		<NumberField name="order" label="Order" />
 	</>
 )
-
-export default personForm

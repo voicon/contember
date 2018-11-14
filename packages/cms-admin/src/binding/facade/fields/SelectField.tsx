@@ -1,8 +1,6 @@
 import { FormGroup, HTMLSelect, IFormGroupProps } from '@blueprintjs/core'
-import { GraphQlBuilder } from 'cms-client'
-import { Input } from 'cms-common'
 import * as React from 'react'
-import { EntityName, FieldName } from '../../bindingTypes'
+import { EntityName, FieldName, Filter } from '../../bindingTypes'
 import {
 	DataContext,
 	DataContextValue,
@@ -19,10 +17,10 @@ export interface SelectFieldProps {
 	label: IFormGroupProps['label']
 	entityName: EntityName
 	optionFieldName: FieldName
-	filter?: Input.Where<GraphQlBuilder.Literal>
+	filter?: Filter
 }
 
-export class SelectField extends React.Component<SelectFieldProps> {
+export class SelectField extends React.PureComponent<SelectFieldProps> {
 	public static displayName = 'SelectField'
 
 	public render() {
@@ -47,7 +45,7 @@ export class SelectField extends React.Component<SelectFieldProps> {
 							return (
 								<FormGroup label={this.props.label}>
 									<HTMLSelect
-										value={currentValueEntity.primaryKey}
+										value={currentValueEntity.primaryKey as string}
 										onChange={e => {
 											const newPrimaryKey = e.currentTarget.value
 											const newAccessor = normalizedData.find(accessor => accessor.primaryKey === newPrimaryKey)
@@ -61,7 +59,7 @@ export class SelectField extends React.Component<SelectFieldProps> {
 												throw new DataBindingError('Corrupted data')
 											}
 											return {
-												value: datum.primaryKey!,
+												value: datum.primaryKey as string,
 												label: (optionField.currentValue || '').toString()
 											}
 										})}
@@ -90,4 +88,7 @@ export class SelectField extends React.Component<SelectFieldProps> {
 	}
 }
 
-type EnforceDataBindingCompatibility = EnforceSubtypeRelation<typeof SelectField, SyntheticChildrenProvider>
+type EnforceDataBindingCompatibility = EnforceSubtypeRelation<
+	typeof SelectField,
+	SyntheticChildrenProvider<SelectFieldProps>
+>
