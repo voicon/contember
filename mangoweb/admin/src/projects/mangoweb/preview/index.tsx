@@ -4,6 +4,7 @@ import { GraphQlBuilder } from 'cms-client'
 import * as React from 'react'
 import { Layout } from './adminLayout'
 import { contactForm } from './forms/contactForm'
+import { contactPageForm } from './forms/contactPageForm'
 import footerForm from './forms/footerForm'
 import frontPageForm from './forms/frontPageForm'
 import { menuItemForm } from './forms/menuItemForm'
@@ -161,7 +162,7 @@ export default (
 				title: 'Contact page'
 			}}
 		>
-			todo contact page
+			{contactPageForm}
 		</EditPage>
 		<EditPage
 			entity="Contact"
