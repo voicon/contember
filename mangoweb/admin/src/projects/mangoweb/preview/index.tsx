@@ -11,6 +11,7 @@ import personForm from './forms/personForm'
 import { personListForm } from './forms/personListForm'
 import { whatWeDoForm } from './forms/whatWeDoForm'
 import { whatWeDoOrderForm } from './forms/whatWeDoOrderForm'
+import { whatWeDoPageForm } from './forms/whatWeDoPageForm'
 
 export default (
 	<Pages project="mangoweb" stage="prod" layout={Layout}>
@@ -109,7 +110,7 @@ export default (
 				title: 'What we do page'
 			}}
 		>
-			foo
+			{whatWeDoPageForm}
 		</EditPage>
 		<MultiEditPage
 			entity="WhatWeDo"
