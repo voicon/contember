@@ -1,0 +1,88 @@
+{
+	"modifications": [
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FrontPageLocale",
+			"fieldName": "frontPage",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FooterLocale",
+			"fieldName": "footer",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FooterButtonLocale",
+			"fieldName": "footerButton",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FrontPageFeaturedClient",
+			"fieldName": "FrontPageLocale",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "PageSeoLocale",
+			"fieldName": "pageSeo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "MenuItemLocale",
+			"fieldName": "menuItem",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "PersonLocale",
+			"fieldName": "person",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "WhatWeDoDescription",
+			"fieldName": "WhatWeDo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "WhatWeDoPageLocale",
+			"fieldName": "whatWeDoPage",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ReferencesPageLocale",
+			"fieldName": "referencesPage",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "Reference",
+			"fieldName": "referencesPage",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ContactPageLocale",
+			"fieldName": "contactPage",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ContactLocation",
+			"fieldName": "Contact",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ContactLocationLocale",
+			"fieldName": "contactLocation",
+			"onDelete": "cascade"
+		}
+	]
+}
