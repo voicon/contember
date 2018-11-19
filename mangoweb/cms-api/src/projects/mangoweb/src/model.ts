@@ -4,7 +4,6 @@ import { Acl, Model, Schema } from 'cms-common'
 const builder = new SchemaBuilder()
 builder.enum('one', ['one'])
 builder.enum('locale', ['cs', 'en'])
-builder.enum('page', ['frontPage', 'team', 'whatWeDo', 'references', 'contact'])
 
 builder.entity('Image', entity => entity.column('url'))
 
@@ -131,7 +130,7 @@ builder.entity('PageSeoLocale', entity =>
 
 builder.entity('MenuItem', entity =>
 	entity
-		.column('page', column => column.type(Model.ColumnType.Enum, { enumName: 'page' }).unique())
+		.column('url')
 		.column('order', column => column.type(Model.ColumnType.Int))
 		.oneHasMany('locales', relation =>
 			relation

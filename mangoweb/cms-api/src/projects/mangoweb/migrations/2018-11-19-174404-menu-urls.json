@@ -1,0 +1,29 @@
+{
+	"modifications": [
+		{
+			"modification": "removeUniqueConstraint",
+			"entityName": "MenuItem",
+			"constraintName": "unique_MenuItem_page_c3344d"
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "MenuItem",
+			"field": {
+				"name": "url",
+				"columnName": "url",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "MenuItem",
+			"fieldName": "page"
+		},
+		{
+			"modification": "removeEnum",
+			"enumName": "page"
+		}
+	]
+}
