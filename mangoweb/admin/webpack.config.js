@@ -77,7 +77,7 @@ module.exports = ({ production }) => ({
 		new webpack.DefinePlugin({ // If you modify these, also update cms-admin/src/types/window.d.ts
 			'process.env': {
 				NODE_ENV: JSON.stringify('development'),
-				SERVER_URL: JSON.stringify(production ? config.contentApi.production : config.contentApi.dev),
+				SERVER_URL: JSON.stringify(config.contentApi),
 				LOGIN_TOKEN: JSON.stringify(config.loginToken),
 			}
 		})
