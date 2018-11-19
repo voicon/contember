@@ -29,6 +29,7 @@ builder.entity('FrontPage', entity =>
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FrontPageLocale')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 				.ownedBy('frontPage')
 		)
@@ -46,7 +47,12 @@ builder.entity('FrontPageLocale', entity =>
 		.column('whatWeDoAlso')
 		.column('featuredClientsLabel')
 		.column('featuredClientsTitle')
-		.oneHasMany('featuredClients', relation => relation.target('FrontPageFeaturedClient').ownerNotNull())
+		.oneHasMany('featuredClients', relation =>
+			relation
+				.target('FrontPageFeaturedClient')
+				.onDelete(Model.OnDelete.cascade)
+				.ownerNotNull()
+		)
 		.column('videosTitle')
 )
 
@@ -64,6 +70,7 @@ builder.entity('Footer', entity =>
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FooterLocale')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 				.ownedBy('footer')
 		)
@@ -83,6 +90,7 @@ builder.entity('FooterButton', entity =>
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FooterButtonLocale')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 				.ownedBy('footerButton')
 		)
@@ -105,6 +113,7 @@ builder.entity('PageSeo', entity =>
 	entity.oneHasOne('ogImage', relation => relation.target('Image')).oneHasMany('locales', relation =>
 		relation
 			.target('PageSeoLocale')
+			.onDelete(Model.OnDelete.cascade)
 			.ownerNotNull()
 			.ownedBy('pageSeo')
 	)
@@ -127,6 +136,7 @@ builder.entity('MenuItem', entity =>
 		.oneHasMany('locales', relation =>
 			relation
 				.target('MenuItemLocale')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 				.ownedBy('menuItem')
 		)
@@ -168,6 +178,7 @@ builder.entity('Person', entity =>
 		.oneHasMany('locales', relation =>
 			relation
 				.target('PersonLocale')
+				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('person')
 				.ownerNotNull()
 		)
@@ -190,7 +201,7 @@ builder.entity('WhatWeDo', entity =>
 		.oneHasOne('featuredImage', relation => relation.target('Image'))
 		.column('descriptionHeading')
 		.oneHasOne('featuredVideo', relation => relation.target('Video'))
-		.oneHasMany('description', relation => relation.target('WhatWeDoDescription'))
+		.oneHasMany('description', relation => relation.target('WhatWeDoDescription').onDelete(Model.OnDelete.cascade))
 )
 
 builder.entity('WhatWeDoDescription', entity =>
@@ -211,6 +222,7 @@ builder.entity('WhatWeDoPage', entity =>
 		.oneHasMany('locales', relation =>
 			relation
 				.target('WhatWeDoPageLocale')
+				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('whatWeDoPage')
 				.ownerNotNull()
 		)
@@ -236,6 +248,7 @@ builder.entity('ReferencesPage', entity =>
 		.oneHasMany('locales', relation =>
 			relation
 				.target('ReferencesPageLocale')
+				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('referencesPage')
 				.ownerNotNull()
 		)
@@ -250,6 +263,7 @@ builder.entity('ReferencesPageLocale', entity =>
 		.oneHasMany('references', relation =>
 			relation
 				.target('Reference')
+				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('referencesPage')
 				.ownerNotNull()
 		)
@@ -281,6 +295,7 @@ builder.entity('ContactPage', entity =>
 		.oneHasMany('locales', relation =>
 			relation
 				.target('ContactPageLocale')
+				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('contactPage')
 				.ownerNotNull()
 		)
@@ -310,7 +325,7 @@ builder.entity('Contact', entity =>
 		.column('linkedIn')
 		.column('instagram')
 		.column('twitter')
-		.oneHasMany('locations', relation => relation.target('ContactLocation'))
+		.oneHasMany('locations', relation => relation.target('ContactLocation').onDelete(Model.OnDelete.cascade))
 )
 
 builder.entity('ContactLocation', entity =>
@@ -320,6 +335,7 @@ builder.entity('ContactLocation', entity =>
 		.oneHasMany('locales', relation =>
 			relation
 				.target('ContactLocationLocale')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 				.ownedBy('contactLocation')
 		)
