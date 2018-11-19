@@ -1,5 +1,5 @@
 import { H2 } from '@blueprintjs/core'
-import { Repeater, RichTextField, TextField } from 'cms-admin'
+import { Repeater, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
 import { LocaleSideDimension } from '../components'
 
@@ -18,9 +18,9 @@ export const contactForm = (
 			<LocaleSideDimension>
 				<TextField name="$locale.title" label="Title" />
 				<TextField name="$locale.entity" label="Legal entity" />
-				<RichTextField name="$locale.address" label="Address" />
-				<RichTextField name="$locale.description" label="Location description" />
-				<RichTextField name="$locale.additionalInfo" label="Additional info" />
+				<TextAreaField name="$locale.address" label="Address" />
+				<TextAreaField name="$locale.description" label="Location description" />
+				<TextAreaField name="$locale.additionalInfo" label="Additional info" />
 			</LocaleSideDimension>
 		</Repeater>
 	</>
