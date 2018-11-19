@@ -51,28 +51,48 @@ export default (
 						<H3>Czech</H3>
 						<dl>
 							<dt>Front page</dt>
-							<dd><code>/</code></dd>
+							<dd>
+								<code>/</code>
+							</dd>
 							<dt>Team</dt>
-							<dd><code>/tym</code></dd>
+							<dd>
+								<code>/tym</code>
+							</dd>
 							<dt>What we do</dt>
-							<dd><code>/co-delame</code></dd>
+							<dd>
+								<code>/co-delame</code>
+							</dd>
 							<dt>References</dt>
-							<dd><code>/reference</code></dd>
+							<dd>
+								<code>/reference</code>
+							</dd>
 							<dt>Contact</dt>
-							<dd><code>/kontakt</code></dd>
+							<dd>
+								<code>/kontakt</code>
+							</dd>
 						</dl>
 						<H3>English</H3>
 						<dl>
 							<dt>Front page</dt>
-							<dd><code>/en</code></dd>
+							<dd>
+								<code>/en</code>
+							</dd>
 							<dt>Team</dt>
-							<dd><code>/en/team</code></dd>
+							<dd>
+								<code>/en/team</code>
+							</dd>
 							<dt>What we do</dt>
-							<dd><code>/what-we-do</code></dd>
+							<dd>
+								<code>/what-we-do</code>
+							</dd>
 							<dt>References</dt>
-							<dd><code>/references</code></dd>
+							<dd>
+								<code>/references</code>
+							</dd>
 							<dt>Contact</dt>
-							<dd><code>/contact</code></dd>
+							<dd>
+								<code>/contact</code>
+							</dd>
 						</dl>
 					</Callout>
 				)
