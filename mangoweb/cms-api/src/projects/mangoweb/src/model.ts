@@ -348,7 +348,8 @@ builder.entity('ContactLocationLocale', entity =>
 		.column('title')
 		.column('entity')
 		.column('address')
-		.column('additionalText')
+		.column('description')
+		.column('additionalInfo')
 )
 
 const model = builder.buildSchema()

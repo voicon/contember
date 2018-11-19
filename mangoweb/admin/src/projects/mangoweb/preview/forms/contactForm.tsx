@@ -19,7 +19,8 @@ export const contactForm = (
 				<TextField name="$locale.title" label="Title" />
 				<TextField name="$locale.entity" label="Legal entity" />
 				<RichTextField name="$locale.address" label="Address" />
-				<RichTextField name="$locale.additionalText" label="Additional info" />
+				<RichTextField name="$locale.description" label="Location description" />
+				<RichTextField name="$locale.additionalInfo" label="Additional info" />
 			</LocaleSideDimension>
 		</Repeater>
 	</>
