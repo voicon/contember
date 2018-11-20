@@ -129,16 +129,13 @@ builder.entity('PageSeoLocale', entity =>
 )
 
 builder.entity('MenuItem', entity =>
-	entity
-		.column('url')
-		.column('order', column => column.type(Model.ColumnType.Int))
-		.oneHasMany('locales', relation =>
-			relation
-				.target('MenuItemLocale')
-				.onDelete(Model.OnDelete.cascade)
-				.ownerNotNull()
-				.ownedBy('menuItem')
-		)
+	entity.column('order', column => column.type(Model.ColumnType.Int)).oneHasMany('locales', relation =>
+		relation
+			.target('MenuItemLocale')
+			.onDelete(Model.OnDelete.cascade)
+			.ownerNotNull()
+			.ownedBy('menuItem')
+	)
 )
 
 builder.entity('MenuItemLocale', entity =>
@@ -146,6 +143,7 @@ builder.entity('MenuItemLocale', entity =>
 		.unique(['menuItem', 'locale'])
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('label')
+		.column('url')
 )
 
 builder.entity('TeamPage', entity =>

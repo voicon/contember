@@ -22,7 +22,7 @@ export class TextAreaField extends React.PureComponent<TextAreaFieldProps> {
 				{(data: FieldAccessor<string>, env): React.ReactNode => (
 					<FormGroup label={env.applySystemMiddleware('labelMiddleware', this.props.label)}>
 						<TextArea
-							value={data.currentValue}
+							value={data.currentValue || ''}
 							onChange={this.generateOnChange(data)}
 							large={this.props.large}
 							fill={true}
@@ -33,7 +33,7 @@ export class TextAreaField extends React.PureComponent<TextAreaFieldProps> {
 		)
 	}
 
-	private generateOnChange = (data: FieldAccessor<string | null, string>) => (e: ChangeEvent<HTMLTextAreaElement>) => {
+	private generateOnChange = (data: FieldAccessor<string>) => (e: ChangeEvent<HTMLTextAreaElement>) => {
 		data.onChange && data.onChange(e.target.value)
 	}
 
