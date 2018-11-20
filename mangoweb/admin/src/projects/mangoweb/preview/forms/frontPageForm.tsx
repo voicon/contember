@@ -1,5 +1,5 @@
 import { H2 } from '@blueprintjs/core'
-import { HiddenField, RichTextField, SortableRepeater, TextField } from 'cms-admin'
+import { HiddenField, TextAreaField, SortableRepeater, TextField } from 'cms-admin'
 import { VariableLiteral } from 'cms-admin/dist/src/binding/dao/VariableLiteral'
 import * as React from 'react'
 import { ImageField, LocaleSideDimension, VideoField } from '../components'
@@ -12,7 +12,7 @@ export const frontPageForm = (
 		<LocaleSideDimension>
 			<TextField name="$locale.introLabel" label="Label" />
 			<TextField name="$locale.introHeading" label="Heading" />
-			<RichTextField name="$locale.introBubbleText" label="Bubble text" />
+			<TextAreaField name="$locale.introBubbleText" label="Bubble text" />
 		</LocaleSideDimension>
 
 		<H2>What we do</H2>
@@ -28,7 +28,7 @@ export const frontPageForm = (
 				<HiddenField defaultValue={new VariableLiteral('currentLang')} name="locale" />
 				{whatWeDoOrderForm}
 			</SortableRepeater>
-			<RichTextField name="$locale.whatWeDoAlso" label="Additional activities description" />
+			<TextAreaField name="$locale.whatWeDoAlso" label="Additional activities description" />
 		</LocaleSideDimension>
 
 		<H2>Featured clients</H2>

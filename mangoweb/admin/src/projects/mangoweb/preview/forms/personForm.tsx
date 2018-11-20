@@ -1,5 +1,5 @@
 import { H2 } from '@blueprintjs/core'
-import { NumberField, RichTextField, TextField } from 'cms-admin'
+import { NumberField, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
 import { ImageField, LocaleSideDimension } from '../components'
 
@@ -10,7 +10,7 @@ export const personForm = (
 		<TextField name="longName" label="Full name" />
 		<LocaleSideDimension>
 			<TextField name="$locale.position" label="Position" />
-			<RichTextField name="$locale.bio" label="Short bio" />
+			<TextAreaField name="$locale.bio" label="Short bio" />
 		</LocaleSideDimension>
 
 		<H2>Photos</H2>

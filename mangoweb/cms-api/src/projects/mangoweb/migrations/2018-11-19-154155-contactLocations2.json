@@ -1,0 +1,31 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocationLocale",
+			"field": {
+				"name": "description",
+				"columnName": "description",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocationLocale",
+			"field": {
+				"name": "additionalInfo",
+				"columnName": "additional_info",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactLocationLocale",
+			"fieldName": "additionalText"
+		}
+	]
+}

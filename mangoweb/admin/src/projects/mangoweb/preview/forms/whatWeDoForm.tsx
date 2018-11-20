@@ -1,4 +1,4 @@
-import { Repeater, RichTextField, TextField } from 'cms-admin'
+import { Repeater, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
 import { ImageField } from '../components'
 
@@ -10,7 +10,7 @@ export const whatWeDoForm = (
 		<Repeater field="description" label="Description sections">
 			<TextField name="heading" label="Section heading" />
 			<ImageField name="image" label="Image" />
-			<RichTextField name="description" label="Content" />
+			<TextAreaField name="description" label="Content" />
 		</Repeater>
 	</>
 )

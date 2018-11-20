@@ -29,7 +29,7 @@ export default (
 		<EditPage entity="Page" layout={Layout}>
 			<TextField name="title" label="Title" large={true} />
 			<TextField name="urlSlug" label="URL" inlineLabel={true} />
-			<TextAreaField name="perex" label="Perex" singleLine={true} />
+			<TextAreaField name="perex" label="Perex" />
 			<RichTextField name="content" label="Content" allowLineBreaks={false} />
 			<h2>Featured links</h2>
 			<Repeater field="featuredLinks">

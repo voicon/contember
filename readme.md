@@ -13,6 +13,9 @@ We use [Lerna](https://lernajs.io/) to help with a few things
 
 ### Install all dependencies and bootstrap the project
 
+Create `mangoweb/admin/config.local.json` using `config.sample.json` in the same directory.
+Don't worry about the contents for the time being ‒ they will be updated later.
+
 ```sh
 npm ci && \
 npm run bootstrap && \

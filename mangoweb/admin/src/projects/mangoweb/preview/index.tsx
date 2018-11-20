@@ -1,4 +1,4 @@
-import { Callout, H1, Intent, OL } from '@blueprintjs/core'
+import { Callout, H1, H3, Intent } from '@blueprintjs/core'
 import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, PageLink, Pages } from 'cms-admin'
 import { GraphQlBuilder } from 'cms-client'
 import * as React from 'react'
@@ -46,16 +46,54 @@ export default (
 					<Callout icon="warning-sign" intent="warning" title="Behold!">
 						<p>
 							Due to CMS limitations, you cannot (yet) explicitly choose which link points to which page. As a
-							workaround, the <strong>order</strong> of the items is interpreted as follows:
+							workaround, use relative urls:
 						</p>
-						<OL>
-							<li>Front page</li>
-							<li>Team</li>
-							<li>What we do</li>
-							<li>References</li>
-							<li>Contact</li>
-						</OL>
-						<p>Sorry about that.</p>
+						<H3>Czech</H3>
+						<dl>
+							<dt>Front page</dt>
+							<dd>
+								<code>/</code>
+							</dd>
+							<dt>Team</dt>
+							<dd>
+								<code>/tym</code>
+							</dd>
+							<dt>What we do</dt>
+							<dd>
+								<code>/co-delame</code>
+							</dd>
+							<dt>References</dt>
+							<dd>
+								<code>/reference</code>
+							</dd>
+							<dt>Contact</dt>
+							<dd>
+								<code>/kontakt</code>
+							</dd>
+						</dl>
+						<H3>English</H3>
+						<dl>
+							<dt>Front page</dt>
+							<dd>
+								<code>/en</code>
+							</dd>
+							<dt>Team</dt>
+							<dd>
+								<code>/en/team</code>
+							</dd>
+							<dt>What we do</dt>
+							<dd>
+								<code>/what-we-do</code>
+							</dd>
+							<dt>References</dt>
+							<dd>
+								<code>/references</code>
+							</dd>
+							<dt>Contact</dt>
+							<dd>
+								<code>/contact</code>
+							</dd>
+						</dl>
 					</Callout>
 				)
 			}}
