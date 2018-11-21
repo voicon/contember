@@ -1,7 +1,8 @@
-FROM 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/nginx:1.16
+FROM node:10
 
-ADD public /src/
-ADD deploy/nginx.conf /etc/nginx/nginx.conf
-ADD ./config.prod.json ./config.local.json
+ADD ./ .
 
-EXPOSE 80
+ENV SERVER_PORT 4000
+EXPOSE 4000
+
+CMD ["sh", "./run.sh"]

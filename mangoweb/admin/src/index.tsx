@@ -3,8 +3,9 @@ import * as ReactDOM from 'react-dom'
 import { Admin } from 'cms-admin'
 import '../../src/index.sass'
 
-const reactRoot = (
+const reactRoot = (config: any) => (
 	<Admin
+		config={config}
 		configs={[
 			{
 				project: 'blog',
@@ -52,5 +53,10 @@ window.addEventListener('DOMContentLoaded', function() {
 	if (!el) {
 		return
 	}
-	ReactDOM.render(reactRoot, el)
+	const configEl = document.getElementById('admin-config')
+	if (!configEl) {
+		return
+	}
+	const config = JSON.parse(configEl.innerHTML)
+	ReactDOM.render(reactRoot(config), el)
 })
