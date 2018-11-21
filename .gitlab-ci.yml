@@ -55,7 +55,7 @@ build:docker:
   variables:
     VERSION: "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
   script:
-    - sh deploy/resolve-symlinks.sh
+    - sh deploy/resolve-nodemodules.sh
     - sh deploy/build.sh
 
 deploy:beta:api:
