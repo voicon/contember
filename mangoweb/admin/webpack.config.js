@@ -1,13 +1,38 @@
-var path = require('path')
-const fs = require('fs')
+const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
+const CompressionPlugin = require('compression-webpack-plugin')
+const AssetsPlugin = require('assets-webpack-plugin')
+const spawn = require('child_process').exec
 
 // variables
-var sourcePath = path.join(__dirname, './dist/src')
-var outPath = path.join(__dirname, './public')
-const config = require('./config.local.json')
+const sourcePath = path.join(__dirname, './dist/src')
+const outPath = path.join(__dirname, './public')
+
+
+class AdminServerPlugin {
+	apply(compiler) {
+		let childProcess = null
+		compiler.hooks.afterEmit.tapAsync({name: 'AdminServerPlugin'}, function (compilation, callback) {
+			if (childProcess) {
+				childProcess.exit()
+			}
+			console.log('starting admin\n')
+			try {
+				childProcess = spawn('node ./node_modules/cms-admin-server/dist/src/run-admin.js', {
+					cwd: process.cwd(),
+					env: process.env
+				})
+				childProcess.stdout.pipe(process.stdout)
+				childProcess.stderr.pipe(process.stderr)
+				callback()
+			} catch (e) {
+				console.error(e)
+			}
+		})
+	}
+}
+
 
 module.exports = ({ production }) => ({
 	context: sourcePath,
@@ -19,7 +44,7 @@ module.exports = ({ production }) => ({
 	output: {
 		path: outPath,
 		publicPath: '/',
-		filename: '[name].js'
+		filename: production ? '[name].[hash].js' : '[name].js',
 	},
 	target: 'web',
 	resolve: {
@@ -58,7 +83,12 @@ module.exports = ({ production }) => ({
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
-		}
+		},
+		proxy: {
+			'/': {
+				target: 'http://localhost:' + process.env.SERVER_PORT,
+			}
+		},
 	},
 	node: {
 		// workaround for webpack-dev-server issue
@@ -68,18 +98,16 @@ module.exports = ({ production }) => ({
 		process: false
 	},
 	plugins: [
-		new HtmlWebpackPlugin({
-			template: '../../src/index.html'
-		}),
+		new AssetsPlugin(),
 		new MiniCssExtractPlugin({
-			filename: '[name].css'
+			filename: production ? '[name].[hash].css' : '[name].css',
 		}),
 		new webpack.DefinePlugin({ // If you modify these, also update cms-admin/src/types/window.d.ts
 			'process.env': {
 				NODE_ENV: JSON.stringify('development'),
-				SERVER_URL: JSON.stringify(config.contentApi),
-				LOGIN_TOKEN: JSON.stringify(config.loginToken),
 			}
-		})
+		}),
+		new CompressionPlugin(),
+		new AdminServerPlugin(),
 	]
 })

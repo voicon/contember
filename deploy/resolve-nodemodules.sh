@@ -8,3 +8,6 @@ for SYMLINK in $SYMLINKS; do
 	rm $SYMLINK
 	cp -RL $REALPATH $SYMLINK
 done
+
+find mangoweb/*/node_modules -type d -name typescript -exec rm -rf "{}" +
+rm -rf mangoweb/admin/node_modules/resolve-url-loader/tmp
