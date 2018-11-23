@@ -12,7 +12,6 @@ build:
   image: node:10
 
   script:
-    - cp mangoweb/admin/config.sample.json mangoweb/admin/config.local.json
     - npm install
     - npm run bootstrap
     - npm run build
