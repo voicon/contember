@@ -1,38 +1,37 @@
-var path = require('path')
+const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
-const CompressionPlugin = require('compression-webpack-plugin');
-var AssetsPlugin = require('assets-webpack-plugin')
-const spawn = require('child_process').exec;
+const CompressionPlugin = require('compression-webpack-plugin')
+const AssetsPlugin = require('assets-webpack-plugin')
+const spawn = require('child_process').exec
 
 // variables
-var sourcePath = path.join(__dirname, './dist/src')
-var outPath = path.join(__dirname, './public')
+const sourcePath = path.join(__dirname, './dist/src')
+const outPath = path.join(__dirname, './public')
 
 
-function AdminServerPlugin() {
+class AdminServerPlugin {
+	apply(compiler) {
+		let childProcess = null
+		compiler.hooks.afterEmit.tapAsync({name: 'AdminServerPlugin'}, function (compilation, callback) {
+			if (childProcess) {
+				childProcess.exit()
+			}
+			console.log('starting admin\n')
+			try {
+				childProcess = spawn('node ./node_modules/cms-admin-server/dist/src/run-admin.js', {
+					cwd: process.cwd(),
+					env: process.env
+				})
+				childProcess.stdout.pipe(process.stdout)
+				childProcess.stderr.pipe(process.stderr)
+				callback()
+			} catch (e) {
+				console.error(e)
+			}
+		})
+	}
 }
-
-AdminServerPlugin.prototype.apply = function (compiler) {
-	var childProcess = null
-	compiler.hooks.afterEmit.tapAsync({name: 'AdminServerPlugin'}, function (compilation, callback) {
-		if (childProcess) {
-			childProcess.exit()
-		}
-		console.log('starting admin\n')
-		try {
-			childProcess = spawn('node ./node_modules/cms-admin-server/dist/src/run-admin.js', {
-				cwd: process.cwd(),
-				env: process.env
-			})
-			childProcess.stdout.pipe(process.stdout)
-			childProcess.stderr.pipe(process.stderr)
-			callback()
-		} catch (e) {
-			console.error(e)
-		}
-	})
-};
 
 
 module.exports = ({ production }) => ({
