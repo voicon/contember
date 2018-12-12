@@ -15,13 +15,17 @@ class AdminServerPlugin {
 		let childProcess = null
 		compiler.hooks.afterEmit.tapAsync({name: 'AdminServerPlugin'}, function (compilation, callback) {
 			if (childProcess) {
-				childProcess.exit()
+				callback()
+				return
 			}
 			console.log('starting admin\n')
 			try {
 				childProcess = spawn('node ./node_modules/cms-admin-server/dist/src/run-admin.js', {
 					cwd: process.cwd(),
 					env: process.env
+				})
+				process.on('beforeExit', () => {
+					childProcess.kill()
 				})
 				childProcess.stdout.pipe(process.stdout)
 				childProcess.stderr.pipe(process.stderr)
