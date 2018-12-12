@@ -2,6 +2,8 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Admin } from 'cms-admin'
 import '../../src/index.sass'
+import BlogProd from './projects/blog/prod'
+import MangowebPreview from './projects/mangoweb/preview'
 
 const reactRoot = (config: any) => (
 	<Admin
@@ -10,7 +12,7 @@ const reactRoot = (config: any) => (
 			{
 				project: 'blog',
 				stage: 'prod',
-				component: () => import('./projects/blog/prod').then(r => r.default),
+				component: () => import('./projects/blog/prod'),
 				routes: {
 					dashboard: { path: '/' },
 					edit_page: { path: '/edit_page/:id' },
@@ -21,7 +23,7 @@ const reactRoot = (config: any) => (
 			{
 				project: 'mangoweb',
 				stage: 'preview',
-				component: () => import('./projects/mangoweb/preview').then(r => r.default),
+				component: () => import('./projects/mangoweb/preview'),
 				routes: {
 					dashboard: { path: '/' },
 

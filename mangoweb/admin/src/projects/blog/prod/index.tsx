@@ -17,7 +17,7 @@ import * as React from 'react'
 
 import { Layout } from './adminLayout'
 
-export default (
+export default () => (
 	<Pages project="blog" stage="prod">
 		<Page name="dashboard">
 			{() => (
