@@ -10,7 +10,6 @@ import { ProjectConfig } from '../state/projectsConfigs'
 import { configureStore, Store } from '../store'
 import Login from './Login'
 import ProjectsList from './ProjectsList'
-import RenderPromise from './RenderPromise'
 import Config, { validateConfig } from '../config'
 
 export interface AdminProps {
@@ -48,9 +47,11 @@ export default class Admin extends React.Component<AdminProps> {
 							)
 							if (config) {
 								const Component = React.lazy(config.component)
-								return <React.Suspense fallback={'Loading...'}>
-									<Component/>
-								</React.Suspense>
+								return (
+									<React.Suspense fallback={'Loading...'}>
+										<Component />
+									</React.Suspense>
+								)
 							} else {
 								return `No such project or stage as ${route.project}/${route.stage}`
 							}
