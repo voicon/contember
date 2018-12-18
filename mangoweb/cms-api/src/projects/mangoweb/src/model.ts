@@ -30,7 +30,6 @@ builder.entity('PageSeoLocale', entity =>
 	entity
 		.unique(['pageSeo', 'locale'])
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('title')
 		.column('description')
 		.column('ogTitle')
 		.column('ogDescription')
@@ -200,7 +199,8 @@ builder.entity('WhatWeDoPageLocale', entity =>
 	entity
 		.unique(['whatWeDoPage', 'locale'])
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('title')
+		.column('titleShort')
+		.column('titleFull')
 )
 
 // ******************************************************* TEAM ********************************************************
@@ -275,7 +275,8 @@ builder.entity('ReferencesPageLocale', entity =>
 	entity
 		.unique(['referencesPage', 'locale'])
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('title')
+		.column('titleShort')
+		.column('titleFull')
 		.column('quote')
 		.oneHasMany('references', relation =>
 			relation
@@ -326,6 +327,8 @@ builder.entity('ContactPageLocale', entity =>
 	entity
 		.unique(['contactPage', 'locale'])
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.column('titleShort')
+		.column('titleFull')
 		.column('contactUsButtonLabel')
 		.column('userMessageLabel')
 		.column('userPhoneLabel')

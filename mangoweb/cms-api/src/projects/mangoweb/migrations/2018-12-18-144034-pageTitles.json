@@ -1,0 +1,85 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "PageSeoLocale",
+			"fieldName": "title"
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "WhatWeDoPageLocale",
+			"field": {
+				"name": "titleShort",
+				"columnName": "title_short",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "WhatWeDoPageLocale",
+			"field": {
+				"name": "titleFull",
+				"columnName": "title_full",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDoPageLocale",
+			"fieldName": "title"
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ReferencesPageLocale",
+			"field": {
+				"name": "titleShort",
+				"columnName": "title_short",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ReferencesPageLocale",
+			"field": {
+				"name": "titleFull",
+				"columnName": "title_full",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ReferencesPageLocale",
+			"fieldName": "title"
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPageLocale",
+			"field": {
+				"name": "titleShort",
+				"columnName": "title_short",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPageLocale",
+			"field": {
+				"name": "titleFull",
+				"columnName": "title_full",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		}
+	]
+}
