@@ -11,7 +11,7 @@ import {
 	personForm,
 	personListForm,
 	whatWeDoForm,
-	whatWeDoOrderForm,
+	whatWeDoListForm,
 	whatWeDoPageForm
 } from './forms'
 import { footerForm } from './forms/'
@@ -116,6 +116,7 @@ export default () => (
 			entity="Person"
 			rendererProps={{
 				title: 'Team members',
+				beforeContent: <PageLink change={() => ({ name: 'create_person' })}>Create new</PageLink>,
 				sortable: {
 					sortBy: 'order'
 				}
@@ -178,7 +179,7 @@ export default () => (
 				}
 			}}
 		>
-			{whatWeDoOrderForm}
+			{whatWeDoListForm}
 		</MultiEditPage>
 		<EditPage
 			entity="WhatWeDo"

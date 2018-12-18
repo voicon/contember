@@ -40,10 +40,7 @@ export default class Side extends React.Component {
 						Team page
 					</MenuPageLink>*/}
 					<MenuPageLink change={() => ({ name: 'multiEdit_person' })} frontIcon="people">
-						Member order
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'create_person' })} frontIcon="new-person">
-						Create new
+						Members
 					</MenuPageLink>
 				</MenuList>
 				<MenuList title="What we do">
@@ -54,7 +51,7 @@ export default class Side extends React.Component {
 						What we do page
 					</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'multiEdit_whatWeDo' })} frontIcon="briefcase">
-						What we do order
+						What we do
 					</MenuPageLink>
 				</MenuList>
 				<MenuList title="References">
