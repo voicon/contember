@@ -24,7 +24,7 @@ export const frontPageForm = (
 		<LocaleSideDimension>
 			<TextField name="$locale.featuredClientsLabel" label="Label" />
 			<TextField name="$locale.featuredClientsTitle" label="Title" />
-			<SortableRepeater field="$locale.featuredClients" sortBy="order" label="Client logos">
+			<SortableRepeater field="$locale.featuredClients" sortBy="order" label="Client logos" removeType="delete">
 				<ImageField name="logo" label="Logo" />
 			</SortableRepeater>
 		</LocaleSideDimension>
