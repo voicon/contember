@@ -112,6 +112,9 @@ export default () => (
 
 		{/* ---- */}
 
+		<GenericPage pageName="edit_teamPage">
+			Nothing to see here as of yet
+		</GenericPage>
 		<MultiEditPage
 			entity="Person"
 			rendererProps={{
@@ -159,7 +162,8 @@ export default () => (
 			entity="WhatWeDo"
 			rendererProps={{
 				title: 'What we do',
-				beforeContent: (
+				beforeContent: <>
+					<PageLink change={() => ({ name: 'create_whatWeDo' })}>Create new</PageLink>
 					<Callout intent="none" icon="info-sign" title="Info">
 						<p>From here, you can sort the items as they appear on the what we do page.</p>
 						<p>
@@ -172,7 +176,7 @@ export default () => (
 							.
 						</p>
 					</Callout>
-				),
+				</>,
 				enableAddingNew: false,
 				sortable: {
 					sortBy: 'whatWeDoPageOrder'
@@ -193,6 +197,14 @@ export default () => (
 		>
 			{whatWeDoForm}
 		</EditPage>
+		<CreatePage
+			entity="WhatWeDo"
+			rendererProps={{
+				title: 'Create a new "What we do" activity'
+			}}
+		>
+			{whatWeDoForm}
+		</CreatePage>
 
 		{/* ---- */}
 
