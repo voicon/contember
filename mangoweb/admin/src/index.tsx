@@ -2,8 +2,6 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Admin } from 'cms-admin'
 import '../../src/index.sass'
-import BlogProd from './projects/blog/prod'
-import MangowebPreview from './projects/mangoweb/preview'
 
 const reactRoot = (config: any) => (
 	<Admin
