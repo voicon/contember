@@ -6,6 +6,7 @@ const builder = new SchemaBuilder()
 // ****************************************************** COMMON *******************************************************
 builder.enum('one', ['one'])
 builder.enum('locale', ['cs', 'en'])
+builder.enum('page', ['front', 'team', 'whatWeDo', 'references', 'contact'])
 
 builder.entity('Image', entity => entity.column('url'))
 
@@ -39,7 +40,10 @@ builder.entity('PageSeoLocale', entity =>
 
 // MENU
 builder.entity('MenuItem', entity =>
-	entity.column('order', column => column.type(Model.ColumnType.Int)).oneHasMany('locales', relation =>
+	entity
+		.column('order', column => column.type(Model.ColumnType.Int))
+		.column('target', column => column.type(Model.ColumnType.Enum, { enumName: 'page' }))
+		.oneHasMany('locales', relation =>
 		relation
 			.target('MenuItemLocale')
 			.onDelete(Model.OnDelete.cascade)
@@ -53,7 +57,6 @@ builder.entity('MenuItemLocale', entity =>
 		.unique(['menuItem', 'locale'])
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('label')
-		.column('url')
 )
 
 // FOOTER
