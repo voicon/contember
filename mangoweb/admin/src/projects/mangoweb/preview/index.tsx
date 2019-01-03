@@ -41,7 +41,7 @@ export default () => (
 				title: 'Menu',
 				sortable: {
 					sortBy: 'order'
-				},
+				}
 			}}
 		>
 			{menuItemForm}

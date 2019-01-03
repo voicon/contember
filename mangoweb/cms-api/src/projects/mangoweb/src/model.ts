@@ -44,12 +44,12 @@ builder.entity('MenuItem', entity =>
 		.column('order', column => column.type(Model.ColumnType.Int))
 		.column('target', column => column.type(Model.ColumnType.Enum, { enumName: 'page' }))
 		.oneHasMany('locales', relation =>
-		relation
-			.target('MenuItemLocale')
-			.onDelete(Model.OnDelete.cascade)
-			.ownerNotNull()
-			.ownedBy('menuItem')
-	)
+			relation
+				.target('MenuItemLocale')
+				.onDelete(Model.OnDelete.cascade)
+				.ownerNotNull()
+				.ownedBy('menuItem')
+		)
 )
 
 builder.entity('MenuItemLocale', entity =>
