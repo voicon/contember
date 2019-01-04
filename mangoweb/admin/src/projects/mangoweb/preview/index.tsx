@@ -106,27 +106,10 @@ export default () => (
 			entity="WhatWeDo"
 			rendererProps={{
 				title: 'What we do',
-				beforeContent: (
-					<>
-						<PageLink change={() => ({ name: 'create_whatWeDo' })}>Create new</PageLink>
-						<Callout intent="none" icon="info-sign" title="Info">
-							<p>From here, you can sort the items as they appear on the what we do page.</p>
-							<p>
-								To edit the front page order, or add new items{' '}
-								<PageLink
-									change={() => ({ name: 'edit_frontPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
-								>
-									edit the front page
-								</PageLink>
-								.
-							</p>
-						</Callout>
-					</>
-				),
 				enableAddingNew: false,
 				sortable: {
-					sortBy: 'whatWeDoPageOrder'
-				}
+					sortBy: 'order'
+				},
 			}}
 		>
 			{whatWeDoListForm}

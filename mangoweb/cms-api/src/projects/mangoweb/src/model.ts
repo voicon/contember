@@ -163,8 +163,9 @@ builder.entity('FrontPageFeaturedClient', entity =>
 builder.entity('WhatWeDo', entity =>
 	entity
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('frontPageOrder', column => column.type(Model.ColumnType.Int))
-		.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
+		//.column('frontPageOrder', column => column.type(Model.ColumnType.Int))
+		//.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
+		.column('order', column => column.type(Model.ColumnType.Int)) // TODO just one order for now
 		.column('activity')
 		.oneHasOne('featuredImage', relation => relation.target('Image'))
 		.column('descriptionHeading')
