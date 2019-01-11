@@ -9,11 +9,10 @@ const spawn = require('child_process').exec
 const sourcePath = path.join(__dirname, './dist/src')
 const outPath = path.join(__dirname, './public')
 
-
 class AdminServerPlugin {
 	apply(compiler) {
 		let childProcess = null
-		compiler.hooks.afterEmit.tapAsync({name: 'AdminServerPlugin'}, function (compilation, callback) {
+		compiler.hooks.afterEmit.tapAsync({ name: 'AdminServerPlugin' }, function(compilation, callback) {
 			if (childProcess) {
 				callback()
 				return
@@ -37,7 +36,6 @@ class AdminServerPlugin {
 	}
 }
 
-
 module.exports = ({ production }) => ({
 	context: sourcePath,
 	entry: {
@@ -48,7 +46,7 @@ module.exports = ({ production }) => ({
 	output: {
 		path: outPath,
 		publicPath: '/',
-		filename: production ? '[name].[hash].js' : '[name].js',
+		filename: production ? '[name].[hash].js' : '[name].js'
 	},
 	target: 'web',
 	resolve: {
@@ -90,9 +88,9 @@ module.exports = ({ production }) => ({
 		},
 		proxy: {
 			'/': {
-				target: 'http://localhost:' + process.env.SERVER_PORT,
+				target: 'http://localhost:' + process.env.SERVER_PORT
 			}
-		},
+		}
 	},
 	node: {
 		// workaround for webpack-dev-server issue
@@ -104,14 +102,15 @@ module.exports = ({ production }) => ({
 	plugins: [
 		new AssetsPlugin(),
 		new MiniCssExtractPlugin({
-			filename: production ? '[name].[hash].css' : '[name].css',
+			filename: production ? '[name].[hash].css' : '[name].css'
 		}),
-		new webpack.DefinePlugin({ // If you modify these, also update cms-admin/src/types/window.d.ts
+		new webpack.DefinePlugin({
+			// If you modify these, also update cms-admin/src/types/window.d.ts
 			'process.env': {
-				NODE_ENV: JSON.stringify('development'),
+				NODE_ENV: JSON.stringify(production ? 'production' : 'development')
 			}
 		}),
 		new CompressionPlugin(),
-		new AdminServerPlugin(),
+		new AdminServerPlugin()
 	]
 })
