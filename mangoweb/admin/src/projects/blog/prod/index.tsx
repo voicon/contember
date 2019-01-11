@@ -29,8 +29,8 @@ export default () => (
 		<EditPage entity="Page" layout={Layout}>
 			<TextField name="title" label="Title" large={true} />
 			<TextField name="urlSlug" label="URL" inlineLabel={true} />
-			<TextAreaField name="perex" label="Perex" />
-			<RichTextField name="content" label="Content" allowLineBreaks={false} />
+			<RichTextField name="perex" label="Perex" allowLineBreaks={false} />
+			<RichTextField name="content" label="Content" allowLineBreaks={true} />
 			<h2>Featured links</h2>
 			<Repeater field="featuredLinks">
 				<TextField name="title" label="Title" />
