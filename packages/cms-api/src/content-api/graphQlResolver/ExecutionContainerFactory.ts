@@ -19,7 +19,7 @@ import JunctionFetcher from '../sql/select/JunctionFetcher'
 import Mapper from '../sql/Mapper'
 import { Accessor } from '../../utils/accessor'
 import FieldsVisitorFactory from '../sql/select/handlers/FieldsVisitorFactory'
-import QueryBuilder from '../../core/knex/QueryBuilder'
+import DbSelectBuilder from '../../core/knex/SelectBuilder'
 import SelectHydrator from '../sql/select/SelectHydrator'
 import SelectBuilder from '../sql/select/SelectBuilder'
 import MetaHandler from '../sql/select/handlers/MetaHandler'
@@ -33,7 +33,7 @@ class ExecutionContainerFactory {
 	public create(context: Context): Container<{ readResolver: ReadResolver; mutationResolver: MutationResolver }> {
 		const that = this
 		const innerDic = new Container.Builder({})
-			.addService('db', () => context.db.wrapper())
+			.addService('db', () => context.db)
 
 			.addService('variableInjector', () => new VariableInjector(this.schema, context.identityVariables))
 			.addService(
@@ -83,7 +83,7 @@ class ExecutionContainerFactory {
 					selectHandlers,
 				}) =>
 					new class implements SelectBuilderFactory {
-						create(qb: QueryBuilder, hydrator: SelectHydrator): SelectBuilder {
+						create(qb: DbSelectBuilder, hydrator: SelectHydrator): SelectBuilder {
 							return new SelectBuilder(
 								that.schema,
 								whereBuilder,
