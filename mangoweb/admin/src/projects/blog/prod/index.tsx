@@ -48,7 +48,8 @@ export default () => (
 				lineBreakBehavior={LineBreakBehavior.NEWBLOCK}
 				blocks={[
 					{
-						block: Block.HEADING
+						block: Block.HEADING,
+						marks: [Mark.UNDERLINED]
 					},
 					{
 						block: Block.PARAGRAPH,
