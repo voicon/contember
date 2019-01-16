@@ -9,10 +9,9 @@ import {
 	SelectField,
 	SideDimensions,
 	SingleEntityDataProvider,
-	TextAreaField,
 	TextField,
 	ToMany,
-	LineBreakBehaviour,
+	LineBreakBehavior,
 	Block,
 	Mark
 } from 'cms-admin'
@@ -35,7 +34,7 @@ export default () => (
 			<RichTextField
 				name="perex"
 				label="Perex"
-				lineBreakBehaviour={LineBreakBehaviour.DISABLE}
+				lineBreakBehavior={LineBreakBehavior.DISABLE}
 				blocks={[
 					{
 						block: Block.PARAGRAPH,
@@ -46,7 +45,7 @@ export default () => (
 			<RichTextField
 				name="content"
 				label="Content"
-				lineBreakBehaviour={LineBreakBehaviour.NEWBLOCK}
+				lineBreakBehavior={LineBreakBehavior.NEWBLOCK}
 				blocks={[
 					{
 						block: Block.HEADING
