@@ -281,14 +281,6 @@ builder.entity('ReferencesPageLocale', entity =>
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('titleShort')
 		.column('titleFull')
-		.column('quote')
-		.oneHasMany('references', relation =>
-			relation
-				.target('Reference')
-				.onDelete(Model.OnDelete.cascade)
-				.ownedBy('referencesPage')
-				.ownerNotNull()
-		)
 )
 
 // REFERENCES
@@ -300,7 +292,6 @@ builder.entity(
 			.manyHasOne('video', relation => relation.target('Video'))
 			.column('order', column => column.type(Model.ColumnType.Int))
 			.column('title')
-			.column('isFeatured', column => column.type(Model.ColumnType.Bool))
 			.column('url')
 			.column('urlLabel')
 	// TODO case studies

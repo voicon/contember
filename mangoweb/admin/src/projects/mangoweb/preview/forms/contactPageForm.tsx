@@ -7,6 +7,8 @@ export const contactPageForm = (
 	<>
 		<H2>General</H2>
 		<LocaleSideDimension>
+			<TextField name="$locale.titleShort" label="Abbreviated page title" />
+			<TextField name="$locale.titleFull" label="Full page title" />
 			<TextField name="$locale.contactUsButtonLabel" label="'Contact us' button label" />
 		</LocaleSideDimension>
 
