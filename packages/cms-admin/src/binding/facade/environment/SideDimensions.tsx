@@ -10,6 +10,7 @@ import { DataBindingError, Environment } from '../../dao'
 interface SideDimensionsProps extends SideDimensions.CommonDimensionProps {
 	dimension: string
 	children: React.ReactNode
+	alignChildren?: boolean
 }
 
 class SideDimensions extends React.PureComponent<SideDimensionsProps> {
@@ -32,20 +33,28 @@ class SideDimensions extends React.PureComponent<SideDimensionsProps> {
 			throw new DataBindingError(`The '${props.dimension}' dimension in undefined`)
 		}
 
+		const alignChildren: boolean = props.alignChildren !== false
+		const children: React.ReactNodeArray =
+			Array.isArray(props.children) && alignChildren ? props.children : [props.children]
+
 		return (
 			<div className="sideDimensions-dimensions">
-				{dimensions[props.dimension].map(item => {
-					return (
-						<SideDimensions.SingleDimension
-							dimensionValue={item}
-							variableName={props.variableName}
-							variables={props.variables}
-							key={item}
-						>
-							{props.children}
-						</SideDimensions.SingleDimension>
-					)
-				})}
+				{children.map((child, i) => (
+					<div className="sideDimensions-dimensions-in" key={i}>
+						{dimensions[props.dimension].map(item => {
+							return (
+								<SideDimensions.SingleDimension
+									dimensionValue={item}
+									variableName={props.variableName}
+									variables={props.variables}
+									key={item}
+								>
+									{child}
+								</SideDimensions.SingleDimension>
+							)
+						})}
+					</div>
+				))}
 			</div>
 		)
 	}
@@ -53,8 +62,8 @@ class SideDimensions extends React.PureComponent<SideDimensionsProps> {
 
 namespace SideDimensions {
 	export interface CommonDimensionProps {
-		variableName: Environment.Name
-		variables?: Environment.DeltaFactory
+		variableName?: Environment.Name
+		variables?: Environment.DeltaFactory | ((dimensionValue: Environment.Value) => Environment.DeltaFactory)
 	}
 
 	export interface SingleDimensionProps extends CommonDimensionProps {
@@ -85,10 +94,23 @@ namespace SideDimensions {
 			if (!props.variables) {
 				return {}
 			}
-			return Environment.generateDelta(oldEnvironment.putName(props.variableName, props.dimensionValue), {
-				...props.variables,
-				[props.variableName]: props.dimensionValue
-			})
+
+			let deltaFactory: Environment.DeltaFactory
+
+			if (typeof props.variables === 'function') {
+				deltaFactory = props.variables(props.dimensionValue)
+			} else if (props.variables) {
+				deltaFactory = props.variables
+			} else {
+				deltaFactory = {}
+			}
+
+			if (props.variableName) {
+				oldEnvironment = oldEnvironment.putName(props.variableName, props.dimensionValue)
+				deltaFactory[props.variableName] = props.dimensionValue
+			}
+
+			return Environment.generateDelta(oldEnvironment, deltaFactory)
 		}
 	}
 

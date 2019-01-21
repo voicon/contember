@@ -1,5 +1,5 @@
-import { CrudQueryBuilder } from 'cms-client'
-import { assertNever } from 'cms-common'
+import { CrudQueryBuilder, GraphQlBuilder } from 'cms-client'
+import { assertNever, Input } from 'cms-common'
 import { EntityName, ReceivedData, ReceivedEntityData } from '../bindingTypes'
 import {
 	AccessorTreeRoot,
@@ -13,8 +13,7 @@ import {
 	MarkerTreeConstraints,
 	MarkerTreeRoot,
 	ReferenceMarker,
-	RootAccessor,
-	SingleEntityTreeConstraints
+	RootAccessor
 } from '../dao'
 
 type Queries = 'get' | 'list'
@@ -345,7 +344,7 @@ export class MutationGenerator {
 
 				if (unreducedHasOnePresent) {
 					if (accessorReference.length === 1) {
-						builder = builder.one(placeholderName, builder => {
+						const subBuilder = ((builder: CrudQueryBuilder.UpdateOneRelationBuilder<undefined>) => {
 							const { accessor, reference, persistedField } = accessorReference[0]
 
 							if (accessor instanceof EntityAccessor) {
@@ -368,11 +367,25 @@ export class MutationGenerator {
 									return updated
 								}
 							} else if (accessor instanceof EntityForRemovalAccessor) {
-								return builder.disconnect()
+								const removalType = accessor.removalType
+
+								if (removalType === EntityAccessor.RemovalType.Delete) {
+									return builder.delete()
+								} else if (removalType === EntityAccessor.RemovalType.Disconnect) {
+									return builder.disconnect()
+								} else {
+									return assertNever(removalType)
+								}
 							} else {
 								return assertNever(accessor)
 							}
-						})
+						})(new CrudQueryBuilder.UpdateOneRelationBuilder<undefined>())
+
+						if (subBuilder.data) {
+							builder = builder.one(placeholderName, subBuilder as CrudQueryBuilder.UpdateOneRelationBuilder<
+								Input.UpdateOneRelationInput<GraphQlBuilder.Literal>
+							>)
+						}
 					} else {
 						throw new DataBindingError(`Creating several entities for the hasOne '${placeholderName}' relation.`)
 					}
@@ -400,9 +413,19 @@ export class MutationGenerator {
 									}
 								}
 							} else if (accessor instanceof EntityForRemovalAccessor) {
-								builder = builder.disconnect({
-									[MutationGenerator.PRIMARY_KEY_NAME]: accessor.primaryKey
-								})
+								const removalType = accessor.removalType
+
+								if (removalType === EntityAccessor.RemovalType.Delete) {
+									builder = builder.delete({
+										[MutationGenerator.PRIMARY_KEY_NAME]: accessor.primaryKey
+									})
+								} else if (removalType === EntityAccessor.RemovalType.Disconnect) {
+									builder = builder.disconnect({
+										[MutationGenerator.PRIMARY_KEY_NAME]: accessor.primaryKey
+									})
+								} else {
+									assertNever(removalType)
+								}
 							} else {
 								assertNever(accessor)
 							}

@@ -1,0 +1,33 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "FrontPage",
+			"fieldName": "whatWeDo"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageFeaturedClient",
+			"owningSide": {
+				"name": "logo",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "logo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageFeaturedClient",
+			"fieldName": "image"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDo",
+			"fieldName": "FrontPage"
+		}
+	]
+}

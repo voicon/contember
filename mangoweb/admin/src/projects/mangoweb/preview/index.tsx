@@ -11,7 +11,7 @@ import {
 	personForm,
 	personListForm,
 	whatWeDoForm,
-	whatWeDoOrderForm,
+	whatWeDoListForm,
 	whatWeDoPageForm
 } from './forms'
 import { footerForm } from './forms/'
@@ -41,61 +41,7 @@ export default () => (
 				title: 'Menu',
 				sortable: {
 					sortBy: 'order'
-				},
-				beforeContent: (
-					<Callout icon="warning-sign" intent="warning" title="Behold!">
-						<p>
-							Due to CMS limitations, you cannot (yet) explicitly choose which link points to which page. As a
-							workaround, use relative urls:
-						</p>
-						<H3>Czech</H3>
-						<dl>
-							<dt>Front page</dt>
-							<dd>
-								<code>/</code>
-							</dd>
-							<dt>Team</dt>
-							<dd>
-								<code>/tym</code>
-							</dd>
-							<dt>What we do</dt>
-							<dd>
-								<code>/co-delame</code>
-							</dd>
-							<dt>References</dt>
-							<dd>
-								<code>/reference</code>
-							</dd>
-							<dt>Contact</dt>
-							<dd>
-								<code>/kontakt</code>
-							</dd>
-						</dl>
-						<H3>English</H3>
-						<dl>
-							<dt>Front page</dt>
-							<dd>
-								<code>/en</code>
-							</dd>
-							<dt>Team</dt>
-							<dd>
-								<code>/en/team</code>
-							</dd>
-							<dt>What we do</dt>
-							<dd>
-								<code>/what-we-do</code>
-							</dd>
-							<dt>References</dt>
-							<dd>
-								<code>/references</code>
-							</dd>
-							<dt>Contact</dt>
-							<dd>
-								<code>/contact</code>
-							</dd>
-						</dl>
-					</Callout>
-				)
+				}
 			}}
 		>
 			{menuItemForm}
@@ -112,10 +58,12 @@ export default () => (
 
 		{/* ---- */}
 
+		<GenericPage pageName="edit_teamPage">Nothing to see here as of yet</GenericPage>
 		<MultiEditPage
 			entity="Person"
 			rendererProps={{
 				title: 'Team members',
+				beforeContent: <PageLink change={() => ({ name: 'create_person' })}>Create new</PageLink>,
 				sortable: {
 					sortBy: 'order'
 				}
@@ -159,18 +107,21 @@ export default () => (
 			rendererProps={{
 				title: 'What we do',
 				beforeContent: (
-					<Callout intent="none" icon="info-sign" title="Info">
-						<p>From here, you can sort the items as they appear on the what we do page.</p>
-						<p>
-							To edit the front page order, or add new items{' '}
-							<PageLink
-								change={() => ({ name: 'edit_frontPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
-							>
-								edit the front page
-							</PageLink>
-							.
-						</p>
-					</Callout>
+					<>
+						<PageLink change={() => ({ name: 'create_whatWeDo' })}>Create new</PageLink>
+						<Callout intent="none" icon="info-sign" title="Info">
+							<p>From here, you can sort the items as they appear on the what we do page.</p>
+							<p>
+								To edit the front page order, or add new items{' '}
+								<PageLink
+									change={() => ({ name: 'edit_frontPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
+								>
+									edit the front page
+								</PageLink>
+								.
+							</p>
+						</Callout>
+					</>
 				),
 				enableAddingNew: false,
 				sortable: {
@@ -178,7 +129,7 @@ export default () => (
 				}
 			}}
 		>
-			{whatWeDoOrderForm}
+			{whatWeDoListForm}
 		</MultiEditPage>
 		<EditPage
 			entity="WhatWeDo"
@@ -192,6 +143,14 @@ export default () => (
 		>
 			{whatWeDoForm}
 		</EditPage>
+		<CreatePage
+			entity="WhatWeDo"
+			rendererProps={{
+				title: 'Create a new "What we do" activity'
+			}}
+		>
+			{whatWeDoForm}
+		</CreatePage>
 
 		{/* ---- */}
 

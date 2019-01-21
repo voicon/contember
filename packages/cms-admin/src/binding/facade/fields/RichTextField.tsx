@@ -1,16 +1,19 @@
 import { IFormGroupProps } from '@blueprintjs/core'
 import * as React from 'react'
-import RichEditor from '../../../components/RichEditor/index'
+import RichEditor, { LineBreakBehavior, RichEditorProps } from '../../../components/RichEditor'
 import { FieldName } from '../../bindingTypes'
 import { EnforceSubtypeRelation, Field, SyntheticChildrenProvider } from '../../coreComponents'
 import { Environment, FieldAccessor } from '../../dao'
 import { Parser } from '../../queryLanguage'
 import { TextFieldProps } from './TextField'
 
+export { LineBreakBehavior, Block, Mark } from '../../../components/RichEditor'
+
 export interface RichTextFieldProps {
 	name: FieldName
 	label?: IFormGroupProps['label']
-	allowLineBreaks?: boolean
+	lineBreakBehavior?: LineBreakBehavior
+	blocks?: RichEditorProps['blocks']
 }
 
 export class RichTextField extends React.PureComponent<RichTextFieldProps> {
@@ -24,8 +27,9 @@ export class RichTextField extends React.PureComponent<RichTextFieldProps> {
 						<RichEditor
 							onChange={this.generateOnChange(data)}
 							value={data.currentValue || ''}
-							allowLineBreaks={this.props.allowLineBreaks}
+							lineBreakBehavior={this.props.lineBreakBehavior}
 							label={env.applySystemMiddleware('labelMiddleware', this.props.label)}
+							blocks={this.props.blocks}
 						/>
 					)
 				}}

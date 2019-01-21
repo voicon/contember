@@ -7,7 +7,8 @@ export const referencesPageForm = (
 	<>
 		<H2>General</H2>
 		<LocaleSideDimension>
-			<TextField name="$locale.title" label="Main heading" />
+			<TextField name="$locale.titleShort" label="Abbreviated page title" />
+			<TextField name="$locale.titleFull" label="Full page title" />
 		</LocaleSideDimension>
 
 		<H2>References</H2>

@@ -1,0 +1,32 @@
+{
+	"modifications": [
+		{
+			"modification": "createEnum",
+			"enumName": "page",
+			"values": [
+				"front",
+				"team",
+				"whatWeDo",
+				"references",
+				"contact"
+			]
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "MenuItem",
+			"field": {
+				"name": "target",
+				"columnName": "target",
+				"nullable": true,
+				"type": "Enum",
+				"columnType": "page",
+				"enumName": "page"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "MenuItemLocale",
+			"fieldName": "url"
+		}
+	]
+}

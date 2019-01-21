@@ -5,7 +5,8 @@ import { LocaleSideDimension } from '../components'
 export const whatWeDoPageForm = (
 	<>
 		<LocaleSideDimension>
-			<TextField name="$locale.title" label="Page title" />
+			<TextField name="$locale.titleShort" label="Abbreviated page title" />
+			<TextField name="$locale.titleFull" label="Full page title" />
 		</LocaleSideDimension>
 	</>
 )

@@ -9,9 +9,11 @@ import {
 	SelectField,
 	SideDimensions,
 	SingleEntityDataProvider,
-	TextAreaField,
 	TextField,
-	ToMany
+	ToMany,
+	LineBreakBehavior,
+	Block,
+	Mark
 } from 'cms-admin'
 import * as React from 'react'
 
@@ -29,8 +31,32 @@ export default () => (
 		<EditPage entity="Page" layout={Layout}>
 			<TextField name="title" label="Title" large={true} />
 			<TextField name="urlSlug" label="URL" inlineLabel={true} />
-			<TextAreaField name="perex" label="Perex" />
-			<RichTextField name="content" label="Content" allowLineBreaks={false} />
+			<RichTextField
+				name="perex"
+				label="Perex"
+				lineBreakBehavior={LineBreakBehavior.DISABLE}
+				blocks={[
+					{
+						block: Block.PARAGRAPH,
+						marks: [Mark.BOLD]
+					}
+				]}
+			/>
+			<RichTextField
+				name="content"
+				label="Content"
+				lineBreakBehavior={LineBreakBehavior.NEWBLOCK}
+				blocks={[
+					{
+						block: Block.HEADING,
+						marks: [Mark.UNDERLINED]
+					},
+					{
+						block: Block.PARAGRAPH,
+						marks: [Mark.BOLD, Mark.ITALIC, Mark.LINK, Mark.UNDERLINED]
+					}
+				]}
+			/>
 			<h2>Featured links</h2>
 			<Repeater field="featuredLinks">
 				<TextField name="title" label="Title" />

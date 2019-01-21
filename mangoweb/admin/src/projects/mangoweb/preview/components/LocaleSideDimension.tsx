@@ -12,19 +12,19 @@ export const LocaleSideDimension = Component(
 			return (
 				<SideDimensions
 					dimension="lang"
-					variableName="currentLang"
-					variables={{
-						locale: env => `locales(locale=${env.getValue('currentLang')})`,
-						flag: env =>
-							({
+					variables={currentLang => {
+						return {
+							locale: `locales(locale=${currentLang})`,
+							flag: {
 								en: '🇬🇧',
 								cs: '🇨🇿'
-							}[env.getValue('currentLang') as LangDimension]),
-						labelMiddleware: label => (
-							<>
-								<Variable name="flag" /> {label}
-							</>
-						)
+							}[currentLang as LangDimension],
+							labelMiddleware: label => (
+								<>
+									<Variable name="flag" /> {label}
+								</>
+							)
+						}
 					}}
 				>
 					{props.children}

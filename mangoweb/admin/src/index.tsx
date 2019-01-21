@@ -29,7 +29,7 @@ const reactRoot = (config: any) => (
 					multiEdit_menuItem: { path: '/menu' },
 					edit_footer: { path: '/footer' },
 
-					//edit_teamPage: { path: '/team-page' },
+					edit_teamPage: { path: '/team-page' },
 					multiEdit_person: { path: '/team-members' },
 					create_person: { path: '/team-members/create-new' },
 					edit_person: { path: '/team-members/member-:id' },
@@ -37,6 +37,7 @@ const reactRoot = (config: any) => (
 					edit_whatWeDoPage: { path: '/whatWeDo-page' },
 					multiEdit_whatWeDo: { path: '/whatWeDo' },
 					edit_whatWeDo: { path: '/whatWeDo/:id' },
+					create_whatWeDo: { path: '/whatWeDo/create-new' },
 
 					edit_referencesPage: { path: '/references-page' },
 
