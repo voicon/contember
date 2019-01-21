@@ -163,8 +163,9 @@ builder.entity('FrontPageFeaturedClient', entity =>
 builder.entity('WhatWeDo', entity =>
 	entity
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
-		.column('frontPageOrder', column => column.type(Model.ColumnType.Int))
-		.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
+		//.column('frontPageOrder', column => column.type(Model.ColumnType.Int))
+		//.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
+		.column('order', column => column.type(Model.ColumnType.Int)) // TODO just one order for now
 		.column('activity')
 		.oneHasOne('featuredImage', relation => relation.target('Image'))
 		.column('descriptionHeading')
@@ -280,14 +281,6 @@ builder.entity('ReferencesPageLocale', entity =>
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('titleShort')
 		.column('titleFull')
-		.column('quote')
-		.oneHasMany('references', relation =>
-			relation
-				.target('Reference')
-				.onDelete(Model.OnDelete.cascade)
-				.ownedBy('referencesPage')
-				.ownerNotNull()
-		)
 )
 
 // REFERENCES
@@ -299,7 +292,6 @@ builder.entity(
 			.manyHasOne('video', relation => relation.target('Video'))
 			.column('order', column => column.type(Model.ColumnType.Int))
 			.column('title')
-			.column('isFeatured', column => column.type(Model.ColumnType.Bool))
 			.column('url')
 			.column('urlLabel')
 	// TODO case studies
