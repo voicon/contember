@@ -1,6 +1,5 @@
-import { Callout, H1, H3, Intent } from '@blueprintjs/core'
+import { Callout, H1, Intent } from '@blueprintjs/core'
 import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, PageLink, Pages } from 'cms-admin'
-import { GraphQlBuilder } from 'cms-client'
 import * as React from 'react'
 import { Layout } from './adminLayout'
 import {
