@@ -118,6 +118,7 @@ builder.entity('FrontPage', entity =>
 				.unique()
 				.notNull()
 		)
+		.oneHasOne('heroImage', relation => relation.target('Image'))
 		.oneHasOne('introVideo', relation => relation.target('Video'))
 		.oneHasOne('seo', relation => relation.target('PageSeo').inversedNotNull())
 		.oneHasMany('locales', relation =>
@@ -326,10 +327,12 @@ builder.entity('ContactPageLocale', entity =>
 		.column('titleFull')
 		.column('contactUsButtonLabel')
 		.column('userMessageLabel')
-		.column('userPhoneLabel')
-		.column('contactFormButtonText')
-		.column('contactFormSuccessMessage')
-		.column('contactFormErrorMessage')
+		.column('userContactLabel')
+		.column('submitButtonText')
+		.column('formSuccessMessage')
+		.column('formErrorMessage')
+		.column('unfilledMessageMessage')
+		.column('unfilledContactMessage')
 )
 
 // CONTACT
