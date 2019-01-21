@@ -108,7 +108,7 @@ export default () => (
 				enableAddingNew: false,
 				sortable: {
 					sortBy: 'order'
-				},
+				}
 			}}
 		>
 			{whatWeDoListForm}
