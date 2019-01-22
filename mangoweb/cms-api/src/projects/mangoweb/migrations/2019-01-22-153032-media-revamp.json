@@ -1,0 +1,272 @@
+{
+	"modifications": [
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "Medium",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "medium",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEnum",
+			"enumName": "mediumType",
+			"values": [
+				"image",
+				"video"
+			]
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Medium",
+			"field": {
+				"name": "type",
+				"columnName": "type",
+				"nullable": true,
+				"type": "Enum",
+				"columnType": "mediumType",
+				"enumName": "mediumType"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Medium",
+			"owningSide": {
+				"name": "image",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "image_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Medium",
+			"owningSide": {
+				"name": "video",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Video",
+				"joiningColumn": {
+					"columnName": "video_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "removeUniqueConstraint",
+			"entityName": "WhatWeDo",
+			"constraintName": "unique_WhatWeDo_featuredImage_8a7052"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDo",
+			"owningSide": {
+				"name": "featuredMedium",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Medium",
+				"joiningColumn": {
+					"columnName": "featured_medium_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDo",
+			"fieldName": "featuredImage"
+		},
+		{
+			"modification": "removeUniqueConstraint",
+			"entityName": "WhatWeDoDescription",
+			"constraintName": "unique_WhatWeDoDescription_image_6cc44c"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDoDescription",
+			"owningSide": {
+				"name": "featuredMedium",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Medium",
+				"joiningColumn": {
+					"columnName": "featured_medium_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDoDescription",
+			"fieldName": "image"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Person",
+			"owningSide": {
+				"name": "photo",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "photo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Person",
+			"owningSide": {
+				"name": "mugshot",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "mugshot_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "Person",
+			"fieldName": "imageBig"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "Person",
+			"fieldName": "imageSquare"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Reference",
+			"owningSide": {
+				"name": "referencePageLocale",
+				"target": "ReferencesPageLocale",
+				"inversedBy": "references",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "reference_page_locale_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "references",
+				"ownedBy": "referencePageLocale",
+				"type": "OneHasMany",
+				"target": "Reference"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Reference",
+			"owningSide": {
+				"name": "medium",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Medium",
+				"joiningColumn": {
+					"columnName": "medium_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "Reference",
+			"fieldName": "image"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "Reference",
+			"fieldName": "video"
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "Medium",
+			"unique": {
+				"fields": [
+					"image"
+				],
+				"name": "unique_Medium_image_77eb5a"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "Medium",
+			"unique": {
+				"fields": [
+					"video"
+				],
+				"name": "unique_Medium_video_6e78a1"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "WhatWeDo",
+			"unique": {
+				"fields": [
+					"featuredMedium"
+				],
+				"name": "unique_WhatWeDo_featuredMedium_c47239"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "WhatWeDoDescription",
+			"unique": {
+				"fields": [
+					"featuredMedium"
+				],
+				"name": "unique_WhatWeDoDescription_featuredMedium_155fcf"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "Person",
+			"unique": {
+				"fields": [
+					"photo"
+				],
+				"name": "unique_Person_photo_6cada8"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "Person",
+			"unique": {
+				"fields": [
+					"mugshot"
+				],
+				"name": "unique_Person_mugshot_1b70ac"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "Reference",
+			"unique": {
+				"fields": [
+					"medium"
+				],
+				"name": "unique_Reference_medium_557db3"
+			}
+		}
+	]
+}

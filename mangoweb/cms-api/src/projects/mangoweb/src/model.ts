@@ -6,11 +6,19 @@ const builder = new SchemaBuilder()
 // ****************************************************** COMMON *******************************************************
 builder.enum('one', ['one'])
 builder.enum('locale', ['cs', 'en'])
+builder.enum('mediumType', ['image', 'video'])
 builder.enum('page', ['front', 'team', 'whatWeDo', 'references', 'contact'])
 
 builder.entity('Image', entity => entity.column('url'))
 
 builder.entity('Video', entity => entity.column('src'))
+
+builder.entity('Medium', entity =>
+	entity
+		.column('type', column => column.type(Model.ColumnType.Enum, { enumName: 'mediumType' }))
+		.oneHasOne('image', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
+		.oneHasOne('video', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
+)
 
 // TODO: We can use this since #62 is resolved but there's not enough time for now
 //builder.entity('Language', entity =>
@@ -88,15 +96,13 @@ builder.entity('FooterLocale', entity =>
 )
 
 builder.entity('FooterButton', entity =>
-	entity
-		.column('order', column => column.type(Model.ColumnType.Int))
-		.oneHasMany('locales', relation =>
-			relation
-				.target('FooterButtonLocale')
-				.onDelete(Model.OnDelete.cascade)
-				.ownerNotNull()
-				.ownedBy('footerButton')
-		)
+	entity.column('order', column => column.type(Model.ColumnType.Int)).oneHasMany('locales', relation =>
+		relation
+			.target('FooterButtonLocale')
+			.onDelete(Model.OnDelete.cascade)
+			.ownerNotNull()
+			.ownedBy('footerButton')
+	)
 )
 
 builder.entity('FooterButtonLocale', entity =>
@@ -168,7 +174,7 @@ builder.entity('WhatWeDo', entity =>
 		//.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
 		.column('order', column => column.type(Model.ColumnType.Int)) // TODO just one order for now
 		.column('activity')
-		.oneHasOne('featuredImage', relation => relation.target('Image'))
+		.oneHasOne('featuredMedium', relation => relation.target('Medium'))
 		.column('descriptionHeading')
 		.oneHasOne('featuredVideo', relation => relation.target('Video'))
 		.oneHasMany('description', relation => relation.target('WhatWeDoDescription').onDelete(Model.OnDelete.cascade))
@@ -177,7 +183,7 @@ builder.entity('WhatWeDo', entity =>
 builder.entity('WhatWeDoDescription', entity =>
 	entity
 		.column('heading')
-		.oneHasOne('image', relation => relation.target('Image'))
+		.oneHasOne('featuredMedium', relation => relation.target('Medium'))
 		.column('description')
 )
 
@@ -227,8 +233,8 @@ builder.entity('Person', entity =>
 	entity
 		.column('shortName')
 		.column('longName')
-		.manyHasOne('imageBig', relation => relation.target('Image'))
-		.manyHasOne('imageSquare', relation => relation.target('Image'))
+		.oneHasOne('photo', relation => relation.target('Image'))
+		.oneHasOne('mugshot', relation => relation.target('Image'))
 		.column('faceOffset', column => column.type(Model.ColumnType.Double))
 		.column('phoneNumber')
 		.column('email')
@@ -282,6 +288,13 @@ builder.entity('ReferencesPageLocale', entity =>
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('titleShort')
 		.column('titleFull')
+		.oneHasMany('references', relation =>
+			relation
+				.target('Reference')
+				.onDelete(Model.OnDelete.cascade)
+				.ownedBy('referencePageLocale')
+				.ownerNotNull()
+		)
 )
 
 // REFERENCES
@@ -289,8 +302,7 @@ builder.entity(
 	'Reference',
 	entity =>
 		entity
-			.manyHasOne('image', relation => relation.target('Image'))
-			.manyHasOne('video', relation => relation.target('Video'))
+			.oneHasOne('medium', relation => relation.target('Medium'))
 			.column('order', column => column.type(Model.ColumnType.Int))
 			.column('title')
 			.column('url')
