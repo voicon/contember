@@ -89,7 +89,6 @@ builder.entity('FooterLocale', entity =>
 
 builder.entity('FooterButton', entity =>
 	entity
-		.column('url')
 		.column('order', column => column.type(Model.ColumnType.Int))
 		.oneHasMany('locales', relation =>
 			relation
@@ -104,6 +103,7 @@ builder.entity('FooterButtonLocale', entity =>
 	entity
 		.unique(['footerButton', 'locale'])
 		.column('label')
+		.column('url')
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 )
 
