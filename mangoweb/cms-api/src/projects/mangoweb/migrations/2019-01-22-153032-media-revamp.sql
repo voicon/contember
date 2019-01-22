@@ -16,14 +16,12 @@ ALTER TABLE "medium"
   ADD "video_id" uuid UNIQUE;
 ALTER TABLE "medium"
   ADD CONSTRAINT "fk_medium_video_id_008e91" FOREIGN KEY ("video_id") REFERENCES "video"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
-ALTER TABLE "what_we_do" DROP CONSTRAINT "unique_WhatWeDo_featuredImage_8a7052";
 ALTER TABLE "what_we_do"
   ADD "featured_medium_id" uuid UNIQUE;
 ALTER TABLE "what_we_do"
   ADD CONSTRAINT "fk_what_we_do_featured_medium_id_64e5bc" FOREIGN KEY ("featured_medium_id") REFERENCES "medium"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
 ALTER TABLE "what_we_do"
   DROP "featured_image_id";
-ALTER TABLE "what_we_do_description" DROP CONSTRAINT "unique_WhatWeDoDescription_image_6cc44c";
 ALTER TABLE "what_we_do_description"
   ADD "featured_medium_id" uuid UNIQUE;
 ALTER TABLE "what_we_do_description"
