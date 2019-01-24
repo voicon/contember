@@ -1,38 +1,20 @@
-import { LinkWithAlert, PageLink } from 'cms-admin'
 import * as React from 'react'
+import { IconNames } from '@blueprintjs/icons'
+import { DimensionsSwitcher, PageLink } from 'cms-admin'
+import { Button } from '@blueprintjs/core'
 
 export default class HeaderLeft extends React.Component {
 	render() {
-		const alert = <p>You are about to leave the form with potentially unsaved changes.</p>
-		const cancelText = 'Cancel'
-
 		return (
 			<>
 				<PageLink change={() => ({ name: 'dashboard' })}>manGoweb</PageLink>
-				{' Langs: '}
-				<LinkWithAlert
-					requestChange={r => ({ ...r, dimensions: { lang: ['cs'] } })}
-					alert={alert}
-					cancelButtonText={cancelText}
-				>
-					CS
-				</LinkWithAlert>
-				{' | '}
-				<LinkWithAlert
-					requestChange={r => ({ ...r, dimensions: { lang: ['en'] } })}
-					alert={alert}
-					cancelButtonText={cancelText}
-				>
-					EN
-				</LinkWithAlert>
-				{' | '}
-				<LinkWithAlert
-					requestChange={r => ({ ...r, dimensions: { lang: ['cs', 'en'] } })}
-					alert={alert}
-					cancelButtonText={cancelText}
-				>
-					CS+EN
-				</LinkWithAlert>
+				<DimensionsSwitcher
+					entityName="Language"
+					dimension="lang"
+					labelName="name"
+					valueName="slug"
+					opener={<Button icon={IconNames.GLOBE} rightIcon={IconNames.CHEVRON_DOWN} text="Choose language" />}
+				/>
 			</>
 		)
 	}
