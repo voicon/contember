@@ -1,0 +1,268 @@
+{
+	"modifications": [
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "Language",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "language",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Language",
+			"field": {
+				"name": "slug",
+				"columnName": "slug",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Language",
+			"field": {
+				"name": "name",
+				"columnName": "name",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "PageSeoLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "PageSeoLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "MenuItemLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "MenuItemLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FooterLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FooterLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FooterButtonLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FooterButtonLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPageLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDo",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDo",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDoPageLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDoPageLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "PersonLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "PersonLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ReferencesPageLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ReferencesPageLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactPageLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactPageLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactLocationLocale",
+			"fieldName": "locale"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactLocationLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Language",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "Language",
+			"unique": {
+				"fields": [
+					"slug"
+				],
+				"name": "unique_Language_slug_ed72fc"
+			}
+		},
+		{
+			"modification": "removeEnum",
+			"enumName": "locale"
+		}
+	]
+}
