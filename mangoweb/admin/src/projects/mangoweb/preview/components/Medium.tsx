@@ -16,12 +16,20 @@ export const Medium = Component<MediumProps>(
 			<AlternativeFields
 				name="type"
 				alternatives={[
-					[new Literal('image'), 'Image', <>
-						<ImageField name="image" label={props.imageLabel || 'The image'} />
-					</>],
-					[new Literal('video'), 'Video', <>
-						<VideoField name="video" label={props.videoLabel || 'Video URL'} />
-					</>]
+					[
+						new Literal('image'),
+						'Image',
+						<>
+							<ImageField name="image" label={props.imageLabel || 'The image'} />
+						</>
+					],
+					[
+						new Literal('video'),
+						'Video',
+						<>
+							<VideoField name="video" label={props.videoLabel || 'Video URL'} />
+						</>
+					]
 				]}
 				label={props.label}
 			/>
