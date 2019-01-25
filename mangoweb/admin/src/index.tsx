@@ -37,7 +37,6 @@ const reactRoot = (config: any) => (
 					edit_whatWeDoPage: { path: '/whatWeDo-page' },
 					multiEdit_whatWeDo: { path: '/whatWeDo' },
 					edit_whatWeDo: { path: '/whatWeDo/:id' },
-					create_whatWeDo: { path: '/whatWeDo/create-new' },
 
 					edit_referencesPage: { path: '/references-page' },
 					edit_references: { path: '/references' },
