@@ -106,7 +106,7 @@ export default () => (
 			entity="WhatWeDoPage"
 			pageName="multiEdit_whatWeDo"
 			rendererProps={{
-				title: 'What we do',
+				title: 'What we do'
 			}}
 		>
 			{whatWeDoListForm}
