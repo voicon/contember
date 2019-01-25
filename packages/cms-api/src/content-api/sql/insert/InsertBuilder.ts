@@ -9,8 +9,8 @@ import Mapper from '../Mapper'
 import SelectBuilder from '../../../core/knex/SelectBuilder'
 import QueryBuilder from '../../../core/knex/QueryBuilder'
 
-type ColumnValue = {
-	value: PromiseLike<Input.ColumnValue>
+type ColumnValue<E = never> = {
+	value: PromiseLike<Input.ColumnValue<E>>
 	columnName: string
 	columnType: string
 }
@@ -21,7 +21,7 @@ export default class InsertBuilder {
 		throw new Error()
 	}
 
-	private rowData: ColumnValue[] = []
+	private rowData: ColumnValue<undefined>[] = []
 	private where: Input.Where = {}
 
 	constructor(
@@ -34,7 +34,7 @@ export default class InsertBuilder {
 		this.insert = this.createInsertPromise(blocker)
 	}
 
-	public addFieldValue(fieldName: string, value: Input.ColumnValueLike) {
+	public addFieldValue(fieldName: string, value: Input.ColumnValueLike<undefined>) {
 		const columnName = getColumnName(this.schema, this.entity, fieldName)
 		const columnType = getColumnType(this.schema, this.entity, fieldName)
 		this.rowData.push({ columnName, value: resolveValue(value), columnType })
