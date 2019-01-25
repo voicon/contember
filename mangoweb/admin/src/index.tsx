@@ -40,6 +40,7 @@ const reactRoot = (config: any) => (
 					create_whatWeDo: { path: '/whatWeDo/create-new' },
 
 					edit_referencesPage: { path: '/references-page' },
+					edit_references: { path: '/references' },
 
 					edit_contactPage: { path: '/contact-page' },
 					edit_contact: { path: '/contact-information' }

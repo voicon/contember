@@ -14,6 +14,7 @@ import {
 	whatWeDoPageForm
 } from './forms'
 import { footerForm } from './forms/'
+import { referencesForm } from './forms/referencesForm'
 import { referencesPageForm } from './forms/referencesPageForm'
 
 export default () => (
@@ -105,6 +106,7 @@ export default () => (
 			entity="WhatWeDo"
 			rendererProps={{
 				title: 'What we do',
+				beforeContent: <PageLink change={() => ({ name: 'create_whatWeDo' })}>Create new</PageLink>,
 				enableAddingNew: false,
 				sortable: {
 					sortBy: 'order'
@@ -143,6 +145,16 @@ export default () => (
 			}}
 		>
 			{referencesPageForm}
+		</EditPage>
+
+		<EditPage
+			entity="ReferencesPage"
+			pageName="edit_references"
+			rendererProps={{
+				title: 'References'
+			}}
+		>
+			{referencesForm}
 		</EditPage>
 
 		{/* ---- */}

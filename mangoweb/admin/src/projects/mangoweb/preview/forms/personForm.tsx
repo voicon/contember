@@ -14,8 +14,8 @@ export const personForm = (
 		</LocaleSideDimension>
 
 		<H2>Photos</H2>
-		<ImageField name="imageBig" label="Large image" />
-		<ImageField name="imageSquare" label="Mug shot" />
+		<ImageField name="photo" label="Large image" />
+		<ImageField name="mugshot" label="Mug shot" />
 		<NumberField name="faceOffset" label="Face offset" />
 
 		<H2>Contact</H2>

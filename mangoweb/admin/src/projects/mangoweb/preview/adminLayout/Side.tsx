@@ -57,9 +57,15 @@ export default class Side extends React.Component {
 				<MenuList title="References">
 					<MenuPageLink
 						change={() => ({ name: 'edit_referencesPage', params: { unique: new GraphQlBuilder.Literal('one') } })}
-						frontIcon="thumbs-up"
+						frontIcon="shop"
 					>
 						References page
+					</MenuPageLink>
+					<MenuPageLink
+						change={() => ({ name: 'edit_references', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="thumbs-up"
+					>
+						References
 					</MenuPageLink>
 				</MenuList>
 				<MenuList title="Contact">

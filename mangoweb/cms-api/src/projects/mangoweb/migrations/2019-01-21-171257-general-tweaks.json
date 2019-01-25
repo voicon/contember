@@ -1,0 +1,134 @@
+{
+	"modifications": [
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPage",
+			"owningSide": {
+				"name": "heroImage",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "hero_image_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ReferencesPageLocale",
+			"fieldName": "quote"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ReferencesPageLocale",
+			"fieldName": "references"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "Reference",
+			"fieldName": "referencesPage"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "Reference",
+			"fieldName": "isFeatured"
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPageLocale",
+			"field": {
+				"name": "userContactLabel",
+				"columnName": "user_contact_label",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPageLocale",
+			"field": {
+				"name": "submitButtonText",
+				"columnName": "submit_button_text",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPageLocale",
+			"field": {
+				"name": "formSuccessMessage",
+				"columnName": "form_success_message",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPageLocale",
+			"field": {
+				"name": "formErrorMessage",
+				"columnName": "form_error_message",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPageLocale",
+			"field": {
+				"name": "unfilledMessageMessage",
+				"columnName": "unfilled_message_message",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPageLocale",
+			"field": {
+				"name": "unfilledContactMessage",
+				"columnName": "unfilled_contact_message",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactPageLocale",
+			"fieldName": "userPhoneLabel"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactPageLocale",
+			"fieldName": "contactFormButtonText"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactPageLocale",
+			"fieldName": "contactFormSuccessMessage"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "ContactPageLocale",
+			"fieldName": "contactFormErrorMessage"
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "FrontPage",
+			"unique": {
+				"fields": [
+					"heroImage"
+				],
+				"name": "unique_FrontPage_heroImage_9fe4ae"
+			}
+		}
+	]
+}

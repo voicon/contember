@@ -1,0 +1,20 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "FooterButton",
+			"fieldName": "url"
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FooterButtonLocale",
+			"field": {
+				"name": "url",
+				"columnName": "url",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		}
+	]
+}

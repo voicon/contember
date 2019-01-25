@@ -10,6 +10,7 @@ export const contactForm = (
 		<TextField name="linkedIn" label="LinkedIn" />
 		<TextField name="instagram" label="Instagram" />
 		<TextField name="twitter" label="Twitter" />
+		<TextField name="mainEmail" label="E-mail" />
 
 		<H2>Contact locations</H2>
 		<Repeater field="locations">

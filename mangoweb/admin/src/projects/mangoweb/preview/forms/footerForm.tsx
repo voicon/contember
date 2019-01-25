@@ -14,8 +14,8 @@ export const footerForm = (
 		<SortableRepeater field="buttons" sortBy="order">
 			<LocaleSideDimension>
 				<TextField name="$locale.label" label="Link text" />
+				<TextField name="$locale.url" label="Link url" />
 			</LocaleSideDimension>
-			<TextField name="url" label="Link url" />
 		</SortableRepeater>
 	</>
 )

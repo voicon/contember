@@ -7,6 +7,7 @@ export const frontPageForm = (
 	<>
 		<H2>Intro</H2>
 		<VideoField name="introVideo" label="URL of the title video" />
+		<ImageField name="heroImage" label="Hero image to be displayed instead of the video on smaller screens" />
 		<LocaleSideDimension>
 			<TextField name="$locale.introLabel" label="Label" />
 			<TextField name="$locale.introHeading" label="Heading" />

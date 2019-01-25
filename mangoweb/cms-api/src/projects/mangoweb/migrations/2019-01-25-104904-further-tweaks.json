@@ -1,0 +1,25 @@
+{
+	"modifications": [
+		{
+			"modification": "removeUniqueConstraint",
+			"entityName": "WhatWeDo",
+			"constraintName": "unique_WhatWeDo_featuredVideo_02d684"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDo",
+			"fieldName": "featuredVideo"
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Contact",
+			"field": {
+				"name": "mainEmail",
+				"columnName": "main_email",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		}
+	]
+}
