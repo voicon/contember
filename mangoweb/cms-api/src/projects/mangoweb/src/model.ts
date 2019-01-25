@@ -176,7 +176,6 @@ builder.entity('WhatWeDo', entity =>
 		.column('activity')
 		.oneHasOne('featuredMedium', relation => relation.target('Medium'))
 		.column('descriptionHeading')
-		.oneHasOne('featuredVideo', relation => relation.target('Video'))
 		.oneHasMany('description', relation => relation.target('WhatWeDoDescription').onDelete(Model.OnDelete.cascade))
 )
 
@@ -360,6 +359,7 @@ builder.entity('Contact', entity =>
 		.column('linkedIn')
 		.column('instagram')
 		.column('twitter')
+		.column('mainEmail')
 		.oneHasMany('locations', relation => relation.target('ContactLocation').onDelete(Model.OnDelete.cascade))
 )
 
