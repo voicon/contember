@@ -1,0 +1,30 @@
+{
+	"modifications": [
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDo",
+			"owningSide": {
+				"name": "whatWeDoPageLocale",
+				"target": "WhatWeDoPageLocale",
+				"inversedBy": "whatWeDo",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "what_we_do_page_locale_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "whatWeDo",
+				"ownedBy": "whatWeDoPageLocale",
+				"type": "OneHasMany",
+				"target": "WhatWeDo"
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "WhatWeDo",
+			"fieldName": "locale"
+		}
+	]
+}

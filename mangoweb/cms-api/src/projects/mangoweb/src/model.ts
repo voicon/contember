@@ -169,7 +169,6 @@ builder.entity('FrontPageFeaturedClient', entity =>
 // WHAT WE DO
 builder.entity('WhatWeDo', entity =>
 	entity
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		//.column('frontPageOrder', column => column.type(Model.ColumnType.Int))
 		//.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
 		.column('order', column => column.type(Model.ColumnType.Int)) // TODO just one order for now
@@ -211,6 +210,13 @@ builder.entity('WhatWeDoPageLocale', entity =>
 		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
 		.column('titleShort')
 		.column('titleFull')
+		.oneHasMany('whatWeDo', relation =>
+			relation
+				.target('WhatWeDo')
+				.onDelete(Model.OnDelete.cascade)
+				.ownedBy('whatWeDoPageLocale')
+				.ownerNotNull()
+		)
 )
 
 // ******************************************************* TEAM ********************************************************

@@ -50,7 +50,10 @@ export default class Side extends React.Component {
 					>
 						What we do page
 					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'multiEdit_whatWeDo' })} frontIcon="briefcase">
+					<MenuPageLink
+						change={() => ({ name: 'multiEdit_whatWeDo', params: { unique: new GraphQlBuilder.Literal('one') } })}
+						frontIcon="briefcase"
+					>
 						What we do
 					</MenuPageLink>
 				</MenuList>

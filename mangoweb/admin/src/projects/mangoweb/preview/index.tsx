@@ -1,5 +1,5 @@
 import { Callout, H1, Intent } from '@blueprintjs/core'
-import { CreatePage, EditPage, FieldText, GenericPage, MultiEditPage, PageLink, Pages } from 'cms-admin'
+import { CreatePage, EditPage, FieldText, GenericPage, GraphQlBuilder, MultiEditPage, PageLink, Pages } from 'cms-admin'
 import * as React from 'react'
 import { Layout } from './adminLayout'
 import {
@@ -102,19 +102,15 @@ export default () => (
 		>
 			{whatWeDoPageForm}
 		</EditPage>
-		<MultiEditPage
-			entity="WhatWeDo"
+		<EditPage
+			entity="WhatWeDoPage"
+			pageName="multiEdit_whatWeDo"
 			rendererProps={{
-				title: 'What we do',
-				beforeContent: <PageLink change={() => ({ name: 'create_whatWeDo' })}>Create new</PageLink>,
-				enableAddingNew: false,
-				sortable: {
-					sortBy: 'order'
-				}
+				title: 'What we do'
 			}}
 		>
 			{whatWeDoListForm}
-		</MultiEditPage>
+		</EditPage>
 		<EditPage
 			entity="WhatWeDo"
 			rendererProps={{
@@ -127,14 +123,6 @@ export default () => (
 		>
 			{whatWeDoForm}
 		</EditPage>
-		<CreatePage
-			entity="WhatWeDo"
-			rendererProps={{
-				title: 'Create a new "What we do" activity'
-			}}
-		>
-			{whatWeDoForm}
-		</CreatePage>
 
 		{/* ---- */}
 
