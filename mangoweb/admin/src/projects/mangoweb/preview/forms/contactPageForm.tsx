@@ -2,6 +2,7 @@ import { H2, H3 } from '@blueprintjs/core'
 import { TextField } from 'cms-admin'
 import * as React from 'react'
 import { LocaleSideDimension } from '../components'
+import { seoForm } from './seoForm'
 
 export const contactPageForm = (
 	<>
@@ -23,5 +24,7 @@ export const contactPageForm = (
 			<TextField name="$locale.unfilledMessageMessage" label="Unfilled user message" />
 			<TextField name="$locale.unfilledContactMessage" label="Unfilled phone or mail" />
 		</LocaleSideDimension>
+
+		{seoForm}
 	</>
 )

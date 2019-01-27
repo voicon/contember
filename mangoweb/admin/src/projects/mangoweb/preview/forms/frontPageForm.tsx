@@ -2,6 +2,7 @@ import { H2 } from '@blueprintjs/core'
 import { SortableRepeater, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
 import { ImageField, LocaleSideDimension, VideoField } from '../components'
+import { seoForm } from './seoForm'
 
 export const frontPageForm = (
 	<>
@@ -29,6 +30,7 @@ export const frontPageForm = (
 				<ImageField name="logo" label="Logo" />
 			</SortableRepeater>
 		</LocaleSideDimension>
-		{/* TODO seo */}
+
+		{seoForm}
 	</>
 )
