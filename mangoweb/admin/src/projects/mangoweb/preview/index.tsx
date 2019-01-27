@@ -16,6 +16,7 @@ import {
 import { footerForm } from './forms/'
 import { referencesForm } from './forms/referencesForm'
 import { referencesPageForm } from './forms/referencesPageForm'
+import { teamPageForm } from './forms/teamPageForm'
 
 export default () => (
 	<Pages project="mangoweb" stage="prod" layout={Layout}>
@@ -58,7 +59,14 @@ export default () => (
 
 		{/* ---- */}
 
-		<GenericPage pageName="edit_teamPage">Nothing to see here as of yet</GenericPage>
+		<EditPage
+			entity="TeamPage"
+			rendererProps={{
+				title: 'Team Page'
+			}}
+		>
+			{teamPageForm}
+		</EditPage>
 		<MultiEditPage
 			entity="Person"
 			rendererProps={{
