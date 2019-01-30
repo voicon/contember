@@ -32,6 +32,31 @@ builder.entity('Seo', entity =>
 		.column('ogDescription')
 )
 
+// Reusable
+builder.entity('ImageGrid', entity =>
+	entity
+		.manyHasOne('imagePosition1', ref => ref.target('Image'))
+		.manyHasOne('imagePosition2', ref => ref.target('Image'))
+		.manyHasOne('imagePosition3', ref => ref.target('Image'))
+		.manyHasOne('imagePosition4', ref => ref.target('Image'))
+		.manyHasOne('imagePosition5', ref => ref.target('Image'))
+		.manyHasOne('imagePosition6', ref => ref.target('Image'))
+)
+
+builder.enum('BlockType', ['Heading', 'Text', 'Image', 'ImageGrid', 'Numbers'])
+
+builder.entity('Numbers', entity => entity.column('number').column('label'))
+
+builder.entity('Block', entity =>
+	entity
+		.column('type', col => col.type(Model.ColumnType.Enum, { enumName: 'BlockType' }))
+		.column('text')
+		.manyHasOne('imageGrid', ref => ref.target('ImageGrid'))
+		.manyHasOne('image', ref => ref.target('Image'))
+		.manyHasOne('numbers', ref => ref.target('Numbers'))
+)
+
+
 // Menu
 builder.entity('MenuItem', entity =>
 	entity
@@ -50,7 +75,7 @@ builder.entity('Social', entity =>
 // Footer
 builder.entity('FooterLocale', entity =>
 	entity
-		.manyHasOne('locale', ref => ref.target('Locale'))
+		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.column('footer')
 		.unique(['locale'])
 )
@@ -60,13 +85,13 @@ builder.entity('FrontPage', entity =>
 	entity
 		.oneHasOne('locale', ref => ref.target('Locale').notNull())
 		.oneHasOne('seo', ref => ref.target('Seo').notNull())
-		.column('bigHeader')
-		.column('smallHeader')
+		.column('header')
+		.column('quote')
 		.column('partnersHeader')
 		.column('partnersContent')
 		.column('peopleHeader')
 		.column('peopleSubheader')
-		.column('imageGrid')
+		.manyHasOne('imageGrid', ref => ref.target('ImageGrid'))
 		.oneHasMany('people', ref =>
 			ref
 				.target('Person')
@@ -88,13 +113,18 @@ builder.entity('Person', entity =>
 builder.entity('PersonLocale', entity => entity.column('quote').column('name'))
 
 // Page
-builder.entity('Page', entity => entity.oneHasMany('locales', ref => ref.target('PageLocale').ownedBy('page')))
+builder.entity('Page', entity =>
+	entity
+		.oneHasMany('locales', ref => ref.target('PageLocale').ownedBy('page'))
+		.manyHasOne('image', ref => ref.target('Image'))
+)
+
 builder.entity('PageLocale', entity =>
 	entity
 		.column('state', col => col.type(Model.ColumnType.Enum, { enumName: 'State' }).notNull())
 		.column('header')
 		.column('perex')
-		.column('content')
+		.oneHasMany('content', ref => ref.target('Block'))
 		.column('contactUs')
 		.oneHasOne('seo', ref => ref.target('Seo').notNull())
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
