@@ -116,8 +116,8 @@ builder.entity('Place', entity =>
 		.column('state', col => col.type(Model.ColumnType.Enum, { enumName: 'State' }).notNull())
 		.column('isBiggerOnFrontPage', col => col.type(Model.ColumnType.Bool).notNull())
 		.column('order', col => col.type(Model.ColumnType.Int).notNull())
-		.column('gpsN', col => col.type(Model.ColumnType.Double))
-		.column('gpsE', col => col.type(Model.ColumnType.Double))
+		.column('gpsLat', col => col.type(Model.ColumnType.Double))
+		.column('gpsLng', col => col.type(Model.ColumnType.Double))
 		.oneHasMany('locales', ref =>
 			ref
 				.target('PlaceLocale')
