@@ -9,7 +9,7 @@ export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 		dimension="lang"
 		variables={currentLang => {
 			return {
-				locale: `locales(locale=${currentLang})`,
+				locale: `locales(locale.slug='${currentLang}')`,
 				flag: {
 					en: '🇬🇧',
 					cs: '🇨🇿'
