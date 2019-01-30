@@ -54,6 +54,13 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "menu_item"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
+CREATE TABLE "menu_item_locale" (
+  "id" uuid PRIMARY KEY NOT NULL
+);
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "menu_item_locale"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"();
 CREATE TABLE "social" (
   "id" uuid PRIMARY KEY NOT NULL
 );
@@ -238,19 +245,24 @@ ALTER TABLE "block"
   ADD CONSTRAINT "fk_block_page_locale_id_6668d9" FOREIGN KEY ("page_locale_id") REFERENCES "page_locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
 CREATE  INDEX  "block_page_locale_id_index" ON "block" ("page_locale_id");
 ALTER TABLE "menu_item"
-  ADD "label" text;
-ALTER TABLE "menu_item"
-  ADD "target_id" uuid NOT NULL;
-ALTER TABLE "menu_item"
-  ADD CONSTRAINT "fk_menu_item_target_id_6b77d1" FOREIGN KEY ("target_id") REFERENCES "linkable"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
-CREATE  INDEX  "menu_item_target_id_index" ON "menu_item" ("target_id");
-ALTER TABLE "menu_item"
-  ADD "locale_id" uuid NOT NULL;
-ALTER TABLE "menu_item"
-  ADD CONSTRAINT "fk_menu_item_locale_id_41b43e" FOREIGN KEY ("locale_id") REFERENCES "locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
-CREATE  INDEX  "menu_item_locale_id_index" ON "menu_item" ("locale_id");
-ALTER TABLE "menu_item"
   ADD "order" integer;
+ALTER TABLE "menu_item_locale"
+  ADD "menu_item_id" uuid NOT NULL;
+ALTER TABLE "menu_item_locale"
+  ADD CONSTRAINT "fk_menu_item_locale_menu_item_id_d89a3d" FOREIGN KEY ("menu_item_id") REFERENCES "menu_item"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+CREATE  INDEX  "menu_item_locale_menu_item_id_index" ON "menu_item_locale" ("menu_item_id");
+ALTER TABLE "menu_item_locale"
+  ADD "label" text;
+ALTER TABLE "menu_item_locale"
+  ADD "target_id" uuid NOT NULL;
+ALTER TABLE "menu_item_locale"
+  ADD CONSTRAINT "fk_menu_item_locale_target_id_856427" FOREIGN KEY ("target_id") REFERENCES "linkable"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+CREATE  INDEX  "menu_item_locale_target_id_index" ON "menu_item_locale" ("target_id");
+ALTER TABLE "menu_item_locale"
+  ADD "locale_id" uuid NOT NULL;
+ALTER TABLE "menu_item_locale"
+  ADD CONSTRAINT "fk_menu_item_locale_locale_id_09ac67" FOREIGN KEY ("locale_id") REFERENCES "locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+CREATE  INDEX  "menu_item_locale_locale_id_index" ON "menu_item_locale" ("locale_id");
 ALTER TABLE "social"
   ADD "network" "SocialNetwork";
 ALTER TABLE "social"
@@ -402,6 +414,8 @@ ALTER TABLE "locale"
   ADD CONSTRAINT "unique_Locale_slug_67d6fc" UNIQUE ("slug");
 ALTER TABLE "linkable"
   ADD CONSTRAINT "unique_Linkable_url_f92092" UNIQUE ("url");
+ALTER TABLE "menu_item_locale"
+  ADD CONSTRAINT "unique_MenuItemLocale_menuItem_locale_9e2d51" UNIQUE ("menu_item_id", "locale_id");
 ALTER TABLE "footer_locale"
   ADD CONSTRAINT "unique_FooterLocale_locale_f95277" UNIQUE ("locale_id");
 ALTER TABLE "page_locale"

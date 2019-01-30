@@ -56,14 +56,22 @@ builder.entity('Block', entity =>
 		.manyHasOne('numbers', ref => ref.target('Numbers'))
 )
 
-
 // Menu
 builder.entity('MenuItem', entity =>
+	entity.column('order', col => col.type(Model.ColumnType.Int)).oneHasMany('locale', ref =>
+		ref
+			.target('MenuItemLocale')
+			.ownedBy('menuItem')
+			.ownerNotNull()
+	)
+)
+
+builder.entity('MenuItemLocale', entity =>
 	entity
 		.column('label')
 		.manyHasOne('target', ref => ref.target('Linkable').notNull())
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
-		.column('order', col => col.type(Model.ColumnType.Int))
+		.unique(['menuItem', 'locale'])
 )
 
 // Social
