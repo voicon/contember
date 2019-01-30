@@ -29,6 +29,7 @@ export default () => (
 
 		<EditPage
 			entity="FrontPage"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
 				title: 'Front Page'
 			}}
@@ -50,6 +51,7 @@ export default () => (
 
 		<EditPage
 			entity="Footer"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
 				title: 'Footer'
 			}}
@@ -61,6 +63,7 @@ export default () => (
 
 		<EditPage
 			entity="TeamPage"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
 				title: 'Team Page'
 			}}
@@ -104,6 +107,7 @@ export default () => (
 
 		<EditPage
 			entity="WhatWeDoPage"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
 				title: 'What we do page'
 			}}
@@ -112,6 +116,7 @@ export default () => (
 		</EditPage>
 		<EditPage
 			entity="WhatWeDoPage"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			pageName="multiEdit_whatWeDo"
 			rendererProps={{
 				title: 'What we do'
@@ -121,6 +126,7 @@ export default () => (
 		</EditPage>
 		<EditPage
 			entity="WhatWeDo"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
 				title: (
 					<>
@@ -136,6 +142,7 @@ export default () => (
 
 		<EditPage
 			entity="ReferencesPage"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
 				title: 'References page'
 			}}
@@ -145,6 +152,7 @@ export default () => (
 
 		<EditPage
 			entity="ReferencesPage"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			pageName="edit_references"
 			rendererProps={{
 				title: 'References'
@@ -157,6 +165,7 @@ export default () => (
 
 		<EditPage
 			entity="ContactPage"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
 				title: 'Contact page'
 			}}
@@ -165,6 +174,7 @@ export default () => (
 		</EditPage>
 		<EditPage
 			entity="Contact"
+			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
 				title: 'Contact information'
 			}}
