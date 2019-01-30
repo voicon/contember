@@ -4,7 +4,9 @@ import { Acl, Model, Schema } from 'cms-common'
 const builder = new SchemaBuilder()
 
 // Meta things
-builder.entity('Language', entity => entity.column('slug', column => column.type(Model.ColumnType.String).unique()))
+builder.entity('Locale', entity =>
+	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('switchToLabel')
+)
 
 builder.entity('Linkable', entity =>
 	entity
@@ -35,8 +37,8 @@ builder.entity('MenuItem', entity =>
 	entity
 		.column('label')
 		.manyHasOne('target', ref => ref.target('Linkable').notNull())
-		.manyHasOne('locale', ref => ref.target('Language').notNull())
-		.column('order', col => col.type(Model.ColumnType.Int).notNull())
+		.manyHasOne('locale', ref => ref.target('Locale').notNull())
+		.column('order', col => col.type(Model.ColumnType.Int))
 )
 
 // Social
@@ -48,7 +50,7 @@ builder.entity('Social', entity =>
 // Footer
 builder.entity('FooterLocale', entity =>
 	entity
-		.manyHasOne('locale', ref => ref.target('Language'))
+		.manyHasOne('locale', ref => ref.target('Locale'))
 		.column('footer')
 		.unique(['locale'])
 )
@@ -56,7 +58,7 @@ builder.entity('FooterLocale', entity =>
 // Front page
 builder.entity('FrontPage', entity =>
 	entity
-		.oneHasOne('locale', ref => ref.target('Language').notNull())
+		.oneHasOne('locale', ref => ref.target('Locale').notNull())
 		.oneHasOne('seo', ref => ref.target('Seo').notNull())
 		.column('bigHeader')
 		.column('smallHeader')
@@ -95,7 +97,7 @@ builder.entity('PageLocale', entity =>
 		.column('content')
 		.column('contactUs')
 		.oneHasOne('seo', ref => ref.target('Seo').notNull())
-		.manyHasOne('locale', ref => ref.target('Language').notNull())
+		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.oneHasMany('link', ref => ref.target('Linkable').ownedBy('page'))
 		.unique(['page', 'locale'])
 )
@@ -103,7 +105,7 @@ builder.entity('PageLocale', entity =>
 // Contact
 builder.entity('ContactLocale', entity =>
 	entity
-		.manyHasOne('locale', ref => ref.target('Language').notNull())
+		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.column('header')
 		.oneHasOne('seo', ref => ref.target('Seo').notNull())
 		.oneHasMany('link', ref => ref.target('Linkable').ownedBy('contact'))
@@ -112,7 +114,7 @@ builder.entity('ContactLocale', entity =>
 builder.entity('Place', entity =>
 	entity
 		.column('state', col => col.type(Model.ColumnType.Enum, { enumName: 'State' }).notNull())
-		.column('isBiggerOnHomepage', col => col.type(Model.ColumnType.Bool).notNull())
+		.column('isBiggerOnFrontPage', col => col.type(Model.ColumnType.Bool).notNull())
 		.column('order', col => col.type(Model.ColumnType.Int).notNull())
 		.column('gpsN', col => col.type(Model.ColumnType.Double))
 		.column('gpsE', col => col.type(Model.ColumnType.Double))
@@ -126,7 +128,7 @@ builder.entity('Place', entity =>
 
 builder.entity('PlaceLocale', entity =>
 	entity
-		.manyHasOne('locale', ref => ref.target('Language').notNull())
+		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.unique(['place', 'locale'])
 		.column('name', col => col.type(Model.ColumnType.String).notNull())
 		.column('address', col => col.type(Model.ColumnType.String).notNull())
@@ -137,7 +139,7 @@ builder.entity('PlaceLocale', entity =>
 builder.enum('Translatable', ['emailContent', 'emailContact', 'emailSend'])
 builder.entity('Translated', entity =>
 	entity
-		.manyHasOne('locale', ref => ref.target('Language'))
+		.manyHasOne('locale', ref => ref.target('Locale'))
 		.column('translatable', col => col.type(Model.ColumnType.Enum, { enumName: 'Translatable' }).notNull())
 		.unique(['locale', 'translatable'])
 		.column('translated', col => col.type(Model.ColumnType.String).notNull())
@@ -147,7 +149,7 @@ builder.entity('JoinUs', entity =>
 	entity
 		.column('label', col => col.type(Model.ColumnType.String).notNull())
 		.manyHasOne('target', ref => ref.target('Linkable').notNull())
-		.oneHasOne('locale', ref => ref.target('Language').notNull())
+		.oneHasOne('locale', ref => ref.target('Locale').notNull())
 )
 
 const model = builder.buildSchema()
