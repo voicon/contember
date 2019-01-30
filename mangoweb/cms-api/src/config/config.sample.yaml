@@ -53,6 +53,27 @@ projects:
         credentials:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
+    - uuid: 9b5f50a8-c35b-46fc-abf6-090c7a68edd5
+      slug: quanti
+      name: Quanti
+      stages:
+        - uuid: bac2b042-6b65-47fd-9cb6-ba04a589c241
+          slug: prod
+          name: Production
+          migration: '2019-01-30-101453'
+      dbCredentials:
+        host: '%env.QUANTI_DB_HOST%'
+        port: '5432'
+        user: '%env.QUANTI_DB_USER%'
+        password: '%env.QUANTI_DB_PASSWORD%'
+        database: '%env.QUANTI_DB_NAME%'
+      s3:
+        bucket: 'cms-api.mgw.cz'
+        prefix: 'dev/quanti'
+        region: 'eu-central-1'
+        credentials:
+          key: 'AKIAIO53JZYNOKXXYMDA'
+          secret: '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'
 
 server:
     port: '%env.SERVER_PORT%'
