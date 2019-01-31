@@ -1,4 +1,4 @@
-import { Callout, H1, Intent } from '@blueprintjs/core'
+import { H1 } from '@blueprintjs/core'
 import { CreatePage, EditPage, FieldText, GenericPage, GraphQlBuilder, MultiEditPage, PageLink, Pages } from 'cms-admin'
 import * as React from 'react'
 import { Layout } from './adminLayout'
@@ -22,9 +22,6 @@ export default () => (
 	<Pages project="mangoweb" stage="prod" layout={Layout}>
 		<GenericPage pageName="dashboard">
 			<H1>manGoweb admin</H1>
-			<Callout intent={Intent.WARNING} title="Warning">
-				<p>Don't forget to choose a language first!</p>
-			</Callout>
 		</GenericPage>
 
 		<EditPage
