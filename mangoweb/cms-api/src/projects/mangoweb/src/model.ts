@@ -5,7 +5,6 @@ const builder = new SchemaBuilder()
 
 // ****************************************************** COMMON *******************************************************
 builder.enum('one', ['one'])
-builder.enum('locale', ['cs', 'en'])
 builder.enum('mediumType', ['image', 'video'])
 builder.enum('page', ['front', 'team', 'whatWeDo', 'references', 'contact'])
 
@@ -21,9 +20,9 @@ builder.entity('Medium', entity =>
 )
 
 // TODO: We can use this since #62 is resolved but there's not enough time for now
-//builder.entity('Language', entity =>
-//	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('name')
-//)
+builder.entity('Language', entity =>
+	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('name')
+)
 
 builder.entity('PageSeo', entity =>
 	entity.oneHasOne('ogImage', relation => relation.target('Image')).oneHasMany('locales', relation =>
@@ -38,7 +37,7 @@ builder.entity('PageSeo', entity =>
 builder.entity('PageSeoLocale', entity =>
 	entity
 		.unique(['pageSeo', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('description')
 		.column('ogTitle')
 		.column('ogDescription')
@@ -63,7 +62,7 @@ builder.entity('MenuItem', entity =>
 builder.entity('MenuItemLocale', entity =>
 	entity
 		.unique(['menuItem', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('label')
 )
 
@@ -91,7 +90,7 @@ builder.entity('Footer', entity =>
 builder.entity('FooterLocale', entity =>
 	entity
 		.unique(['footer', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('contactButtonText')
 )
 
@@ -110,7 +109,7 @@ builder.entity('FooterButtonLocale', entity =>
 		.unique(['footerButton', 'locale'])
 		.column('label')
 		.column('url')
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 )
 
 // **************************************************** FRONT PAGE *****************************************************
@@ -139,7 +138,7 @@ builder.entity('FrontPage', entity =>
 builder.entity('FrontPageLocale', entity =>
 	entity
 		.unique(['frontPage', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('introLabel')
 		.column('introHeading')
 		.column('introBubbleText')
@@ -207,7 +206,7 @@ builder.entity('WhatWeDoPage', entity =>
 builder.entity('WhatWeDoPageLocale', entity =>
 	entity
 		.unique(['whatWeDoPage', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('titleShort')
 		.column('titleFull')
 		.oneHasMany('whatWeDo', relation =>
@@ -261,7 +260,7 @@ builder.entity('Person', entity =>
 builder.entity('PersonLocale', entity =>
 	entity
 		.unique(['locale', 'person'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('position')
 		.column('bio')
 )
@@ -290,7 +289,7 @@ builder.entity('ReferencesPage', entity =>
 builder.entity('ReferencesPageLocale', entity =>
 	entity
 		.unique(['referencesPage', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('titleShort')
 		.column('titleFull')
 		.oneHasMany('references', relation =>
@@ -339,7 +338,7 @@ builder.entity('ContactPage', entity =>
 builder.entity('ContactPageLocale', entity =>
 	entity
 		.unique(['contactPage', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('titleShort')
 		.column('titleFull')
 		.column('contactUsButtonLabel')
@@ -385,7 +384,7 @@ builder.entity('ContactLocation', entity =>
 builder.entity('ContactLocationLocale', entity =>
 	entity
 		.unique(['contactLocation', 'locale'])
-		.column('locale', column => column.type(Model.ColumnType.Enum, { enumName: 'locale' }))
+		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('title')
 		.column('entity')
 		.column('address')
