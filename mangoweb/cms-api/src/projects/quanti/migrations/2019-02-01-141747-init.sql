@@ -82,6 +82,13 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "front_page"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
+CREATE TABLE "front_page_locale" (
+  "id" uuid PRIMARY KEY NOT NULL
+);
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "front_page_locale"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"();
 CREATE TABLE "person" (
   "id" uuid PRIMARY KEY NOT NULL
 );
@@ -145,6 +152,7 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "join_us"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
+CREATE DOMAIN "One" AS text CHECK (VALUE IN('One'));
 CREATE DOMAIN "State" AS text CHECK (VALUE IN('Draft','ToBePublished','Published'));
 CREATE DOMAIN "BlockType" AS text CHECK (VALUE IN('Heading','Text','Image','ImageGrid','Numbers'));
 CREATE DOMAIN "SocialNetwork" AS text CHECK (VALUE IN('Facebook','Twitter','LinkedIn'));
@@ -158,10 +166,10 @@ ALTER TABLE "linkable"
 ALTER TABLE "linkable"
   ADD "is_primary" boolean NOT NULL;
 ALTER TABLE "linkable"
-  ADD "front_page_id" uuid;
+  ADD "front_page_locale_id" uuid;
 ALTER TABLE "linkable"
-  ADD CONSTRAINT "fk_linkable_front_page_id_07c360" FOREIGN KEY ("front_page_id") REFERENCES "front_page"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
-CREATE  INDEX  "linkable_front_page_id_index" ON "linkable" ("front_page_id");
+  ADD CONSTRAINT "fk_linkable_front_page_locale_id_5a0efb" FOREIGN KEY ("front_page_locale_id") REFERENCES "front_page_locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+CREATE  INDEX  "linkable_front_page_locale_id_index" ON "linkable" ("front_page_locale_id");
 ALTER TABLE "linkable"
   ADD "page_id" uuid;
 ALTER TABLE "linkable"
@@ -275,35 +283,48 @@ CREATE  INDEX  "footer_locale_locale_id_index" ON "footer_locale" ("locale_id");
 ALTER TABLE "footer_locale"
   ADD "footer" text;
 ALTER TABLE "front_page"
-  ADD "locale_id" uuid UNIQUE NOT NULL;
+  ADD "unique" "One" NOT NULL;
 ALTER TABLE "front_page"
-  ADD CONSTRAINT "fk_front_page_locale_id_e6c350" FOREIGN KEY ("locale_id") REFERENCES "locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+  ADD "header_image_id" uuid;
 ALTER TABLE "front_page"
-  ADD "seo_id" uuid UNIQUE NOT NULL;
-ALTER TABLE "front_page"
-  ADD CONSTRAINT "fk_front_page_seo_id_9c4871" FOREIGN KEY ("seo_id") REFERENCES "seo"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
-ALTER TABLE "front_page"
-  ADD "header" text;
-ALTER TABLE "front_page"
-  ADD "quote" text;
-ALTER TABLE "front_page"
-  ADD "partners_header" text;
-ALTER TABLE "front_page"
-  ADD "partners_content" text;
-ALTER TABLE "front_page"
-  ADD "people_header" text;
-ALTER TABLE "front_page"
-  ADD "people_subheader" text;
+  ADD CONSTRAINT "fk_front_page_header_image_id_9553ac" FOREIGN KEY ("header_image_id") REFERENCES "image"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+CREATE  INDEX  "front_page_header_image_id_index" ON "front_page" ("header_image_id");
 ALTER TABLE "front_page"
   ADD "image_grid_id" uuid;
 ALTER TABLE "front_page"
   ADD CONSTRAINT "fk_front_page_image_grid_id_8e8887" FOREIGN KEY ("image_grid_id") REFERENCES "image_grid"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
 CREATE  INDEX  "front_page_image_grid_id_index" ON "front_page" ("image_grid_id");
-ALTER TABLE "front_page"
+ALTER TABLE "front_page_locale"
+  ADD "front_page_id" uuid NOT NULL;
+ALTER TABLE "front_page_locale"
+  ADD CONSTRAINT "fk_front_page_locale_front_page_id_8a6305" FOREIGN KEY ("front_page_id") REFERENCES "front_page"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+CREATE  INDEX  "front_page_locale_front_page_id_index" ON "front_page_locale" ("front_page_id");
+ALTER TABLE "front_page_locale"
+  ADD "locale_id" uuid NOT NULL;
+ALTER TABLE "front_page_locale"
+  ADD CONSTRAINT "fk_front_page_locale_locale_id_49c03f" FOREIGN KEY ("locale_id") REFERENCES "locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+CREATE  INDEX  "front_page_locale_locale_id_index" ON "front_page_locale" ("locale_id");
+ALTER TABLE "front_page_locale"
+  ADD "seo_id" uuid UNIQUE NOT NULL;
+ALTER TABLE "front_page_locale"
+  ADD CONSTRAINT "fk_front_page_locale_seo_id_d1d253" FOREIGN KEY ("seo_id") REFERENCES "seo"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "front_page_locale"
+  ADD "header" text;
+ALTER TABLE "front_page_locale"
+  ADD "quote" text;
+ALTER TABLE "front_page_locale"
+  ADD "partners_header" text;
+ALTER TABLE "front_page_locale"
+  ADD "partners_content" text;
+ALTER TABLE "front_page_locale"
+  ADD "people_header" text;
+ALTER TABLE "front_page_locale"
+  ADD "people_subheader" text;
+ALTER TABLE "front_page_locale"
   ADD "contact_us" text;
-ALTER TABLE "front_page"
+ALTER TABLE "front_page_locale"
   ADD "find_us_header" text;
-ALTER TABLE "front_page"
+ALTER TABLE "front_page_locale"
   ADD "find_us_subheader" text;
 ALTER TABLE "person"
   ADD "front_page_id" uuid NOT NULL;
@@ -418,6 +439,10 @@ ALTER TABLE "menu_item_locale"
   ADD CONSTRAINT "unique_MenuItemLocale_menuItem_locale_9e2d51" UNIQUE ("menu_item_id", "locale_id");
 ALTER TABLE "footer_locale"
   ADD CONSTRAINT "unique_FooterLocale_locale_f95277" UNIQUE ("locale_id");
+ALTER TABLE "front_page"
+  ADD CONSTRAINT "unique_FrontPage_unique_f03fc1" UNIQUE ("unique");
+ALTER TABLE "front_page_locale"
+  ADD CONSTRAINT "unique_FrontPageLocale_frontPage_locale_7c31c3" UNIQUE ("front_page_id", "locale_id");
 ALTER TABLE "page_locale"
   ADD CONSTRAINT "unique_PageLocale_page_locale_42ead3" UNIQUE ("page_id", "locale_id");
 ALTER TABLE "place_locale"

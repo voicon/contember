@@ -4,6 +4,8 @@ import { Acl, Model, Schema } from 'cms-common'
 const builder = new SchemaBuilder()
 
 // Meta things
+builder.enum('One', ['One'])
+
 builder.entity('Locale', entity =>
 	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('switchToLabel')
 )
@@ -91,14 +93,13 @@ builder.entity('FooterLocale', entity =>
 // Front page
 builder.entity('FrontPage', entity =>
 	entity
-		.oneHasOne('locale', ref => ref.target('Locale').notNull())
-		.oneHasOne('seo', ref => ref.target('Seo').notNull())
-		.column('header')
-		.column('quote')
-		.column('partnersHeader')
-		.column('partnersContent')
-		.column('peopleHeader')
-		.column('peopleSubheader')
+		.column('unique', col =>
+			col
+				.type(Model.ColumnType.Enum, { enumName: 'One' })
+				.notNull()
+				.unique()
+		)
+		.manyHasOne('headerImage', ref => ref.target('Image'))
 		.manyHasOne('imageGrid', ref => ref.target('ImageGrid'))
 		.oneHasMany('people', ref =>
 			ref
@@ -106,10 +107,29 @@ builder.entity('FrontPage', entity =>
 				.ownedBy('frontPage')
 				.ownerNotNull()
 		)
+		.oneHasMany('locales', ref =>
+			ref
+				.target('FrontPageLocale')
+				.ownerNotNull()
+				.ownedBy('frontPage')
+		)
+)
+
+builder.entity('FrontPageLocale', entity =>
+	entity
+		.manyHasOne('locale', ref => ref.target('Locale').notNull())
+		.oneHasOne('seo', ref => ref.target('Seo').notNull())
+		.column('header')
+		.column('quote')
+		.column('partnersHeader')
+		.column('partnersContent')
+		.column('peopleHeader')
+		.column('peopleSubheader')
 		.column('contactUs')
 		.column('findUsHeader')
 		.column('findUsSubheader')
-		.oneHasMany('link', ref => ref.target('Linkable').ownedBy('frontPage'))
+		.oneHasMany('link', ref => ref.target('Linkable').ownedBy('frontPageLocale'))
+		.unique(['frontPage', 'locale'])
 )
 
 builder.entity('Person', entity =>
