@@ -3,7 +3,7 @@ import { IconNames } from '@blueprintjs/icons'
 import { DimensionsSwitcher, PageLink } from 'cms-admin'
 import { Button } from '@blueprintjs/core'
 
-export default class HeaderLeft extends React.Component {
+export default class HeaderLeft extends React.PureComponent {
 	render() {
 		return (
 			<>
