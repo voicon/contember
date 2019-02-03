@@ -1,4 +1,5 @@
 import { Callout, H1, Intent } from '@blueprintjs/core'
+import { IconNames } from '@blueprintjs/icons'
 import { CreatePage, EditPage, FieldText, GenericPage, GraphQlBuilder, MultiEditPage, PageLink, Pages } from 'cms-admin'
 import * as React from 'react'
 import { Layout } from './adminLayout'
@@ -14,6 +15,7 @@ import {
 	whatWeDoPageForm
 } from './forms'
 import { footerForm } from './forms/'
+import { languageForm } from './forms/languageForm'
 import { referencesForm } from './forms/referencesForm'
 import { referencesPageForm } from './forms/referencesPageForm'
 import { teamPageForm } from './forms/teamPageForm'
@@ -22,9 +24,6 @@ export default () => (
 	<Pages project="mangoweb" stage="prod" layout={Layout}>
 		<GenericPage pageName="dashboard">
 			<H1>manGoweb admin</H1>
-			<Callout intent={Intent.WARNING} title="Warning">
-				<p>Don't forget to choose a language first!</p>
-			</Callout>
 		</GenericPage>
 
 		<EditPage
@@ -181,5 +180,30 @@ export default () => (
 		>
 			{contactForm}
 		</EditPage>
+
+		{/* ---- */}
+
+		<MultiEditPage
+			entity="Language"
+			rendererProps={{
+				title: 'Languages',
+				beforeContent: (
+					<>
+						<Callout intent={Intent.PRIMARY} icon={IconNames.INFO_SIGN} title="Information">
+							<p>
+								After you modify this form, you might need to refresh the page in order to update the dimension
+								switcher.
+							</p>
+							<p>
+								Also, really do think twice before you add a new language since at this stage, getting rid of it might
+								prove impossible… 🙃
+							</p>
+						</Callout>
+					</>
+				)
+			}}
+		>
+			{languageForm}
+		</MultiEditPage>
 	</Pages>
 )

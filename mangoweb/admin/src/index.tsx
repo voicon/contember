@@ -21,6 +21,9 @@ const reactRoot = (config: any) => (
 			{
 				project: 'mangoweb',
 				stage: 'preview',
+				defaultDimensions: {
+					lang: ['cs']
+				},
 				component: () => import('./projects/mangoweb/preview'),
 				routes: {
 					dashboard: { path: '/' },
@@ -42,7 +45,9 @@ const reactRoot = (config: any) => (
 					edit_references: { path: '/references' },
 
 					edit_contactPage: { path: '/contact-page' },
-					edit_contact: { path: '/contact-information' }
+					edit_contact: { path: '/contact-information' },
+
+					multiEdit_language: { path: '/languages' }
 				}
 			}
 		]}

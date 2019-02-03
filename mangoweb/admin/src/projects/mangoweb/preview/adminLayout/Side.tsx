@@ -58,6 +58,11 @@ export default class Side extends React.Component {
 						Contact info
 					</MenuPageLink>
 				</MenuList>
+				<MenuList title="Miscellaneous">
+					<MenuPageLink change={() => ({ name: 'multiEdit_language' })} frontIcon="globe">
+						Languages
+					</MenuPageLink>
+				</MenuList>
 			</Menu>
 		)
 	}

@@ -1,9 +1,8 @@
-import * as React from 'react'
 import { IconNames } from '@blueprintjs/icons'
 import { DimensionsSwitcher, PageLink } from 'cms-admin'
-import { Button } from '@blueprintjs/core'
+import * as React from 'react'
 
-export default class HeaderLeft extends React.Component {
+export default class HeaderLeft extends React.PureComponent {
 	render() {
 		return (
 			<>
@@ -13,7 +12,10 @@ export default class HeaderLeft extends React.Component {
 					dimension="lang"
 					labelName="name"
 					valueName="slug"
-					opener={<Button icon={IconNames.GLOBE} rightIcon={IconNames.CHEVRON_DOWN} text="Choose language" />}
+					emptyText="Choose language"
+					buttonProps={{
+						icon: IconNames.GLOBE
+					}}
 				/>
 			</>
 		)
