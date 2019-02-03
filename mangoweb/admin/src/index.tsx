@@ -21,6 +21,9 @@ const reactRoot = (config: any) => (
 			{
 				project: 'mangoweb',
 				stage: 'preview',
+				defaultDimensions: {
+					lang: ['cs']
+				},
 				component: () => import('./projects/mangoweb/preview'),
 				routes: {
 					dashboard: { path: '/' },
