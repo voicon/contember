@@ -47,20 +47,26 @@ builder.entity('ImageGrid', entity =>
 
 builder.enum('BlockType', ['Heading', 'Text', 'Image', 'ImageGrid', 'Numbers'])
 
-builder.entity('Numbers', entity => entity.column('number').column('label'))
+builder.entity('Numbers', entity =>
+	entity
+		.column('order', col => col.type(Model.ColumnType.Int))
+		.column('number')
+		.column('label')
+)
 
 builder.entity('Block', entity =>
 	entity
+		.column('order', col => col.type(Model.ColumnType.Int))
 		.column('type', col => col.type(Model.ColumnType.Enum, { enumName: 'BlockType' }))
 		.column('text')
 		.manyHasOne('imageGrid', ref => ref.target('ImageGrid'))
 		.manyHasOne('image', ref => ref.target('Image'))
-		.manyHasOne('numbers', ref => ref.target('Numbers'))
+		.oneHasMany('numbers', ref => ref.target('Numbers'))
 )
 
 // Menu
 builder.entity('MenuItem', entity =>
-	entity.column('order', col => col.type(Model.ColumnType.Int)).oneHasMany('locale', ref =>
+	entity.column('order', col => col.type(Model.ColumnType.Int)).oneHasMany('locales', ref =>
 		ref
 			.target('MenuItemLocale')
 			.ownedBy('menuItem')
@@ -79,15 +85,31 @@ builder.entity('MenuItemLocale', entity =>
 // Social
 builder.enum('SocialNetwork', ['Facebook', 'Twitter', 'LinkedIn'])
 builder.entity('Social', entity =>
-	entity.column('network', col => col.type(Model.ColumnType.Enum, { enumName: 'SocialNetwork' })).column('url')
+	entity.column('network', col => col.type(Model.ColumnType.Enum, { enumName: 'SocialNetwork' }).unique()).column('url')
 )
 
 // Footer
+builder.entity('Footer', entity =>
+	entity
+		.column('unique', col =>
+			col
+				.type(Model.ColumnType.Enum, { enumName: 'One' })
+				.notNull()
+				.unique()
+		)
+		.oneHasMany('locales', ref =>
+			ref
+				.target('FooterLocale')
+				.ownedBy('footer')
+				.ownerNotNull()
+		)
+)
+
 builder.entity('FooterLocale', entity =>
 	entity
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
-		.column('footer')
-		.unique(['locale'])
+		.column('address')
+		.unique(['footer', 'locale'])
 )
 
 // Front page
@@ -128,7 +150,7 @@ builder.entity('FrontPageLocale', entity =>
 		.column('contactUs')
 		.column('findUsHeader')
 		.column('findUsSubheader')
-		.oneHasMany('link', ref => ref.target('Linkable').ownedBy('frontPageLocale'))
+		.oneHasMany('links', ref => ref.target('Linkable').ownedBy('frontPageLocale'))
 		.unique(['frontPage', 'locale'])
 )
 
@@ -138,7 +160,13 @@ builder.entity('Person', entity =>
 		.manyHasOne('image', ref => ref.target('Image'))
 		.oneHasMany('locales', ref => ref.target('PersonLocale').ownedBy('person'))
 )
-builder.entity('PersonLocale', entity => entity.column('quote').column('name'))
+builder.entity('PersonLocale', entity =>
+	entity
+		.manyHasOne('locale', ref => ref.target('Locale').notNull())
+		.column('quote')
+		.column('name')
+		.unique(['person', 'locale'])
+)
 
 // Page
 builder.entity('Page', entity =>
@@ -156,21 +184,39 @@ builder.entity('PageLocale', entity =>
 		.column('contactUs')
 		.oneHasOne('seo', ref => ref.target('Seo').notNull())
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
-		.oneHasMany('link', ref => ref.target('Linkable').ownedBy('page'))
+		.oneHasMany('links', ref => ref.target('Linkable').ownedBy('page'))
 		.unique(['page', 'locale'])
 )
 
 // Contact
+builder.entity('Contact', entity =>
+	entity
+		.column('unique', col =>
+			col
+				.type(Model.ColumnType.Enum, { enumName: 'One' })
+				.notNull()
+				.unique()
+		)
+		.oneHasMany('locales', ref =>
+			ref
+				.target('ContactLocale')
+				.ownedBy('contact')
+				.ownerNotNull()
+		)
+)
+
 builder.entity('ContactLocale', entity =>
 	entity
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.column('header')
 		.oneHasOne('seo', ref => ref.target('Seo').notNull())
-		.oneHasMany('link', ref => ref.target('Linkable').ownedBy('contact'))
+		.oneHasMany('links', ref => ref.target('Linkable').ownedBy('contact'))
+		.unique(['contact', 'locale'])
 )
 
 builder.entity('Place', entity =>
 	entity
+		.column('order', col => col.type(Model.ColumnType.Int))
 		.column('state', col => col.type(Model.ColumnType.Enum, { enumName: 'State' }).notNull())
 		.column('isBiggerOnFrontPage', col => col.type(Model.ColumnType.Bool).notNull())
 		.column('order', col => col.type(Model.ColumnType.Int).notNull())
@@ -194,20 +240,53 @@ builder.entity('PlaceLocale', entity =>
 )
 
 // String translations
+builder.entity('TranslationRoot', entity =>
+	entity
+		.column('unique', col =>
+			col
+				.type(Model.ColumnType.Enum, { enumName: 'One' })
+				.notNull()
+				.unique()
+		)
+		.oneHasMany('translated', ref =>
+			ref
+				.target('Translated')
+				.ownedBy('root')
+				.ownerNotNull()
+		)
+)
+
 builder.enum('Translatable', ['emailContent', 'emailContact', 'emailSend'])
 builder.entity('Translated', entity =>
 	entity
-		.manyHasOne('locale', ref => ref.target('Locale'))
+		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.column('translatable', col => col.type(Model.ColumnType.Enum, { enumName: 'Translatable' }).notNull())
 		.unique(['locale', 'translatable'])
 		.column('translated', col => col.type(Model.ColumnType.String).notNull())
+)
+
+builder.entity('JoinUsRoot', entity =>
+	entity
+		.column('unique', col =>
+			col
+				.type(Model.ColumnType.Enum, { enumName: 'One' })
+				.notNull()
+				.unique()
+		)
+		.oneHasMany('joinUs', ref =>
+			ref
+				.target('JoinUs')
+				.ownedBy('root')
+				.ownerNotNull()
+		)
 )
 
 builder.entity('JoinUs', entity =>
 	entity
 		.column('label', col => col.type(Model.ColumnType.String).notNull())
 		.manyHasOne('target', ref => ref.target('Linkable').notNull())
-		.oneHasOne('locale', ref => ref.target('Locale').notNull())
+		.manyHasOne('locale', ref => ref.target('Locale').notNull())
+		.unique(['root', 'locale'])
 )
 
 const model = builder.buildSchema()
