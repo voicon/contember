@@ -1,0 +1,94 @@
+{
+	"modifications": [
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "PageSeo",
+			"fieldName": "ogImage",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FooterButton",
+			"fieldName": "Footer",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FrontPage",
+			"fieldName": "heroImage",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FrontPage",
+			"fieldName": "introVideo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FrontPage",
+			"fieldName": "seo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "WhatWeDo",
+			"fieldName": "featuredPhoto",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "WhatWeDo",
+			"fieldName": "featuredVideo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "WhatWeDoDescription",
+			"fieldName": "featuredMedium",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "WhatWeDoPage",
+			"fieldName": "seo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "TeamPage",
+			"fieldName": "seo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "Person",
+			"fieldName": "photo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "Person",
+			"fieldName": "mugshot",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ReferencesPage",
+			"fieldName": "seo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "Reference",
+			"fieldName": "medium",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ContactPage",
+			"fieldName": "seo",
+			"onDelete": "cascade"
+		}
+	]
+}
