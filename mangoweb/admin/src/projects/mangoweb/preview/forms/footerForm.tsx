@@ -17,5 +17,10 @@ export const footerForm = (
 				<TextField name="$locale.url" label="Link url" />
 			</LocaleSideDimension>
 		</SortableRepeater>
+
+		<H2>In-house videos</H2>
+		<SortableRepeater field="inHouseVideos" sortBy="order" removeType="delete">
+			<TextField name="src" label="Video URL" />
+		</SortableRepeater>
 	</>
 )

@@ -8,9 +8,9 @@ builder.enum('one', ['one'])
 builder.enum('mediumType', ['image', 'video'])
 builder.enum('page', ['front', 'team', 'whatWeDo', 'references', 'contact'])
 
-builder.entity('Image', entity => entity.column('url'))
+builder.entity('Image', entity => entity.column('url').column('order', column => column.type(Model.ColumnType.Int)))
 
-builder.entity('Video', entity => entity.column('src'))
+builder.entity('Video', entity => entity.column('src').column('order', column => column.type(Model.ColumnType.Int)))
 
 builder.entity('Medium', entity =>
 	entity
@@ -77,8 +77,7 @@ builder.entity('Footer', entity =>
 				.unique()
 				.notNull()
 		)
-		// TODO: workaround: no in house videos until #66 is fixed.
-		//.oneHasMany('inHouseVideos', relation => relation.target('Video'))
+		.oneHasMany('inHouseVideos', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('buttons', relation =>
 			relation
 				.target('FooterButton')
