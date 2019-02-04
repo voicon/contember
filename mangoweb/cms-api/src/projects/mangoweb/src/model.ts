@@ -172,7 +172,8 @@ builder.entity('WhatWeDo', entity =>
 		//.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
 		.column('order', column => column.type(Model.ColumnType.Int)) // TODO just one order for now
 		.column('activity')
-		.oneHasOne('featuredMedium', relation => relation.target('Medium'))
+		.oneHasOne('featuredPhoto', relation => relation.target('Image'))
+		.oneHasOne('featuredVideo', relation => relation.target('Video'))
 		.column('descriptionHeading')
 		.oneHasMany('description', relation => relation.target('WhatWeDoDescription').onDelete(Model.OnDelete.cascade))
 )

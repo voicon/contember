@@ -1,11 +1,13 @@
 import { Repeater, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
+import { ImageField, VideoField } from '../components'
 import { Medium } from '../components/Medium'
 
 export const whatWeDoForm = (
 	<>
 		<TextField name="activity" label="What we do" />
-		<Medium field="featuredMedium" label="Featured medium" />
+		<ImageField name="featuredPhoto" label="Featured image" />
+		<VideoField name="featuredVideo" label="Featured video url" />
 		<TextField name="descriptionHeading" label="Heading of the description" />
 		<Repeater field="description" label="Description sections">
 			<TextField name="heading" label="Section heading" />
