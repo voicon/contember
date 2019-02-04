@@ -1,4 +1,4 @@
-import { SchemaBuilder, AllowAllPermissionFactory } from 'cms-api'
+import { AllowAllPermissionFactory, SchemaBuilder } from 'cms-api'
 import { Acl, Model, Schema } from 'cms-common'
 
 const builder = new SchemaBuilder()
@@ -8,9 +8,9 @@ builder.enum('one', ['one'])
 builder.enum('mediumType', ['image', 'video'])
 builder.enum('page', ['front', 'team', 'whatWeDo', 'references', 'contact'])
 
-builder.entity('Image', entity => entity.column('url'))
+builder.entity('Image', entity => entity.column('url').column('order', column => column.type(Model.ColumnType.Int)))
 
-builder.entity('Video', entity => entity.column('src'))
+builder.entity('Video', entity => entity.column('src').column('order', column => column.type(Model.ColumnType.Int)))
 
 builder.entity('Medium', entity =>
 	entity
@@ -25,13 +25,15 @@ builder.entity('Language', entity =>
 )
 
 builder.entity('PageSeo', entity =>
-	entity.oneHasOne('ogImage', relation => relation.target('Image')).oneHasMany('locales', relation =>
-		relation
-			.target('PageSeoLocale')
-			.onDelete(Model.OnDelete.cascade)
-			.ownerNotNull()
-			.ownedBy('pageSeo')
-	)
+	entity
+		.oneHasOne('ogImage', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('PageSeoLocale')
+				.onDelete(Model.OnDelete.cascade)
+				.ownerNotNull()
+				.ownedBy('pageSeo')
+		)
 )
 
 builder.entity('PageSeoLocale', entity =>
@@ -75,9 +77,13 @@ builder.entity('Footer', entity =>
 				.unique()
 				.notNull()
 		)
-		// TODO: workaround: no in house videos until #66 is fixed.
-		//.oneHasMany('inHouseVideos', relation => relation.target('Video'))
-		.oneHasMany('buttons', relation => relation.target('FooterButton').ownerNotNull())
+		.oneHasMany('inHouseVideos', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
+		.oneHasMany('buttons', relation =>
+			relation
+				.target('FooterButton')
+				.ownerNotNull()
+				.onDelete(Model.OnDelete.cascade)
+		)
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FooterLocale')
@@ -123,9 +129,14 @@ builder.entity('FrontPage', entity =>
 				.unique()
 				.notNull()
 		)
-		.oneHasOne('heroImage', relation => relation.target('Image'))
-		.oneHasOne('introVideo', relation => relation.target('Video'))
-		.oneHasOne('seo', relation => relation.target('PageSeo').inversedNotNull())
+		.oneHasOne('heroImage', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
+		.oneHasOne('introVideo', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
+		.oneHasOne('seo', relation =>
+			relation
+				.target('PageSeo')
+				.inversedNotNull()
+				.onDelete(Model.OnDelete.cascade)
+		)
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FrontPageLocale')
@@ -172,7 +183,8 @@ builder.entity('WhatWeDo', entity =>
 		//.column('whatWeDoPageOrder', column => column.type(Model.ColumnType.Int))
 		.column('order', column => column.type(Model.ColumnType.Int)) // TODO just one order for now
 		.column('activity')
-		.oneHasOne('featuredMedium', relation => relation.target('Medium'))
+		.oneHasOne('featuredPhoto', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
+		.oneHasOne('featuredVideo', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
 		.column('descriptionHeading')
 		.oneHasMany('description', relation => relation.target('WhatWeDoDescription').onDelete(Model.OnDelete.cascade))
 )
@@ -180,7 +192,7 @@ builder.entity('WhatWeDo', entity =>
 builder.entity('WhatWeDoDescription', entity =>
 	entity
 		.column('heading')
-		.oneHasOne('featuredMedium', relation => relation.target('Medium'))
+		.oneHasOne('featuredMedium', relation => relation.target('Medium').onDelete(Model.OnDelete.cascade))
 		.column('description')
 )
 
@@ -200,7 +212,7 @@ builder.entity('WhatWeDoPage', entity =>
 				.ownedBy('whatWeDoPage')
 				.ownerNotNull()
 		)
-		.oneHasOne('seo', relation => relation.target('PageSeo'))
+		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade))
 )
 
 builder.entity('WhatWeDoPageLocale', entity =>
@@ -229,7 +241,7 @@ builder.entity('TeamPage', entity =>
 				.unique()
 				.notNull()
 		)
-		.oneHasOne('seo', relation => relation.target('PageSeo'))
+		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade))
 )
 
 // PERSON
@@ -237,8 +249,8 @@ builder.entity('Person', entity =>
 	entity
 		.column('shortName')
 		.column('longName')
-		.oneHasOne('photo', relation => relation.target('Image'))
-		.oneHasOne('mugshot', relation => relation.target('Image'))
+		.oneHasOne('photo', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
+		.oneHasOne('mugshot', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
 		.column('faceOffset', column => column.type(Model.ColumnType.Double))
 		.column('phoneNumber')
 		.column('email')
@@ -276,7 +288,7 @@ builder.entity('ReferencesPage', entity =>
 				.unique()
 				.notNull()
 		)
-		.oneHasOne('seo', relation => relation.target('PageSeo'))
+		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('locales', relation =>
 			relation
 				.target('ReferencesPageLocale')
@@ -306,7 +318,7 @@ builder.entity(
 	'Reference',
 	entity =>
 		entity
-			.oneHasOne('medium', relation => relation.target('Medium'))
+			.oneHasOne('medium', relation => relation.target('Medium').onDelete(Model.OnDelete.cascade))
 			.column('order', column => column.type(Model.ColumnType.Int))
 			.column('title')
 			.column('url')
@@ -325,7 +337,7 @@ builder.entity('ContactPage', entity =>
 				.unique()
 				.notNull()
 		)
-		.oneHasOne('seo', relation => relation.target('PageSeo'))
+		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('locales', relation =>
 			relation
 				.target('ContactPageLocale')

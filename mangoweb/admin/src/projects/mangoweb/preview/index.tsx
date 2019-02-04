@@ -125,7 +125,6 @@ export default () => (
 		</EditPage>
 		<EditPage
 			entity="WhatWeDo"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
 				title: (
 					<>

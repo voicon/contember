@@ -11,11 +11,16 @@ export const footerForm = (
 		</LocaleSideDimension>
 
 		<H2>Footer links</H2>
-		<SortableRepeater field="buttons" sortBy="order">
+		<SortableRepeater field="buttons" sortBy="order" removeType="delete">
 			<LocaleSideDimension>
 				<TextField name="$locale.label" label="Link text" />
 				<TextField name="$locale.url" label="Link url" />
 			</LocaleSideDimension>
+		</SortableRepeater>
+
+		<H2>In-house videos</H2>
+		<SortableRepeater field="inHouseVideos" sortBy="order" removeType="delete">
+			<TextField name="src" label="Video URL" />
 		</SortableRepeater>
 	</>
 )
