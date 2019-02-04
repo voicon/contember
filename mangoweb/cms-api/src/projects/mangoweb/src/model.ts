@@ -25,13 +25,15 @@ builder.entity('Language', entity =>
 )
 
 builder.entity('PageSeo', entity =>
-	entity.oneHasOne('ogImage', relation => relation.target('Image').onDelete(Model.OnDelete.cascade)).oneHasMany('locales', relation =>
-		relation
-			.target('PageSeoLocale')
-			.onDelete(Model.OnDelete.cascade)
-			.ownerNotNull()
-			.ownedBy('pageSeo')
-	)
+	entity
+		.oneHasOne('ogImage', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('PageSeoLocale')
+				.onDelete(Model.OnDelete.cascade)
+				.ownerNotNull()
+				.ownedBy('pageSeo')
+		)
 )
 
 builder.entity('PageSeoLocale', entity =>
@@ -77,7 +79,12 @@ builder.entity('Footer', entity =>
 		)
 		// TODO: workaround: no in house videos until #66 is fixed.
 		//.oneHasMany('inHouseVideos', relation => relation.target('Video'))
-		.oneHasMany('buttons', relation => relation.target('FooterButton').ownerNotNull().onDelete(Model.OnDelete.cascade))
+		.oneHasMany('buttons', relation =>
+			relation
+				.target('FooterButton')
+				.ownerNotNull()
+				.onDelete(Model.OnDelete.cascade)
+		)
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FooterLocale')
@@ -125,7 +132,12 @@ builder.entity('FrontPage', entity =>
 		)
 		.oneHasOne('heroImage', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
 		.oneHasOne('introVideo', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
-		.oneHasOne('seo', relation => relation.target('PageSeo').inversedNotNull().onDelete(Model.OnDelete.cascade))
+		.oneHasOne('seo', relation =>
+			relation
+				.target('PageSeo')
+				.inversedNotNull()
+				.onDelete(Model.OnDelete.cascade)
+		)
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FrontPageLocale')
