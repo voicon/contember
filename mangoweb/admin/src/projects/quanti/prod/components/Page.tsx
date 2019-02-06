@@ -5,7 +5,7 @@ import { LocaleSideDimension } from '../LocaleSideDimension'
 import { Seo } from './Seo'
 import { State } from './State'
 import { Block } from './Block'
-import { Links } from './Links'
+import { Link } from './Link'
 
 export const Page = Component<{}>(
 	() => (
@@ -22,7 +22,7 @@ export const Page = Component<{}>(
 				</SortableRepeater>
 				<TextField label="Contact us" name="$locale.contactUs" />
 				<Seo name="$locale.seo" />
-				<Links name="$locale.links" />
+				<Link name="$locale.link" />
 			</LocaleSideDimension>
 		</>
 	),

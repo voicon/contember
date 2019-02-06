@@ -11,14 +11,23 @@ builder.entity('Locale', entity =>
 )
 
 builder.entity('Linkable', entity =>
+	entity.column('url', col =>
+		col
+			.type(Model.ColumnType.String)
+			.notNull()
+			.unique()
+	)
+)
+
+builder.entity('Redirect', entity =>
 	entity
-		.column('url', col =>
-			col
-				.type(Model.ColumnType.String)
+		.oneHasOne('link', ref =>
+			ref
+				.target('Linkable')
+				.inversedBy('redirect')
 				.notNull()
-				.unique()
 		)
-		.column('isPrimary', col => col.type(Model.ColumnType.Bool).notNull())
+		.manyHasOne('target', ref => ref.target('Linkable').notNull())
 )
 
 builder.enum('State', ['Draft', 'ToBePublished', 'Published'])
@@ -150,7 +159,12 @@ builder.entity('FrontPageLocale', entity =>
 		.column('contactUs')
 		.column('findUsHeader')
 		.column('findUsSubheader')
-		.oneHasMany('links', ref => ref.target('Linkable').ownedBy('frontPageLocale'))
+		.oneHasOne('link', ref =>
+			ref
+				.target('Linkable')
+				.inversedBy('frontPageLocale')
+				.notNull()
+		)
 		.unique(['frontPage', 'locale'])
 )
 
@@ -184,7 +198,12 @@ builder.entity('PageLocale', entity =>
 		.column('contactUs')
 		.oneHasOne('seo', ref => ref.target('Seo').notNull())
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
-		.oneHasMany('links', ref => ref.target('Linkable').ownedBy('page'))
+		.oneHasOne('link', ref =>
+			ref
+				.target('Linkable')
+				.inversedBy('page')
+				.notNull()
+		)
 		.unique(['page', 'locale'])
 )
 
@@ -210,7 +229,12 @@ builder.entity('ContactLocale', entity =>
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.column('header')
 		.oneHasOne('seo', ref => ref.target('Seo').notNull())
-		.oneHasMany('links', ref => ref.target('Linkable').ownedBy('contact'))
+		.oneHasOne('link', ref =>
+			ref
+				.target('Linkable')
+				.inversedBy('contact')
+				.notNull()
+		)
 		.unique(['contact', 'locale'])
 )
 

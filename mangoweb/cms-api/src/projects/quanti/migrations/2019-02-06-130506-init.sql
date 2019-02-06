@@ -12,6 +12,13 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "linkable"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
+CREATE TABLE "redirect" (
+  "id" uuid PRIMARY KEY NOT NULL
+);
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "redirect"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"();
 CREATE TABLE "image" (
   "id" uuid PRIMARY KEY NOT NULL
 );
@@ -191,23 +198,15 @@ ALTER TABLE "locale"
   ADD "switch_to_label" text;
 ALTER TABLE "linkable"
   ADD "url" text NOT NULL;
-ALTER TABLE "linkable"
-  ADD "is_primary" boolean NOT NULL;
-ALTER TABLE "linkable"
-  ADD "front_page_locale_id" uuid;
-ALTER TABLE "linkable"
-  ADD CONSTRAINT "fk_linkable_front_page_locale_id_5a0efb" FOREIGN KEY ("front_page_locale_id") REFERENCES "front_page_locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
-CREATE  INDEX  "linkable_front_page_locale_id_index" ON "linkable" ("front_page_locale_id");
-ALTER TABLE "linkable"
-  ADD "page_id" uuid;
-ALTER TABLE "linkable"
-  ADD CONSTRAINT "fk_linkable_page_id_4a324b" FOREIGN KEY ("page_id") REFERENCES "page_locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
-CREATE  INDEX  "linkable_page_id_index" ON "linkable" ("page_id");
-ALTER TABLE "linkable"
-  ADD "contact_id" uuid;
-ALTER TABLE "linkable"
-  ADD CONSTRAINT "fk_linkable_contact_id_b82ef2" FOREIGN KEY ("contact_id") REFERENCES "contact_locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
-CREATE  INDEX  "linkable_contact_id_index" ON "linkable" ("contact_id");
+ALTER TABLE "redirect"
+  ADD "link_id" uuid UNIQUE NOT NULL;
+ALTER TABLE "redirect"
+  ADD CONSTRAINT "fk_redirect_link_id_42992b" FOREIGN KEY ("link_id") REFERENCES "linkable"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "redirect"
+  ADD "target_id" uuid NOT NULL;
+ALTER TABLE "redirect"
+  ADD CONSTRAINT "fk_redirect_target_id_d45ee3" FOREIGN KEY ("target_id") REFERENCES "linkable"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+CREATE  INDEX  "redirect_target_id_index" ON "redirect" ("target_id");
 ALTER TABLE "image"
   ADD "url" text;
 ALTER TABLE "seo"
@@ -365,6 +364,10 @@ ALTER TABLE "front_page_locale"
   ADD "find_us_header" text;
 ALTER TABLE "front_page_locale"
   ADD "find_us_subheader" text;
+ALTER TABLE "front_page_locale"
+  ADD "link_id" uuid UNIQUE NOT NULL;
+ALTER TABLE "front_page_locale"
+  ADD CONSTRAINT "fk_front_page_locale_link_id_43c687" FOREIGN KEY ("link_id") REFERENCES "linkable"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
 ALTER TABLE "person"
   ADD "front_page_id" uuid NOT NULL;
 ALTER TABLE "person"
@@ -418,6 +421,10 @@ ALTER TABLE "page_locale"
 ALTER TABLE "page_locale"
   ADD CONSTRAINT "fk_page_locale_locale_id_6e4d17" FOREIGN KEY ("locale_id") REFERENCES "locale"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
 CREATE  INDEX  "page_locale_locale_id_index" ON "page_locale" ("locale_id");
+ALTER TABLE "page_locale"
+  ADD "link_id" uuid UNIQUE NOT NULL;
+ALTER TABLE "page_locale"
+  ADD CONSTRAINT "fk_page_locale_link_id_cd9f32" FOREIGN KEY ("link_id") REFERENCES "linkable"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
 ALTER TABLE "contact"
   ADD "unique" "One" NOT NULL;
 ALTER TABLE "contact_locale"
@@ -436,6 +443,10 @@ ALTER TABLE "contact_locale"
   ADD "seo_id" uuid UNIQUE NOT NULL;
 ALTER TABLE "contact_locale"
   ADD CONSTRAINT "fk_contact_locale_seo_id_a8fa27" FOREIGN KEY ("seo_id") REFERENCES "seo"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "contact_locale"
+  ADD "link_id" uuid UNIQUE NOT NULL;
+ALTER TABLE "contact_locale"
+  ADD CONSTRAINT "fk_contact_locale_link_id_29aaff" FOREIGN KEY ("link_id") REFERENCES "linkable"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
 ALTER TABLE "place"
   ADD "order" integer NOT NULL;
 ALTER TABLE "place"

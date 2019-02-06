@@ -41,6 +41,25 @@
 		{
 			"modification": "createEntity",
 			"entity": {
+				"name": "Redirect",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "redirect",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
 				"name": "Image",
 				"primary": "id",
 				"primaryColumn": "id",
@@ -573,77 +592,39 @@
 			}
 		},
 		{
-			"modification": "createColumn",
-			"entityName": "Linkable",
-			"field": {
-				"name": "isPrimary",
-				"columnName": "is_primary",
+			"modification": "createRelation",
+			"entityName": "Redirect",
+			"owningSide": {
+				"name": "link",
+				"inversedBy": "redirect",
 				"nullable": false,
-				"type": "Bool",
-				"columnType": "boolean"
-			}
-		},
-		{
-			"modification": "createRelation",
-			"entityName": "Linkable",
-			"owningSide": {
-				"name": "frontPageLocale",
-				"target": "FrontPageLocale",
-				"inversedBy": "links",
-				"nullable": true,
-				"type": "ManyHasOne",
+				"type": "OneHasOne",
+				"target": "Linkable",
 				"joiningColumn": {
-					"columnName": "front_page_locale_id",
+					"columnName": "link_id",
 					"onDelete": "restrict"
 				}
 			},
 			"inverseSide": {
-				"name": "links",
-				"ownedBy": "frontPageLocale",
-				"type": "OneHasMany",
-				"target": "Linkable"
+				"name": "redirect",
+				"ownedBy": "link",
+				"target": "Redirect",
+				"type": "OneHasOne",
+				"nullable": true
 			}
 		},
 		{
 			"modification": "createRelation",
-			"entityName": "Linkable",
+			"entityName": "Redirect",
 			"owningSide": {
-				"name": "page",
-				"target": "PageLocale",
-				"inversedBy": "links",
-				"nullable": true,
+				"name": "target",
+				"nullable": false,
 				"type": "ManyHasOne",
+				"target": "Linkable",
 				"joiningColumn": {
-					"columnName": "page_id",
+					"columnName": "target_id",
 					"onDelete": "restrict"
 				}
-			},
-			"inverseSide": {
-				"name": "links",
-				"ownedBy": "page",
-				"type": "OneHasMany",
-				"target": "Linkable"
-			}
-		},
-		{
-			"modification": "createRelation",
-			"entityName": "Linkable",
-			"owningSide": {
-				"name": "contact",
-				"target": "ContactLocale",
-				"inversedBy": "links",
-				"nullable": true,
-				"type": "ManyHasOne",
-				"joiningColumn": {
-					"columnName": "contact_id",
-					"onDelete": "restrict"
-				}
-			},
-			"inverseSide": {
-				"name": "links",
-				"ownedBy": "contact",
-				"type": "OneHasMany",
-				"target": "Linkable"
 			}
 		},
 		{
@@ -1278,6 +1259,28 @@
 		},
 		{
 			"modification": "createRelation",
+			"entityName": "FrontPageLocale",
+			"owningSide": {
+				"name": "link",
+				"inversedBy": "frontPageLocale",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Linkable",
+				"joiningColumn": {
+					"columnName": "link_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "frontPageLocale",
+				"ownedBy": "link",
+				"target": "FrontPageLocale",
+				"type": "OneHasOne",
+				"nullable": true
+			}
+		},
+		{
+			"modification": "createRelation",
 			"entityName": "Person",
 			"owningSide": {
 				"name": "frontPage",
@@ -1488,6 +1491,28 @@
 			}
 		},
 		{
+			"modification": "createRelation",
+			"entityName": "PageLocale",
+			"owningSide": {
+				"name": "link",
+				"inversedBy": "page",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Linkable",
+				"joiningColumn": {
+					"columnName": "link_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "page",
+				"ownedBy": "link",
+				"target": "PageLocale",
+				"type": "OneHasOne",
+				"nullable": true
+			}
+		},
+		{
 			"modification": "createColumn",
 			"entityName": "Contact",
 			"field": {
@@ -1557,6 +1582,28 @@
 					"columnName": "seo_id",
 					"onDelete": "restrict"
 				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactLocale",
+			"owningSide": {
+				"name": "link",
+				"inversedBy": "contact",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Linkable",
+				"joiningColumn": {
+					"columnName": "link_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "contact",
+				"ownedBy": "link",
+				"target": "ContactLocale",
+				"type": "OneHasOne",
+				"nullable": true
 			}
 		},
 		{
@@ -1847,6 +1894,16 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
+			"entityName": "Redirect",
+			"unique": {
+				"fields": [
+					"link"
+				],
+				"name": "unique_Redirect_link_90ad6a"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
 			"entityName": "Seo",
 			"unique": {
 				"fields": [
@@ -1930,6 +1987,16 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
+			"entityName": "FrontPageLocale",
+			"unique": {
+				"fields": [
+					"link"
+				],
+				"name": "unique_FrontPageLocale_link_5f6218"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
 			"entityName": "PersonLocale",
 			"unique": {
 				"fields": [
@@ -1962,6 +2029,16 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
+			"entityName": "PageLocale",
+			"unique": {
+				"fields": [
+					"link"
+				],
+				"name": "unique_PageLocale_link_944c82"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
 			"entityName": "Contact",
 			"unique": {
 				"fields": [
@@ -1989,6 +2066,16 @@
 					"seo"
 				],
 				"name": "unique_ContactLocale_seo_6663c8"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ContactLocale",
+			"unique": {
+				"fields": [
+					"link"
+				],
+				"name": "unique_ContactLocale_link_e6310a"
 			}
 		},
 		{

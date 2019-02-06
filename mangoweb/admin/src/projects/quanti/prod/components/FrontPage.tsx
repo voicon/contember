@@ -5,7 +5,7 @@ import { LocaleSideDimension } from '../LocaleSideDimension'
 import { ImageGrid } from './ImageGrid'
 import { Seo } from './Seo'
 import { Person } from './Person'
-import { Links } from './Links'
+import { Link } from './Link'
 
 export const FrontPage = Component<{}>(
 	() => (
@@ -26,7 +26,7 @@ export const FrontPage = Component<{}>(
 			</LocaleSideDimension>
 			<H2>Links</H2>
 			<LocaleSideDimension>
-				<Links name="$locale.links" />
+				<Link name="$locale.link" />
 			</LocaleSideDimension>
 			<H2>People</H2>
 			<SortableRepeater field="people" sortBy="order" removeType="delete">
