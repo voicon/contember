@@ -1,0 +1,52 @@
+{
+	"modifications": [
+		{
+			"modification": "createRelation",
+			"entityName": "Video",
+			"owningSide": {
+				"name": "poster",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "poster_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "WhatWeDo",
+			"owningSide": {
+				"name": "boomerangVideo",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Video",
+				"joiningColumn": {
+					"columnName": "boomerang_video_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "Video",
+			"unique": {
+				"fields": [
+					"poster"
+				],
+				"name": "unique_Video_poster_0194b4"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "WhatWeDo",
+			"unique": {
+				"fields": [
+					"boomerangVideo"
+				],
+				"name": "unique_WhatWeDo_boomerangVideo_dc9c89"
+			}
+		}
+	]
+}
