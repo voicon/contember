@@ -10,7 +10,12 @@ builder.enum('page', ['front', 'team', 'whatWeDo', 'references', 'contact'])
 
 builder.entity('Image', entity => entity.column('url').column('order', column => column.type(Model.ColumnType.Int)))
 
-builder.entity('Video', entity => entity.column('src').column('order', column => column.type(Model.ColumnType.Int)))
+builder.entity('Video', entity =>
+	entity
+		.column('src')
+		.oneHasOne('poster', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
+		.column('order', column => column.type(Model.ColumnType.Int))
+)
 
 builder.entity('Medium', entity =>
 	entity
@@ -19,7 +24,6 @@ builder.entity('Medium', entity =>
 		.oneHasOne('video', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
 )
 
-// TODO: We can use this since #62 is resolved but there's not enough time for now
 builder.entity('Language', entity =>
 	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('name')
 )
@@ -185,6 +189,7 @@ builder.entity('WhatWeDo', entity =>
 		.column('activity')
 		.oneHasOne('featuredPhoto', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
 		.oneHasOne('featuredVideo', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
+		.oneHasOne('boomerangVideo', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
 		.column('descriptionHeading')
 		.oneHasMany('description', relation => relation.target('WhatWeDoDescription').onDelete(Model.OnDelete.cascade))
 )

@@ -1,12 +1,23 @@
+import { Card, H3 } from '@blueprintjs/core'
+import { Component, TextField } from 'cms-admin'
 import * as React from 'react'
-import { Component, TextField, TextFieldProps } from 'cms-admin'
+import { ImageField } from './ImageField'
 
-interface VideoFieldProps extends TextFieldProps {}
+interface VideoFieldProps {
+	name: string
+	title: React.ReactNode
+}
 
 export const VideoField = Component(
 	class extends React.Component<VideoFieldProps> {
 		public static render(props: VideoFieldProps) {
-			return <TextField {...props} name={`${props.name}.src`} />
+			return (
+				<Card>
+					<H3>{props.title}</H3>
+					<TextField name={`${props.name}.src`} label="Video URL" />
+					<ImageField name={`${props.name}.poster`} label="Video poster image" />
+				</Card>
+			)
 		}
 	}
 )
