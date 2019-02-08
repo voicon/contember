@@ -1,7 +1,7 @@
 import { H2 } from '@blueprintjs/core'
 import { SortableRepeater, TextField } from 'cms-admin'
 import * as React from 'react'
-import { LocaleSideDimension } from '../components'
+import { ImageField, LocaleSideDimension } from '../components'
 
 export const footerForm = (
 	<>
@@ -21,6 +21,7 @@ export const footerForm = (
 		<H2>In-house videos</H2>
 		<SortableRepeater field="inHouseVideos" sortBy="order" removeType="delete">
 			<TextField name="src" label="Video URL" />
+			<ImageField name="poster" label="Video poster image" />
 		</SortableRepeater>
 	</>
 )

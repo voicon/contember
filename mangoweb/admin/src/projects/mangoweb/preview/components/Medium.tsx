@@ -27,7 +27,7 @@ export const Medium = Component<MediumProps>(
 						new Literal('video'),
 						'Video',
 						<>
-							<VideoField name="video" label={props.videoLabel || 'Video URL'} />
+							<VideoField name="video" title={props.videoLabel || 'Video'} />
 						</>
 					]
 				]}
