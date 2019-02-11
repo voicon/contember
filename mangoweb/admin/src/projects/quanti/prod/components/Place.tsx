@@ -14,6 +14,8 @@ export const Place = Component<{}>(
 				<TextField label="Name" name="$locale.name" />
 				<TextAreaField label="Address" name="$locale.address" />
 				<TextField label="IČO/DIČ line" name="$locale.subAddress" />
+				<TextField label="Telefon" name="$locale.phone" />
+				<TextField label="E-mail" name="$locale.email" />
 			</LocaleSideDimension>
 		</>
 	),

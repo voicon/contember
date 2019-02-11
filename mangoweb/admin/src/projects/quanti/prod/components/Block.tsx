@@ -1,5 +1,14 @@
 import * as React from 'react'
-import { Component, AlternativeFields, Literal, TextField, SortableRepeater } from 'cms-admin'
+import {
+	Component,
+	AlternativeFields,
+	Literal,
+	TextField,
+	SortableRepeater,
+	RichTextField,
+	Block as BlockType,
+	Mark
+} from 'cms-admin'
 import { Image } from './Image'
 import { ImageGrid } from './ImageGrid'
 
@@ -10,7 +19,11 @@ export const Block = Component<{}>(
 				name="type"
 				alternatives={[
 					[new Literal('Heading'), 'Heading', <TextField name="text" />],
-					[new Literal('Text'), 'Text', <TextField name="text" />],
+					[
+						new Literal('Text'),
+						'Text',
+						<RichTextField name="text" blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]} />
+					],
 					[new Literal('Image'), 'Image', <Image name="image" />],
 					[new Literal('ImageGrid'), 'ImageGrid', <ImageGrid name="imageGrid" />],
 					[
@@ -19,6 +32,14 @@ export const Block = Component<{}>(
 						<SortableRepeater field="numbers" sortBy="order">
 							<TextField label="number" name="number" />
 							<TextField label="label" name="label" />
+						</SortableRepeater>
+					],
+					[
+						new Literal('Perks'),
+						'Perks',
+						<SortableRepeater field="perks" sortBy="order">
+							<TextField label="title" name="title" />
+							<TextField label="description" name="description" />
 						</SortableRepeater>
 					]
 				]}

@@ -47,6 +47,13 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "numbers"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
+CREATE TABLE "perk" (
+  "id" uuid PRIMARY KEY NOT NULL
+);
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "perk"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"();
 CREATE TABLE "block" (
   "id" uuid PRIMARY KEY NOT NULL
 );
@@ -187,11 +194,11 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "join_us"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"();
-CREATE DOMAIN "One" AS text CHECK (VALUE IN('One'));
-CREATE DOMAIN "State" AS text CHECK (VALUE IN('Draft','ToBePublished','Published'));
-CREATE DOMAIN "BlockType" AS text CHECK (VALUE IN('Heading','Text','Image','ImageGrid','Numbers'));
-CREATE DOMAIN "SocialNetwork" AS text CHECK (VALUE IN('Facebook','Twitter','LinkedIn'));
-CREATE DOMAIN "Translatable" AS text CHECK (VALUE IN('emailContent','emailContact','emailSend'));
+CREATE DOMAIN "One" AS text CONSTRAINT One_Check CHECK (VALUE IN('One'));
+CREATE DOMAIN "State" AS text CONSTRAINT State_Check CHECK (VALUE IN('Draft','ToBePublished','Published'));
+CREATE DOMAIN "BlockType" AS text CONSTRAINT BlockType_Check CHECK (VALUE IN('Heading','Text','Image','ImageGrid','Numbers','Perks'));
+CREATE DOMAIN "SocialNetwork" AS text CONSTRAINT SocialNetwork_Check CHECK (VALUE IN('Facebook','Twitter','LinkedIn'));
+CREATE DOMAIN "Translatable" AS text CONSTRAINT Translatable_Check CHECK (VALUE IN('emailContent','emailContact','emailSend'));
 ALTER TABLE "locale"
   ADD "slug" text;
 ALTER TABLE "locale"
@@ -262,6 +269,17 @@ ALTER TABLE "numbers"
 ALTER TABLE "numbers"
   ADD CONSTRAINT "fk_numbers_block_id_577979" FOREIGN KEY ("block_id") REFERENCES "block"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
 CREATE  INDEX  "numbers_block_id_index" ON "numbers" ("block_id");
+ALTER TABLE "perk"
+  ADD "order" integer;
+ALTER TABLE "perk"
+  ADD "title" text;
+ALTER TABLE "perk"
+  ADD "description" text;
+ALTER TABLE "perk"
+  ADD "block_id" uuid;
+ALTER TABLE "perk"
+  ADD CONSTRAINT "fk_perk_block_id_393166" FOREIGN KEY ("block_id") REFERENCES "block"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
+CREATE  INDEX  "perk_block_id_index" ON "perk" ("block_id");
 ALTER TABLE "block"
   ADD "order" integer;
 ALTER TABLE "block"
@@ -473,6 +491,10 @@ ALTER TABLE "place_locale"
   ADD "address" text NOT NULL;
 ALTER TABLE "place_locale"
   ADD "sub_address" text;
+ALTER TABLE "place_locale"
+  ADD "email" text;
+ALTER TABLE "place_locale"
+  ADD "phone" text;
 ALTER TABLE "translation_root"
   ADD "unique" "One" NOT NULL;
 ALTER TABLE "translated"

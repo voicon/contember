@@ -136,6 +136,25 @@
 		{
 			"modification": "createEntity",
 			"entity": {
+				"name": "Perk",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "perk",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
 				"name": "Block",
 				"primary": "id",
 				"primaryColumn": "id",
@@ -537,7 +556,8 @@
 				"Text",
 				"Image",
 				"ImageGrid",
-				"Numbers"
+				"Numbers",
+				"Perks"
 			]
 		},
 		{
@@ -832,6 +852,60 @@
 				"ownedBy": "Block",
 				"type": "OneHasMany",
 				"target": "Numbers"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Perk",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": true,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Perk",
+			"field": {
+				"name": "title",
+				"columnName": "title",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Perk",
+			"field": {
+				"name": "description",
+				"columnName": "description",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Perk",
+			"owningSide": {
+				"name": "Block",
+				"target": "Block",
+				"inversedBy": "perks",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"joiningColumn": {
+					"columnName": "block_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "perks",
+				"ownedBy": "Block",
+				"type": "OneHasMany",
+				"target": "Perk"
 			}
 		},
 		{
@@ -1725,6 +1799,28 @@
 			"field": {
 				"name": "subAddress",
 				"columnName": "sub_address",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "PlaceLocale",
+			"field": {
+				"name": "email",
+				"columnName": "email",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "PlaceLocale",
+			"field": {
+				"name": "phone",
+				"columnName": "phone",
 				"nullable": true,
 				"type": "String",
 				"columnType": "text"

@@ -1,5 +1,13 @@
 import * as React from 'react'
-import { Component, TextField, SortableRepeater } from 'cms-admin'
+import {
+	Component,
+	TextField,
+	SortableRepeater,
+	RichTextField,
+	Block as BlockType,
+	Mark,
+	TextAreaField
+} from 'cms-admin'
 import { Image } from './Image'
 import { LocaleSideDimension } from '../LocaleSideDimension'
 import { Seo } from './Seo'
@@ -16,11 +24,15 @@ export const Page = Component<{}>(
 			<Image label="Image" name="image" />
 			<LocaleSideDimension>
 				<State name="$locale.state" />
-				<TextField label="Perex" name="$locale.perex" />
+				<TextAreaField label="Perex" name="$locale.perex" />
 				<SortableRepeater field="$locale.content" label="Content" sortBy="order">
 					<Block />
 				</SortableRepeater>
-				<TextField label="Contact us" name="$locale.contactUs" />
+				<RichTextField
+					label="Contact us"
+					name="$locale.contactUs"
+					blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]}
+				/>
 				<Seo name="$locale.seo" />
 				<Link name="$locale.link" />
 			</LocaleSideDimension>

@@ -54,13 +54,20 @@ builder.entity('ImageGrid', entity =>
 		.manyHasOne('imagePosition6', ref => ref.target('Image'))
 )
 
-builder.enum('BlockType', ['Heading', 'Text', 'Image', 'ImageGrid', 'Numbers'])
+builder.enum('BlockType', ['Heading', 'Text', 'Image', 'ImageGrid', 'Numbers', 'Perks'])
 
 builder.entity('Numbers', entity =>
 	entity
 		.column('order', col => col.type(Model.ColumnType.Int))
 		.column('number')
 		.column('label')
+)
+
+builder.entity('Perk', entity =>
+	entity
+		.column('order', col => col.type(Model.ColumnType.Int))
+		.column('title')
+		.column('description')
 )
 
 builder.entity('Block', entity =>
@@ -71,6 +78,7 @@ builder.entity('Block', entity =>
 		.manyHasOne('imageGrid', ref => ref.target('ImageGrid'))
 		.manyHasOne('image', ref => ref.target('Image'))
 		.oneHasMany('numbers', ref => ref.target('Numbers'))
+		.oneHasMany('perks', ref => ref.target('Perk'))
 )
 
 // Menu
@@ -261,6 +269,8 @@ builder.entity('PlaceLocale', entity =>
 		.column('name', col => col.type(Model.ColumnType.String).notNull())
 		.column('address', col => col.type(Model.ColumnType.String).notNull())
 		.column('subAddress')
+		.column('email')
+		.column('phone')
 )
 
 // String translations
