@@ -49,6 +49,26 @@ const reactRoot = (config: any) => (
 
 					multiEdit_language: { path: '/languages' }
 				}
+			},
+			{
+				project: 'quanti',
+				stage: 'prod',
+				component: () => import('./projects/quanti/prod'),
+				routes: {
+					dashboard: { path: '/' },
+					locales: { path: '/locales' },
+					edit_frontPage: { path: '/front-page' },
+					menuItems: { path: '/menu' },
+					list_page: { path: '/page' },
+					create_page: { path: '/page/create' },
+					edit_page: { path: '/page/:id' },
+					places: { path: '/places' },
+					social: { path: '/social' },
+					footer: { path: '/footer' },
+					joinUs: { path: '/joinUs' },
+					translations: { path: '/translations' },
+					contact: { path: '/contact' }
+				}
 			}
 		]}
 	/>
