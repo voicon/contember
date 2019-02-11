@@ -48,6 +48,8 @@ npm run test
   * running `npm run ts:watch` in background
   * creating PostgreSQL database
   * creating `mangoweb/cms-api/.env` (you can use `(cd mangoweb/cms-api && cp example.env .env && nano .env)`)
+  * creating `mangoweb/cms-api/src/config/config.yaml` (you can use `mangoweb/cms-api/src/config/config.sample.yaml`) 
+  * setting up database by running `(cd mangoweb/cms-api && npm run sync)`
   
 Use `mangoweb/admin/config.sample.json` to create `config.local.json` in the same directory. Don't worry about hte login key for the time being.
 
@@ -137,3 +139,7 @@ mutation {
 ```
 
 Lastly, update the login token in `mangoweb/admin/config.local.json` and restart the servers. You should now be able to login normally as well as use the content api.
+
+### Start admin interface
+
+When you have API server running and the user is created you can start admin interface by running `(cd mangoweb/admin && npm run start)`. Then you can sign in with your credentials.
