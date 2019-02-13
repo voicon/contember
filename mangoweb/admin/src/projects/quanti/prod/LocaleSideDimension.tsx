@@ -10,9 +10,13 @@ export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 			return {
 				locale: `locales(locale.slug='${currentLang}')`,
 				currentLocaleSlug: currentLang,
+				flag: {
+					en: '🇬🇧',
+					cs: '🇨🇿'
+				}[currentLang as 'en' | 'cs'],
 				labelMiddleware: label => (
 					<>
-						<Variable name="currentLocaleSlug" /> {label}
+						<Variable name="flag" /> {label}
 					</>
 				)
 			}
