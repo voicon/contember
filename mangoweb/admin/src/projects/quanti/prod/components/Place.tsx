@@ -3,7 +3,7 @@ import { Component, CheckboxField, FloatField, TextField, TextAreaField } from '
 import { State } from './State'
 import { LocaleSideDimension } from '../LocaleSideDimension'
 
-export const Place = Component<{}>(
+export const Place = Component(
 	() => (
 		<>
 			<State name="state" />

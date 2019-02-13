@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Component, TextField, SelectField, RadioField } from 'cms-admin'
 import { LocaleSideDimension } from '../LocaleSideDimension'
 
-export const MenuItem = Component<{}>(
+export const MenuItem = Component(
 	() => (
 		<>
 			<LocaleSideDimension>

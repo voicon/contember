@@ -15,7 +15,7 @@ import { State } from './State'
 import { Block } from './Block'
 import { Link } from './Link'
 
-export const Page = Component<{}>(
+export const Page = Component(
 	() => (
 		<>
 			<LocaleSideDimension>

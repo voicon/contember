@@ -4,7 +4,7 @@ import { LocaleSideDimension } from '../LocaleSideDimension'
 import { Seo } from './Seo'
 import { Link } from './Link'
 
-export const Contact = Component<{}>(
+export const Contact = Component(
 	() => (
 		<LocaleSideDimension>
 			<TextField label="Header" name="$locale.header" />
