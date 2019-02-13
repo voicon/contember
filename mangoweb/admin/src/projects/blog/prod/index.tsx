@@ -71,7 +71,7 @@ export default () => (
 				<Layout>
 					<SingleEntityDataProvider name="Post" where={{ id }}>
 						<TextField name="publishedAt" label="Time" />
-						<SelectField name="author" label="Author" entityName="Author" optionFieldName="name" />
+						<SelectField name="author" options="Author.name" label="Author" />
 
 						<Repeater field="categories">
 							<SideDimensions
