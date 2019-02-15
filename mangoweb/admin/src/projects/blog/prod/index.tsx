@@ -104,7 +104,7 @@ export default () => (
 				<Layout>
 					<h1>All posts</h1>
 					<EntityListDataProvider name="Post">
-						<ToMany field="locales" filter={{ locale: { eq: new Literal('cs') } }}>
+						<ToMany field="locales[locale = cs]">
 							<TextField name="title" label="Title" />
 						</ToMany>
 					</EntityListDataProvider>
