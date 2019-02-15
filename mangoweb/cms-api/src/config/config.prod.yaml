@@ -7,31 +7,6 @@ tenant:
         database: '%env.TENANT_DB_NAME%'
 
 projects:
-    - uuid: 1635399a-de76-4101-bd14-82d67e9d2574
-      slug: blog
-      name: Blog
-      stages:
-          - uuid: 01c8f908-6f48-4ef3-9751-9989931b42eb
-            slug: prod
-            name: Production
-            migration: '2018-11-05-141146'
-          - uuid: e8b8963c-49a0-46f7-89c3-e13f97cc9d77
-            slug: prod-preview
-            name: Production Preview
-            migration: '2018-11-05-141146'
-      dbCredentials:
-        host: '%env.BLOG_DB_HOST%'
-        port: '5432'
-        user: '%env.BLOG_DB_USER%'
-        password: '%env.BLOG_DB_PASSWORD%'
-        database: '%env.BLOG_DB_NAME%'
-      s3:
-        bucket: 'cms-api.mgw.cz'
-        prefix: 'dev'
-        region: 'eu-central-1'
-        credentials:
-          key: 'AKIAIO53JZYNOKXXYMDA'
-          secret: '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'
     - uuid: 2b71cf74-5271-4142-b258-b2ce14722187
       slug: mangoweb
       name: manGoweb
