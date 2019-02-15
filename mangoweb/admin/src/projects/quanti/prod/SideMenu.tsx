@@ -1,55 +1,27 @@
 import * as React from 'react'
-import { Menu, MenuList, MenuPageLink, LinkAppearance } from 'cms-admin'
+import { Menu, MenuList, MenuPageLink, MenuPageLinkPrimary } from 'cms-admin'
 
 export class SideMenu extends React.Component {
 	render() {
 		return (
 			<Menu>
 				<MenuList>
-					<MenuPageLink
-						change={() => ({ name: 'dashboard' })}
-						appearance={LinkAppearance.Primary}
-						frontIcon="dashboard"
-					>
-						Dashboard
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'edit_frontPage' })} frontIcon="page-layout">
-						Front page
-					</MenuPageLink>
+					<MenuPageLinkPrimary change={() => ({ name: 'dashboard' })} avatar="D" name="Dashboard" />
+					<MenuPageLink change={() => ({ name: 'edit_frontPage' })}>Front page</MenuPageLink>
 				</MenuList>
 				<MenuList title="Pages">
-					<MenuPageLink change={() => ({ name: 'list_page' })} frontIcon="properties">
-						List
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'create_page' })} frontIcon="add">
-						Create page
-					</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'list_page' })}>List</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'create_page' })}>Create page</MenuPageLink>
 				</MenuList>
 				<MenuList title="Other">
-					<MenuPageLink change={() => ({ name: 'locales' })} frontIcon="flag">
-						Locales
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'menuItems' })} frontIcon="menu">
-						Menu
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'places' })} frontIcon="map-marker">
-						Places
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'social' })} frontIcon="social-media">
-						Social
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'footer' })} frontIcon="widget-footer">
-						Footer
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'joinUs' })} frontIcon="people">
-						Join us
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'translations' })} frontIcon="translate">
-						Translations
-					</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'contact' })} frontIcon="envelope">
-						Contact
-					</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'locales' })}>Locales</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'menuItems' })}>Menu</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'places' })}>Places</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'social' })}>Social</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'footer' })}>Footer</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'joinUs' })}>Join us</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'translations' })}>Translations</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'contact' })}>Contact</MenuPageLink>
 				</MenuList>
 			</Menu>
 		)
