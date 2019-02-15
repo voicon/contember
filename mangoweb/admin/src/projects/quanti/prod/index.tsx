@@ -113,7 +113,9 @@ export default () => (
 			rendererProps={{ title: 'Translations' }}
 		>
 			<LocaleSideDimension>
-				<Repeater field="translated[locale.slug = '$currentLocaleSlug']" /*filter={{ locale: { slug: { eq: new VariableScalar('currentLocaleSlug') } } }}*/>
+				<Repeater
+					field="translated[locale.slug = '$currentLocaleSlug']" /*filter={{ locale: { slug: { eq: new VariableScalar('currentLocaleSlug') } } }}*/
+				>
 					<HiddenField name="locale.slug" defaultValue={new VariableScalar('currentLocaleSlug')} />
 					<RadioField
 						name="translatable"
