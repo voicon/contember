@@ -105,3 +105,48 @@ deploy:beta:admin:
 
   script:
     - /usr/bin/deploy
+
+
+deploy:prod:api:
+  stage: deploy:helm
+  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/deploy:5.18
+  dependencies: []
+
+  only:
+    refs:
+      - deploy/prod
+  variables:
+    GIT_STRATEGY: none # do not clone repo
+    MGW_CLUSTER: prod
+    RELEASE_NAME: cms-prod-api
+    VALUES: '{"version": "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"}'
+
+  environment:
+    name: prod-api
+    url: https://cms-api-prod.mgw.cz
+
+  script:
+    - /usr/bin/deploy
+
+
+deploy:prod:admin:
+  stage: deploy:helm
+  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/deploy:5.18
+  dependencies: []
+
+  only:
+    refs:
+      - deploy/prod
+
+  variables:
+    GIT_STRATEGY: none # do not clone repo
+    MGW_CLUSTER: prod
+    RELEASE_NAME: cms-prod-admin
+    VALUES: '{"version": "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"}'
+
+  environment:
+    name: prod-admin
+    url: https://cms-admin-prod.mgw.cz
+
+  script:
+    - /usr/bin/deploy
