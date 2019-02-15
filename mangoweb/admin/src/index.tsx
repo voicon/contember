@@ -53,6 +53,9 @@ const reactRoot = (config: any) => (
 			{
 				project: 'quanti',
 				stage: 'prod',
+				defaultDimensions: {
+					locale: ['cs']
+				},
 				component: () => import('./projects/quanti/prod'),
 				routes: {
 					dashboard: { path: '/' },

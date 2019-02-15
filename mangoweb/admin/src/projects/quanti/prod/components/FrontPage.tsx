@@ -17,7 +17,7 @@ import { Person } from './Person'
 import { Link } from './Link'
 import { Image } from './Image'
 
-export const FrontPage = Component<{}>(
+export const FrontPage = Component(
 	() => (
 		<>
 			<H2>

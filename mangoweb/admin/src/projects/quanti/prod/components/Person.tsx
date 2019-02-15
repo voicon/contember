@@ -3,7 +3,7 @@ import { Component, TextField } from 'cms-admin'
 import { LocaleSideDimension } from '../LocaleSideDimension'
 import { Image } from './Image'
 
-export const Person = Component<{}>(
+export const Person = Component(
 	() => (
 		<>
 			<Image label="Image" name="image" />

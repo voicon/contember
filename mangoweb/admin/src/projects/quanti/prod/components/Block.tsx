@@ -12,7 +12,7 @@ import {
 import { Image } from './Image'
 import { ImageGrid } from './ImageGrid'
 
-export const Block = Component<{}>(
+export const Block = Component(
 	() => (
 		<>
 			<AlternativeFields

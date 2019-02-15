@@ -1,38 +1,31 @@
 import { Callout, H1, Intent } from '@blueprintjs/core'
 import {
+	CreatePage,
 	EditPage,
+	FieldText,
 	GenericPage,
 	GraphQlBuilder,
-	MultiEditPage,
-	Pages,
-	TextField,
-	CreatePage,
-	Page as CmsPage,
-	PageWithLayout,
-	SingleEntityDataProvider,
-	EnvironmentContext,
-	RadioField,
-	Literal,
-	EntityListDataProvider,
-	Repeater,
-	VariableScalar,
 	HiddenField,
 	ListPage,
-	FieldText,
+	Literal,
+	MultiEditPage,
 	PageLinkById,
-	Link,
-	PageLink
+	Pages,
+	RadioField,
+	Repeater,
+	TextField,
+	VariableScalar
 } from 'cms-admin'
 import * as React from 'react'
-import { Layout } from './Layout'
+import { Contact } from './components/Contact'
+import { Footer } from './components/Footer'
 import { FrontPage } from './components/FrontPage'
 import { MenuItem } from './components/MenuItem'
 import { Page } from './components/Page'
 import { Place } from './components/Place'
 import { SocialNetwork } from './components/SocialNetwork'
-import { Footer } from './components/Footer'
+import { Layout } from './Layout'
 import { LocaleSideDimension } from './LocaleSideDimension'
-import { Contact } from './components/Contact'
 
 export default () => (
 	<Pages project="quanti" stage="prod" layout={Layout}>
@@ -120,7 +113,9 @@ export default () => (
 			rendererProps={{ title: 'Translations' }}
 		>
 			<LocaleSideDimension>
-				<Repeater field="translated" filter={{ locale: { slug: { eq: new VariableScalar('currentLocaleSlug') } } }}>
+				<Repeater
+					field="translated[locale.slug = '$currentLocaleSlug']" /*filter={{ locale: { slug: { eq: new VariableScalar('currentLocaleSlug') } } }}*/
+				>
 					<HiddenField name="locale.slug" defaultValue={new VariableScalar('currentLocaleSlug')} />
 					<RadioField
 						name="translatable"

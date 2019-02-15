@@ -71,7 +71,7 @@ export default () => (
 				<Layout>
 					<SingleEntityDataProvider name="Post" where={{ id }}>
 						<TextField name="publishedAt" label="Time" />
-						<SelectField name="author" label="Author" entityName="Author" optionFieldName="name" />
+						<SelectField name="author" options="Author.name" label="Author" />
 
 						<Repeater field="categories">
 							<SideDimensions
@@ -104,7 +104,7 @@ export default () => (
 				<Layout>
 					<h1>All posts</h1>
 					<EntityListDataProvider name="Post">
-						<ToMany field="locales" filter={{ locale: { eq: new Literal('cs') } }}>
+						<ToMany field="locales[locale = cs]">
 							<TextField name="title" label="Title" />
 						</ToMany>
 					</EntityListDataProvider>

@@ -7,8 +7,13 @@ export const tokens = {
 		group: Lexer.SKIPPED
 	}),
 
-	Identifier: createToken({
-		name: 'Identifier',
+	EntityIdentifier: createToken({
+		name: 'EntityIdentifier',
+		pattern: /[A-Z]\w*/
+	}),
+
+	FieldIdentifier: createToken({
+		name: 'FieldIdentifier',
 		pattern: /[a-zA-Z]\w*/
 	}),
 
@@ -24,7 +29,7 @@ export const tokens = {
 
 	Comma: createToken({
 		name: 'Comma',
-		pattern: /\,/
+		pattern: /,/
 	}),
 
 	NumberLiteral: createToken({
@@ -54,23 +59,77 @@ export const tokens = {
 
 	RightBracket: createToken({
 		name: 'RightBracket',
-		pattern: /\]/
+		pattern: /]/
 	}),
 
 	NotEquals: createToken({
 		name: 'NotEquals',
-		pattern: '/!=/'
+		pattern: /!=/
+	}),
+
+	True: createToken({
+		name: 'True',
+		pattern: /true/
+	}),
+
+	False: createToken({
+		name: 'False',
+		pattern: /false/
+	}),
+
+	Null: createToken({
+		name: 'Null',
+		pattern: /null/
 	}),
 
 	Equals: createToken({
 		name: 'Equals',
 		pattern: /=/
+	}),
+
+	Not: createToken({
+		name: 'Not',
+		pattern: /!/
+	}),
+
+	And: createToken({
+		name: 'And',
+		pattern: /&&/
+	}),
+
+	Or: createToken({
+		name: 'Or',
+		pattern: /\|\|/
+	}),
+
+	LowerEqual: createToken({
+		name: 'LowerEqual',
+		pattern: /<=/
+	}),
+
+	GreaterEqual: createToken({
+		name: 'GreaterEqual',
+		pattern: />=/
+	}),
+
+	LowerThan: createToken({
+		name: 'LowerThan',
+		pattern: /</
+	}),
+
+	GreaterThan: createToken({
+		name: 'GreaterThan',
+		pattern: />/
 	})
 }
 
 const tokenList = [
 	tokens.WhiteSpace,
-	tokens.Identifier,
+	tokens.True,
+	tokens.False,
+	tokens.Null,
+	tokens.EntityIdentifier,
+	tokens.FieldIdentifier,
 	tokens.Variable,
 	tokens.Dot,
 	tokens.Comma,
@@ -81,7 +140,14 @@ const tokenList = [
 	tokens.LeftBracket,
 	tokens.RightBracket,
 	tokens.NotEquals,
-	tokens.Equals
+	tokens.Equals,
+	tokens.Not,
+	tokens.GreaterEqual,
+	tokens.GreaterThan,
+	tokens.LowerEqual,
+	tokens.LowerThan,
+	tokens.And,
+	tokens.Or
 ]
 
 export { tokenList }
