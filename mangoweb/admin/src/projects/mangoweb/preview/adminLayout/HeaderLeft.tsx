@@ -6,7 +6,6 @@ export default class HeaderLeft extends React.PureComponent {
 	render() {
 		return (
 			<>
-				<PageLink change={() => ({ name: 'dashboard' })}>manGoweb</PageLink>
 				<DimensionsSwitcher
 					entityName="Language"
 					dimension="lang"
