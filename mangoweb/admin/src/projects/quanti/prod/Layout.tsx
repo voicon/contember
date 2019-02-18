@@ -6,6 +6,7 @@ import { SideMenu } from './SideMenu'
 
 const layout = {
 	header: {
+		title: 'Quanti',
 		left: (
 			<DimensionsSwitcher
 				entityName="Locale"
