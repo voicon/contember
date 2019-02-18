@@ -8,7 +8,6 @@ export default class HeaderLeft extends React.Component {
 
 		return (
 			<>
-				<a href="#">This is Hranipex</a>
 				{' Langs: '}
 				<LinkWithAlert
 					requestChange={r => ({ ...r, dimensions: { lang: ['cs'] } })}

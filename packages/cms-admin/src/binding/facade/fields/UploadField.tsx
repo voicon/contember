@@ -1,6 +1,7 @@
-import { FileInput, FormGroup, IFormGroupProps } from '@blueprintjs/core'
 import { assertNever } from 'cms-common'
 import { contentType } from 'mime-types'
+import { FileInput } from '../../../components'
+import { FormGroup, FormGroupProps } from '../../../components'
 import * as React from 'react'
 import Dropzone from 'react-dropzone'
 import { connect } from 'react-redux'
@@ -15,8 +16,7 @@ import { QueryLanguage } from '../../queryLanguage'
 
 export interface UploadFieldOwnProps {
 	name: FieldName
-	label?: IFormGroupProps['label']
-	inlineLabel?: boolean
+	label?: FormGroupProps['label']
 }
 
 export interface UploadFieldDispatchProps {
@@ -57,10 +57,7 @@ class UploadFieldComponent extends React.Component<
 						data.onChange && data.onChange(upload.resultUrl)
 					}
 					return (
-						<FormGroup
-							label={env.applySystemMiddleware('labelMiddleware', this.props.label)}
-							inline={this.props.inlineLabel}
-						>
+						<FormGroup label={env.applySystemMiddleware('labelMiddleware', this.props.label)}>
 							<Dropzone
 								onDrop={async (accepted: File[]) => {
 									this.handleStartUpload(accepted)
@@ -72,12 +69,12 @@ class UploadFieldComponent extends React.Component<
 								{data.currentValue && this.isImage(data.currentValue) ? <img src={data.currentValue} /> : null}
 								{upload && upload.thumbnailUrl ? <img src={upload.thumbnailUrl} /> : null}
 								<FileInput
-									fill={true}
-									text={this.renderUploadStatusMessage(upload)}
-									onInputChange={async e => {
+									onChange={async e => {
 										e.currentTarget.files && this.handleStartUpload(Array.from(e.currentTarget.files))
 									}}
-								/>
+								>
+									{this.renderUploadStatusMessage(upload)}
+								</FileInput>
 							</Dropzone>
 						</FormGroup>
 					)

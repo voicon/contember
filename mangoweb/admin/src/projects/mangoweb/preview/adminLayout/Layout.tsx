@@ -5,6 +5,7 @@ import Side from './Side'
 
 const layout = {
 	header: {
+		title: 'manGoweb',
 		left: <HeaderLeft />,
 		right: false
 	},
