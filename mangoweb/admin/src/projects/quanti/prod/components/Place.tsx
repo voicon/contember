@@ -7,7 +7,7 @@ export const Place = Component(
 	() => (
 		<>
 			<State name="state" />
-			<CheckboxField label="Is bigger on front page" name="isBiggerOnFrontPage" inlineLabel />
+			<CheckboxField label="Is bigger on front page" name="isBiggerOnFrontPage" />
 			<FloatField label="Latitude" name="gpsLat" />
 			<FloatField label="Longitude" name="gpsLng" />
 			<LocaleSideDimension>
