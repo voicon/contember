@@ -14,7 +14,7 @@ import {
 	RadioField,
 	Repeater,
 	TextField,
-	VariableScalar
+	SelectField
 } from 'cms-admin'
 import * as React from 'react'
 import { Contact } from './components/Contact'
@@ -112,24 +112,20 @@ export default () => (
 			where={() => ({ unique: new GraphQlBuilder.Literal('One') })}
 			rendererProps={{ title: 'Translations' }}
 		>
-			<LocaleSideDimension>
-				<Repeater
-					field="translated[locale.slug = '$currentLocaleSlug']" /*filter={{ locale: { slug: { eq: new VariableScalar('currentLocaleSlug') } } }}*/
-				>
-					<HiddenField name="locale.slug" defaultValue={new VariableScalar('currentLocaleSlug')} />
-					<RadioField
-						name="translatable"
-						label="String"
-						inline={true}
-						options={[
-							[new Literal('emailContent'), 'emailContent'],
-							[new Literal('emailContact'), 'emailContact'],
-							[new Literal('emailSend'), 'emailSend']
-						]}
-					/>
-					<TextField label="Translated" name="translated" />
-				</Repeater>
-			</LocaleSideDimension>
+			<Repeater field="translated">
+				<SelectField name="locale" label="Locale" options="Locale.slug" />
+				<RadioField
+					name="translatable"
+					label="String"
+					inline={true}
+					options={[
+						[new Literal('emailContent'), 'emailContent'],
+						[new Literal('emailContact'), 'emailContact'],
+						[new Literal('emailSend'), 'emailSend']
+					]}
+				/>
+				<TextField label="Translated" name="translated" />
+			</Repeater>
 		</EditPage>
 	</Pages>
 )
