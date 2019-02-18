@@ -8,7 +8,8 @@ import {
 	RichTextField,
 	SortableRepeater,
 	TextAreaField,
-	TextField
+	TextField,
+	SelectField
 } from 'cms-admin'
 import { LocaleSideDimension } from '../LocaleSideDimension'
 import { ImageGrid } from './ImageGrid'
@@ -41,6 +42,8 @@ export const FrontPage = Component(
 			<LocaleSideDimension>
 				<TextField label="Header" name="$locale.peopleHeader" />
 				<TextField label="Subheader" name="$locale.peopleSubheader" />
+				<TextField label="Link caption" name="$locale.peopleLink" />
+				<SelectField label="Link target" name="$locale.peopleLinkTarget" options="Linkable.url" />
 			</LocaleSideDimension>
 			<H2>Image grid</H2>
 			<ImageGrid name="imageGrid" />
