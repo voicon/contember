@@ -1,4 +1,4 @@
-import { SchemaBuilder, AllowAllPermissionFactory } from 'cms-api'
+import { AllowAllPermissionFactory, SchemaBuilder } from 'cms-api'
 import { Acl, Model, Schema } from 'cms-common'
 
 const builder = new SchemaBuilder()
@@ -164,6 +164,8 @@ builder.entity('FrontPageLocale', entity =>
 		.column('partnersContent')
 		.column('peopleHeader')
 		.column('peopleSubheader')
+		.column('peopleLink')
+		.manyHasOne('peopleLinkTarget', ref => ref.target('Linkable').onDelete(Model.OnDelete.setNull))
 		.column('contactUs')
 		.column('findUsHeader')
 		.column('findUsSubheader')

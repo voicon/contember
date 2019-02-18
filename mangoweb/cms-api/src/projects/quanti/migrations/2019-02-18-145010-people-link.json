@@ -1,0 +1,29 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "FrontPageLocale",
+			"field": {
+				"name": "peopleLink",
+				"columnName": "people_link",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageLocale",
+			"owningSide": {
+				"name": "peopleLinkTarget",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Linkable",
+				"joiningColumn": {
+					"columnName": "people_link_target_id",
+					"onDelete": "set null"
+				}
+			}
+		}
+	]
+}
