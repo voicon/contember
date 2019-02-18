@@ -1,8 +1,8 @@
-import { Manager, Reference, Popper } from 'react-popper'
 import { Spinner } from '@blueprintjs/core'
-import { IconNames } from '@blueprintjs/icons'
 import * as React from 'react'
-import { Link, Button, Dropdown } from '../../../components'
+import { Manager, Popper, Reference } from 'react-popper'
+import { Button, Dropdown, Link } from '../../../components'
+import { Portal } from '../../../components/ui/Portal'
 import {
 	AccessorTreeRoot,
 	EntityAccessor,
@@ -16,7 +16,6 @@ import {
 } from '../../index'
 import { QueryLanguage } from '../../queryLanguage'
 import { LoadingSpinner } from '../renderers/userFeedback'
-import { Portal } from '../../../components/ui/Portal'
 
 export interface DimensionsSwitcherProps extends DimensionsSwitcher.DimensionsRendererProps {
 	entityName: string
@@ -188,11 +187,11 @@ namespace DimensionsSwitcher {
 					{[...Array(columnCount)].map((_, i) => {
 						return (
 							<Dropdown.Column key={i}>
-								{dimensionData.map((dimension, j) => {
+								{dimensionData.map(dimension => {
 									const active = selectedDimensions[i] === dimension.slug
 									return (
 										<Link
-											key={j}
+											key={dimension.slug}
 											Component={({ href, onClick }) => (
 												<Dropdown.Item {...{ href, onClick, active }}>{dimension.label}</Dropdown.Item>
 											)}

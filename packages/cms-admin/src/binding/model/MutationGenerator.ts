@@ -1,6 +1,6 @@
 import { CrudQueryBuilder, GraphQlBuilder } from 'cms-client'
-import { assertNever, Input } from 'cms-common'
-import { EntityName, ReceivedData, ReceivedEntityData } from '../bindingTypes'
+import { assertNever, Input, isEmptyObject } from 'cms-common'
+import { EntityName, ReceivedData, ReceivedEntityData, Scalar } from '../bindingTypes'
 import {
 	AccessorTreeRoot,
 	DataBindingError,
@@ -194,14 +194,29 @@ export class MutationGenerator {
 		builder: CrudQueryBuilder.CreateDataBuilder
 	): CrudQueryBuilder.CreateDataBuilder {
 		const allData = currentData.data.allFieldData
+		const nonbearingFields: Array<{
+			placeholderName: string
+			value: GraphQlBuilder.Literal | Scalar
+		}> = []
 
 		for (const placeholderName in entityFields) {
 			const marker = entityFields[placeholderName]
 
 			if (marker instanceof FieldMarker) {
 				const accessor = allData[placeholderName]
-				if (accessor instanceof FieldAccessor && accessor.currentValue !== null) {
-					builder = builder.set(placeholderName, accessor.currentValue)
+				if (accessor instanceof FieldAccessor) {
+					const value = accessor.currentValue === null ? marker.defaultValue : accessor.currentValue
+
+					if (value !== undefined && value !== null) {
+						if (marker.isNonbearing) {
+							nonbearingFields.push({
+								value,
+								placeholderName
+							})
+						} else {
+							builder = builder.set(placeholderName, value)
+						}
+					}
 				}
 			} else if (marker instanceof ReferenceMarker) {
 				let unreducedHasOnePresent = false
@@ -238,16 +253,25 @@ export class MutationGenerator {
 
 				if (unreducedHasOnePresent) {
 					if (accessorReference.length === 1) {
-						builder = builder.one(placeholderName, builder => {
-							const { accessor, reference } = accessorReference[0]
+						const createOneRelationBuilder = new CrudQueryBuilder.CreateOneRelationBuilder<undefined>()
+						const { accessor, reference } = accessorReference[0]
 
-							if (accessor.primaryKey instanceof EntityAccessor.UnpersistedEntityID) {
-								const innerBuilder = this.createCreateDataBuilderByReference(reference)
-								return builder.create(this.registerCreateMutationPart(accessor, reference.fields, innerBuilder))
-							} else {
-								return builder.connect({ [MutationGenerator.PRIMARY_KEY_NAME]: accessor.primaryKey })
+						if (accessor.primaryKey instanceof EntityAccessor.UnpersistedEntityID) {
+							const innerBuilder = this.createCreateDataBuilderByReference(reference)
+							const createBuilder = createOneRelationBuilder.create(
+								this.registerCreateMutationPart(accessor, reference.fields, innerBuilder)
+							)
+							if (createBuilder.data) {
+								builder = builder.one(placeholderName, createBuilder)
 							}
-						})
+						} else {
+							builder = builder.one(
+								placeholderName,
+								createOneRelationBuilder.connect({
+									[MutationGenerator.PRIMARY_KEY_NAME]: accessor.primaryKey
+								})
+							)
+						}
 					} else {
 						throw new DataBindingError(`Creating several entities for the hasOne '${placeholderName}' relation.`)
 					}
@@ -270,6 +294,12 @@ export class MutationGenerator {
 				// Do nothing: we don't support persisting nested queries (yet?).
 			} else {
 				assertNever(marker)
+			}
+		}
+
+		if (nonbearingFields.length && builder.data !== undefined && !isEmptyObject(builder.data)) {
+			for (const { value, placeholderName } of nonbearingFields) {
+				builder = builder.set(placeholderName, value)
 			}
 		}
 

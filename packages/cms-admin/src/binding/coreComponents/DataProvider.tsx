@@ -31,11 +31,13 @@ type DataProviderInnerProps<DRP> = DataProviderOwnProps<DRP> & DataProviderDispa
 
 export interface DataProviderState {
 	data?: AccessorTreeRoot
+	query?: string
 	id?: string
 }
 
 class DataProvider<DRP> extends React.PureComponent<DataProviderInnerProps<DRP>, DataProviderState, boolean> {
 	public state: DataProviderState = {
+		query: undefined,
 		data: undefined
 	}
 
@@ -47,9 +49,20 @@ class DataProvider<DRP> extends React.PureComponent<DataProviderInnerProps<DRP>,
 			const mutation = generator.getPersistMutation()
 
 			console.log('mutation', mutation)
-			if (mutation !== undefined) {
-				return this.props.putData(mutation)
+			if (mutation === undefined) {
+				return Promise.resolve()
 			}
+
+			return this.props.putData(mutation).then(async () => {
+				if (!this.state.query) {
+					return Promise.resolve()
+				}
+				const id = await this.props.getData(this.state.query)
+				if (!this.unmounted) {
+					this.setState({ id })
+				}
+				return Promise.resolve()
+			})
 		}
 		return Promise.reject()
 	}
@@ -94,7 +107,7 @@ class DataProvider<DRP> extends React.PureComponent<DataProviderInnerProps<DRP>,
 		if (query) {
 			const id = await this.props.getData(query)
 			if (!this.unmounted) {
-				this.setState({ id })
+				this.setState({ id, query })
 			}
 		} else {
 			this.initializeAccessorTree(undefined)
