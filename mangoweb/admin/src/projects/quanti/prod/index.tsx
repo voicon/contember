@@ -1,4 +1,4 @@
-import { Callout, H1, Intent } from '@blueprintjs/core'
+import { H1 } from '@blueprintjs/core'
 import {
 	CreatePage,
 	EditPage,
@@ -31,9 +31,6 @@ export default () => (
 	<Pages project="quanti" stage="prod" layout={Layout}>
 		<GenericPage pageName="dashboard">
 			<H1>Quanti admin</H1>
-			<Callout intent={Intent.WARNING} title="Warning">
-				<p>Don't forget to choose a language first!</p>
-			</Callout>
 		</GenericPage>
 
 		<MultiEditPage entity="Locale" pageName="locales" rendererProps={{ title: 'Locale' }}>
