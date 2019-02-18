@@ -5,7 +5,11 @@ import HeaderLeft from './HeaderLeft'
 
 const layout = {
 	header: {
-		left: <a className="navbar-title" href="#">Blog</a>,
+		left: (
+			<a className="navbar-title" href="#">
+				Blog
+			</a>
+		),
 		center: <HeaderLeft />,
 		right: false
 	},

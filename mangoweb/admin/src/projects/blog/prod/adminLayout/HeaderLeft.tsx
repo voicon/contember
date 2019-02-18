@@ -8,7 +8,6 @@ export default class HeaderLeft extends React.Component {
 
 		return (
 			<>
-
 				{' Langs: '}
 				<LinkWithAlert
 					requestChange={r => ({ ...r, dimensions: { lang: ['cs'] } })}
