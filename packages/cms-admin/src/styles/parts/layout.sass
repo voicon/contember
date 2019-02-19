@@ -1,3 +1,5 @@
+@import '../common'
+
 .layout
 	&-navbar
 		+sticky(0 null null 0)
@@ -6,11 +8,11 @@
 		justify-content: space-between
 		align-items: center
 		height: $layout-navbar-height
-		padding: 16px $spacing-4
+		padding: 1rem $spacing-extraLarge
 		z-index: 19
 		background-color: $layout-background-color
 		color: $layout-text-color
-		border-bottom: 1px solid #EAEDF3
+		border-bottom: rem(1px) solid #EAEDF3
 
 	&-container
 		display: flex
@@ -18,9 +20,9 @@
 
 	&-side
 		+sticky($layout-navbar-height null null)
-		width: 270px
+		width: rem(270px)
 		max-width: 80vw
-		border-right: 1px solid #EAEDF3
+		border-right: rem(1px) solid #EAEDF3
 		height: calc(100vh - #{$layout-navbar-height})
 		z-index: 19
 		background-color: $layout-background-color
@@ -56,8 +58,8 @@
 			display: inline-block
 			background: none
 			border: none
-			padding: $spacing-1
-			margin-left: -$spacing-1
+			padding: $spacing-small
+			margin-left: -$spacing-small
 			vertical-align: middle
 
 	&-content

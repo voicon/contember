@@ -1,7 +1,9 @@
-$avatar-sizes: 28px, 38px, 60px, 80px, 100px
-$avatar-fonts: $font-size-0, $font-size-2, $font-size-3, $font-size-6, $font-size-8
+@import '../common'
 
 .avatar
+	$avatar-sizes: rem(28px), rem(38px), rem(60px), rem(80px), rem(100px)
+	$avatar-fonts: $fs-tiny, $fs-normal, $fs-large, $fs-huge, $fs-giant
+
 	display: flex
 	background: #1665D8
 	justify-content: center
@@ -19,4 +21,4 @@ $avatar-fonts: $font-size-0, $font-size-2, $font-size-3, $font-size-6, $font-siz
 		&Circle
 			border-radius: 50%
 		&Square
-			border-radius: 4px
+			border-radius: rem(4px)

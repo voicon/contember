@@ -1,5 +1,7 @@
+@import '../common'
+
 .menuPrimaryItem
-	padding: 14px $spacing-4
+	padding: rem(14px) $spacing-extraLarge
 
 	&-link
 		display: flex
@@ -7,24 +9,23 @@
 		color: $c-text
 
 	&-texts
-		padding-left: 17px
+		padding-left: 1rem
 		display: flex
 		flex-direction: column
 		align-items: flex-start
 		justify-content: space-around
 
 	&-name
-		font-size: $font-size-1
+		font-size: $fs-small
 		font-weight: $fw-medium
 
 	&-note
 		color: $c-text-light
-		font-size: $font-size-0
+		font-size: $fs-tiny
 
-	$hover-color: #1665D8
 	&:hover, &-active
-		background: rgba($hover-color, .15)
-		color: $hover-color
+		background: rgba($c-primary, .15)
+		color: $c-primary
 
 	&-active
-		box-shadow: inset 3px 0 0 $hover-color
+		box-shadow: inset rem(3px) 0 0 $c-primary
