@@ -5,7 +5,6 @@ import {
 	FieldText,
 	GenericPage,
 	GraphQlBuilder,
-	HiddenField,
 	ListPage,
 	Literal,
 	MultiEditPage,
@@ -13,8 +12,8 @@ import {
 	Pages,
 	RadioField,
 	Repeater,
-	TextField,
-	SelectField
+	SelectField,
+	TextField
 } from 'cms-admin'
 import * as React from 'react'
 import { Contact } from './components/Contact'
@@ -48,7 +47,16 @@ export default () => (
 			<FrontPage />
 		</EditPage>
 
-		<MultiEditPage entity="MenuItem" pageName="menuItems" rendererProps={{ title: 'Menu' }}>
+		<MultiEditPage
+			entity="MenuItem"
+			pageName="menuItems"
+			rendererProps={{
+				title: 'Menu',
+				sortable: {
+					sortBy: 'order'
+				}
+			}}
+		>
 			<MenuItem />
 		</MultiEditPage>
 
