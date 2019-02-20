@@ -66,10 +66,6 @@ export const FrontPage = Component(
 			<LocaleSideDimension>
 				<Link name="$locale.link" />
 			</LocaleSideDimension>
-			<H2>People</H2>
-			<SortableRepeater field="people" sortBy="order" removeType="delete">
-				<Person />
-			</SortableRepeater>
 		</>
 	),
 	'FrontPage'

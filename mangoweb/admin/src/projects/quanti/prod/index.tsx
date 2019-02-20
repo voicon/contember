@@ -21,8 +21,10 @@ import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 import { FrontPage } from './components/FrontPage'
 import { MenuItem } from './components/MenuItem'
+import { Category } from './components/Category'
 import { Page } from './components/Page'
 import { Place } from './components/Place'
+import { Person } from './components/Person'
 import { SocialNetwork } from './components/SocialNetwork'
 import { Layout } from './Layout'
 import { LocaleSideDimension } from './LocaleSideDimension'
@@ -50,6 +52,10 @@ export default () => (
 			<MenuItem />
 		</MultiEditPage>
 
+		<MultiEditPage entity="Category" pageName="categories" rendererProps={{ title: 'Categories' }}>
+			<Category/>
+		</MultiEditPage>
+
 		<ListPage entity="Page" rendererProps={{ title: 'Pages' }}>
 			<LocaleSideDimension>
 				<FieldText name="$locale.header" />
@@ -67,6 +73,10 @@ export default () => (
 
 		<MultiEditPage entity="Place" pageName="places" rendererProps={{ sortable: { sortBy: 'order' }, title: 'Places' }}>
 			<Place />
+		</MultiEditPage>
+
+		<MultiEditPage entity="Person" pageName="people" rendererProps={{ sortable: { sortBy: 'order' }, title: 'People' }}>
+			<Person />
 		</MultiEditPage>
 
 		<MultiEditPage entity="Social" pageName="social" rendererProps={{ title: 'Social' }}>

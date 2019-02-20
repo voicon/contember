@@ -54,7 +54,7 @@ builder.entity('ImageGrid', entity =>
 		.manyHasOne('imagePosition6', ref => ref.target('Image'))
 )
 
-builder.enum('BlockType', ['Heading', 'Text', 'Image', 'ImageGrid', 'Numbers', 'Perks'])
+builder.enum('BlockType', ['Heading', 'Text', 'Image', 'ImageGrid', 'Numbers', 'Perks', 'People', 'Category'])
 
 builder.entity('Numbers', entity =>
 	entity
@@ -77,8 +77,13 @@ builder.entity('Block', entity =>
 		.column('text')
 		.manyHasOne('imageGrid', ref => ref.target('ImageGrid'))
 		.manyHasOne('image', ref => ref.target('Image'))
+		.manyHasOne('category', ref => ref.target('Category').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('numbers', ref => ref.target('Numbers'))
 		.oneHasMany('perks', ref => ref.target('Perk'))
+		.oneHasMany('people', ref => ref.target('BlockPerson', entity =>
+			entity.column('order', col => col.type(Model.ColumnType.Int))
+				.manyHasOne('person', ref => ref.target('Person').onDelete(Model.OnDelete.cascade))
+		))
 )
 
 // Menu
@@ -140,12 +145,6 @@ builder.entity('FrontPage', entity =>
 		)
 		.manyHasOne('headerImage', ref => ref.target('Image'))
 		.manyHasOne('imageGrid', ref => ref.target('ImageGrid'))
-		.oneHasMany('people', ref =>
-			ref
-				.target('Person')
-				.ownedBy('frontPage')
-				.ownerNotNull()
-		)
 		.oneHasMany('locales', ref =>
 			ref
 				.target('FrontPageLocale')
@@ -182,6 +181,7 @@ builder.entity('Person', entity =>
 	entity
 		.column('order', col => col.type(Model.ColumnType.Int))
 		.manyHasOne('image', ref => ref.target('Image'))
+		.column('showOnFrontPage', col => col.type(Model.ColumnType.Bool).notNull())
 		.oneHasMany('locales', ref => ref.target('PersonLocale').ownedBy('person'))
 )
 builder.entity('PersonLocale', entity =>
@@ -189,6 +189,7 @@ builder.entity('PersonLocale', entity =>
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.column('quote')
 		.column('name')
+		.column('position')
 		.unique(['person', 'locale'])
 )
 
@@ -197,6 +198,7 @@ builder.entity('Page', entity =>
 	entity
 		.oneHasMany('locales', ref => ref.target('PageLocale').ownedBy('page'))
 		.manyHasOne('image', ref => ref.target('Image'))
+		.manyHasOne('category', ref => ref.target('Category').onDelete(Model.OnDelete.setNull).inversedBy('pages'))
 )
 
 builder.entity('PageLocale', entity =>
@@ -215,6 +217,23 @@ builder.entity('PageLocale', entity =>
 				.notNull()
 		)
 		.unique(['page', 'locale'])
+)
+
+// Category + CategoryLocale
+
+builder.entity('Category', entity =>
+	entity
+		.oneHasMany('locales', ref =>
+		ref
+			.target('CategoryLocale', entity => entity
+				.column('name')
+				.unique(['category', 'locale'])
+				.manyHasOne('locale', ref => ref.target('Locale').notNull())
+			)
+			.onDelete(Model.OnDelete.cascade)
+			.ownedBy('category')
+			.ownerNotNull()
+	)
 )
 
 // Contact

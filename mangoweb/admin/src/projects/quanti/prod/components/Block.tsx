@@ -6,6 +6,7 @@ import {
 	TextField,
 	SortableRepeater,
 	RichTextField,
+	SelectField,
 	Block as BlockType,
 	Mark
 } from 'cms-admin'
@@ -41,7 +42,19 @@ export const Block = Component(
 							<TextField label="title" name="title" />
 							<TextField label="description" name="description" />
 						</SortableRepeater>
-					]
+					],
+					[
+						new Literal('People'),
+						'People',
+						<SortableRepeater field="people" sortBy="order">
+							<SelectField label="Person" name="person" options="Person.id"/>
+						</SortableRepeater>
+					],
+					[
+						new Literal('Category'),
+						'Category',
+						<SelectField label="Category" name="category" options="Category.id"/>
+					],
 				]}
 			/>
 		</>
