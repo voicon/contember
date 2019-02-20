@@ -5,6 +5,7 @@ const builder = new SchemaBuilder()
 
 // Meta things
 builder.enum('One', ['One'])
+builder.enum('MediumType', ['image', 'video'])
 
 builder.entity('Locale', entity =>
 	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('switchToLabel')
@@ -34,10 +35,21 @@ builder.enum('State', ['Draft', 'ToBePublished', 'Published'])
 
 builder.entity('Image', entity => entity.column('url'))
 
+builder.entity('Video', entity =>
+	entity.column('url').manyHasOne('poster', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
+)
+
+builder.entity('Medium', entity =>
+	entity
+		.column('type', column => column.type(Model.ColumnType.Enum, { enumName: 'MediumType' }))
+		.manyHasOne('image', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
+		.manyHasOne('video', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
+)
+
 builder.entity('Seo', entity =>
 	entity
 		.column('title')
-		.oneHasOne('ogImage', relation => relation.target('Image'))
+		.oneHasOne('ogImage', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
 		.column('description')
 		.column('ogTitle')
 		.column('ogDescription')
@@ -46,15 +58,15 @@ builder.entity('Seo', entity =>
 // Reusable
 builder.entity('ImageGrid', entity =>
 	entity
-		.manyHasOne('imagePosition1', ref => ref.target('Image'))
-		.manyHasOne('imagePosition2', ref => ref.target('Image'))
-		.manyHasOne('imagePosition3', ref => ref.target('Image'))
-		.manyHasOne('imagePosition4', ref => ref.target('Image'))
-		.manyHasOne('imagePosition5', ref => ref.target('Image'))
-		.manyHasOne('imagePosition6', ref => ref.target('Image'))
+		.manyHasOne('imagePosition1', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
+		.manyHasOne('imagePosition2', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
+		.manyHasOne('imagePosition3', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
+		.manyHasOne('imagePosition4', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
+		.manyHasOne('imagePosition5', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
+		.manyHasOne('imagePosition6', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
 )
 
-builder.enum('BlockType', ['Heading', 'Text', 'Image', 'ImageGrid', 'Numbers', 'Perks'])
+builder.enum('BlockType', ['Heading', 'Text', 'Image', 'ImageGrid', 'Numbers', 'Perks', 'People', 'Category'])
 
 builder.entity('Numbers', entity =>
 	entity
@@ -77,8 +89,16 @@ builder.entity('Block', entity =>
 		.column('text')
 		.manyHasOne('imageGrid', ref => ref.target('ImageGrid'))
 		.manyHasOne('image', ref => ref.target('Image'))
+		.manyHasOne('category', ref => ref.target('Category').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('numbers', ref => ref.target('Numbers'))
 		.oneHasMany('perks', ref => ref.target('Perk'))
+		.oneHasMany('people', ref =>
+			ref.target('BlockPerson', entity =>
+				entity
+					.column('order', col => col.type(Model.ColumnType.Int))
+					.manyHasOne('person', ref => ref.target('Person').onDelete(Model.OnDelete.cascade))
+			)
+		)
 )
 
 // Menu
@@ -87,6 +107,7 @@ builder.entity('MenuItem', entity =>
 		ref
 			.target('MenuItemLocale')
 			.ownedBy('menuItem')
+			.onDelete(Model.OnDelete.cascade)
 			.ownerNotNull()
 	)
 )
@@ -118,6 +139,7 @@ builder.entity('Footer', entity =>
 			ref
 				.target('FooterLocale')
 				.ownedBy('footer')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 		)
 )
@@ -138,18 +160,13 @@ builder.entity('FrontPage', entity =>
 				.notNull()
 				.unique()
 		)
-		.manyHasOne('headerImage', ref => ref.target('Image'))
+		.manyHasOne('headerMedium', ref => ref.target('Medium'))
 		.manyHasOne('imageGrid', ref => ref.target('ImageGrid'))
-		.oneHasMany('people', ref =>
-			ref
-				.target('Person')
-				.ownedBy('frontPage')
-				.ownerNotNull()
-		)
 		.oneHasMany('locales', ref =>
 			ref
 				.target('FrontPageLocale')
 				.ownerNotNull()
+				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('frontPage')
 		)
 )
@@ -181,22 +198,40 @@ builder.entity('FrontPageLocale', entity =>
 builder.entity('Person', entity =>
 	entity
 		.column('order', col => col.type(Model.ColumnType.Int))
-		.manyHasOne('image', ref => ref.target('Image'))
-		.oneHasMany('locales', ref => ref.target('PersonLocale').ownedBy('person'))
+		.manyHasOne('image', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
+		.column('showOnFrontPage', col => col.type(Model.ColumnType.Bool).notNull())
+		.oneHasMany('locales', ref =>
+			ref
+				.target('PersonLocale')
+				.ownedBy('person')
+				.onDelete(Model.OnDelete.cascade)
+		)
 )
 builder.entity('PersonLocale', entity =>
 	entity
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.column('quote')
 		.column('name')
+		.column('position')
 		.unique(['person', 'locale'])
 )
 
 // Page
 builder.entity('Page', entity =>
 	entity
-		.oneHasMany('locales', ref => ref.target('PageLocale').ownedBy('page'))
-		.manyHasOne('image', ref => ref.target('Image'))
+		.oneHasMany('locales', ref =>
+			ref
+				.target('PageLocale')
+				.ownedBy('page')
+				.onDelete(Model.OnDelete.cascade)
+		)
+		.manyHasOne('image', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
+		.manyHasOne('category', ref =>
+			ref
+				.target('Category')
+				.onDelete(Model.OnDelete.setNull)
+				.inversedBy('pages')
+		)
 )
 
 builder.entity('PageLocale', entity =>
@@ -204,9 +239,14 @@ builder.entity('PageLocale', entity =>
 		.column('state', col => col.type(Model.ColumnType.Enum, { enumName: 'State' }).notNull())
 		.column('header')
 		.column('perex')
-		.oneHasMany('content', ref => ref.target('Block'))
+		.oneHasMany('content', ref => ref.target('Block').onDelete(Model.OnDelete.cascade))
 		.column('contactUs')
-		.oneHasOne('seo', ref => ref.target('Seo').notNull())
+		.oneHasOne('seo', ref =>
+			ref
+				.target('Seo')
+				.notNull()
+				.onDelete(Model.OnDelete.cascade)
+		)
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.oneHasOne('link', ref =>
 			ref
@@ -215,6 +255,23 @@ builder.entity('PageLocale', entity =>
 				.notNull()
 		)
 		.unique(['page', 'locale'])
+)
+
+// Category + CategoryLocale
+
+builder.entity('Category', entity =>
+	entity.oneHasMany('locales', ref =>
+		ref
+			.target('CategoryLocale', entity =>
+				entity
+					.column('name')
+					.unique(['category', 'locale'])
+					.manyHasOne('locale', ref => ref.target('Locale').notNull())
+			)
+			.onDelete(Model.OnDelete.cascade)
+			.ownedBy('category')
+			.ownerNotNull()
+	)
 )
 
 // Contact
@@ -230,6 +287,7 @@ builder.entity('Contact', entity =>
 			ref
 				.target('ContactLocale')
 				.ownedBy('contact')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 		)
 )
@@ -238,7 +296,12 @@ builder.entity('ContactLocale', entity =>
 	entity
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())
 		.column('header')
-		.oneHasOne('seo', ref => ref.target('Seo').notNull())
+		.oneHasOne('seo', ref =>
+			ref
+				.target('Seo')
+				.notNull()
+				.onDelete(Model.OnDelete.cascade)
+		)
 		.oneHasOne('link', ref =>
 			ref
 				.target('Linkable')
@@ -260,6 +323,7 @@ builder.entity('Place', entity =>
 			ref
 				.target('PlaceLocale')
 				.ownedBy('place')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 		)
 )
@@ -288,6 +352,7 @@ builder.entity('TranslationRoot', entity =>
 			ref
 				.target('Translated')
 				.ownedBy('root')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 		)
 )
@@ -313,6 +378,7 @@ builder.entity('JoinUsRoot', entity =>
 			ref
 				.target('JoinUs')
 				.ownedBy('root')
+				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
 		)
 )

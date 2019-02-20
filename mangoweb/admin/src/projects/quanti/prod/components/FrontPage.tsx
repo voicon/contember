@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { H2 } from '@blueprintjs/core'
 import {
 	Block,
@@ -6,24 +5,23 @@ import {
 	LineBreakBehavior,
 	Mark,
 	RichTextField,
+	SelectField,
 	SortableRepeater,
 	TextAreaField,
-	TextField,
-	SelectField
+	TextField
 } from 'cms-admin'
+import * as React from 'react'
 import { LocaleSideDimension } from '../LocaleSideDimension'
 import { ImageGrid } from './ImageGrid'
-import { Seo } from './Seo'
-import { Person } from './Person'
 import { Link } from './Link'
-import { Image } from './Image'
+import { Medium } from './Medium'
+import { Person } from './Person'
+import { Seo } from './Seo'
 
 export const FrontPage = Component(
 	() => (
 		<>
-			<H2>
-				<Image label="Header image" name="headerImage" />
-			</H2>
+			<Medium label="Header medium" name="headerMedium" />
 			<LocaleSideDimension>
 				<TextAreaField label="Heading" name="$locale.header" />
 				<TextField label="Quote" name="$locale.quote" />
@@ -66,10 +64,6 @@ export const FrontPage = Component(
 			<LocaleSideDimension>
 				<Link name="$locale.link" />
 			</LocaleSideDimension>
-			<H2>People</H2>
-			<SortableRepeater field="people" sortBy="order" removeType="delete">
-				<Person />
-			</SortableRepeater>
 		</>
 	),
 	'FrontPage'

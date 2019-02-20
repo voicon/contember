@@ -1,0 +1,260 @@
+{
+	"modifications": [
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "Video",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "video",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "Medium",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "medium",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEnum",
+			"enumName": "MediumType",
+			"values": [
+				"image",
+				"video"
+			]
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Video",
+			"field": {
+				"name": "url",
+				"columnName": "url",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Video",
+			"owningSide": {
+				"name": "poster",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "poster_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Medium",
+			"field": {
+				"name": "type",
+				"columnName": "type",
+				"nullable": true,
+				"type": "Enum",
+				"columnType": "MediumType",
+				"enumName": "MediumType"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Medium",
+			"owningSide": {
+				"name": "image",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "image_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Medium",
+			"owningSide": {
+				"name": "video",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Video",
+				"joiningColumn": {
+					"columnName": "video_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "Seo",
+			"fieldName": "ogImage",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ImageGrid",
+			"fieldName": "imagePosition1",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ImageGrid",
+			"fieldName": "imagePosition2",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ImageGrid",
+			"fieldName": "imagePosition3",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ImageGrid",
+			"fieldName": "imagePosition4",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ImageGrid",
+			"fieldName": "imagePosition5",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ImageGrid",
+			"fieldName": "imagePosition6",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "Block",
+			"fieldName": "PageLocale",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "MenuItemLocale",
+			"fieldName": "menuItem",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FooterLocale",
+			"fieldName": "footer",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPage",
+			"owningSide": {
+				"name": "headerMedium",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Medium",
+				"joiningColumn": {
+					"columnName": "header_medium_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "removeField",
+			"entityName": "FrontPage",
+			"fieldName": "headerImage"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FrontPageLocale",
+			"fieldName": "frontPage",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "Person",
+			"fieldName": "image",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "PersonLocale",
+			"fieldName": "person",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "Page",
+			"fieldName": "image",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "PageLocale",
+			"fieldName": "page",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "PageLocale",
+			"fieldName": "seo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ContactLocale",
+			"fieldName": "contact",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "ContactLocale",
+			"fieldName": "seo",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "PlaceLocale",
+			"fieldName": "place",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "Translated",
+			"fieldName": "root",
+			"onDelete": "cascade"
+		},
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "JoinUs",
+			"fieldName": "root",
+			"onDelete": "cascade"
+		}
+	]
+}

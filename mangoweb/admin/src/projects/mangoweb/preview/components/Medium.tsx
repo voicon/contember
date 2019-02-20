@@ -1,6 +1,6 @@
-import { AlternativeFields, Component, FieldName, Literal, TextField, TextFieldProps, ToOne } from 'cms-admin'
+import { AlternativeFields, Component, FieldName, Literal, ToOne } from 'cms-admin'
 import * as React from 'react'
-import { ImageField, ImageFieldProps } from './ImageField'
+import { ImageField } from './ImageField'
 import { VideoField } from './VideoField'
 
 export interface MediumProps {
