@@ -100,6 +100,11 @@ export default () => (
 		>
 			<LocaleSideDimension>
 				<TextField label="Label" name="joinUs(locale.slug='$currentLocaleSlug').label" />
+				<SelectField
+					label="Link target"
+					name="joinUs(locale.slug='$currentLocaleSlug').target"
+					options="Linkable.url"
+				/>
 			</LocaleSideDimension>
 		</EditPage>
 
