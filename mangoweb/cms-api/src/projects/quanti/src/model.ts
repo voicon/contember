@@ -80,10 +80,13 @@ builder.entity('Block', entity =>
 		.manyHasOne('category', ref => ref.target('Category').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('numbers', ref => ref.target('Numbers'))
 		.oneHasMany('perks', ref => ref.target('Perk'))
-		.oneHasMany('people', ref => ref.target('BlockPerson', entity =>
-			entity.column('order', col => col.type(Model.ColumnType.Int))
-				.manyHasOne('person', ref => ref.target('Person').onDelete(Model.OnDelete.cascade))
-		))
+		.oneHasMany('people', ref =>
+			ref.target('BlockPerson', entity =>
+				entity
+					.column('order', col => col.type(Model.ColumnType.Int))
+					.manyHasOne('person', ref => ref.target('Person').onDelete(Model.OnDelete.cascade))
+			)
+		)
 )
 
 // Menu
@@ -198,7 +201,12 @@ builder.entity('Page', entity =>
 	entity
 		.oneHasMany('locales', ref => ref.target('PageLocale').ownedBy('page'))
 		.manyHasOne('image', ref => ref.target('Image'))
-		.manyHasOne('category', ref => ref.target('Category').onDelete(Model.OnDelete.setNull).inversedBy('pages'))
+		.manyHasOne('category', ref =>
+			ref
+				.target('Category')
+				.onDelete(Model.OnDelete.setNull)
+				.inversedBy('pages')
+		)
 )
 
 builder.entity('PageLocale', entity =>
@@ -222,13 +230,13 @@ builder.entity('PageLocale', entity =>
 // Category + CategoryLocale
 
 builder.entity('Category', entity =>
-	entity
-		.oneHasMany('locales', ref =>
+	entity.oneHasMany('locales', ref =>
 		ref
-			.target('CategoryLocale', entity => entity
-				.column('name')
-				.unique(['category', 'locale'])
-				.manyHasOne('locale', ref => ref.target('Locale').notNull())
+			.target('CategoryLocale', entity =>
+				entity
+					.column('name')
+					.unique(['category', 'locale'])
+					.manyHasOne('locale', ref => ref.target('Locale').notNull())
 			)
 			.onDelete(Model.OnDelete.cascade)
 			.ownedBy('category')

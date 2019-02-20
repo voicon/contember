@@ -53,7 +53,7 @@ export default () => (
 		</MultiEditPage>
 
 		<MultiEditPage entity="Category" pageName="categories" rendererProps={{ title: 'Categories' }}>
-			<Category/>
+			<Category />
 		</MultiEditPage>
 
 		<ListPage entity="Page" rendererProps={{ title: 'Pages' }}>

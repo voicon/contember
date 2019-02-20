@@ -24,7 +24,7 @@ export const Page = Component(
 			</LocaleSideDimension>
 			<Image label="Image" name="image" />
 			{/*<SelectField label="Category" name="category" options="Category.locales(locale.slug='en').name"/>*/}
-			<SelectField label="Category" name="category" options="Category.id"/>
+			<SelectField label="Category" name="category" options="Category.id" />
 			<LocaleSideDimension>
 				<State name="$locale.state" />
 				<TextAreaField label="Perex" name="$locale.perex" />

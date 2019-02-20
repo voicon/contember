@@ -47,14 +47,10 @@ export const Block = Component(
 						new Literal('People'),
 						'People',
 						<SortableRepeater field="people" sortBy="order">
-							<SelectField label="Person" name="person" options="Person.id"/>
+							<SelectField label="Person" name="person" options="Person.id" />
 						</SortableRepeater>
 					],
-					[
-						new Literal('Category'),
-						'Category',
-						<SelectField label="Category" name="category" options="Category.id"/>
-					],
+					[new Literal('Category'), 'Category', <SelectField label="Category" name="category" options="Category.id" />]
 				]}
 			/>
 		</>
