@@ -1,5 +1,7 @@
 import { H1 } from '@blueprintjs/core'
 import {
+	AvatarField,
+	AvatarSize,
 	Button,
 	CreatePage,
 	EditPage,
@@ -15,6 +17,8 @@ import {
 	RadioField,
 	Repeater,
 	SelectField,
+	Table,
+	TableRenderer,
 	TextField
 } from 'cms-admin'
 import * as React from 'react'
@@ -67,24 +71,41 @@ export default () => (
 		</MultiEditPage>
 		<ListPage
 			entity="Page"
-			rendererProps={{
-				title: 'Pages',
-				beforeContent: (
-					<PageLink
-						change={() => ({ name: 'create_page' })}
-						Component={props => (
-							<Button {...props} Component="a">
-								Create
-							</Button>
-						)}
-					/>
-				)
-			}}
+			renderer={TableRenderer}
+			rendererProps={
+				{
+					title: 'Pages',
+					beforeContent: (
+						<PageLink
+							change={() => ({ name: 'create_page' })}
+							Component={props => (
+								<Button {...props} Component="a">
+									Create
+								</Button>
+							)}
+						/>
+					)
+				} as any
+			}
 		>
-			<LocaleSideDimension>
-				<FieldText name="$locale.header" />
-			</LocaleSideDimension>
-			<PageLinkById change={id => ({ name: 'edit_page', params: { id } })}>Edit</PageLinkById>
+			<Table.Cell>
+				<AvatarField name="locales(locale.slug='cs').header" size={AvatarSize.Size2} />
+			</Table.Cell>
+			<Table.Cell>
+				<LocaleSideDimension>
+					<FieldText name="$locale.header" />
+				</LocaleSideDimension>
+			</Table.Cell>
+			<Table.Cell>
+				<PageLinkById
+					change={id => ({ name: 'edit_page', params: { id } })}
+					Component={props => (
+						<Button {...props} Component="a">
+							Edit
+						</Button>
+					)}
+				/>
+			</Table.Cell>
 		</ListPage>
 
 		<CreatePage entity="Page" rendererProps={{ title: 'Create page' }}>
