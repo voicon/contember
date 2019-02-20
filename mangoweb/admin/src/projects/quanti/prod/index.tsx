@@ -1,5 +1,6 @@
 import { H1 } from '@blueprintjs/core'
 import {
+	Button,
 	CreatePage,
 	EditPage,
 	FieldText,
@@ -8,6 +9,7 @@ import {
 	ListPage,
 	Literal,
 	MultiEditPage,
+	PageLink,
 	PageLinkById,
 	Pages,
 	RadioField,
@@ -16,14 +18,14 @@ import {
 	TextField
 } from 'cms-admin'
 import * as React from 'react'
+import { Category } from './components/Category'
 import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 import { FrontPage } from './components/FrontPage'
 import { MenuItem } from './components/MenuItem'
-import { Category } from './components/Category'
 import { Page } from './components/Page'
-import { Place } from './components/Place'
 import { Person } from './components/Person'
+import { Place } from './components/Place'
 import { SocialNetwork } from './components/SocialNetwork'
 import { Layout } from './Layout'
 import { LocaleSideDimension } from './LocaleSideDimension'
@@ -63,8 +65,22 @@ export default () => (
 		<MultiEditPage entity="Category" pageName="categories" rendererProps={{ title: 'Categories' }}>
 			<Category />
 		</MultiEditPage>
-
-		<ListPage entity="Page" rendererProps={{ title: 'Pages' }}>
+		<ListPage
+			entity="Page"
+			rendererProps={{
+				title: 'Pages',
+				beforeContent: (
+					<PageLink
+						change={() => ({ name: 'create_page' })}
+						Component={props => (
+							<Button {...props} Component="a">
+								Create
+							</Button>
+						)}
+					/>
+				)
+			}}
+		>
 			<LocaleSideDimension>
 				<FieldText name="$locale.header" />
 			</LocaleSideDimension>
