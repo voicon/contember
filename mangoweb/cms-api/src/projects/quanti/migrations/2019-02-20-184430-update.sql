@@ -39,7 +39,9 @@ ALTER TABLE "block"
   ADD CONSTRAINT "fk_block_category_id_fff94e" FOREIGN KEY ("category_id") REFERENCES "category"("id") ON DELETE NO ACTION DEFERRABLE INITIALLY IMMEDIATE;
 CREATE  INDEX  "block_category_id_index" ON "block" ("category_id");
 ALTER TABLE "person"
-  ADD "show_on_front_page" boolean NOT NULL;
+  ADD "show_on_front_page" boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE "person"
+	ALTER "show_on_front_page" DROP DEFAULT;
 ALTER TABLE "person"
   DROP "front_page_id";
 ALTER TABLE "person_locale"
