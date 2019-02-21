@@ -1,5 +1,5 @@
+import { Menu, MenuList, MenuPageLink } from 'cms-admin'
 import * as React from 'react'
-import { Menu, MenuList, MenuPageLink, MenuPageLinkPrimary } from 'cms-admin'
 
 export class SideMenu extends React.Component {
 	render() {
@@ -7,7 +7,7 @@ export class SideMenu extends React.Component {
 			<Menu>
 				<MenuList title="Pages">
 					<MenuPageLink change={() => ({ name: 'edit_frontPage' })}>Front page</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'contact' })}>Contact</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'contact' })}>Contact page</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'categories' })}>Categories</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'list_page' })}>List</MenuPageLink>
 				</MenuList>
