@@ -1,5 +1,8 @@
 import { H1 } from '@blueprintjs/core'
 import {
+	AvatarField,
+	AvatarSize,
+	Button,
 	CreatePage,
 	EditPage,
 	FieldText,
@@ -8,22 +11,25 @@ import {
 	ListPage,
 	Literal,
 	MultiEditPage,
+	PageLink,
 	PageLinkById,
 	Pages,
 	RadioField,
 	Repeater,
 	SelectField,
+	Table,
+	TableRenderer,
 	TextField
 } from 'cms-admin'
 import * as React from 'react'
+import { Category } from './components/Category'
 import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 import { FrontPage } from './components/FrontPage'
 import { MenuItem } from './components/MenuItem'
-import { Category } from './components/Category'
 import { Page } from './components/Page'
-import { Place } from './components/Place'
 import { Person } from './components/Person'
+import { Place } from './components/Place'
 import { SocialNetwork } from './components/SocialNetwork'
 import { Layout } from './Layout'
 import { LocaleSideDimension } from './LocaleSideDimension'
@@ -63,12 +69,43 @@ export default () => (
 		<MultiEditPage entity="Category" pageName="categories" rendererProps={{ title: 'Categories' }}>
 			<Category />
 		</MultiEditPage>
-
-		<ListPage entity="Page" rendererProps={{ title: 'Pages' }}>
-			<LocaleSideDimension>
-				<FieldText name="$locale.header" />
-			</LocaleSideDimension>
-			<PageLinkById change={id => ({ name: 'edit_page', params: { id } })}>Edit</PageLinkById>
+		<ListPage
+			entity="Page"
+			renderer={TableRenderer}
+			rendererProps={
+				{
+					title: 'Pages',
+					beforeContent: (
+						<PageLink
+							change={() => ({ name: 'create_page' })}
+							Component={props => (
+								<Button {...props} Component="a">
+									Create
+								</Button>
+							)}
+						/>
+					)
+				} as any
+			}
+		>
+			<Table.Cell>
+				<AvatarField name="locales(locale.slug='cs').header" size={AvatarSize.Size2} />
+			</Table.Cell>
+			<Table.Cell>
+				<LocaleSideDimension>
+					<FieldText name="$locale.header" />
+				</LocaleSideDimension>
+			</Table.Cell>
+			<Table.Cell>
+				<PageLinkById
+					change={id => ({ name: 'edit_page', params: { id } })}
+					Component={props => (
+						<Button {...props} Component="a">
+							Edit
+						</Button>
+					)}
+				/>
+			</Table.Cell>
 		</ListPage>
 
 		<CreatePage entity="Page" rendererProps={{ title: 'Create page' }}>

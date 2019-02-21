@@ -9,7 +9,7 @@ import {
 	ToMany,
 	ToManyProps
 } from '../../coreComponents'
-import { EntityAccessor, EntityCollectionAccessor, Environment } from '../../dao'
+import { EntityAccessor, EntityCollectionAccessor, EntityForRemovalAccessor, Environment } from '../../dao'
 import { QueryLanguage } from '../../queryLanguage'
 import { AddNewButton, RemoveButton, RemoveButtonProps } from '../buttons'
 
@@ -139,8 +139,13 @@ namespace Repeater {
 		}
 	}
 
-	export const filterEntities = (entities: EntityCollectionAccessor): EntityAccessor[] => {
-		return entities.entities.filter((item): item is EntityAccessor => item instanceof EntityAccessor)
+	export const filterEntities = (
+		entities: EntityCollectionAccessor,
+		excludeUnpersisted: boolean = false
+	): EntityAccessor[] => {
+		return entities.entities.filter(
+			(item): item is EntityAccessor => item instanceof EntityAccessor && (!excludeUnpersisted || item.isPersisted())
+		)
 	}
 }
 
