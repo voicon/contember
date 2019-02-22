@@ -31,7 +31,13 @@ export const Page = Component(
 				<TextField large={true} label="Header" name="$locale.header" />
 			</LocaleSideDimension>
 			<Image label="Image" name="image" />
-			<SelectField label="Category" name="category" options="Category.locales(locale.slug='en').name" />
+			<SelectField
+				allowNull={true}
+				firstOptionCaption="No category"
+				label="Category"
+				name="category"
+				options="Category.locales(locale.slug='cs').name"
+			/>
 			<LocaleSideDimension>
 				<State name="$locale.state" />
 				<TextAreaField label="Perex" name="$locale.perex" />
