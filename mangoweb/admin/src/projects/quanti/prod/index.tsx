@@ -68,22 +68,20 @@ export default () => (
 		<ListPage
 			entity="Page"
 			renderer={TableRenderer}
-			rendererProps={
-				{
-					title: 'Pages',
-					tableHeader: <PageListHeader />,
-					beforeContent: (
-						<PageLink
-							change={() => ({ name: 'create_page' })}
-							Component={props => (
-								<Button {...props} Component="a">
-									Create
-								</Button>
-							)}
-						/>
-					)
-				} as any
-			}
+			rendererProps={{
+				title: 'Pages',
+				tableHeader: <PageListHeader />,
+				beforeContent: (
+					<PageLink
+						change={() => ({ name: 'create_page' })}
+						Component={props => (
+							<Button {...props} Component="a">
+								Create
+							</Button>
+						)}
+					/>
+				)
+			}}
 		>
 			<PageListCells />
 		</ListPage>
@@ -170,11 +168,9 @@ export default () => (
 			entity="ContactMessage"
 			pageName="contactMessages"
 			renderer={TableRenderer}
-			rendererProps={
-				{
-					title: 'Contact messages'
-				} as any
-			}
+			rendererProps={{
+				title: 'Contact messages'
+			}}
 		>
 			<Table.Cell>
 				<FieldText name="sentAt" formatter={val => (val ? new Date(val).toLocaleString() : '')} />
