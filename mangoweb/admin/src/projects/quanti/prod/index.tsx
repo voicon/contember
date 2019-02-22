@@ -3,6 +3,7 @@ import {
 	Button,
 	CreatePage,
 	EditPage,
+	FieldText,
 	GenericPage,
 	GraphQlBuilder,
 	ListPage,
@@ -12,6 +13,7 @@ import {
 	Pages,
 	Repeater,
 	SelectField,
+	Table,
 	TableRenderer,
 	TextField
 } from 'cms-admin'
@@ -162,5 +164,26 @@ export default () => (
 				<TextField label="Translated" name="translated" />
 			</Repeater>
 		</EditPage>
+
+		<ListPage
+			entity="ContactMessage"
+			pageName="contactMessages"
+			renderer={TableRenderer}
+			rendererProps={
+				{
+					title: 'Contact messages'
+				} as any
+			}
+		>
+			<Table.Cell>
+				<FieldText name="sentAt" formatter={val => (val ? new Date(val).toLocaleString() : '')} />
+			</Table.Cell>
+			<Table.Cell>
+				<FieldText name="contact" />
+			</Table.Cell>
+			<Table.Cell>
+				<FieldText name="message" />
+			</Table.Cell>
+		</ListPage>
 	</Pages>
 )

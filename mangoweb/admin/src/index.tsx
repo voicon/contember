@@ -72,7 +72,8 @@ const reactRoot = (config: any) => (
 					footer: { path: '/footer' },
 					joinUs: { path: '/joinUs' },
 					translations: { path: '/translations' },
-					contact: { path: '/contact' }
+					contact: { path: '/contact' },
+					contactMessages: { path: '/contact-messages' }
 				}
 			}
 		]}
