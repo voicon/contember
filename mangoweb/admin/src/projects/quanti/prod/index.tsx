@@ -14,7 +14,6 @@ import {
 	PageLink,
 	PageLinkById,
 	Pages,
-	RadioField,
 	Repeater,
 	SelectField,
 	Table,
@@ -171,10 +170,10 @@ export default () => (
 		>
 			<Repeater field="translated">
 				<SelectField name="locale" label="Locale" options="Locale.slug" />
-				<RadioField
+				<SelectField
 					name="translatable"
 					label="String"
-					inline={true}
+					//inline={true}
 					options={[
 						[new Literal('emailContent'), 'emailContent'],
 						[new Literal('emailContact'), 'emailContact'],

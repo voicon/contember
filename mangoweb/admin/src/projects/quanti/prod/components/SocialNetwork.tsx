@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Component, FieldName, RadioField, Literal } from 'cms-admin'
+import { Component, FieldName, SelectField, Literal } from 'cms-admin'
 
 interface SocialNetworkProps {
 	name: FieldName
@@ -7,10 +7,10 @@ interface SocialNetworkProps {
 
 export const SocialNetwork = Component<SocialNetworkProps>(
 	props => (
-		<RadioField
+		<SelectField
 			name={props.name}
 			label="Social network"
-			inline={true}
+			//inline={true}
 			options={[
 				[new Literal('Facebook'), 'Facebook'],
 				[new Literal('Twitter'), 'Twitter'],

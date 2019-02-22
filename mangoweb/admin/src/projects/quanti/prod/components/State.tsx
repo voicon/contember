@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Component, FieldName, Literal, RadioField } from 'cms-admin'
+import { Component, FieldName, Literal, SelectField } from 'cms-admin'
 
 interface StateProps {
 	name: FieldName
@@ -8,10 +8,10 @@ interface StateProps {
 export const State = Component<StateProps>(
 	props => (
 		<>
-			<RadioField
+			<SelectField
 				name={props.name}
 				label="State"
-				inline={true}
+				//inline={true}
 				options={[
 					[new Literal('Draft'), 'Draft'],
 					[new Literal('ToBePublished'), 'To be published'],
