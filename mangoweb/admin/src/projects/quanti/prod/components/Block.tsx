@@ -50,7 +50,11 @@ export const Block = Component(
 							<SelectField label="Person" name="person" options="Person.locales(locale.slug='en').name" />
 						</SortableRepeater>
 					],
-					[new Literal('Category'), 'Category', <SelectField label="Category" name="category" options="Category.locales(locale.slug='en').name"/>]
+					[
+						new Literal('Category'),
+						'Category',
+						<SelectField label="Category" name="category" options="Category.locales(locale.slug='en').name" />
+					]
 				]}
 			/>
 		</>
