@@ -11,7 +11,7 @@ export const State = Component<StateProps>(
 			<SelectField
 				name={props.name}
 				label="State"
-				inline={true}
+				//inline={true}
 				options={[
 					[new Literal('Draft'), 'Draft'],
 					[new Literal('ToBePublished'), 'To be published'],

@@ -10,7 +10,7 @@ export const SocialNetwork = Component<SocialNetworkProps>(
 		<SelectField
 			name={props.name}
 			label="Social network"
-			inline={true}
+			//inline={true}
 			options={[
 				[new Literal('Facebook'), 'Facebook'],
 				[new Literal('Twitter'), 'Twitter'],
