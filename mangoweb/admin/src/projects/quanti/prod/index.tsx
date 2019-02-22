@@ -158,7 +158,8 @@ export default () => (
 					options={[
 						[new Literal('emailContent'), 'emailContent'],
 						[new Literal('emailContact'), 'emailContact'],
-						[new Literal('emailSend'), 'emailSend']
+						[new Literal('emailSend'), 'emailSend'],
+						[new Literal('emailSentMessage'), 'emailSentMessage']
 					]}
 				/>
 				<TextField label="Translated" name="translated" />

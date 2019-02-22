@@ -357,7 +357,7 @@ builder.entity('TranslationRoot', entity =>
 		)
 )
 
-builder.enum('Translatable', ['emailContent', 'emailContact', 'emailSend'])
+builder.enum('Translatable', ['emailContent', 'emailContact', 'emailSend', 'emailSentMessage'])
 builder.entity('Translated', entity =>
 	entity
 		.manyHasOne('locale', ref => ref.target('Locale').notNull())

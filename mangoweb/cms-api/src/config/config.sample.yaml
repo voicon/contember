@@ -60,7 +60,7 @@ projects:
         - uuid: bac2b042-6b65-47fd-9cb6-ba04a589c241
           slug: prod
           name: Production
-          migration: '2019-02-22-135936'
+          migration: '2019-02-22-170546'
       dbCredentials:
         host: '%env.QUANTI_DB_HOST%'
         port: '5432'

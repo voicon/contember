@@ -1,0 +1,14 @@
+{
+	"modifications": [
+		{
+			"modification": "updateEnum",
+			"enumName": "Translatable",
+			"values": [
+				"emailContent",
+				"emailContact",
+				"emailSend",
+				"emailSentMessage"
+			]
+		}
+	]
+}
