@@ -391,6 +391,13 @@ builder.entity('JoinUs', entity =>
 		.unique(['root', 'locale'])
 )
 
+builder.entity('ContactMessage', entity =>
+	entity
+		.column('contact')
+		.column('message')
+		.column('sentAt', col => col.type(Model.ColumnType.DateTime))
+)
+
 const model = builder.buildSchema()
 const acl: Acl.Schema = {
 	variables: {},

@@ -1,0 +1,56 @@
+{
+	"modifications": [
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactMessage",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_message",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactMessage",
+			"field": {
+				"name": "contact",
+				"columnName": "contact",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactMessage",
+			"field": {
+				"name": "message",
+				"columnName": "message",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactMessage",
+			"field": {
+				"name": "sentAt",
+				"columnName": "sent_at",
+				"nullable": true,
+				"type": "DateTime",
+				"columnType": "timestamp"
+			}
+		}
+	]
+}

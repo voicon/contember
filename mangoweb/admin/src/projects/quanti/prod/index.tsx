@@ -1,7 +1,5 @@
 import { H1 } from '@blueprintjs/core'
 import {
-	AvatarField,
-	AvatarSize,
 	Button,
 	CreatePage,
 	EditPage,
@@ -12,7 +10,6 @@ import {
 	Literal,
 	MultiEditPage,
 	PageLink,
-	PageLinkById,
 	Pages,
 	Repeater,
 	SelectField,
@@ -26,7 +23,7 @@ import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 import { FrontPage } from './components/FrontPage'
 import { MenuItem } from './components/MenuItem'
-import { Page } from './components/Page'
+import { Page, PageListCells, PageListHeader } from './components/Page'
 import { Person } from './components/Person'
 import { Place } from './components/Place'
 import { SocialNetwork } from './components/SocialNetwork'
@@ -74,6 +71,7 @@ export default () => (
 			rendererProps={
 				{
 					title: 'Pages',
+					tableHeader: <PageListHeader />,
 					beforeContent: (
 						<PageLink
 							change={() => ({ name: 'create_page' })}
@@ -87,24 +85,7 @@ export default () => (
 				} as any
 			}
 		>
-			<Table.Cell>
-				<AvatarField name="locales(locale.slug='cs').header" size={AvatarSize.Size2} />
-			</Table.Cell>
-			<Table.Cell>
-				<LocaleSideDimension>
-					<FieldText name="$locale.header" />
-				</LocaleSideDimension>
-			</Table.Cell>
-			<Table.Cell>
-				<PageLinkById
-					change={id => ({ name: 'edit_page', params: { id } })}
-					Component={props => (
-						<Button {...props} Component="a">
-							Edit
-						</Button>
-					)}
-				/>
-			</Table.Cell>
+			<PageListCells />
 		</ListPage>
 
 		<CreatePage entity="Page" rendererProps={{ title: 'Create page' }}>
@@ -183,5 +164,26 @@ export default () => (
 				<TextField label="Translated" name="translated" />
 			</Repeater>
 		</EditPage>
+
+		<ListPage
+			entity="ContactMessage"
+			pageName="contactMessages"
+			renderer={TableRenderer}
+			rendererProps={
+				{
+					title: 'Contact messages'
+				} as any
+			}
+		>
+			<Table.Cell>
+				<FieldText name="sentAt" formatter={val => (val ? new Date(val).toLocaleString() : '')} />
+			</Table.Cell>
+			<Table.Cell>
+				<FieldText name="contact" />
+			</Table.Cell>
+			<Table.Cell>
+				<FieldText name="message" />
+			</Table.Cell>
+		</ListPage>
 	</Pages>
 )
