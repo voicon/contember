@@ -1,22 +1,17 @@
 import { H1 } from '@blueprintjs/core'
 import {
-	AvatarField,
-	AvatarSize,
 	Button,
 	CreatePage,
 	EditPage,
-	FieldText,
 	GenericPage,
 	GraphQlBuilder,
 	ListPage,
 	Literal,
 	MultiEditPage,
 	PageLink,
-	PageLinkById,
 	Pages,
 	Repeater,
 	SelectField,
-	Table,
 	TableRenderer,
 	TextField
 } from 'cms-admin'
@@ -26,7 +21,7 @@ import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 import { FrontPage } from './components/FrontPage'
 import { MenuItem } from './components/MenuItem'
-import { Page } from './components/Page'
+import { Page, PageListCells, PageListHeader } from './components/Page'
 import { Person } from './components/Person'
 import { Place } from './components/Place'
 import { SocialNetwork } from './components/SocialNetwork'
@@ -74,6 +69,7 @@ export default () => (
 			rendererProps={
 				{
 					title: 'Pages',
+					tableHeader: <PageListHeader />,
 					beforeContent: (
 						<PageLink
 							change={() => ({ name: 'create_page' })}
@@ -87,24 +83,7 @@ export default () => (
 				} as any
 			}
 		>
-			<Table.Cell>
-				<AvatarField name="locales(locale.slug='cs').header" size={AvatarSize.Size2} />
-			</Table.Cell>
-			<Table.Cell>
-				<LocaleSideDimension>
-					<FieldText name="$locale.header" />
-				</LocaleSideDimension>
-			</Table.Cell>
-			<Table.Cell>
-				<PageLinkById
-					change={id => ({ name: 'edit_page', params: { id } })}
-					Component={props => (
-						<Button {...props} Component="a">
-							Edit
-						</Button>
-					)}
-				/>
-			</Table.Cell>
+			<PageListCells />
 		</ListPage>
 
 		<CreatePage entity="Page" rendererProps={{ title: 'Create page' }}>

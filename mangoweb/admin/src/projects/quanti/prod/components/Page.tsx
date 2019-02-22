@@ -1,13 +1,21 @@
 import * as React from 'react'
 import {
-	Component,
-	TextField,
-	SortableRepeater,
-	RichTextField,
+	Avatar,
+	AvatarField,
+	AvatarSize,
 	Block as BlockType,
+	Button,
+	Component,
+	FieldText,
 	Mark,
+	PageLink,
+	PageLinkById,
+	RichTextField,
+	SelectField,
+	SortableRepeater,
+	Table,
 	TextAreaField,
-	SelectField
+	TextField
 } from 'cms-admin'
 import { Image } from './Image'
 import { LocaleSideDimension } from '../LocaleSideDimension'
@@ -41,4 +49,59 @@ export const Page = Component(
 		</>
 	),
 	'Page'
+)
+
+export const PageListHeader = Component(
+	() => (
+		<>
+			<Table.Row>
+				<Table.Cell>
+					<Avatar size={AvatarSize.Size2}>CO</Avatar>
+				</Table.Cell>
+				<Table.Cell>Contact</Table.Cell>
+				<Table.Cell />
+				<Table.Cell>
+					<PageLink
+						change={() => ({ name: 'contact' })}
+						Component={props => (
+							<Button {...props} Component="a">
+								Edit
+							</Button>
+						)}
+					/>
+				</Table.Cell>
+			</Table.Row>
+		</>
+	),
+	'PageListHeader'
+)
+
+export const PageListCells = Component(
+	() => (
+		<>
+			<Table.Cell>
+				<AvatarField name="locales(locale.slug='en').header" size={AvatarSize.Size2} />
+			</Table.Cell>
+			<Table.Cell>
+				<LocaleSideDimension>
+					<FieldText name="$locale.header" />
+				</LocaleSideDimension>
+			</Table.Cell>
+			<Table.Cell>
+				<FieldText name="category.locales(locale.slug='en').name" />
+			</Table.Cell>
+			<Table.Cell>
+				<PageLinkById
+					change={id => ({ name: 'edit_page', params: { id } })}
+					Component={props => (
+						<Button {...props} Component="a">
+							Edit
+						</Button>
+					)}
+				/>
+				{/*<RemoveButton removeType={'delete'}/>*/}
+			</Table.Cell>
+		</>
+	),
+	'PageListCells'
 )
