@@ -10,6 +10,7 @@ import {
 	Mark,
 	PageLink,
 	PageLinkById,
+	RemoveButton,
 	RichTextField,
 	SelectField,
 	SortableRepeater,
@@ -105,7 +106,7 @@ export const PageListCells = Component(
 						</Button>
 					)}
 				/>
-				{/*<RemoveButton removeType={'delete'}/>*/}
+				<RemoveButton removeType={'delete'} immediatePersist={true} />
 			</Table.Cell>
 		</>
 	),
