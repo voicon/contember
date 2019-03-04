@@ -1,12 +1,13 @@
 import { GraphQlBuilder } from 'cms-client'
+import { assertNever } from 'cms-common'
 import * as React from 'react'
+import { DataTreeMutationState } from '../../../state/dataTrees'
 import { FieldName, PRIMARY_KEY_NAME, Scalar } from '../../bindingTypes'
 import {
-	DataContext,
-	DataContextValue,
 	EnforceSubtypeRelation,
 	EntityListDataProvider,
 	Field,
+	FieldMetadata,
 	Props,
 	SyntheticChildrenProvider,
 	ToOne
@@ -16,6 +17,7 @@ import {
 	DataBindingError,
 	EntityAccessor,
 	EntityCollectionAccessor,
+	EntityForRemovalAccessor,
 	Environment,
 	FieldAccessor,
 	Literal,
@@ -30,13 +32,14 @@ export interface ChoiceFieldPublicProps {
 	name: FieldName
 }
 
+export interface ChoiceFieldMetadata extends Pick<FieldMetadata, Exclude<keyof FieldMetadata, 'data'>> {
+	data: ChoiceField.Data<ChoiceField.DynamicValue | ChoiceField.StaticValue>
+	currentValue: ChoiceField.ValueRepresentation | null
+	onChange: (newValue: ChoiceField.ValueRepresentation) => void
+}
+
 export interface ChoiceFieldBaseProps extends ChoiceFieldPublicProps {
-	children: (
-		data: ChoiceField.Data<ChoiceField.DynamicValue | ChoiceField.StaticValue>,
-		currentValue: ChoiceField.ValueRepresentation | null,
-		onChange: (newValue: ChoiceField.ValueRepresentation) => void,
-		environment: Environment
-	) => React.ReactNode
+	children: (metadata: ChoiceFieldMetadata) => React.ReactNode
 }
 
 export interface ChoiceFieldProps extends ChoiceFieldBaseProps {
@@ -49,11 +52,9 @@ class ChoiceField extends React.PureComponent<ChoiceFieldProps> {
 	public render() {
 		return (
 			<Field.DataRetriever name={this.props.name}>
-				{(fieldName, data, environment) => {
-					const commonProps = {
-						fieldName,
-						data,
-						environment,
+				{rawMetadata => {
+					const commonProps: ChoiceField.InnerBaseProps = {
+						rawMetadata,
 						children: this.props.children,
 						name: this.props.name
 					}
@@ -123,9 +124,7 @@ namespace ChoiceField {
 	export type Data<ActualValue extends Environment.Value = string> = Array<[ValueRepresentation, Label, ActualValue]>
 
 	export interface InnerBaseProps extends ChoiceFieldBaseProps {
-		fieldName: FieldName
-		data: DataContextValue
-		environment: Environment
+		rawMetadata: Field.RawMetadata
 	}
 
 	export interface StaticProps extends InnerBaseProps {
@@ -141,13 +140,14 @@ namespace ChoiceField {
 				return null
 			}
 
+			const environment = this.props.rawMetadata.environment
 			const options: Array<[GraphQlBuilder.Literal | Scalar, Label]> = this.isLiteralStaticMode(rawOptions)
-				? this.normalizeLiteralStaticOptions(rawOptions, this.props.environment)
-				: this.normalizeScalarStaticOptions(rawOptions, this.props.environment)
+				? this.normalizeLiteralStaticOptions(rawOptions, environment)
+				: this.normalizeScalarStaticOptions(rawOptions, environment)
 
 			return (
-				<Field name={this.props.fieldName}>
-					{(data: FieldAccessor): React.ReactNode => {
+				<Field name={this.props.rawMetadata.fieldName}>
+					{({ data, ...otherMetadata }): React.ReactNode => {
 						const currentValue: ChoiceField.ValueRepresentation = options.findIndex(([value]) => {
 							return (
 								data.hasValue(value) ||
@@ -157,16 +157,16 @@ namespace ChoiceField {
 							)
 						}, null)
 
-						return children(
-							options.map(
+						return children({
+							data: options.map(
 								(item, i): [ChoiceField.ValueRepresentation, Label, ChoiceField.StaticValue] => [i, item[1], item[0]]
 							),
-							currentValue === -1 ? null : currentValue,
-							(newValue: ChoiceField.ValueRepresentation) => {
+							currentValue: currentValue === -1 ? null : currentValue,
+							onChange: (newValue: ChoiceField.ValueRepresentation) => {
 								data.onChange && data.onChange(options[newValue][0])
 							},
-							this.props.environment
-						)
+							...otherMetadata
+						})
 					}}
 				</Field>
 			)
@@ -214,7 +214,7 @@ namespace ChoiceField {
 
 	export class Dynamic extends React.PureComponent<DynamicProps> {
 		public render() {
-			const data = this.props.data
+			const data = this.props.rawMetadata.data
 
 			if (!(data instanceof EntityAccessor)) {
 				throw new DataBindingError('Corrupted data')
@@ -223,14 +223,16 @@ namespace ChoiceField {
 			const { fieldName, toOneProps } = Parser.parseQueryLanguageExpression(
 				this.props.options,
 				Parser.EntryPoint.QualifiedFieldList,
-				this.props.environment
+				this.props.rawMetadata.environment
 			)
 
 			const fieldAccessor = data.data.getTreeRoot(fieldName)
-			const currentValueEntity = data.data.getField(this.props.fieldName)
+			const currentValueEntity = data.data.getField(this.props.rawMetadata.fieldName)
 
-			// TODO handle when currentValueEntity is disconnected
-			if (!(fieldAccessor instanceof AccessorTreeRoot) || !(currentValueEntity instanceof EntityAccessor)) {
+			if (
+				!(fieldAccessor instanceof AccessorTreeRoot) ||
+				!(currentValueEntity instanceof EntityAccessor || currentValueEntity instanceof EntityForRemovalAccessor)
+			) {
 				throw new DataBindingError('Corrupted data')
 			}
 
@@ -252,7 +254,7 @@ namespace ChoiceField {
 					const field = entity.data.getField(
 						props.field,
 						ReferenceMarker.ExpectedCount.UpToOne,
-						VariableInputTransformer.transformFilter(props.filter, this.props.environment),
+						VariableInputTransformer.transformFilter(props.filter, this.props.rawMetadata.environment),
 						props.reducedBy
 					)
 
@@ -265,11 +267,19 @@ namespace ChoiceField {
 				optionEntities.push(entity)
 			}
 
-			const currentKey = currentValueEntity.getKey()
-			const currentValue: ChoiceField.ValueRepresentation = filteredData.findIndex(entity => {
-				const key = entity.getPersistedKey()
-				return !!key && key === currentKey
-			})
+			let currentValue: ChoiceField.ValueRepresentation
+
+			if (currentValueEntity instanceof EntityAccessor) {
+				const currentKey = currentValueEntity.getKey()
+				currentValue = filteredData.findIndex(entity => {
+					const key = entity.getPersistedKey()
+					return !!key && key === currentKey
+				})
+			} else if (currentValueEntity instanceof EntityForRemovalAccessor) {
+				currentValue = -1
+			} else {
+				return assertNever(currentValueEntity)
+			}
 			const normalizedData = optionEntities.map(
 				(item, i): [ChoiceField.ValueRepresentation, Label, ChoiceField.DynamicValue] => {
 					const field = item.data.getField(fieldName)
@@ -279,18 +289,21 @@ namespace ChoiceField {
 				}
 			)
 
-			return this.props.children(
-				normalizedData,
-				currentValue === -1 ? null : currentValue,
-				(newValue: ChoiceField.ValueRepresentation) => {
-					if (newValue === -1 && currentValueEntity.remove) {
-						currentValueEntity.remove(EntityAccessor.RemovalType.Disconnect)
+			return this.props.children({
+				...this.props.rawMetadata,
+				data: normalizedData,
+				currentValue: currentValue === -1 ? null : currentValue,
+				onChange: (newValue: ChoiceField.ValueRepresentation) => {
+					if (newValue === -1) {
+						if (currentValueEntity instanceof EntityAccessor && currentValueEntity.remove) {
+							currentValueEntity.remove(EntityAccessor.RemovalType.Disconnect)
+						}
 					} else {
 						currentValueEntity.replaceWith(filteredData[newValue])
 					}
 				},
-				this.props.environment
-			)
+				fieldName: fieldName
+			})
 		}
 	}
 }

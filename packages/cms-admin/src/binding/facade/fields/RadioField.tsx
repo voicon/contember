@@ -3,7 +3,7 @@ import * as React from 'react'
 import { FormGroup } from '../../../components'
 import { FieldName } from '../../bindingTypes'
 import { Environment } from '../../dao'
-import { Component } from '../Component'
+import { Component } from '../aux'
 import { ChoiceField, ChoiceFieldProps } from './ChoiceField'
 
 export interface RadioFieldPublicProps {
@@ -21,7 +21,7 @@ export type RadioFieldProps = RadioFieldPublicProps & RadioFieldInternalProps
 class RadioField extends Component<RadioFieldProps>(props => {
 	return (
 		<ChoiceField name={props.name} options={props.options}>
-			{(data, currentValue, onChange, environment) => {
+			{({ data, currentValue, onChange, environment }) => {
 				return (
 					<RadioField.RadioFieldInner
 						name={props.name}

@@ -2,11 +2,12 @@ import { combineReducers } from 'redux'
 import State from '../state'
 import Auth from './auth'
 import Content from './content'
+import DataTrees from './dataTrees'
 import ProjectsConfigs from './projectsConfigs'
 import Request from './request'
-import View from './view'
-import Upload from './upload'
 import Toasts from './toasts'
+import Upload from './upload'
+import View from './view'
 
 export default combineReducers<State>({
 	request: Request,
@@ -15,5 +16,6 @@ export default combineReducers<State>({
 	content: Content,
 	projectsConfigs: ProjectsConfigs,
 	upload: Upload,
-	toasts: Toasts
+	toasts: Toasts,
+	dataTrees: DataTrees
 })
