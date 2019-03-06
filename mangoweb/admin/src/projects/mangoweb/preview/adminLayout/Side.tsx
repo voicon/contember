@@ -1,4 +1,3 @@
-import { GraphQlBuilder } from 'cms-client'
 import * as React from 'react'
 import { Menu, MenuList, MenuPageLink } from 'cms-admin'
 

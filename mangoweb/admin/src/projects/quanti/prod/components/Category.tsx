@@ -1,4 +1,4 @@
-import { Component, SelectField, TextField } from 'cms-admin'
+import { Component, TextField } from 'cms-admin'
 import * as React from 'react'
 import { LocaleSideDimension } from '../LocaleSideDimension'
 

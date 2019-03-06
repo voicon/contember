@@ -1,7 +1,6 @@
 import {
 	EditPage,
 	EntityListDataProvider,
-	Literal,
 	Page,
 	Pages,
 	Repeater,
