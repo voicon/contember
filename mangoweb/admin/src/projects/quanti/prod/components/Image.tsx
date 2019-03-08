@@ -1,5 +1,5 @@
+import { Component, FieldName, ImageUploadField } from 'cms-admin'
 import * as React from 'react'
-import { Component, FieldName, UploadField } from 'cms-admin'
 
 export interface ImageProps {
 	name: FieldName
@@ -7,6 +7,6 @@ export interface ImageProps {
 }
 
 export const Image = Component<ImageProps>(
-	props => <UploadField label={`${props.label || 'Image'}: url`} name={`${props.name}.url`} />,
+	props => <ImageUploadField label={`${props.label || 'Image'}: url`} name={`${props.name}.url`} />,
 	'Image'
 )

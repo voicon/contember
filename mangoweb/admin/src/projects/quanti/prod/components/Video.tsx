@@ -1,5 +1,5 @@
+import { Component, FieldName, VideoUploadField } from 'cms-admin'
 import * as React from 'react'
-import { Component, FieldName, UploadField } from 'cms-admin'
 
 export interface VideoProps {
 	name: FieldName
@@ -7,6 +7,6 @@ export interface VideoProps {
 }
 
 export const Video = Component<VideoProps>(
-	props => <UploadField label={`${props.label || 'Video'}: url`} name={`${props.name}.url`} />,
+	props => <VideoUploadField label={`${props.label || 'Video'}: url`} name={`${props.name}.url`} />,
 	'Image'
 )
