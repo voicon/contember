@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Button } from '@blueprintjs/core'
 import { IconNames } from '@blueprintjs/icons'
 import { LayoutDefault, DimensionsSwitcher } from 'cms-admin'
 import { SideMenu } from './SideMenu'

@@ -6,7 +6,6 @@ import {
 	Mark,
 	RichTextField,
 	SelectField,
-	SortableRepeater,
 	TextAreaField,
 	TextField
 } from 'cms-admin'
@@ -15,7 +14,6 @@ import { LocaleSideDimension } from '../LocaleSideDimension'
 import { ImageGrid } from './ImageGrid'
 import { Link } from './Link'
 import { Medium } from './Medium'
-import { Person } from './Person'
 import { Seo } from './Seo'
 
 export const FrontPage = Component(
