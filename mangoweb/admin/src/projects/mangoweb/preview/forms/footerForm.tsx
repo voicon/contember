@@ -20,7 +20,7 @@ export const footerForm = (
 
 		<H2>In-house videos</H2>
 		<SortableRepeater field="inHouseVideos" sortBy="order" removeType="delete">
-			<TextField name="src" label="Video URL" />
+			<TextField name="src" label="YouTube video URL" />
 			<ImageField name="poster" label="Video poster image" />
 		</SortableRepeater>
 	</>

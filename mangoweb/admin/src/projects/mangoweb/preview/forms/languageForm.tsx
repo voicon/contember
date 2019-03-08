@@ -5,5 +5,6 @@ export const languageForm = (
 	<>
 		<TextField name="slug" label="Slug" />
 		<TextField name="name" label="Name" />
+		<TextField name="switchToThis" label="Switch to this language" />
 	</>
 )

@@ -5,7 +5,8 @@ import { Medium } from '../components/Medium'
 
 export const whatWeDoForm = (
 	<>
-		<TextField name="activity" label="What we do" />
+		<TextAreaField name="activity" label="What we do" />
+		<TextField name="urlSlug" label="URL" />
 		<ImageField name="featuredPhoto" label="Featured image" />
 		<VideoField name="featuredVideo" title="Featured video" />
 		<VideoField name="boomerangVideo" title="Boomerang video" />

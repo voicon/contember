@@ -8,6 +8,7 @@ export const personForm = (
 		<H2>Basics</H2>
 		<TextField name="shortName" label="Short name" />
 		<TextField name="longName" label="Full name" />
+		<TextField name="urlSlug" label="URL" />
 		<LocaleSideDimension>
 			<TextField name="$locale.position" label="Position" />
 			<TextAreaField name="$locale.bio" label="Short bio" />

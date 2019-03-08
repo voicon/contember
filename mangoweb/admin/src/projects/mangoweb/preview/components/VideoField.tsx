@@ -1,5 +1,5 @@
 import { Card, H3 } from '@blueprintjs/core'
-import { Component, TextField } from 'cms-admin'
+import { Component, TextField, VideoUploadField } from 'cms-admin'
 import * as React from 'react'
 import { ImageField } from './ImageField'
 
@@ -14,7 +14,7 @@ export const VideoField = Component(
 			return (
 				<Card>
 					<H3>{props.title}</H3>
-					<TextField name={`${props.name}.src`} label="Video URL" />
+					<VideoUploadField name={`${props.name}.src`} label="Video" />
 					<ImageField name={`${props.name}.poster`} label="Video poster image" />
 				</Card>
 			)

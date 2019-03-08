@@ -25,7 +25,10 @@ builder.entity('Medium', entity =>
 )
 
 builder.entity('Language', entity =>
-	entity.column('slug', column => column.type(Model.ColumnType.String).unique()).column('name')
+	entity
+		.column('slug', column => column.type(Model.ColumnType.String).unique())
+		.column('name')
+		.column('switchToThis')
 )
 
 builder.entity('PageSeo', entity =>
@@ -191,6 +194,7 @@ builder.entity('WhatWeDo', entity =>
 		.oneHasOne('featuredVideo', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
 		.oneHasOne('boomerangVideo', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
 		.column('descriptionHeading')
+		.column('urlSlug')
 		.oneHasMany('description', relation => relation.target('WhatWeDoDescription').onDelete(Model.OnDelete.cascade))
 )
 
@@ -280,6 +284,7 @@ builder.entity('PersonLocale', entity =>
 		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('position')
 		.column('bio')
+		.column('urlSlug')
 )
 
 // **************************************************** REFERENCES *****************************************************
