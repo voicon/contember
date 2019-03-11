@@ -74,7 +74,8 @@ const reactRoot = (config: any) => (
 					translations: { path: '/translations' },
 					contact: { path: '/contact' },
 					contactMessages: { path: '/contact-messages' },
-					diff: { path: '/diff' }
+					diff: { path: '/diff' },
+					diff_stage: { path: '/diff/:targetStage' }
 				}
 			}
 		]}
