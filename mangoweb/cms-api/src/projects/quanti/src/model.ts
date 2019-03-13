@@ -200,6 +200,7 @@ builder.entity('Person', entity =>
 		.column('order', col => col.type(Model.ColumnType.Int))
 		.manyHasOne('image', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
 		.column('showOnFrontPage', col => col.type(Model.ColumnType.Bool).notNull())
+		.column('email')
 		.oneHasMany('locales', ref =>
 			ref
 				.target('PersonLocale')

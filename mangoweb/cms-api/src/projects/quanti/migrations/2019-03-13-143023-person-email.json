@@ -1,0 +1,15 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "Person",
+			"field": {
+				"name": "email",
+				"columnName": "email",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		}
+	]
+}
