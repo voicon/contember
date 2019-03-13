@@ -7,6 +7,7 @@ export const Person = Component(
 	() => (
 		<>
 			<Image label="Image" name="image" />
+			<TextField label="Email" name="email" />
 			<CheckboxField label="Show on front page" name="showOnFrontPage" />
 			<LocaleSideDimension>
 				<TextField label="Quote" name="$locale.quote" />
