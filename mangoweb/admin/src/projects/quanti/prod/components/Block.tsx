@@ -47,13 +47,13 @@ export const Block = Component(
 						new Literal('People'),
 						'People',
 						<SortableRepeater field="people" sortBy="order">
-							<SelectField label="Person" name="person" options="Person.locales(locale.slug='en').name" />
+							<SelectField label="Person" name="person" options="Person.locales(locale.slug='cs').name" />
 						</SortableRepeater>
 					],
 					[
 						new Literal('Category'),
 						'Category',
-						<SelectField label="Category" name="category" options="Category.locales(locale.slug='en').name" />
+						<SelectField label="Category" name="category" options="Category.locales(locale.slug='cs').name" />
 					]
 				]}
 			/>
