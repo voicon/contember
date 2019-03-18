@@ -28,10 +28,12 @@ export interface DataProviderDispatchProps {
 	getData: (query: string) => Promise<string>
 	putData: (query: string) => Promise<void>
 }
+
 export interface DataProviderStateProps {
 	requests: ContentRequestsState
 	isDirty: boolean
 }
+
 type DataProviderInnerProps<DRP> = DataProviderOwnProps<DRP> & DataProviderDispatchProps & DataProviderStateProps
 
 export interface DataProviderState {
@@ -112,28 +114,32 @@ class DataProvider<DRP> extends React.PureComponent<DataProviderInnerProps<DRP>,
 		}
 	}
 
-	public render() {
+	private renderRenderer() {
 		if (this.props.renderer) {
 			const Renderer = this.props.renderer
 			if (this.props.rendererProps === undefined) {
 				throw new Error(`No rendererProps passed to custom renderer.`)
 			}
 			return (
-				<MetaOperationsContext.Provider value={this.metaOperations}>
-					<Renderer {...this.props.rendererProps} data={this.state.data}>
-						{this.props.children}
-					</Renderer>
-				</MetaOperationsContext.Provider>
+				<Renderer {...this.props.rendererProps} data={this.state.data}>
+					{this.props.children}
+				</Renderer>
 			)
 		} else {
 			return (
-				<MetaOperationsContext.Provider value={this.metaOperations}>
-					<DefaultRenderer {...this.props.rendererProps} data={this.state.data}>
-						{this.props.children}
-					</DefaultRenderer>
-				</MetaOperationsContext.Provider>
+				<DefaultRenderer {...this.props.rendererProps} data={this.state.data}>
+					{this.props.children}
+				</DefaultRenderer>
 			)
 		}
+	}
+
+	public render() {
+		return (
+			<MetaOperationsContext.Provider value={this.metaOperations}>
+				{this.renderRenderer()}
+			</MetaOperationsContext.Provider>
+		)
 	}
 
 	protected unmounted: boolean = false
