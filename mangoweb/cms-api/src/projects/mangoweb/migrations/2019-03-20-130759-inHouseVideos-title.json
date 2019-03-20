@@ -1,0 +1,15 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "FooterLocale",
+			"field": {
+				"name": "inHouseVideosTitle",
+				"columnName": "in_house_videos_title",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		}
+	]
+}
