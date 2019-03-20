@@ -19,6 +19,9 @@ export const footerForm = (
 		</SortableRepeater>
 
 		<H2>In-house videos</H2>
+		<LocaleSideDimension>
+			<TextField name="$locale.inHouseVideosTitle" label="Title" />
+		</LocaleSideDimension>
 		<SortableRepeater field="inHouseVideos" sortBy="order" removeType="delete">
 			<TextField name="src" label="YouTube video URL" />
 			<ImageField name="poster" label="Video poster image" />

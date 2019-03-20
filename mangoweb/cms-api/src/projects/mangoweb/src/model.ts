@@ -105,6 +105,7 @@ builder.entity('FooterLocale', entity =>
 		.unique(['footer', 'locale'])
 		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('contactButtonText')
+		.column('inHouseVideosTitle')
 )
 
 builder.entity('FooterButton', entity =>
