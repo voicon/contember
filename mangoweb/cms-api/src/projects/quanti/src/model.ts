@@ -66,7 +66,17 @@ builder.entity('ImageGrid', entity =>
 		.manyHasOne('imagePosition6', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
 )
 
-builder.enum('BlockType', ['Heading', 'Text', 'Image', 'ImageGrid', 'Numbers', 'Perks', 'People', 'Category'])
+builder.enum('BlockType', [
+	'Heading',
+	'Text',
+	'Image',
+	'ImageGrid',
+	'Numbers',
+	'Perks',
+	'People',
+	'Category',
+	'Collapse'
+])
 
 builder.entity('Numbers', entity =>
 	entity
@@ -80,6 +90,25 @@ builder.entity('Perk', entity =>
 		.column('order', col => col.type(Model.ColumnType.Int))
 		.column('title')
 		.column('description')
+)
+
+builder.entity('Collapse', entity =>
+	entity.column('title').oneHasMany('items', r =>
+		r
+			.target('CollapseItem')
+			.onDelete(Model.OnDelete.cascade)
+			.ownedBy('collapse')
+	)
+)
+
+builder.entity('CollapseItem', entity =>
+	entity
+		.column('order', col => col.type(Model.ColumnType.Int))
+		.column('heading')
+		.column('text')
+		.manyHasOne('image', ref => ref.target('Image').onDelete(Model.OnDelete.cascade))
+		.column('linkTarget')
+		.column('linkCaption')
 )
 
 builder.entity('Block', entity =>
@@ -99,6 +128,7 @@ builder.entity('Block', entity =>
 					.manyHasOne('person', ref => ref.target('Person').onDelete(Model.OnDelete.cascade))
 			)
 		)
+		.manyHasOne('collapse', ref => ref.target('Collapse'))
 )
 
 // Menu
