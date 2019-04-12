@@ -54,6 +54,20 @@ export const Block = Component(
 						new Literal('Category'),
 						'Category',
 						<SelectField label="Category" name="category" options="Category.locales(locale.slug='cs').name" />
+					],
+					[
+						new Literal('Collapse'),
+						'Collapse',
+						<>
+							<TextField name="collapse.title" />
+							<SortableRepeater field="collapse.items" sortBy="order">
+								<TextField label="heading" name="heading" />
+								<RichTextField name="text" blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]} />
+								<Image name="image" />
+								<TextField label="link URL" name="linkTarget" />
+								<TextField label="link caption" name="linkCaption" />
+							</SortableRepeater>
+						</>
 					]
 				]}
 			/>
