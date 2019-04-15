@@ -7,11 +7,11 @@ tenant:
         database: '%env.TENANT_DB_NAME%'
 
 projects:
-    - uuid: 2b71cf74-5271-4142-b258-b2ce14722187
+    - id: 2b71cf74-5271-4142-b258-b2ce14722187
       slug: mangoweb
       name: manGoweb
       stages:
-          - uuid: 7c78c41a-6a71-4adc-ae9a-0b8592480619
+          - id: 7c78c41a-6a71-4adc-ae9a-0b8592480619
             slug: preview
             name: Preview
             migration: '2019-03-20-130759'
@@ -28,11 +28,11 @@ projects:
         credentials:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
-    - uuid: 9b5f50a8-c35b-46fc-abf6-090c7a68edd5
+    - id: 9b5f50a8-c35b-46fc-abf6-090c7a68edd5
       slug: quanti
       name: Quanti
       stages:
-        - uuid: bac2b042-6b65-47fd-9cb6-ba04a589c241
+        - id: bac2b042-6b65-47fd-9cb6-ba04a589c241
           slug: prod
           name: Production
           migration: '2019-04-17-102050'
