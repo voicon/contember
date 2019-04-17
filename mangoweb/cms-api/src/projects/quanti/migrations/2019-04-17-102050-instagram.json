@@ -1,0 +1,14 @@
+{
+	"modifications": [
+		{
+			"modification": "updateEnum",
+			"enumName": "SocialNetwork",
+			"values": [
+				"Facebook",
+				"Twitter",
+				"LinkedIn",
+				"Instagram"
+			]
+		}
+	]
+}

@@ -151,7 +151,7 @@ builder.entity('MenuItemLocale', entity =>
 )
 
 // Social
-builder.enum('SocialNetwork', ['Facebook', 'Twitter', 'LinkedIn'])
+builder.enum('SocialNetwork', ['Facebook', 'Twitter', 'LinkedIn', 'Instagram'])
 builder.entity('Social', entity =>
 	entity.column('network', col => col.type(Model.ColumnType.Enum, { enumName: 'SocialNetwork' }).unique()).column('url')
 )
