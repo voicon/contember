@@ -3,6 +3,7 @@
 	"include": [],
 	"references": [
 		{ "path": "./mangoweb/cms-api" },
+		{ "path": "./packages/benchmark" },
 		{ "path": "./packages/cms-api" },
 		{ "path": "./packages/cms-common" },
 		{ "path": "./packages/cms-admin" },
