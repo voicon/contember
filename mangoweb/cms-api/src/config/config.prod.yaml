@@ -14,7 +14,6 @@ projects:
           - id: 7c78c41a-6a71-4adc-ae9a-0b8592480619
             slug: preview
             name: Preview
-            migration: '2019-03-20-130759'
       dbCredentials:
         host: '%env.MANGOWEB_DB_HOST%'
         port: '5432'
@@ -35,7 +34,6 @@ projects:
         - id: bac2b042-6b65-47fd-9cb6-ba04a589c241
           slug: prod
           name: Production
-          migration: '2019-04-17-102050'
       dbCredentials:
         host: '%env.QUANTI_DB_HOST%'
         port: '5432'
