@@ -11,12 +11,9 @@
 	},
 	"dependencies": {
 		"cms-api": "^0.0.0",
-		"cms-common": "^0.0.0",
-		"knex": "^0.16.2",
-		"pg": "^7.4.3"
+		"cms-common": "^0.0.0"
 	},
 	"devDependencies": {
-		"@types/knex": "^0.14.16",
 		"dotenv-cli": "^1.4.0",
 		"nodemon": "^1.18.3",
 		"tslint": "^5.10.0",
