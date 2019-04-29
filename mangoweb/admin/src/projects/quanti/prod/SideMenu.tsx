@@ -24,6 +24,7 @@ export class SideMenu extends React.Component {
 					<MenuPageLink change={() => ({ name: 'translations' })}>Translations</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'locales' })}>Locales</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'contactMessages' })}>Contact messages</MenuPageLink>
+					{/*<MenuPageLink change={() => ({ name: 'diff' })}>Staging</MenuPageLink>*/}
 				</MenuList>
 			</Menu>
 		)

@@ -3,9 +3,15 @@ import { ApolloError } from 'apollo-server-errors'
 import DbQueriesExtension from '../core/graphql/DbQueriesExtension'
 import { Context } from '../content-api/types'
 import ExecutionContainerFactory from '../content-api/graphQlResolver/ExecutionContainerFactory'
+import ErrorHandlerExtension from '../core/graphql/ErrorHandlerExtension'
 import KnexDebugger from '../core/knex/KnexDebugger'
 import { GraphQLSchema } from 'graphql'
+import { KoaContext } from '../core/koa/types'
+import ProjectMemberMiddlewareFactory from './ProjectMemberMiddlewareFactory'
+import DatabaseTransactionMiddlewareFactory from './DatabaseTransactionMiddlewareFactory'
+import ContentApolloMiddlewareFactory from './ContentApolloMiddlewareFactory'
 import LRUCache from 'lru-cache'
+import TimerMiddlewareFactory from './TimerMiddlewareFactory'
 
 class ContentApolloServerFactory {
 	private cache = new LRUCache<GraphQLSchema, ApolloServer>({
@@ -23,6 +29,7 @@ class ContentApolloServerFactory {
 			tracing: true,
 			introspection: true,
 			extensions: [
+				() => new ErrorHandlerExtension(),
 				() => {
 					const queriesExt = new DbQueriesExtension()
 					this.knexDebugger.subscribe(query => queriesExt.addQuery(query))
@@ -41,7 +48,16 @@ class ContentApolloServerFactory {
 			},
 			schema: dataSchema,
 			uploads: false,
-			context: async ({ ctx }: { ctx: any }): Promise<Context> => {
+			context: async ({
+				ctx,
+			}: {
+				ctx: KoaContext<
+					ProjectMemberMiddlewareFactory.KoaState &
+						DatabaseTransactionMiddlewareFactory.KoaState &
+						ContentApolloMiddlewareFactory.KoaState &
+						TimerMiddlewareFactory.KoaState
+				>
+			}): Promise<Context> => {
 				const partialContext = {
 					db: ctx.state.db,
 					identityVariables: ctx.state.projectVariables,
@@ -52,6 +68,8 @@ class ContentApolloServerFactory {
 				return {
 					...partialContext,
 					executionContainer,
+					errorHandler: ctx.state.planRollback,
+					timer: ctx.state.timer,
 				}
 			},
 			playground: false,

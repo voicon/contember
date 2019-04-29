@@ -1,10 +1,7 @@
 import { Acl, Schema } from 'cms-common'
 import { GraphQLSchema } from 'graphql'
 import GraphQlSchemaBuilderFactory from '../content-api/graphQLSchema/GraphQlSchemaBuilderFactory'
-import TenantIdentity from '../tenant-api/model/type/Identity'
-import AllowAllPermissionFactory from '../acl/AllowAllPermissionFactory'
-import PermissionFactory from '../acl/PermissionFactory'
-import { arrayEquals } from '../utils/arrays'
+import PermissionsByIdentityFactory from '../acl/PermissionsByIdentityFactory'
 
 class GraphQlSchemaFactory {
 	private cache: {
@@ -12,17 +9,17 @@ class GraphQlSchemaFactory {
 		entries: {
 			graphQlSchema: GraphQLSchema
 			permissions: Acl.Permissions
-			verifier: (identity: GraphQlSchemaFactory.Identity) => boolean
+			verifier: (identity: PermissionsByIdentityFactory.Identity) => boolean
 		}[]
 	}[] = []
 
 	constructor(
 		private readonly graphqlSchemaBuilderFactory: GraphQlSchemaBuilderFactory,
-		private readonly permissionFactories: GraphQlSchemaFactory.PermissionFactory[]
+		private readonly permissionFactory: PermissionsByIdentityFactory
 	) {}
 
-	public create(schema: Schema, identity: GraphQlSchemaFactory.Identity): [GraphQLSchema, Acl.Permissions] {
-		let schemaCacheEntry = this.cache.find(it => it.schema === schema)
+	public create(schema: Schema, identity: PermissionsByIdentityFactory.Identity): [GraphQLSchema, Acl.Permissions] {
+		let schemaCacheEntry = this.cache.find(it => it.schema.model === schema.model && it.schema.acl === schema.acl)
 		if (!schemaCacheEntry) {
 			schemaCacheEntry = {
 				schema,
@@ -36,61 +33,13 @@ class GraphQlSchemaFactory {
 			}
 		}
 
-		const permissionFactory = this.permissionFactories.find(it => it.isEligible(identity))
-		if (!permissionFactory) {
-			throw new Error('No suitable permission factory found')
-		}
-		const { permissions, verifier } = permissionFactory.createPermissions(schema, identity)
+		const { permissions, verifier } = this.permissionFactory.createPermissions(schema, identity)
 
 		const dataSchemaBuilder = this.graphqlSchemaBuilderFactory.create(schema.model, permissions)
 		const graphQlSchema = dataSchemaBuilder.build()
 		schemaCacheEntry.entries.push({ graphQlSchema, verifier, permissions })
 
 		return [graphQlSchema, permissions]
-	}
-}
-
-namespace GraphQlSchemaFactory {
-	export interface Identity {
-		globalRoles: string[]
-		projectRoles: string[]
-	}
-
-	interface PermissionResult {
-		permissions: Acl.Permissions
-		verifier: (identity: Identity) => boolean
-	}
-
-	export interface PermissionFactory {
-		isEligible(identity: Identity): boolean
-
-		createPermissions(schema: Schema, identity: Identity): PermissionResult
-	}
-
-	export class SuperAdminPermissionFactory implements PermissionFactory {
-		public isEligible(identity: Identity) {
-			return identity.globalRoles.includes(TenantIdentity.SystemRole.SUPER_ADMIN)
-		}
-
-		public createPermissions(schema: Schema) {
-			return {
-				permissions: new AllowAllPermissionFactory().create(schema.model),
-				verifier: this.isEligible.bind(this),
-			}
-		}
-	}
-
-	export class RoleBasedPermissionFactory implements PermissionFactory {
-		isEligible(identity: Identity): boolean {
-			return true
-		}
-
-		createPermissions(schema: Schema, identity: Identity): PermissionResult {
-			return {
-				permissions: new PermissionFactory(schema.model).create(schema.acl, identity.projectRoles),
-				verifier: otherIdentity => arrayEquals(identity.projectRoles, otherIdentity.projectRoles),
-			}
-		}
 	}
 }
 

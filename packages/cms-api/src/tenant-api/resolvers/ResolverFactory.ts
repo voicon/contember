@@ -1,5 +1,13 @@
 import { GraphQLResolveInfo } from 'graphql'
-import { MutationResolvers } from '../schema/types'
+import {
+	MutationAddProjectMemberArgs,
+	MutationCreateApiKeyArgs,
+	MutationResolvers,
+	MutationSetupArgs,
+	MutationSignInArgs,
+	MutationSignUpArgs,
+	MutationUpdateProjectMemberVariablesArgs,
+} from '../schema/types'
 import MeQueryResolver from './query/MeQueryResolver'
 import SignUpMutationResolver from './mutation/SignUpMutationResolver'
 import SignInMutationResolver from './mutation/SignInMutationResolver'
@@ -36,7 +44,7 @@ class ResolverFactory {
 					this.signUpMutationResolver.signUp.call(
 						this.signUpMutationResolver,
 						parent,
-						args as MutationResolvers.SignUpArgs,
+						args as MutationSignUpArgs,
 						context,
 						info
 					),
@@ -49,7 +57,7 @@ class ResolverFactory {
 					this.signInMutationResolver.signIn.call(
 						this.signInMutationResolver,
 						parent,
-						args as MutationResolvers.SignInArgs,
+						args as MutationSignInArgs,
 						context,
 						info
 					),
@@ -62,7 +70,7 @@ class ResolverFactory {
 					this.addProjectMemberMutationResolver.addProjectMember.call(
 						this.addProjectMemberMutationResolver,
 						parent,
-						args as MutationResolvers.AddProjectMemberArgs,
+						args as MutationAddProjectMemberArgs,
 						context,
 						info
 					),
@@ -75,7 +83,7 @@ class ResolverFactory {
 					this.setupMutationResolver.setup.call(
 						this.setupMutationResolver,
 						parent,
-						args as MutationResolvers.SetupArgs,
+						args as MutationSetupArgs,
 						context,
 						info
 					),
@@ -88,7 +96,7 @@ class ResolverFactory {
 					this.updateProjectMemberVariablesMutationResolver.updateProjectMemberVariables.call(
 						this.updateProjectMemberVariablesMutationResolver,
 						parent,
-						args as MutationResolvers.UpdateProjectMemberVariablesArgs,
+						args as MutationUpdateProjectMemberVariablesArgs,
 						context,
 						info
 					),
@@ -101,7 +109,7 @@ class ResolverFactory {
 					this.createApiKeyMutationResolver.createApiKey.call(
 						this.createApiKeyMutationResolver,
 						parent,
-						args as MutationResolvers.CreateApiKeyArgs,
+						args as MutationCreateApiKeyArgs,
 						context,
 						info
 					),

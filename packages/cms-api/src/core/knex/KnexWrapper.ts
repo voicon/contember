@@ -1,18 +1,27 @@
-import * as Knex from 'knex'
+import Knex from 'knex'
 import { Raw, Value } from './types'
 import InsertBuilder from './InsertBuilder'
 import DeleteBuilder from './DeleteBuilder'
 import UpdateBuilder from './UpdateBuilder'
 import SelectBuilder from './SelectBuilder'
+import QueryHandler from '../query/QueryHandler'
+import KnexQueryable from './KnexQueryable'
+import KnexConnection from './KnexConnection'
 
-export default class KnexWrapper {
-	constructor(public readonly knex: Knex, public readonly schema: string) {}
+class KnexWrapper<KnexType extends Knex = Knex> {
+	constructor(public readonly knex: KnexType, public readonly schema: string) {}
 
-	async transaction<T>(transactionScope: (wrapper: KnexWrapper) => Promise<T> | void): Promise<T> {
+	public forSchema(schema: string): KnexWrapper {
+		return new KnexWrapper(this.knex, schema)
+	}
+
+	async transaction<T>(
+		transactionScope: (wrapper: KnexWrapper & KnexWrapper.Transaction) => Promise<T> | void
+	): Promise<T> {
 		return await this.knex.transaction(knex => transactionScope(new KnexWrapper(knex, this.schema)))
 	}
 
-	selectBuilder<Result = { [columnName: string]: any }[]>(): SelectBuilder<Result, never> {
+	selectBuilder<Result = SelectBuilder.Result>(): SelectBuilder<Result, never> {
 		return SelectBuilder.create<Result>(this)
 	}
 
@@ -31,4 +40,23 @@ export default class KnexWrapper {
 	raw(sql: string, ...bindings: (Value | Knex.QueryBuilder)[]): Raw {
 		return this.knex.raw(sql, bindings as any) as Raw
 	}
+
+	createQueryHandler(): QueryHandler<KnexQueryable> {
+		const handler = new QueryHandler(
+			new KnexQueryable(new KnexConnection(this.knex, this.schema), {
+				get(): QueryHandler<KnexQueryable> {
+					return handler
+				},
+			})
+		)
+		return handler
+	}
 }
+
+namespace KnexWrapper {
+	export interface Transaction {
+		knex: Knex.Transaction
+	}
+}
+
+export default KnexWrapper

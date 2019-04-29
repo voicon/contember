@@ -73,7 +73,9 @@ const reactRoot = (config: any) => (
 					joinUs: { path: '/joinUs' },
 					translations: { path: '/translations' },
 					contact: { path: '/contact' },
-					contactMessages: { path: '/contact-messages' }
+					contactMessages: { path: '/contact-messages' },
+					diff: { path: '/diff' },
+					diff_stage: { path: '/diff/:targetStage' }
 				}
 			}
 		]}

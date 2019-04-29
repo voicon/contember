@@ -4,7 +4,7 @@ import ApiKey from '../type/ApiKey'
 import ApiKeyByTokenQuery from '../queries/ApiKeyByTokenQuery'
 import KnexWrapper from '../../../core/knex/KnexWrapper'
 import CreateIdentityCommand from '../commands/CreateIdentityCommand'
-import Identity from '../type/Identity'
+import Identity from '../../../common/auth/Identity'
 import CreateApiKey from '../commands/CreateApiKey'
 import DisableOneOffApiKeyCommand from '../commands/DisableOneOffApiKeyCommand'
 import ProlongApiKey from '../commands/ProlongApiKey'
@@ -35,7 +35,10 @@ class ApiKeyManager {
 		if (apiKeyRow.expires_at !== null && apiKeyRow.expires_at <= now) {
 			return new ApiKeyManager.VerifyResultError(ApiKeyManager.VerifyErrorCode.EXPIRED)
 		}
-		await new ProlongApiKey(apiKeyRow.id, apiKeyRow.type, apiKeyRow.expiration || undefined).execute(this.db)
+
+		setImmediate(async () => {
+			await new ProlongApiKey(apiKeyRow.id, apiKeyRow.type, apiKeyRow.expiration || undefined).execute(this.db)
+		})
 
 		return new ApiKeyManager.VerifyResultOk(apiKeyRow.identity_id, apiKeyRow.id, apiKeyRow.roles)
 	}
@@ -73,9 +76,9 @@ class ApiKeyManager {
 				.map(it => it.errors)
 				.map(
 					mapValues<AddProjectMemberErrorCode, CreateApiKeyErrorCode>({
-						[AddProjectMemberErrorCode.PROJECT_NOT_FOUND]: CreateApiKeyErrorCode.PROJECT_NOT_FOUND,
-						[AddProjectMemberErrorCode.IDENTITY_NOT_FOUND]: ImplementationException.Throw,
-						[AddProjectMemberErrorCode.ALREADY_MEMBER]: ImplementationException.Throw,
+						[AddProjectMemberErrorCode.ProjectNotFound]: CreateApiKeyErrorCode.ProjectNotFound,
+						[AddProjectMemberErrorCode.IdentityNotFound]: ImplementationException.Throw,
+						[AddProjectMemberErrorCode.AlreadyMember]: ImplementationException.Throw,
 					})
 				)
 				.reduce((acc, val) => [...acc, ...val], [])
@@ -93,9 +96,9 @@ class ApiKeyManager {
 				.map(it => it.errors)
 				.map(
 					mapValues<UpdateProjectMemberVariablesErrorCode, CreateApiKeyErrorCode>({
-						[UpdateProjectMemberVariablesErrorCode.VARIABLE_NOT_FOUND]: CreateApiKeyErrorCode.VARIABLE_NOT_FOUND,
-						[UpdateProjectMemberVariablesErrorCode.PROJECT_NOT_FOUND]: ImplementationException.Throw,
-						[UpdateProjectMemberVariablesErrorCode.IDENTITY_NOT_FOUND]: ImplementationException.Throw,
+						[UpdateProjectMemberVariablesErrorCode.VariableNotFound]: CreateApiKeyErrorCode.VariableNotFound,
+						[UpdateProjectMemberVariablesErrorCode.ProjectNotFound]: ImplementationException.Throw,
+						[UpdateProjectMemberVariablesErrorCode.IdentityNotFound]: ImplementationException.Throw,
 					})
 				)
 				.reduce((acc, val) => [...acc, ...val], [])
@@ -132,6 +135,8 @@ namespace ApiKeyManager {
 		NOT_FOUND = 'not_found',
 		DISABLED = 'disabled',
 		EXPIRED = 'expired',
+		NO_AUTH_HEADER = 'no_auth_header',
+		INVALID_AUTH_HEADER = 'invalid_auth_header',
 	}
 
 	export type CreateApiKeyResponse = CreateApiKeyResponseOk | CreateApiKeyResponseError

@@ -15,7 +15,9 @@ import {
 	SelectField,
 	Table,
 	TableRenderer,
-	TextField
+	TextField,
+	DiffView,
+	DiffDialog
 } from 'cms-admin'
 import * as React from 'react'
 import { Category } from './components/Category'
@@ -34,6 +36,13 @@ export default () => (
 	<Pages project="quanti" stage="prod" layout={Layout}>
 		<GenericPage pageName="dashboard">
 			<H1>Quanti admin</H1>
+		</GenericPage>
+		<GenericPage pageName="diff">
+			<DiffDialog viewPageName="diff_stage" />
+		</GenericPage>
+
+		<GenericPage pageName="diff_stage">
+			<DiffView />
 		</GenericPage>
 
 		<MultiEditPage entity="Locale" pageName="locales" rendererProps={{ title: 'Locale' }}>

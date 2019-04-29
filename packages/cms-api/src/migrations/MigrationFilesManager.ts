@@ -49,14 +49,7 @@ class MigrationFilesManager {
 	public async readFiles(
 		extension: string,
 		predicate?: (version: string) => boolean
-	): Promise<
-		{
-			filename: string
-			path: string
-			version: string
-			content: string
-		}[]
-	> {
+	): Promise<MigrationFilesManager.MigrationFile[]> {
 		let files = await this.listFiles(extension)
 		if (predicate) {
 			files = files.filter(filename => predicate(FileNameHelper.extractVersion(filename)))
@@ -75,8 +68,17 @@ class MigrationFilesManager {
 		return new MigrationFilesManager(`${__dirname}/../../../migrations/${type}`)
 	}
 
-	public static createForProject(projectsDirectory: string, projectName: string): MigrationFilesManager {
-		return new MigrationFilesManager(`${projectsDirectory}/${projectName}/migrations`)
+	public static createForProject(projectsDirectory: string, projectSlug: string): MigrationFilesManager {
+		return new MigrationFilesManager(`${projectsDirectory}/${projectSlug}/migrations`)
+	}
+}
+
+namespace MigrationFilesManager {
+	export type MigrationFile = {
+		filename: string
+		path: string
+		version: string
+		content: string
 	}
 }
 

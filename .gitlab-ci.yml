@@ -3,9 +3,15 @@ stages:
   - test:run
   - deploy:build
   - deploy:helm
+services:
+  - postgres:10
 
 variables:
   DOCKER_HOST: tcp://gitlab-prod-dind-svc:2375
+
+  POSTGRES_USER: cms_test
+  POSTGRES_DB: cms_test
+  POSTGRES_PASSWORD: "123"
 
 build:
   stage: test:build
@@ -40,6 +46,12 @@ build:
 test:
   stage: test:run
   image: node:10
+  variables:
+    TEST_DB_HOST: 127.0.0.1
+    TEST_DB_PASSWORD: "123"
+    TEST_DB_USER: cms_test
+    TEST_DB_NAME: cms_test
+    TEST_DB_PORT: 5432
 
   script:
     - npm run test

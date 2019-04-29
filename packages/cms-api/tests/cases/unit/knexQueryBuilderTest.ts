@@ -183,6 +183,26 @@ describe('knex query builder', () => {
 			parameters: ['123', '123'],
 		})
 	})
+
+	it('constructs insert with on conflict do nothing', async () => {
+		await execute({
+			query: async wrapper => {
+				const builder = wrapper
+					.insertBuilder()
+					.into('author')
+					.values({
+						id: expr => expr.selectValue('123'),
+					})
+					.onConflict(InsertBuilder.ConflictActionType.doNothing, { constraint: 'bar' })
+				await builder.execute()
+			},
+			sql: SQL`insert into "public"."author" ("id")
+			         values ($1)
+			         on conflict on constraint "bar" do nothing`,
+			parameters: ['123'],
+		})
+	})
+
 	it('constructs simple update', async () => {
 		await execute({
 			query: async wrapper => {
@@ -318,6 +338,22 @@ describe('knex query builder', () => {
 			 from "public"."foo" order by "foo"."ipsum" asc) 
 			select "data".* from "data" where "data"."rowNumber_" > $1 and "data"."rowNumber_" <= $2`,
 			parameters: [1, 4],
+		})
+	})
+
+	it('select with no key update', async () => {
+		await execute({
+			query: async wrapper => {
+				const qb = wrapper
+					.selectBuilder()
+					.select('id')
+					.from('foo')
+					.lock(SelectBuilder.LockType.forNoKeyUpdate)
+
+				await qb.getResult()
+			},
+			sql: SQL`select "id" from "public"."foo" for no key update`,
+			parameters: [],
 		})
 	})
 })
