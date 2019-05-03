@@ -19,7 +19,7 @@ import JunctionFetcher from '../sql/select/JunctionFetcher'
 import Mapper from '../sql/Mapper'
 import { Accessor } from '../../utils/accessor'
 import FieldsVisitorFactory from '../sql/select/handlers/FieldsVisitorFactory'
-import DbSelectBuilder from '../../core/knex/SelectBuilder'
+import DbSelectBuilder from '../../core/database/SelectBuilder'
 import SelectHydrator from '../sql/select/SelectHydrator'
 import SelectBuilder from '../sql/select/SelectBuilder'
 import MetaHandler from '../sql/select/handlers/MetaHandler'
@@ -47,7 +47,7 @@ class ExecutionContainerFactory {
 			.addService('conditionBuilder', () => new ConditionBuilder())
 			.addService(
 				'whereBuilder',
-				({ joinBuilder, conditionBuilder }) => new WhereBuilder(this.schema, joinBuilder, conditionBuilder)
+				({ joinBuilder, conditionBuilder, db }) => new WhereBuilder(this.schema, joinBuilder, conditionBuilder, db)
 			)
 			.addService('orderByBuilder', ({ joinBuilder }) => new OrderByBuilder(this.schema, joinBuilder))
 			.addService(

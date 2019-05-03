@@ -9,7 +9,7 @@ import EventsRebaser from './model/events/EventsRebaser'
 import ReleaseExecutor from './model/events/ReleaseExecutor'
 import Container from '../core/di/Container'
 import TableReferencingResolver from './model/events/TableReferencingResolver'
-import KnexWrapper from '../core/knex/KnexWrapper'
+import Client from '../core/database/Client'
 import SchemaVersionBuilder from '../content-schema/SchemaVersionBuilder'
 import MigrationFilesManager from '../migrations/MigrationFilesManager'
 import PermissionsVerifier from './model/events/PermissionsVerifier'
@@ -18,7 +18,7 @@ import Authorizator from '../core/authorization/Authorizator'
 import PermissionsByIdentityFactory from '../acl/PermissionsByIdentityFactory'
 import DiffBuilder from './model/events/DiffBuilder'
 import QueryHandler from '../core/query/QueryHandler'
-import KnexQueryable from '../core/knex/KnexQueryable'
+import DbQueryable from '../core/database/DbQueryable'
 import Project from '../config/Project'
 import SchemaMigrator from '../content-schema/differ/SchemaMigrator'
 import MigrationsResolver from '../content-schema/MigrationsResolver'
@@ -31,14 +31,13 @@ import ProjectMigrationInfoResolver from './model/migrations/ProjectMigrationInf
 import ProjectMigrator from './model/migrations/ProjectMigrator'
 import SchemaDiffer from './model/migrations/SchemaDiffer'
 import StageCreator from './model/stages/StageCreator'
-import Knex from 'knex'
 
 interface SystemExecutionContainer {
 	releaseExecutor: ReleaseExecutor
 	rebaseExecutor: RebaseExecutor
 	diffBuilder: DiffBuilder
 	migrationDiffCreator: MigrationDiffCreator
-	queryHandler: QueryHandler<KnexQueryable>
+	queryHandler: QueryHandler<DbQueryable>
 	projectIntializer: ProjectInitializer
 }
 
@@ -53,7 +52,7 @@ namespace SystemExecutionContainer {
 			private readonly modificationHandlerFactory: ModificationHandlerFactory
 		) {}
 
-		public create(db: KnexWrapper): SystemExecutionContainer {
+		public create(db: Client): SystemExecutionContainer {
 			return this.createBuilder(db)
 				.build()
 				.pick(
@@ -66,7 +65,7 @@ namespace SystemExecutionContainer {
 				)
 		}
 
-		public createBuilder(db: KnexWrapper<Knex>) {
+		public createBuilder(db: Client) {
 			return new Container.Builder({})
 				.addService('migrationFilesManager', ({}) => this.migrationFilesManager)
 				.addService('migrationsResolver', () => this.migrationsResolver)

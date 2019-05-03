@@ -1,8 +1,8 @@
-import KnexQuery from '../../../core/knex/KnexQuery'
-import KnexQueryable from '../../../core/knex/KnexQueryable'
+import DbQuery from '../../../core/database/DbQuery'
+import DbQueryable from '../../../core/database/DbQueryable'
 
-class InitEventQuery extends KnexQuery<InitEventQuery.InitEvent> {
-	async fetch(queryable: KnexQueryable): Promise<InitEventQuery.InitEvent> {
+class InitEventQuery extends DbQuery<InitEventQuery.InitEvent> {
+	async fetch(queryable: DbQueryable): Promise<InitEventQuery.InitEvent> {
 		return (await queryable
 			.createSelectBuilder<InitEventQuery.InitEvent>()
 			.from('event')

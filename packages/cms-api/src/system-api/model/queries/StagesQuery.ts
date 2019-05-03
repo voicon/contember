@@ -1,9 +1,9 @@
-import KnexQuery from '../../../core/knex/KnexQuery'
+import DbQuery from '../../../core/database/DbQuery'
 import { Stage } from '../../schema/types'
-import KnexQueryable from '../../../core/knex/KnexQueryable'
+import DbQueryable from '../../../core/database/DbQueryable'
 
-class StagesQuery extends KnexQuery<Stage[]> {
-	async fetch(queryable: KnexQueryable): Promise<Stage[]> {
+class StagesQuery extends DbQuery<Stage[]> {
+	async fetch(queryable: DbQueryable): Promise<Stage[]> {
 		const select = queryable
 			.createSelectBuilder<Stage>()
 			.from('stage')

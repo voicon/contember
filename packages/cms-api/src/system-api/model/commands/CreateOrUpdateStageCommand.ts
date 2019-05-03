@@ -1,13 +1,14 @@
-import KnexWrapper from '../../../core/knex/KnexWrapper'
-import InsertBuilder from '../../../core/knex/InsertBuilder'
+import Client from '../../../core/database/Client'
+import InsertBuilder from '../../../core/database/InsertBuilder'
 import { formatSchemaName } from '../helpers/stageHelpers'
 import { StageWithoutEvent } from '../dtos/Stage'
 import InitEventQuery from '../queries/InitEventQuery'
+import { wrapIdentifier } from '../../../core/database/utils'
 
 class CreateOrUpdateStageCommand {
 	constructor(private readonly stage: StageWithoutEvent) {}
 
-	public async execute(connection: KnexWrapper): Promise<boolean> {
+	public async execute(connection: Client): Promise<boolean> {
 		const initEvent = await connection.createQueryHandler().fetch(new InitEventQuery())
 
 		const result = await connection
@@ -26,7 +27,7 @@ class CreateOrUpdateStageCommand {
 			.returning('event_id')
 			.execute()
 
-		await connection.raw('CREATE SCHEMA IF NOT EXISTS ??', formatSchemaName(this.stage))
+		await connection.query('CREATE SCHEMA IF NOT EXISTS ' + wrapIdentifier(formatSchemaName(this.stage)))
 
 		return result.length === 1 && result[0] === initEvent.id
 	}

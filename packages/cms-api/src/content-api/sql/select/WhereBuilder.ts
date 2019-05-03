@@ -4,14 +4,16 @@ import Path from './Path'
 import JoinBuilder from './JoinBuilder'
 import ConditionBuilder from './ConditionBuilder'
 import { isIt } from '../../../utils/type'
-import SelectBuilder from '../../../core/knex/SelectBuilder'
-import SqlConditionBuilder from '../../../core/knex/ConditionBuilder'
+import SelectBuilder from '../../../core/database/SelectBuilder'
+import SqlConditionBuilder from '../../../core/database/ConditionBuilder'
+import Client from '../../../core/database/Client'
 
 class WhereBuilder {
 	constructor(
 		private readonly schema: Model.Schema,
 		private readonly joinBuilder: JoinBuilder,
-		private readonly conditionBuilder: ConditionBuilder
+		private readonly conditionBuilder: ConditionBuilder,
+		private readonly db: Client
 	) {}
 
 	public build(
@@ -108,8 +110,15 @@ class WhereBuilder {
 					}
 					const relationWhere = where[fieldName] as Input.Where
 
-					whereClause.in([tableName, entity.primaryColumn], qb =>
-						this.createManyHasManySubquery(qb, relationWhere, targetEntity, targetRelation.joiningTable, 'inversed')
+					whereClause.in(
+						[tableName, entity.primaryColumn],
+						this.createManyHasManySubquery(
+							this.db.selectBuilder(),
+							relationWhere,
+							targetEntity,
+							targetRelation.joiningTable,
+							'inversed'
+						)
 					)
 				},
 				visitManyHasManyOwner: (entity, relation, targetEntity) => {
@@ -120,8 +129,15 @@ class WhereBuilder {
 
 					const relationWhere = where[fieldName] as Input.Where
 
-					whereClause.in([tableName, entity.primaryColumn], qb =>
-						this.createManyHasManySubquery(qb, relationWhere, targetEntity, relation.joiningTable, 'owner')
+					whereClause.in(
+						[tableName, entity.primaryColumn],
+						this.createManyHasManySubquery(
+							this.db.selectBuilder(),
+							relationWhere,
+							targetEntity,
+							relation.joiningTable,
+							'owner'
+						)
 					)
 				},
 				visitOneHasMany: (entity, relation, targetEntity, targetRelation) => {
@@ -132,9 +148,13 @@ class WhereBuilder {
 
 					const relationWhere = where[fieldName] as Input.Where
 
-					whereClause.in([tableName, entity.primaryColumn], qb =>
+					whereClause.in(
+						[tableName, entity.primaryColumn],
 						this.build(
-							qb.select(['root_', targetRelation.joiningColumn.columnName]).from(targetEntity.tableName, 'root_'),
+							this.db
+								.selectBuilder()
+								.select(['root_', targetRelation.joiningColumn.columnName])
+								.from(targetEntity.tableName, 'root_'),
 							targetEntity,
 							new Path([]),
 							relationWhere,

@@ -1,15 +1,14 @@
-import KnexWrapper from '../core/knex/KnexWrapper'
+import Client from '../core/database/Client'
 import { uuid } from '../utils/uuid'
 
 export const unnamedIdentity = '11111111-1111-1111-1111-111111111111'
 
-export async function setupSystemVariables(knex: KnexWrapper, identityId: string) {
+export async function setupSystemVariables(db: Client, identityId: string) {
 	await Promise.all([
-		await knex.raw(
-			'SELECT set_config(?, ?, false)',
+		await db.query('SELECT set_config(?, ?, false)', [
 			'tenant.identity_id', // todo rename to system.identity_id
-			identityId
-		),
-		await knex.raw('SELECT set_config(?, ?, false)', 'system.transaction_id', uuid()),
+			identityId,
+		]),
+		await db.query('SELECT set_config(?, ?, false)', ['system.transaction_id', uuid()]),
 	])
 }

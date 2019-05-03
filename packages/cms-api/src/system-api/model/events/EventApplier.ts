@@ -2,7 +2,7 @@ import { AnyEvent, CreateEvent, DeleteEvent, RunMigrationEvent, UpdateEvent } fr
 import { Stage } from '../dtos/Stage'
 import { EventType } from '../EventType'
 import { assertNever } from 'cms-common'
-import KnexWrapper from '../../../core/knex/KnexWrapper'
+import Client from '../../../core/database/Client'
 import { formatSchemaName } from '../helpers/stageHelpers'
 import MigrationExecutor from '../migrations/MigrationExecutor'
 import MigrationsResolver from '../../../content-schema/MigrationsResolver'
@@ -10,7 +10,7 @@ import StageByIdQuery from '../queries/StageByIdQuery'
 
 class EventApplier {
 	constructor(
-		private readonly db: KnexWrapper,
+		private readonly db: Client,
 		private readonly migrationExecutor: MigrationExecutor,
 		private readonly migrationResolver: MigrationsResolver
 	) {}
@@ -19,13 +19,13 @@ class EventApplier {
 		let trxId: string | null = null
 		for (let event of events) {
 			if (event.transactionId !== trxId) {
-				await this.db.raw('SET CONSTRAINTS ALL IMMEDIATE')
-				await this.db.raw('SET CONSTRAINTS ALL DEFERRED')
+				await this.db.query('SET CONSTRAINTS ALL IMMEDIATE')
+				await this.db.query('SET CONSTRAINTS ALL DEFERRED')
 				trxId = event.transactionId
 			}
 			await this.applyEvent(stage, event)
 		}
-		await this.db.raw('SET CONSTRAINTS ALL IMMEDIATE')
+		await this.db.query('SET CONSTRAINTS ALL IMMEDIATE')
 	}
 
 	private async applyEvent(stage: Stage, event: AnyEvent): Promise<void> {

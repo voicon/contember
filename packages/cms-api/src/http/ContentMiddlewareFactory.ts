@@ -4,7 +4,7 @@ import { route } from '../core/koa/router'
 import corsMiddleware from '@koa/cors'
 import bodyParser from 'koa-bodyparser'
 import PlaygroundMiddlewareFactory from './PlaygroundMiddlewareFactory'
-import KnexWrapper from '../core/knex/KnexWrapper'
+import Client from '../core/database/Client'
 import { formatSchemaName } from '../system-api/model/helpers/stageHelpers'
 import ProjectResolveMiddlewareFactory from './ProjectResolveMiddlewareFactory'
 import StageResolveMiddlewareFactory from './StageResolveMiddlewareFactory'
@@ -26,12 +26,11 @@ class ContentMiddlewareFactory {
 
 	create(): Koa.Middleware {
 		const assignDb: KoaMiddleware<
-			ProjectResolveMiddlewareFactory.KoaState & StageResolveMiddlewareFactory.KoaState & { db: KnexWrapper }
+			ProjectResolveMiddlewareFactory.KoaState & StageResolveMiddlewareFactory.KoaState & { db: Client }
 		> = (ctx, next) => {
 			const projectContainer = ctx.state.projectContainer
 			const stage = ctx.state.stage
-			const knex = projectContainer.knexConnection
-			ctx.state.db = new KnexWrapper(knex, formatSchemaName(stage))
+			ctx.state.db = projectContainer.connection.createClient(formatSchemaName(stage))
 			return next()
 		}
 		const contentApollo: KoaMiddleware<

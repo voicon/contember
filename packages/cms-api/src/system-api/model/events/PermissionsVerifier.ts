@@ -1,7 +1,7 @@
 import { Stage } from '../dtos/Stage'
 import { ContentEvent, AnyEvent } from '../dtos/Event'
 import PredicateFactory from '../../../acl/PredicateFactory'
-import KnexWrapper from '../../../core/knex/KnexWrapper'
+import Client from '../../../core/database/Client'
 import { formatSchemaName } from '../helpers/stageHelpers'
 import { ContentEvents, EventType, isContentEvent } from '../EventType'
 import SchemaVersionBuilder from '../../../content-schema/SchemaVersionBuilder'
@@ -16,7 +16,7 @@ import VariableInjector from '../../../acl/VariableInjector'
 import Authorizator from '../../../core/authorization/Authorizator'
 import AuthorizationScope from '../../../core/authorization/AuthorizationScope'
 import Actions from '../authorization/Actions'
-import SelectBuilder from '../../../core/knex/SelectBuilder'
+import SelectBuilder from '../../../core/database/SelectBuilder'
 import Project from '../../../config/Project'
 import Identity from '../../../common/auth/Identity'
 
@@ -29,7 +29,7 @@ class PermissionsVerifier {
 	constructor(
 		private readonly project: Project,
 		private readonly schemaVersionBuilder: SchemaVersionBuilder,
-		private readonly db: KnexWrapper,
+		private readonly db: Client,
 		private readonly permissionsByIdentityFactory: PermissionsByIdentityFactory,
 		private readonly authorizator: Authorizator
 	) {}
@@ -141,7 +141,7 @@ class PermissionsVerifier {
 	private async verifyReadPermissionsForTable(
 		schema: Model.Schema,
 		entity: Model.Entity,
-		db: KnexWrapper,
+		db: Client,
 		events: ContentEvent[],
 		predicateFactory: PredicateFactory
 	): Promise<PermissionsByRow> {
@@ -150,7 +150,7 @@ class PermissionsVerifier {
 		const ids = events.map(it => it.rowId)
 		let qb = this.createBaseSelectBuilder(db, entity, ids)
 
-		qb = this.buildPredicates(qb, Acl.Operation.read, rowAffectedColumns, entity, predicateFactory, schema)
+		qb = this.buildPredicates(db, qb, Acl.Operation.read, rowAffectedColumns, entity, predicateFactory, schema)
 
 		const result = await qb.getResult()
 		const permissions: PermissionsByRow = {}
@@ -163,7 +163,7 @@ class PermissionsVerifier {
 	private async verifyWritePermissionsForTable(
 		schema: Model.Schema,
 		entity: Model.Entity,
-		db: KnexWrapper,
+		db: Client,
 		events: ContentEvent[],
 		predicateFactory: PredicateFactory
 	): Promise<PermissionsByRow> {
@@ -181,6 +181,7 @@ class PermissionsVerifier {
 			const typeEvents = events.filter(it => it.type === eventType)
 			affectedColumnsByType[eventType] = this.getAffectedColumnsByRow(typeEvents)
 			qb = this.buildPredicates(
+				db,
 				qb,
 				eventToOperationMapping[eventType],
 				affectedColumnsByType[eventType],
@@ -207,6 +208,7 @@ class PermissionsVerifier {
 	}
 
 	private buildPredicates(
+		db: Client,
 		qb: SelectBuilder,
 		operation: Acl.Operation,
 		rowAffectedColumns: AffectedColumnsByRow,
@@ -222,7 +224,7 @@ class PermissionsVerifier {
 			{}
 		)
 
-		const whereBuilder = new WhereBuilder(schema, new JoinBuilder(schema), new ConditionBuilder())
+		const whereBuilder = new WhereBuilder(schema, new JoinBuilder(schema), new ConditionBuilder(), db)
 
 		const columns = Object.values(rowAffectedColumns).reduce(
 			(result, fields) => [...result, ...fields.filter(it => result.indexOf(it) < 0)],
@@ -252,7 +254,7 @@ class PermissionsVerifier {
 		return qb
 	}
 
-	private createBaseSelectBuilder(db: KnexWrapper, entity: Model.Entity, ids: string[]): SelectBuilder {
+	private createBaseSelectBuilder(db: Client, entity: Model.Entity, ids: string[]): SelectBuilder {
 		return db
 			.selectBuilder()
 			.select(entity.primaryColumn, '__primary')

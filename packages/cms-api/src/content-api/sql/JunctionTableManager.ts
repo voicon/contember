@@ -4,11 +4,12 @@ import Mapper from './Mapper'
 import UniqueWhereExpander from '../graphQlResolver/UniqueWhereExpander'
 import WhereBuilder from './select/WhereBuilder'
 import PredicateFactory from '../../acl/PredicateFactory'
-import KnexWrapper from '../../core/knex/KnexWrapper'
+import Client from '../../core/database/Client'
 import { Acl, Input, Model } from 'cms-common'
-import InsertBuilder from '../../core/knex/InsertBuilder'
-import ConditionBuilder from '../../core/knex/ConditionBuilder'
-import SelectBuilder from '../../core/knex/SelectBuilder'
+import InsertBuilder from '../../core/database/InsertBuilder'
+import ConditionBuilder from '../../core/database/ConditionBuilder'
+import SelectBuilder from '../../core/database/SelectBuilder'
+import Literal from '../../core/database/Literal'
 import { uuid } from '../../utils/uuid'
 
 class JunctionTableManager {
@@ -91,7 +92,7 @@ class JunctionTableManager {
 						joiningTable.inverseJoiningColumn.columnName
 					)
 					.select(expr => expr.raw('true'), 'selected')
-					.from(qb.raw('(values (null))'), 't')
+					.from(new Literal('(values (null))'), 't')
 
 					.join(owningEntity.tableName, 'owning', condition => condition.raw('true'))
 					.join(inversedEntity.tableName, 'inversed', condition => condition.raw('true'))
@@ -117,7 +118,7 @@ namespace JunctionTableManager {
 	}
 
 	export class JunctionConnectHandler implements JunctionHandler {
-		constructor(private readonly db: KnexWrapper) {}
+		constructor(private readonly db: Client) {}
 
 		async executeSimple(
 			joiningTable: Model.JoiningTable,
@@ -146,7 +147,7 @@ namespace JunctionTableManager {
 					[joiningTable.inverseJoiningColumn.columnName]: expr =>
 						expr.select(['data', joiningTable.inverseJoiningColumn.columnName]),
 				})
-				.returning(this.db.raw('true as inserted'))
+				.returning(new Literal('true as inserted'))
 				.from(qb => qb.from('data'))
 				.withCteAliases(['data'])
 				.onConflict(InsertBuilder.ConflictActionType.doNothing)
@@ -155,7 +156,7 @@ namespace JunctionTableManager {
 				.selectBuilder()
 				.with('data', dataCallback)
 				.with('insert', insert.createQuery())
-				.from(this.db.raw('(values (null))'), 't')
+				.from(new Literal('(values (null))'), 't')
 				.leftJoin('data', 'data', condition => condition.raw('true'))
 				.leftJoin('insert', 'insert', condition => condition.raw('true'))
 				.select(expr => expr.raw('coalesce(data.selected, false)'), 'selected')
@@ -169,7 +170,7 @@ namespace JunctionTableManager {
 	}
 
 	export class JunctionDisconnectHandler implements JunctionHandler {
-		constructor(private readonly db: KnexWrapper) {}
+		constructor(private readonly db: Client) {}
 
 		public async executeSimple(
 			joiningTable: Model.JoiningTable,
@@ -204,13 +205,14 @@ namespace JunctionTableManager {
 						['data', joiningTable.inverseJoiningColumn.columnName]
 					)
 				})
-				.returning(this.db.raw('true as deleted'))
+				.withCteAliases(['data'])
+				.returning(new Literal('true as deleted'))
 
 			const qb = this.db
 				.selectBuilder()
 				.with('data', dataCallback)
 				.with('delete', deleteQb.createQuery())
-				.from(this.db.raw('(values (null))'), 't')
+				.from(new Literal('(values (null))'), 't')
 				.leftJoin('data', 'data', condition => condition.raw('true'))
 				.leftJoin('delete', 'delete', condition => condition.raw('true'))
 				.select(expr => expr.raw('coalesce(data.selected, false)'), 'selected')

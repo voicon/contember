@@ -1,4 +1,3 @@
-import knex from 'knex'
 import Koa from 'koa'
 import Container from './core/di/Container'
 import Project from './config/Project'
@@ -10,7 +9,6 @@ import { Config, DatabaseCredentials } from './config/config'
 import S3 from './utils/S3'
 import TimerMiddlewareFactory from './http/TimerMiddlewareFactory'
 import GraphQlSchemaFactory from './http/GraphQlSchemaFactory'
-import KnexWrapper from './core/knex/KnexWrapper'
 import SystemMiddlewareFactory from './http/SystemMiddlewareFactory'
 import SchemaVersionBuilder from './content-schema/SchemaVersionBuilder'
 import SystemContainerFactory from './system-api/SystemContainerFactory'
@@ -18,7 +16,6 @@ import SystemApolloServerFactory from './http/SystemApolloServerFactory'
 import MigrationFilesManager from './migrations/MigrationFilesManager'
 import MigrationsResolver from './content-schema/MigrationsResolver'
 import PermissionsByIdentityFactory from './acl/PermissionsByIdentityFactory'
-import KnexDebugger from './core/knex/KnexDebugger'
 import HomepageMiddlewareFactory from './http/HomepageMiddlewareFactory'
 import MiddlewareStackFactory from './http/MiddlewareStackFactory'
 import ContentApolloMiddlewareFactory from './http/ContentApolloMiddlewareFactory'
@@ -41,14 +38,17 @@ import { CommandManager } from './core/cli/CommandManager'
 import { Schema } from 'cms-common'
 import SystemExecutionContainer from './system-api/SystemExecutionContainer'
 import TenantContainer from './tenant-api/TenantContainer'
+import CreateApiKeyMutationResolver from './tenant-api/resolvers/mutation/CreateApiKeyMutationResolver'
+import Connection from './core/database/Connection'
+import Client from './core/database/Client'
 
 export type ProjectContainer = Container<{
 	project: Project
-	knexConnection: knex
-	systemKnexWrapper: KnexWrapper
+	systemDbClient: Client
 	systemApolloServerFactory: SystemApolloServerFactory
 	contentApolloMiddlewareFactory: ContentApolloMiddlewareFactory
 	systemExecutionContainerFactory: SystemExecutionContainer.Factory
+	connection: Connection
 }>
 
 export interface MasterContainer {
@@ -184,29 +184,24 @@ class CompositionRoot {
 		return projects.map((project: Project) => {
 			const projectContainer = new Container.Builder({})
 				.addService('project', () => project)
-				.addService('knexDebugger', () => new KnexDebugger())
-				.addService('knexConnection', ({ project, knexDebugger }) => {
-					const knexInst = knex({
-						debug: false,
-						client: 'pg',
-						connection: {
+				.addService('connection', ({ project }) => {
+					return new Connection(
+						{
 							host: project.dbCredentials.host,
 							port: project.dbCredentials.port,
 							user: project.dbCredentials.user,
 							password: project.dbCredentials.password,
 							database: project.dbCredentials.database,
 						},
-					})
-					knexDebugger.register(knexInst)
-
-					return knexInst
+						{ timing: true }
+					)
 				})
 				.addService('migrationFilesManager', ({ project }) =>
 					MigrationFilesManager.createForProject(projectsDir, project.slug)
 				)
 				.addService('migrationsResolver', ({ migrationFilesManager }) => new MigrationsResolver(migrationFilesManager))
-				.addService('systemKnexWrapper', ({ knexConnection }) => new KnexWrapper(knexConnection, 'system'))
-				.addService('systemQueryHandler', ({ systemKnexWrapper }) => systemKnexWrapper.createQueryHandler())
+				.addService('systemDbClient', ({ connection }) => connection.createClient('system'))
+				.addService('systemQueryHandler', ({ systemDbClient }) => systemDbClient.createQueryHandler())
 				.addService(
 					'modificationHandlerFactory',
 					() => new ModificationHandlerFactory(ModificationHandlerFactory.defaultFactoryMap)
@@ -237,7 +232,7 @@ class CompositionRoot {
 					({ graphQlSchemaBuilderFactory, permissionsByIdentityFactory }) =>
 						new GraphQlSchemaFactory(graphQlSchemaBuilderFactory, permissionsByIdentityFactory)
 				)
-				.addService('apolloServerFactory', ({ knexDebugger }) => new ContentApolloServerFactory(knexDebugger))
+				.addService('apolloServerFactory', ({ connection }) => new ContentApolloServerFactory(connection))
 				.addService(
 					'contentApolloMiddlewareFactory',
 					({ project, schemaVersionBuilder, graphQlSchemaFactory, apolloServerFactory }) =>
@@ -252,14 +247,13 @@ class CompositionRoot {
 					'migrationFilesManager',
 					'permissionsByIdentityFactory',
 					'schemaMigrator',
-					'systemKnexWrapper',
 					'modificationHandlerFactory',
 					'schemaVersionBuilder'
 				)
 			)
 
 			return projectContainer
-				.pick('project', 'knexConnection', 'contentApolloMiddlewareFactory', 'systemKnexWrapper')
+				.pick('project', 'contentApolloMiddlewareFactory', 'systemDbClient', 'connection')
 				.merge(systemContainer.pick('systemApolloServerFactory', 'systemExecutionContainerFactory'))
 		})
 	}

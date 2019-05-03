@@ -1,13 +1,13 @@
-import KnexQuery from '../../../core/knex/KnexQuery'
-import KnexQueryable from '../../../core/knex/KnexQueryable'
+import DbQuery from '../../../core/database/DbQuery'
+import DbQueryable from '../../../core/database/DbQueryable'
 
-class LatestMigrationByEventQuery extends KnexQuery<LatestMigrationByEventQuery.Result> {
+class LatestMigrationByEventQuery extends DbQuery<LatestMigrationByEventQuery.Result> {
 	constructor(private readonly eventId: string) {
 		super()
 	}
 
-	async fetch(queryable: KnexQueryable): Promise<LatestMigrationByEventQuery.Result> {
-		const rows = (await queryable.createWrapper().raw(
+	async fetch(queryable: DbQueryable): Promise<LatestMigrationByEventQuery.Result> {
+		const rows = (await queryable.createWrapper().query<LatestMigrationByEventQuery.Row>(
 			`
 			WITH RECURSIVE recent_events(type, previous_id, data) AS (
 					SELECT type, previous_id, data
@@ -23,7 +23,7 @@ class LatestMigrationByEventQuery extends KnexQuery<LatestMigrationByEventQuery.
 			WHERE type = 'run_migration'
 			LIMIT 1
 		`,
-			this.eventId
+			[this.eventId]
 		)).rows
 
 		return this.fetchOneOrNull(rows)
@@ -31,11 +31,12 @@ class LatestMigrationByEventQuery extends KnexQuery<LatestMigrationByEventQuery.
 }
 
 namespace LatestMigrationByEventQuery {
-	export type Result = null | {
+	export type Row = {
 		readonly type: string
 		readonly previous_id: string
 		readonly data: { version: string }
 	}
+	export type Result = null | Row
 }
 
 export default LatestMigrationByEventQuery

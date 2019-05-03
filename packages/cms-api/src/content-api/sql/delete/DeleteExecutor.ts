@@ -2,10 +2,10 @@ import { Acl, Input, Model, assertNever } from 'cms-common'
 import UniqueWhereExpander from '../../graphQlResolver/UniqueWhereExpander'
 import { acceptEveryFieldVisitor } from '../../../content-schema/modelUtils'
 import WhereBuilder from '../select/WhereBuilder'
-import KnexWrapper from '../../../core/knex/KnexWrapper'
+import Client from '../../../core/database/Client'
 import Path from '../select/Path'
 import PredicateFactory from '../../../acl/PredicateFactory'
-import Returning from '../../../core/knex/internal/Returning'
+import Returning from '../../../core/database/internal/Returning'
 import Mapper from '../Mapper'
 import UpdateBuilderFactory from '../update/UpdateBuilderFactory'
 
@@ -14,7 +14,7 @@ type EntityRelationTuple = [Model.Entity, Model.ManyHasOneRelation | Model.OneHa
 class DeleteExecutor {
 	constructor(
 		private readonly schema: Model.Schema,
-		private readonly db: KnexWrapper,
+		private readonly db: Client,
 		private readonly uniqueWhereExpander: UniqueWhereExpander,
 		private readonly predicateFactory: PredicateFactory,
 		private readonly whereBuilder: WhereBuilder,
@@ -22,7 +22,7 @@ class DeleteExecutor {
 	) {}
 
 	public async execute(entity: Model.Entity, where: Input.UniqueWhere): Promise<void> {
-		await this.db.raw('SET CONSTRAINTS ALL DEFERRED')
+		await this.db.query('SET CONSTRAINTS ALL DEFERRED')
 		const uniqueWhere = this.uniqueWhereExpander.expand(entity, where)
 		const result = await this.delete(entity, uniqueWhere)
 		if (result.length === 0) {
@@ -30,7 +30,7 @@ class DeleteExecutor {
 		}
 		await this.executeCascade(entity, result)
 
-		await this.db.raw('SET CONSTRAINTS ALL IMMEDIATE')
+		await this.db.query('SET CONSTRAINTS ALL IMMEDIATE')
 	}
 
 	private async executeCascade(entity: Model.Entity, values: Input.PrimaryValue[]): Promise<void> {
@@ -57,16 +57,17 @@ class DeleteExecutor {
 	}
 
 	private async delete(entity: Model.Entity, where: Input.Where): Promise<Returning.Result[]> {
+		const predicate = this.predicateFactory.create(entity, Acl.Operation.delete)
+		const inQb = this.db
+			.selectBuilder()
+			.from(entity.tableName, 'root_')
+			.select(['root_', entity.primaryColumn])
+		const inQbWithWhere = this.whereBuilder.build(inQb, entity, new Path([]), { and: [where, predicate] })
+
 		const qb = this.db
 			.deleteBuilder()
 			.from(entity.tableName)
-			.where(condition =>
-				condition.in(entity.primaryColumn, qb => {
-					qb = qb.from(entity.tableName, 'root_').select(['root_', entity.primaryColumn])
-					const predicate = this.predicateFactory.create(entity, Acl.Operation.delete)
-					return this.whereBuilder.build(qb, entity, new Path([]), { and: [where, predicate] })
-				})
-			)
+			.where(condition => condition.in(entity.primaryColumn, inQbWithWhere))
 			.returning(entity.primaryColumn)
 
 		return await qb.execute()
