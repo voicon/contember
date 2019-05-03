@@ -435,7 +435,7 @@ const acl: Acl.Schema = {
 	roles: {
 		admin: {
 			stages: '*',
-			entities: new AllowAllPermissionFactory().create(model),
+			entities: new AllowAllPermissionFactory().create(model)
 		}
 	}
 }
