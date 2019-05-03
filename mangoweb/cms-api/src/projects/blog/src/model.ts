@@ -79,8 +79,12 @@ const acl: Acl.Schema = {
 		site: { type: Acl.VariableType.entity, entityName: 'Site' }
 	},
 	roles: {
-		admin: { entities: new AllowAllPermissionFactory().create(model) },
+		admin: {
+			stages: '*',
+			entities: new AllowAllPermissionFactory().create(model)
+		},
 		editor: {
+			stages: '*',
 			entities: {
 				Post: {
 					predicates: {},
@@ -115,6 +119,7 @@ const acl: Acl.Schema = {
 			}
 		},
 		deleter: {
+			stages: '*',
 			entities: {
 				Post: {
 					predicates: {},
