@@ -27,26 +27,6 @@
 					"onDelete": "cascade"
 				}
 			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "Video",
-			"unique": {
-				"fields": [
-					"poster"
-				],
-				"name": "unique_Video_poster_0194b4"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDo",
-			"unique": {
-				"fields": [
-					"boomerangVideo"
-				],
-				"name": "unique_WhatWeDo_boomerangVideo_dc9c89"
-			}
 		}
 	]
 }

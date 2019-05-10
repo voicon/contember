@@ -94,26 +94,6 @@
 			"fieldName": "WhatWeDoLocale"
 		},
 		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDo",
-			"unique": {
-				"fields": [
-					"featuredImage"
-				],
-				"name": "unique_WhatWeDo_featuredImage_8a7052"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDo",
-			"unique": {
-				"fields": [
-					"featuredVideo"
-				],
-				"name": "unique_WhatWeDo_featuredVideo_02d684"
-			}
-		},
-		{
 			"modification": "removeEntity",
 			"entityName": "WhatWeDoLocale"
 		}
