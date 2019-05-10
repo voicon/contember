@@ -1,6 +1,10 @@
 version: '3.7'
 services:
-    ts_watch:
-        user: $USER
-    api:
-        user: $USER
+	ts_watch:
+		user: "1000"
+	api:
+		user: "1000"
+	admin:
+		user: "1000"
+		environment:
+			LOGIN_TOKEN: "XXXXXXXX"
