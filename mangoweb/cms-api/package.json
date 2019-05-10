@@ -6,8 +6,8 @@
 		"build": "tsc --build",
 		"start": "dotenv -- nodemon --watch dist --ext js --delay 500ms ./dist/src/index.js start",
 		"console": "dotenv -- node ./dist/src/index.js",
-		"reset": "dotenv -- console drop && dotenv -- console engine:migrations:continue && dotenv -- console init",
-		"sync": "dotenv -- console engine:migrations:continue && dotenv -- console init"
+		"reset": "dotenv --  node ./dist/src/index.js drop && dotenv --  node ./dist/src/index.js update",
+		"sync": "dotenv --  node ./dist/src/index.js update"
 	},
 	"dependencies": {
 		"cms-api": "^0.0.0",
