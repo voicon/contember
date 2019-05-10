@@ -109,13 +109,15 @@ builder.entity('FooterLocale', entity =>
 )
 
 builder.entity('FooterButton', entity =>
-	entity.column('order', column => column.type(Model.ColumnType.Int)).oneHasMany('locales', relation =>
-		relation
-			.target('FooterButtonLocale')
-			.onDelete(Model.OnDelete.cascade)
-			.ownerNotNull()
-			.ownedBy('footerButton')
-	)
+	entity
+		.column('order', column => column.type(Model.ColumnType.Int))
+		.oneHasMany('locales', relation =>
+			relation
+				.target('FooterButtonLocale')
+				.onDelete(Model.OnDelete.cascade)
+				.ownerNotNull()
+				.ownedBy('footerButton')
+		)
 )
 
 builder.entity('FooterButtonLocale', entity =>

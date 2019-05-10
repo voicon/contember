@@ -13,15 +13,28 @@ const schema: DocumentNode = gql`
 
 	type Mutation {
 		setup(superadmin: AdminCredentials!): SetupResponse
+
 		signUp(email: String!, password: String!): SignUpResponse
 		signIn(email: String!, password: String!, expiration: Int): SignInResponse
-		addProjectMember(projectId: String!, identityId: String!, roles: [String!]!): AddProjectMemberResponse
-		updateProjectMemberVariables(
+		signOut(all: Boolean): SignOutResponse
+		changePassword(personId: String!, password: String!): ChangePasswordResponse
+
+		addProjectMember(
 			projectId: String!
 			identityId: String!
-			variables: [VariableUpdate!]!
-		): UpdateProjectMemberVariablesResponse
+			roles: [String!]!
+			variables: [VariableUpdate!]
+		): AddProjectMemberResponse
+		updateProjectMember(
+			projectId: String!
+			identityId: String!
+			roles: [String!]
+			variables: [VariableUpdate!]
+		): UpdateProjectMemberResponse
+		removeProjectMember(projectId: String!, identityId: String!): RemoveProjectMemberResponse
+
 		createApiKey(roles: [String!], projects: [ApiKeyProjectInput!]): CreateApiKeyResponse
+		disableApiKey(id: String!): DisableApiKeyResponse
 	}
 
 	# === setUp ===
@@ -67,6 +80,7 @@ const schema: DocumentNode = gql`
 
 	enum SignUpErrorCode {
 		EMAIL_ALREADY_EXISTS
+		TOO_WEAK
 	}
 
 	type SignUpResult {
@@ -96,7 +110,43 @@ const schema: DocumentNode = gql`
 		person: Person!
 	}
 
+	# === signOut ===
+
+	type SignOutResponse {
+		ok: Boolean!
+		errors: [SignOutError!]!
+	}
+
+	type SignOutError {
+		code: SignOutErrorCode!
+		endUserMessage: String
+		developerMessage: String
+	}
+
+	enum SignOutErrorCode {
+		NOT_A_PERSON
+	}
+
+	# === changePassword ===
+
+	type ChangePasswordResponse {
+		ok: Boolean!
+		errors: [ChangePasswordError!]!
+	}
+
+	type ChangePasswordError {
+		code: ChangePasswordErrorCode!
+		endUserMessage: String
+		developerMessage: String
+	}
+
+	enum ChangePasswordErrorCode {
+		PERSON_NOT_FOUND
+		TOO_WEAK
+	}
+
 	# === addProjectMember ===
+
 	type AddProjectMemberResponse {
 		ok: Boolean!
 		errors: [AddProjectMemberError!]!
@@ -111,26 +161,43 @@ const schema: DocumentNode = gql`
 	enum AddProjectMemberErrorCode {
 		PROJECT_NOT_FOUND
 		IDENTITY_NOT_FOUND
+		VARIABLE_NOT_FOUND
 		ALREADY_MEMBER
 	}
 
-	# === updateProjectMemberVariables ===
+	# === updateProjectMember ===
 
-	type UpdateProjectMemberVariablesResponse {
+	type UpdateProjectMemberResponse {
 		ok: Boolean!
-		errors: [UpdateProjectMemberVariablesError!]!
+		errors: [UpdateProjectMemberError!]!
 	}
 
-	type UpdateProjectMemberVariablesError {
-		code: UpdateProjectMemberVariablesErrorCode!
+	type UpdateProjectMemberError {
+		code: UpdateProjectMemberErrorCode!
 		endUserMessage: String
 		developerMessage: String
 	}
 
-	enum UpdateProjectMemberVariablesErrorCode {
-		PROJECT_NOT_FOUND
-		IDENTITY_NOT_FOUND
+	enum UpdateProjectMemberErrorCode {
 		VARIABLE_NOT_FOUND
+		NOT_MEMBER
+	}
+
+	# === removeProjectMember ===
+
+	type RemoveProjectMemberResponse {
+		ok: Boolean!
+		errors: [RemoveProjectMemberError!]!
+	}
+
+	type RemoveProjectMemberError {
+		code: RemoveProjectMemberErrorCode!
+		endUserMessage: String
+		developerMessage: String
+	}
+
+	enum RemoveProjectMemberErrorCode {
+		NOT_MEMBER
 	}
 
 	# === createApiKey ===
@@ -162,6 +229,23 @@ const schema: DocumentNode = gql`
 		id: String!
 		token: String!
 		identity: IdentityWithoutPerson!
+	}
+
+	# === disableApiKey ===
+
+	type DisableApiKeyResponse {
+		ok: Boolean!
+		errors: [DisableApiKeyError!]!
+	}
+
+	type DisableApiKeyError {
+		code: DisableApiKeyErrorCode!
+		endUserMessage: String
+		developerMessage: String
+	}
+
+	enum DisableApiKeyErrorCode {
+		KEY_NOT_FOUND
 	}
 
 	# === common ===

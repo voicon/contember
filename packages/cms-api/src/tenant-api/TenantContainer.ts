@@ -2,11 +2,12 @@ import { DatabaseCredentials } from '../config/config'
 import QueryHandler from '../core/query/QueryHandler'
 import DbQueryable from '../core/database/DbQueryable'
 import MeQueryResolver from './resolvers/query/MeQueryResolver'
-import SignUpMutationResolver from './resolvers/mutation/SignUpMutationResolver'
-import SignInMutationResolver from './resolvers/mutation/SignInMutationResolver'
-import AddProjectMemberMutationResolver from './resolvers/mutation/AddProjectMemberMutationResolver'
-import SetupMutationResolver from './resolvers/mutation/SetupMutationResolver'
-import UpdateProjectMemberVariablesMutationResolver from './resolvers/mutation/UpdateProjectMemberVariablesMutationResolver'
+import CreateApiKeyMutationResolver from './resolvers/mutation/apiKey/CreateApiKeyMutationResolver'
+import SignUpMutationResolver from './resolvers/mutation/person/SignUpMutationResolver'
+import SignInMutationResolver from './resolvers/mutation/person/SignInMutationResolver'
+import AddProjectMemberMutationResolver from './resolvers/mutation/projectMember/AddProjectMemberMutationResolver'
+import UpdateProjectMemberMutationResolver from './resolvers/mutation/projectMember/UpdateProjectMemberMutationResolver'
+import SetupMutationResolver from './resolvers/mutation/setup/SetupMutationResolver'
 import PermissionsFactory from './model/authorization/PermissionsFactory'
 import TenantApolloServerFactory from '../http/TenantApolloServerFactory'
 import Container from '../core/di/Container'
@@ -17,10 +18,15 @@ import ProjectMemberManager from './model/service/ProjectMemberManager'
 import ResolverFactory from './resolvers/ResolverFactory'
 import AccessEvaluator from '../core/authorization/AccessEvalutator'
 import Authorizator from '../core/authorization/Authorizator'
-import { ApolloServer, Config } from 'apollo-server-koa'
+import { ApolloServer } from 'apollo-server-koa'
 import ProjectManager from './model/service/ProjectManager'
-import CreateApiKeyMutationResolver from './resolvers/mutation/CreateApiKeyMutationResolver'
 import Connection from '../core/database/Connection'
+import ChangePasswordMutationResolver from './resolvers/mutation/person/ChangePasswordMutationResolver'
+import PasswordChangeManager from './model/service/PasswordChangeManager'
+import SignOutMutationResolver from './resolvers/mutation/person/SignOutMutationResolver'
+import RemoveProjectMemberMutationResolver from './resolvers/mutation/projectMember/RemoveProjectMemberMutationResolver'
+import DisableApiKeyMutationResolver from './resolvers/mutation/apiKey/DisableApiKeyMutationResolver'
+import { IdentityTypeResolver } from './resolvers/types/IdentityTypeResolver'
 
 interface TenantContainer {
 	projectMemberManager: ProjectMemberManager
@@ -65,6 +71,7 @@ namespace TenantContainer {
 
 				.addService('apiKeyManager', ({ queryHandler, db }) => new ApiKeyManager(queryHandler, db))
 				.addService('signUpManager', ({ queryHandler, db }) => new SignUpManager(queryHandler, db))
+				.addService('passwordChangeManager', ({ db }) => new PasswordChangeManager(db))
 				.addService(
 					'signInManager',
 					({ queryHandler, apiKeyManager }) => new SignInManager(queryHandler, apiKeyManager)
@@ -72,15 +79,20 @@ namespace TenantContainer {
 				.addService('projectMemberManager', ({ queryHandler, db }) => new ProjectMemberManager(queryHandler, db))
 				.addService('projectManager', ({ db }) => new ProjectManager(db))
 
-				.addService('meQueryResolver', ({ queryHandler }) => new MeQueryResolver(queryHandler))
+				.addService('meQueryResolver', () => new MeQueryResolver())
 				.addService(
 					'signUpMutationResolver',
-					({ signUpManager, queryHandler, apiKeyManager }) =>
-						new SignUpMutationResolver(signUpManager, queryHandler, apiKeyManager)
+					({ signUpManager, apiKeyManager }) => new SignUpMutationResolver(signUpManager, apiKeyManager)
+				)
+				.addService('signInMutationResolver', ({ signInManager }) => new SignInMutationResolver(signInManager))
+				.addService(
+					'signOutMutationResolver',
+					({ apiKeyManager, queryHandler }) => new SignOutMutationResolver(apiKeyManager, queryHandler)
 				)
 				.addService(
-					'signInMutationResolver',
-					({ signInManager, queryHandler }) => new SignInMutationResolver(signInManager, queryHandler)
+					'changePasswordMutationResolver',
+					({ passwordChangeManager, queryHandler }) =>
+						new ChangePasswordMutationResolver(passwordChangeManager, queryHandler)
 				)
 				.addService(
 					'addProjectMemberMutationResolver',
@@ -88,39 +100,27 @@ namespace TenantContainer {
 				)
 				.addService(
 					'setupMutationResolver',
-					({ signUpManager, apiKeyManager, queryHandler }) =>
-						new SetupMutationResolver(signUpManager, queryHandler, apiKeyManager)
+					({ signUpManager, apiKeyManager }) => new SetupMutationResolver(signUpManager, apiKeyManager)
 				)
 				.addService(
-					'updateProjectMemberVariablesMutationResolver',
-					({ projectMemberManager }) => new UpdateProjectMemberVariablesMutationResolver(projectMemberManager)
+					'updateProjectMemberMutationResolver',
+					({ projectMemberManager }) => new UpdateProjectMemberMutationResolver(projectMemberManager)
+				)
+				.addService(
+					'removeProjectMemberMutationResolver',
+					({ projectMemberManager }) => new RemoveProjectMemberMutationResolver(projectMemberManager)
 				)
 				.addService(
 					'createApiKeyMutationResolver',
 					({ apiKeyManager }) => new CreateApiKeyMutationResolver(apiKeyManager)
 				)
-
 				.addService(
-					'resolvers',
-					({
-						meQueryResolver,
-						signUpMutationResolver,
-						signInMutationResolver,
-						addProjectMemberMutationResolver,
-						setupMutationResolver,
-						updateProjectMemberVariablesMutationResolver,
-						createApiKeyMutationResolver,
-					}) =>
-						new ResolverFactory(
-							meQueryResolver,
-							signUpMutationResolver,
-							signInMutationResolver,
-							addProjectMemberMutationResolver,
-							setupMutationResolver,
-							updateProjectMemberVariablesMutationResolver,
-							createApiKeyMutationResolver
-						).create()
+					'disableApiKeyMutationResolver',
+					({ apiKeyManager }) => new DisableApiKeyMutationResolver(apiKeyManager)
 				)
+				.addService('identityTypeResolver', ({ queryHandler }) => new IdentityTypeResolver(queryHandler))
+
+				.addService('resolvers', container => new ResolverFactory(container).create())
 
 				.addService('apolloServer', ({ resolvers, projectMemberManager, authorizator }) =>
 					new TenantApolloServerFactory(resolvers, projectMemberManager, authorizator).create()

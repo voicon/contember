@@ -11,6 +11,8 @@ namespace Identity {
 		SUPER_ADMIN = 'super_admin',
 		LOGIN = 'login',
 		SETUP = 'setup',
+		SELF = 'self',
+		PERSON = 'person',
 	}
 
 	export class StaticIdentity implements Identity {

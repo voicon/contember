@@ -12,7 +12,7 @@ export interface SqlQuery {
 class ConnectionMockError extends Error {}
 
 export const createConnectionMock = (queries: SqlQuery[]): Connection.TransactionLike & Connection.ClientFactory => {
-	return new class implements Connection.TransactionLike {
+	return new (class implements Connection.TransactionLike {
 		public readonly eventManager = new EventManager()
 
 		query<Row extends Record<string, any>>(
@@ -52,7 +52,7 @@ EXPECTED: ${expectedSql}
 					} else if (expectedParameter instanceof Date && actualParameter instanceof Date) {
 						expect(expectedParameter.getTime()).equal(actualParameter.getTime())
 					} else {
-						expect(actualParameter).equals(expectedParameter)
+						expect(actualParameter).deep.equals(expectedParameter)
 					}
 				}
 			}
@@ -82,5 +82,5 @@ EXPECTED: ${expectedSql}
 		public createClient(schema: string): Client {
 			return new Client(this, schema)
 		}
-	}()
+	})()
 }
