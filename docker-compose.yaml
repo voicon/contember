@@ -1,7 +1,7 @@
 version: '3.7'
 services:
     ts_watch:
-        image: node:10-alpine
+        image: node:10
         volumes:
             - ./:/src:cached
         working_dir: /src
@@ -9,17 +9,16 @@ services:
         depends_on:
             - db
 
-    cms_api:
-        image: node:10-alpine
+    api:
+        image: node:10
         volumes:
             - ./:/src:cached
         working_dir: /src/mangoweb/cms-api
         environment:
             DB_HOST: db
-            DB_PASSWORD: cms
-            DB_USER: cms
+            DB_PASSWORD: contember
+            DB_USER: contember
             DB_PORT: 5432
-            DB_DATABASE: cms
             SERVER_PORT: 80
         expose:
           - 80
@@ -29,13 +28,28 @@ services:
         depends_on:
           - db
 
+    admin:
+        image: node:10
+        volumes:
+            - ./:/src:cached
+        working_dir: /src/mangoweb/admin
+        environment:
+            API_SERVER: "http://localhost:4477"
+            SERVER_PORT: 80
+        expose:
+            - 80
+        ports:
+            - "127.0.0.1:4478:80"
+        command: npm run start
+        depends_on:
+            - db
     db:
         image: postgres:10-alpine
         restart: unless-stopped
         environment:
-            POSTGRES_PASSWORD: cms
-            POSTGRES_USER: cms
-            POSTGRES_DB: cms
+            POSTGRES_PASSWORD: contember
+            POSTGRES_USER: contember
+            POSTGRES_DB: contember
         volumes:
             - pgsql-data:/var/lib/postgresql/data
 

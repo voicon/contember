@@ -8,6 +8,6 @@ PROJECT_ROOT="$(dirname "$DIR")"
 cd "$PROJECT_ROOT"
 
 docker-compose run --rm \
-	--workdir=/src \
-	--entrypoint=npm \
+    --workdir=/src/mangoweb/cms-api \
+    --entrypoint="npm run console" \
     api "$@"

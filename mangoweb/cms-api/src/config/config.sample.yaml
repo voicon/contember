@@ -1,10 +1,10 @@
 tenant:
     db:
-        host: '%env.TENANT_DB_HOST%'
-        port: '5432'
-        user: '%env.TENANT_DB_USER%'
-        password: '%env.TENANT_DB_PASSWORD%'
-        database: '%env.TENANT_DB_NAME%'
+        host: '%env.DB_HOST%'
+        port: '%env.DB_PORT%'
+        user: '%env.DB_USER%'
+        password: '%env.DB_PASSWORD%'
+        database: 'tenant'
 
 projects:
     - id: 1635399a-de76-4101-bd14-82d67e9d2574
@@ -19,11 +19,11 @@ projects:
             name: Production Preview
             base: prod
       dbCredentials:
-        host: '%env.CMS_DB_HOST%'
-        port: '5432'
-        user: '%env.CMS_DB_USER%'
-        password: '%env.CMS_DB_PASSWORD%'
-        database: '%env.CMS_DB_NAME%'
+        host: '%env.DB_HOST%'
+        port: '%env.DB_PORT%'
+        user: '%env.DB_USER%'
+        password: '%env.DB_PASSWORD%'
+        database: 'cms-blog'
       s3:
         bucket: 'cms-api.mgw.cz'
         prefix: 'dev'
@@ -39,11 +39,11 @@ projects:
             slug: preview
             name: Preview
       dbCredentials:
-        host: '%env.MANGOWEB_DB_HOST%'
-        port: '5432'
-        user: '%env.MANGOWEB_DB_USER%'
-        password: '%env.MANGOWEB_DB_PASSWORD%'
-        database: '%env.MANGOWEB_DB_NAME%'
+        host: '%env.DB_HOST%'
+        port: '%env.DB_PORT%'
+        user: '%env.DB_USER%'
+        password: '%env.DB_PASSWORD%'
+        database: 'cms-mangoweb'
       s3:
         bucket: 'cms-api.mgw.cz'
         prefix: 'dev'
@@ -59,11 +59,11 @@ projects:
           slug: prod
           name: Production
       dbCredentials:
-        host: '%env.QUANTI_DB_HOST%'
-        port: '5432'
-        user: '%env.QUANTI_DB_USER%'
-        password: '%env.QUANTI_DB_PASSWORD%'
-        database: '%env.QUANTI_DB_NAME%'
+        host: '%env.DB_HOST%'
+        port: '%env.DB_PORT%'
+        user: '%env.DB_USER%'
+        password: '%env.DB_PASSWORD%'
+        database: 'cms-quanti'
       s3:
         bucket: 'cms-api.mgw.cz'
         prefix: 'dev/quanti'

@@ -7,18 +7,20 @@ PROJECT_ROOT="$(dirname "$DIR")"
 # project root
 cd "$PROJECT_ROOT"
 
-
-function npm {
-
-docker-compose run --rm \
-	--workdir="/src${PWD:${#PROJECT_ROOT}}" \
-	--entrypoint=npm \
-    cms_api "$@"
-    }
-
-
 set -x
 
-npm install
-npm run bootstrap
-npm run build
+./docker/npm install
+./docker/npm run bootstrap
+./docker/npm run build
+
+docker-compose up -d db
+
+sleep 3
+
+docker-compose exec -T db psql -U contember contember < ./docker/pg-setup.sql
+
+./docker/console update
+./docker/console setup
+
+echo "Put the token above into docker-compose.override.yaml > services > admin > environment > LOGIN_TOKEN"
+echo "Then start the application using docker-compose up -d"

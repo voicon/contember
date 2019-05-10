@@ -5,3 +5,4 @@
 /packages/*/node_modules
 /lerna-debug.log
 /node_modules
+docker-compose.override.yaml
