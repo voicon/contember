@@ -7,8 +7,6 @@ PROJECT_ROOT="$(dirname "$DIR")"
 # project root
 cd "$PROJECT_ROOT"
 
-set -x
-
 ./docker/npm install
 ./docker/npm run bootstrap
 ./docker/npm run build
@@ -23,4 +21,6 @@ docker-compose exec -T db psql -U contember contember < ./docker/pg-setup.sql
 ./docker/console setup
 
 echo "Put the token above into docker-compose.override.yaml > services > admin > environment > LOGIN_TOKEN"
-echo "Then start the application using docker-compose up -d"
+echo "Then start the application using docker-compose up"
+echo "Admin will start on http://localhost:4478"
+echo "API will start on http://localhost:4477"

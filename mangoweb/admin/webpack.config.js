@@ -13,6 +13,10 @@ class AdminServerPlugin {
 	apply(compiler) {
 		let childProcess = null
 		compiler.hooks.afterEmit.tapAsync({ name: 'AdminServerPlugin' }, function(compilation, callback) {
+			const isDevServer = process.argv.find(v => v.indexOf('webpack-dev-server') !== -1);
+			if (!isDevServer) {
+				return
+			}
 			if (childProcess) {
 				callback()
 				return

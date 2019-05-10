@@ -19,11 +19,11 @@ services:
             DB_PASSWORD: contember
             DB_USER: contember
             DB_PORT: 5432
-            SERVER_PORT: 80
+            SERVER_PORT: 4000
         expose:
-          - 80
+          - 4000
         ports:
-          - "127.0.0.1:4477:80"
+          - "127.0.0.1:4477:4000"
         command: npm run start
         depends_on:
           - db
@@ -35,11 +35,11 @@ services:
         working_dir: /src/mangoweb/admin
         environment:
             API_SERVER: "http://localhost:4477"
-            SERVER_PORT: 80
+            SERVER_PORT: 4000
         expose:
-            - 80
+            - 4000
         ports:
-            - "127.0.0.1:4478:80"
+            - "127.0.0.1:4478:4000"
         command: npm run start
         depends_on:
             - db
@@ -52,6 +52,7 @@ services:
             POSTGRES_DB: contember
         volumes:
             - pgsql-data:/var/lib/postgresql/data
-
+        ports:
+            - "127.0.0.1:4479:5432"
 volumes:
     pgsql-data: ~
