@@ -7,6 +7,13 @@
 /mangoweb = mangoweb-specific admin and api instances
 ~~~
 
+## Docker dev setup
+
+- create `docker-compose.override.yaml`
+- create `mangoweb/cms-api/src/config/config.yaml` 
+- run `./docker/bootstrap.sh` 
+- follow instructions
+
 ## Monorepo operations
 
 We use [Lerna](https://lernajs.io/) to help with a few things
