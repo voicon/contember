@@ -119,16 +119,6 @@
 			"modification": "removeField",
 			"entityName": "ContactPageLocale",
 			"fieldName": "contactFormErrorMessage"
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "FrontPage",
-			"unique": {
-				"fields": [
-					"heroImage"
-				],
-				"name": "unique_FrontPage_heroImage_9fe4ae"
-			}
 		}
 	]
 }

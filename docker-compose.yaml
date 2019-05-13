@@ -1,43 +1,64 @@
 version: '3.7'
 services:
     ts_watch:
-        build: .
+        image: node:10
         volumes:
             - ./:/src:cached
-            - /src/node_modules
-            - /src/mangoweb/cms-api/node_modules
-            - /src/packages/cms-api/node_modules
         working_dir: /src
         command: npm run ts:watch
+        depends_on:
+            - db
 
-    cms_api:
-        build: .
+    api:
+        image: node:10
         volumes:
             - ./:/src:cached
-            - /src/node_modules
-            - /src/mangoweb/cms-api/node_modules
-            - /src/packages/cms-api/node_modules
         working_dir: /src/mangoweb/cms-api
         environment:
+            NODE_ENV: development
             DB_HOST: db
-            DB_PASSWORD: cms
-            DB_USER: cms
+            DB_PASSWORD: contember
+            DB_USER: contember
             DB_PORT: 5432
-            DB_DATABASE: cms
-            SERVER_PORT: 4477
+            TEST_DB_HOST: db
+            TEST_DB_PASSWORD: contember
+            TEST_DB_USER: contember
+            TEST_DB_PORT: 5432
+            TEST_DB_NAME: tests
+            SERVER_PORT: 4000
+        expose:
+          - 4000
         ports:
-          - "127.0.0.1:4477:4477"
-        command: sh -c 'npm run build && npm run start'
+          - "127.0.0.1:4477:4000"
+        command: npm run start
+        depends_on:
+          - db
 
+    admin:
+        image: node:10
+        volumes:
+            - ./:/src:cached
+        working_dir: /src/mangoweb/admin
+        environment:
+            API_SERVER: "http://localhost:4477"
+            SERVER_PORT: 4000
+        expose:
+            - 4000
+        ports:
+            - "127.0.0.1:4478:4000"
+        command: npm run start
+        depends_on:
+            - db
     db:
         image: postgres:10-alpine
         restart: unless-stopped
         environment:
-            POSTGRES_PASSWORD: cms
-            POSTGRES_USER: cms
-            POSTGRES_DB: cms
+            POSTGRES_PASSWORD: contember
+            POSTGRES_USER: contember
+            POSTGRES_DB: contember
         volumes:
             - pgsql-data:/var/lib/postgresql/data
-
+        ports:
+            - "127.0.0.1:4479:5432"
 volumes:
     pgsql-data: ~

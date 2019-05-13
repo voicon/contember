@@ -1990,26 +1990,6 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
-			"entityName": "Redirect",
-			"unique": {
-				"fields": [
-					"link"
-				],
-				"name": "unique_Redirect_link_90ad6a"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "Seo",
-			"unique": {
-				"fields": [
-					"ogImage"
-				],
-				"name": "unique_Seo_ogImage_1d3ab5"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
 			"entityName": "MenuItemLocale",
 			"unique": {
 				"fields": [
@@ -2073,26 +2053,6 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
-			"entityName": "FrontPageLocale",
-			"unique": {
-				"fields": [
-					"seo"
-				],
-				"name": "unique_FrontPageLocale_seo_b46ea3"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "FrontPageLocale",
-			"unique": {
-				"fields": [
-					"link"
-				],
-				"name": "unique_FrontPageLocale_link_5f6218"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
 			"entityName": "PersonLocale",
 			"unique": {
 				"fields": [
@@ -2115,26 +2075,6 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
-			"entityName": "PageLocale",
-			"unique": {
-				"fields": [
-					"seo"
-				],
-				"name": "unique_PageLocale_seo_22ce77"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "PageLocale",
-			"unique": {
-				"fields": [
-					"link"
-				],
-				"name": "unique_PageLocale_link_944c82"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
 			"entityName": "Contact",
 			"unique": {
 				"fields": [
@@ -2152,26 +2092,6 @@
 					"locale"
 				],
 				"name": "unique_ContactLocale_contact_locale_bd2875"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "ContactLocale",
-			"unique": {
-				"fields": [
-					"seo"
-				],
-				"name": "unique_ContactLocale_seo_6663c8"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "ContactLocale",
-			"unique": {
-				"fields": [
-					"link"
-				],
-				"name": "unique_ContactLocale_link_e6310a"
 			}
 		},
 		{

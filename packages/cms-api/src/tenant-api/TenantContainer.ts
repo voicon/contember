@@ -27,12 +27,16 @@ import SignOutMutationResolver from './resolvers/mutation/person/SignOutMutation
 import RemoveProjectMemberMutationResolver from './resolvers/mutation/projectMember/RemoveProjectMemberMutationResolver'
 import DisableApiKeyMutationResolver from './resolvers/mutation/apiKey/DisableApiKeyMutationResolver'
 import { IdentityTypeResolver } from './resolvers/types/IdentityTypeResolver'
+import MigrationsRunner from '../core/migrations/MigrationsRunner'
+import MigrationFilesManager from '../migrations/MigrationFilesManager'
 
 interface TenantContainer {
 	projectMemberManager: ProjectMemberManager
 	apiKeyManager: ApiKeyManager
+	signUpManager: SignUpManager
 	projectManager: ProjectManager
 	apolloServer: ApolloServer
+	dbMigrationsRunner: MigrationsRunner
 }
 
 namespace TenantContainer {
@@ -40,7 +44,14 @@ namespace TenantContainer {
 		create(tenantDbCredentials: DatabaseCredentials): TenantContainer {
 			return this.createBuilder(tenantDbCredentials)
 				.build()
-				.pick('apolloServer', 'apiKeyManager', 'projectMemberManager', 'projectManager')
+				.pick(
+					'apolloServer',
+					'apiKeyManager',
+					'projectMemberManager',
+					'projectManager',
+					'dbMigrationsRunner',
+					'signUpManager'
+				)
 		}
 
 		createBuilder(tenantDbCredentials: DatabaseCredentials) {
@@ -52,6 +63,15 @@ namespace TenantContainer {
 					}
 				)
 				.addService('db', ({ connection }) => connection.createClient('tenant'))
+				.addService(
+					'dbMigrationsRunner',
+					() =>
+						new MigrationsRunner(
+							tenantDbCredentials,
+							'tenant',
+							MigrationFilesManager.createForEngine('tenant').directory
+						)
+				)
 				.addService('queryHandler', ({ db }) => {
 					const handler = new QueryHandler(
 						new DbQueryable(db, {

@@ -2130,26 +2130,6 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
-			"entityName": "FrontPage",
-			"unique": {
-				"fields": [
-					"introVideo"
-				],
-				"name": "unique_FrontPage_introVideo_148dce"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "FrontPage",
-			"unique": {
-				"fields": [
-					"seo"
-				],
-				"name": "unique_FrontPage_seo_f07cfa"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
 			"entityName": "FrontPageLocale",
 			"unique": {
 				"fields": [
@@ -2215,16 +2195,6 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
-			"entityName": "PageSeo",
-			"unique": {
-				"fields": [
-					"ogImage"
-				],
-				"name": "unique_PageSeo_ogImage_e826b1"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
 			"entityName": "PageSeoLocale",
 			"unique": {
 				"fields": [
@@ -2253,16 +2223,6 @@
 					"locale"
 				],
 				"name": "unique_MenuItemLocale_menuItem_locale_9e2d51"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "TeamPage",
-			"unique": {
-				"fields": [
-					"seo"
-				],
-				"name": "unique_TeamPage_seo_7fe89f"
 			}
 		},
 		{
@@ -2300,46 +2260,6 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDoLocale",
-			"unique": {
-				"fields": [
-					"featuredImage"
-				],
-				"name": "unique_WhatWeDoLocale_featuredImage_f1d379"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDoLocale",
-			"unique": {
-				"fields": [
-					"featuredVideo"
-				],
-				"name": "unique_WhatWeDoLocale_featuredVideo_81f155"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDoDescription",
-			"unique": {
-				"fields": [
-					"image"
-				],
-				"name": "unique_WhatWeDoDescription_image_6cc44c"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDoPage",
-			"unique": {
-				"fields": [
-					"seo"
-				],
-				"name": "unique_WhatWeDoPage_seo_995eea"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
 			"entityName": "WhatWeDoPageLocale",
 			"unique": {
 				"fields": [
@@ -2362,16 +2282,6 @@
 		},
 		{
 			"modification": "createUniqueConstraint",
-			"entityName": "ReferencesPage",
-			"unique": {
-				"fields": [
-					"seo"
-				],
-				"name": "unique_ReferencesPage_seo_e1df40"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
 			"entityName": "ReferencesPageLocale",
 			"unique": {
 				"fields": [
@@ -2379,16 +2289,6 @@
 					"locale"
 				],
 				"name": "unique_ReferencesPageLocale_referencesPage_locale_a824e1"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "ContactPage",
-			"unique": {
-				"fields": [
-					"seo"
-				],
-				"name": "unique_ContactPage_seo_ceda07"
 			}
 		},
 		{

@@ -1,11 +1,6 @@
 {
 	"modifications": [
 		{
-			"modification": "removeUniqueConstraint",
-			"entityName": "WhatWeDo",
-			"constraintName": "unique_WhatWeDo_featuredMedium_c47239"
-		},
-		{
 			"modification": "createRelation",
 			"entityName": "WhatWeDo",
 			"owningSide": {
@@ -37,26 +32,6 @@
 			"modification": "removeField",
 			"entityName": "WhatWeDo",
 			"fieldName": "featuredMedium"
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDo",
-			"unique": {
-				"fields": [
-					"featuredPhoto"
-				],
-				"name": "unique_WhatWeDo_featuredPhoto_7812cc"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDo",
-			"unique": {
-				"fields": [
-					"featuredVideo"
-				],
-				"name": "unique_WhatWeDo_featuredVideo_02d684"
-			}
 		}
 	]
 }

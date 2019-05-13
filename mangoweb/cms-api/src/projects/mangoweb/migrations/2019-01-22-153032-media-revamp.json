@@ -68,11 +68,6 @@
 			}
 		},
 		{
-			"modification": "removeUniqueConstraint",
-			"entityName": "WhatWeDo",
-			"constraintName": "unique_WhatWeDo_featuredImage_8a7052"
-		},
-		{
 			"modification": "createRelation",
 			"entityName": "WhatWeDo",
 			"owningSide": {
@@ -90,11 +85,6 @@
 			"modification": "removeField",
 			"entityName": "WhatWeDo",
 			"fieldName": "featuredImage"
-		},
-		{
-			"modification": "removeUniqueConstraint",
-			"entityName": "WhatWeDoDescription",
-			"constraintName": "unique_WhatWeDoDescription_image_6cc44c"
 		},
 		{
 			"modification": "createRelation",
@@ -197,76 +187,6 @@
 			"modification": "removeField",
 			"entityName": "Reference",
 			"fieldName": "video"
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "Medium",
-			"unique": {
-				"fields": [
-					"image"
-				],
-				"name": "unique_Medium_image_77eb5a"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "Medium",
-			"unique": {
-				"fields": [
-					"video"
-				],
-				"name": "unique_Medium_video_6e78a1"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDo",
-			"unique": {
-				"fields": [
-					"featuredMedium"
-				],
-				"name": "unique_WhatWeDo_featuredMedium_c47239"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "WhatWeDoDescription",
-			"unique": {
-				"fields": [
-					"featuredMedium"
-				],
-				"name": "unique_WhatWeDoDescription_featuredMedium_155fcf"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "Person",
-			"unique": {
-				"fields": [
-					"photo"
-				],
-				"name": "unique_Person_photo_6cada8"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "Person",
-			"unique": {
-				"fields": [
-					"mugshot"
-				],
-				"name": "unique_Person_mugshot_1b70ac"
-			}
-		},
-		{
-			"modification": "createUniqueConstraint",
-			"entityName": "Reference",
-			"unique": {
-				"fields": [
-					"medium"
-				],
-				"name": "unique_Reference_medium_557db3"
-			}
 		}
 	]
 }

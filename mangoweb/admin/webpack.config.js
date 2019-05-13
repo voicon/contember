@@ -13,6 +13,10 @@ class AdminServerPlugin {
 	apply(compiler) {
 		let childProcess = null
 		compiler.hooks.afterEmit.tapAsync({ name: 'AdminServerPlugin' }, function(compilation, callback) {
+			const isDevServer = process.argv.find(v => v.indexOf('webpack-dev-server') !== -1);
+			if (!isDevServer) {
+				return
+			}
 			if (childProcess) {
 				callback()
 				return
@@ -21,7 +25,7 @@ class AdminServerPlugin {
 			try {
 				childProcess = spawn('node ./node_modules/cms-admin-server/dist/src/run-admin.js', {
 					cwd: process.cwd(),
-					env: process.env
+					env: {...process.env, SERVER_PORT: 8080}
 				})
 				process.on('beforeExit', () => {
 					childProcess.kill()
@@ -78,6 +82,8 @@ module.exports = ({ production }) => ({
 	devServer: {
 		contentBase: path.join(__dirname, './src'),
 		hot: true,
+		host: '0.0.0.0',
+		port: process.env.SERVER_PORT,
 		stats: {
 			warnings: false
 		},
@@ -88,7 +94,7 @@ module.exports = ({ production }) => ({
 		},
 		proxy: {
 			'/': {
-				target: 'http://localhost:' + process.env.SERVER_PORT
+				target: 'http://localhost:8080'
 			}
 		}
 	},
