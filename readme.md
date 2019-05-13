@@ -1,4 +1,4 @@
-# To Be Named CMS
+# Contember
 
 ## Repository Structure
 
@@ -9,18 +9,56 @@
 
 ## Docker dev setup
 
-- create `docker-compose.override.yaml`
-- create `mangoweb/cms-api/src/config/config.yaml` 
+### Initial setup
+
+- create `docker-compose.override.yaml` using `docker-compose.override.dist.yaml`
+- create `mangoweb/cms-api/src/config/config.yaml`  using `mangoweb/cms-api/src/config/config.sample.yaml`
 - run `./docker/bootstrap.sh` 
 - follow instructions
 
-## Monorepo operations
+### Regular run
+
+- run `docker-compose up`
+
+### Running tests
+
+- run `./docker/npm test`
+
+### Generating project migrations
+
+- run `./docker/console project migration-name` (e.g. `./docker/console mangoweb gallery`)
+- review generated file
+- run `./docker/console update`
+- currently it is also required to restart api container using `docker-compose up --force-recreate -d api`
+
+### Running and debugging individual tests in PhpStorm
+
+Currently it is not possible to use a remote Node.js interpreter for Mocha tests so you need a local node interpreter. 
+
+- Go to `Run / Edit configurations / Templates / Mocha`
+- Paste following ENV variables
+```
+TS_NODE_PROJECT=tsconfig.devTests.json
+TEST_DB_HOST=127.0.0.1
+TEST_DB_PASSWORD=contember
+TEST_DB_NAME=tests
+TEST_DB_PORT=4479
+TEST_CWD_SUFFIX=/packages/cms-api
+NODE_ENV=development
+TEST_DB_USER=contember
+```
+- This setup will use a database from docker-compose and also there is different tsconfig file optimized for test run.
+- set Extra mocha options to `--require ts-node/register --timeout 15000`
+- Go to test file and run or debug it  
+
+
+## Legacy non-docker instructions
 
 We use [Lerna](https://lernajs.io/) to help with a few things
 
 ### Install all dependencies and bootstrap the project
 
-Create `mangoweb/admin/config.local.json` using `config.sample.json` in the same directory.
+Create `mangoweb/admin/.env` using `.env.sample` in the same directory.
 Don't worry about the contents for the time being ‒ they will be updated later.
 
 ```sh

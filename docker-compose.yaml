@@ -15,10 +15,16 @@ services:
             - ./:/src:cached
         working_dir: /src/mangoweb/cms-api
         environment:
+            NODE_ENV: development
             DB_HOST: db
             DB_PASSWORD: contember
             DB_USER: contember
             DB_PORT: 5432
+            TEST_DB_HOST: db
+            TEST_DB_PASSWORD: contember
+            TEST_DB_USER: contember
+            TEST_DB_PORT: 5432
+            TEST_DB_NAME: tests
             SERVER_PORT: 4000
         expose:
           - 4000
