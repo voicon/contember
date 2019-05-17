@@ -10,8 +10,8 @@ export const seoForm = (
 			<ImageField name="ogImage" label="OG image" />
 			<LocaleSideDimension>
 				<TextAreaField name="$locale.description" label="Description" />
-				<TextField name="$locale.description" label="OG title" />
-				<TextAreaField name="$locale.description" label="OG description" />
+				<TextField name="$locale.ogTitle" label="OG title" />
+				<TextAreaField name="$locale.ogDescription" label="OG description" />
 			</LocaleSideDimension>
 		</ToOne>
 	</>
