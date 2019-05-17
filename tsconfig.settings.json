@@ -5,6 +5,7 @@
 		"sourceMap": true,
 		"composite": true,
 		"noEmitOnError": true,
+		"experimentalDecorators": true,
 
 		"target": "es6",
 		"moduleResolution": "node",
