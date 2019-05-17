@@ -1,0 +1,201 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "Block",
+			"fieldName": "numbers"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "PageLocale",
+			"fieldName": "content"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "Block",
+			"fieldName": "people"
+		},
+		{
+			"modification": "removeField",
+			"entityName": "Block",
+			"fieldName": "perks"
+		},
+		{
+			"modification": "updateFieldName",
+			"entityName": "Block",
+			"fieldName": "PageLocale",
+			"newFieldName": "pageLocale"
+		},
+		{
+			"modification": "updateFieldName",
+			"entityName": "Numbers",
+			"fieldName": "Block",
+			"newFieldName": "block"
+		},
+		{
+			"modification": "updateFieldName",
+			"entityName": "Perk",
+			"fieldName": "Block",
+			"newFieldName": "block"
+		},
+		{
+			"modification": "updateFieldName",
+			"entityName": "BlockPerson",
+			"fieldName": "Block",
+			"newFieldName": "block"
+		},
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "Block",
+			"relation": {
+				"name": "numbers",
+				"ownedBy": "block",
+				"type": "OneHasMany",
+				"target": "Numbers"
+			}
+		},
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "Block",
+			"relation": {
+				"name": "perks",
+				"ownedBy": "block",
+				"type": "OneHasMany",
+				"target": "Perk"
+			}
+		},
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "Block",
+			"relation": {
+				"name": "people",
+				"ownedBy": "block",
+				"type": "OneHasMany",
+				"target": "BlockPerson"
+			}
+		},
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "PageLocale",
+			"relation": {
+				"name": "content",
+				"ownedBy": "pageLocale",
+				"type": "OneHasMany",
+				"target": "Block"
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/Numbers/operations/read/Block"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Numbers/operations/read/block",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/Numbers/operations/update/Block"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Numbers/operations/update/block",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/Numbers/operations/create/Block"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Numbers/operations/create/block",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/Perk/operations/read/Block"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Perk/operations/read/block",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/Perk/operations/update/Block"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Perk/operations/update/block",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/Perk/operations/create/Block"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Perk/operations/create/block",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/BlockPerson/operations/read/Block"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/BlockPerson/operations/read/block",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/BlockPerson/operations/update/Block"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/BlockPerson/operations/update/block",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/BlockPerson/operations/create/Block"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/BlockPerson/operations/create/block",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/Block/operations/read/PageLocale"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Block/operations/read/pageLocale",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/Block/operations/update/PageLocale"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Block/operations/update/pageLocale",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/Block/operations/create/PageLocale"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Block/operations/create/pageLocale",
+					"value": true
+				}
+			]
+		}
+	]
+}
