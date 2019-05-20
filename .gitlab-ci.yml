@@ -56,11 +56,11 @@ test:
   script:
     - npm run test
 
-prettier:
+eslint:
   stage: test:run
   image: node:10
   script:
-    - npm run prettier:lint
+    - npm run eslint:lint
 
 build:docker:
   image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/docker-ecr:1.1
