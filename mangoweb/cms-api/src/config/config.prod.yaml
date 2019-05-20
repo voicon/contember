@@ -49,4 +49,4 @@ projects:
           secret: 'IPdog6PPJq2DAdcwxL2g17WRPB6p4/lfnLHzgnIV'
 
 server:
-    port: '%env.SERVER_PORT%'
+    port: '%env.SERVER_PORT::number%'

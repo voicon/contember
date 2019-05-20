@@ -1,7 +1,7 @@
 tenant:
     db:
         host: '%env.DB_HOST%'
-        port: '%env.DB_PORT%'
+        port: '%env.DB_PORT::number%'
         user: '%env.DB_USER%'
         password: '%env.DB_PASSWORD%'
         database: 'tenant'
@@ -16,7 +16,7 @@ projects:
             name: Preview
       dbCredentials:
         host: '%env.DB_HOST%'
-        port: '%env.DB_PORT%'
+        port: '%env.DB_PORT::number%'
         user: '%env.DB_USER%'
         password: '%env.DB_PASSWORD%'
         database: 'cms-mangoweb'
@@ -36,7 +36,7 @@ projects:
           name: Production
       dbCredentials:
         host: '%env.DB_HOST%'
-        port: '%env.DB_PORT%'
+        port: '%env.DB_PORT::number%'
         user: '%env.DB_USER%'
         password: '%env.DB_PASSWORD%'
         database: 'cms-quanti'
@@ -49,4 +49,4 @@ projects:
           secret: 'IPdog6PPJq2DAdcwxL2g17WRPB6p4/lfnLHzgnIV'
 
 server:
-    port: '%env.SERVER_PORT%'
+    port: '%env.SERVER_PORT::number%'
