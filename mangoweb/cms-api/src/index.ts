@@ -2,7 +2,7 @@
 
 import { CompositionRoot, readConfig } from 'cms-api'
 import * as path from 'path'
-import Quanti from './projects/quanti/src/model'
+import Quanti from './projects/quanti/src'
 import Mangoweb from './projects/mangoweb/src/model'
 import Blog from './projects/blog/src/model'
 ;(async () => {

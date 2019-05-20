@@ -12,6 +12,7 @@
 		"outDir": "dist",
 		"strict": true,
 		"lib": ["esnext", "dom"],
+		"experimentalDecorators": true,
 		"typeRoots": ["packages/cms-api/src/types"]
 	}
 }

@@ -1,6 +1,7 @@
 {
 	"extends": "../../tsconfig.settings.json",
 	"compilerOptions": {
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"experimentalDecorators": true
 	}
 }
