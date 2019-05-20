@@ -10,8 +10,8 @@
 		"prebuild": "lerna run prebuild",
 		"build": "lerna run build",
 		"test": "lerna run test",
-		"prettier:lint": "prettier --list-different \"**/*.{ts,tsx,json}\" ",
-		"prettier:fix": "prettier --write \"**/*.{ts,tsx,json}\" "
+		"eslint:lint": "eslint \"**/*.{ts,tsx}\" ",
+		"eslint:fix": "eslint --fix \"**/*.{ts,tsx}\" "
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^1.9.0",
