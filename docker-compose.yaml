@@ -28,8 +28,6 @@ services:
             SERVER_PORT: 4000
         expose:
           - 4000
-        ports:
-          - "127.0.0.1:4477:4000"
         command: npm run start
         depends_on:
           - db
@@ -44,8 +42,6 @@ services:
             SERVER_PORT: 4000
         expose:
             - 4000
-        ports:
-            - "127.0.0.1:4478:4000"
         command: npm run start
         depends_on:
             - db
@@ -58,7 +54,5 @@ services:
             POSTGRES_DB: contember
         volumes:
             - pgsql-data:/var/lib/postgresql/data
-        ports:
-            - "127.0.0.1:4479:5432"
 volumes:
     pgsql-data: ~
