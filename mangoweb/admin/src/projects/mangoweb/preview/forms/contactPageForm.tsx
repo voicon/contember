@@ -8,21 +8,21 @@ export const contactPageForm = (
 	<>
 		<H2>General</H2>
 		<LocaleSideDimension>
-			<TextField name="$locale.titleShort" label="Abbreviated page title" />
-			<TextField name="$locale.titleFull" label="Full page title" />
-			<TextField name="$locale.contactUsButtonLabel" label="'Contact us' button label" />
+			<TextField name="titleShort" label="Abbreviated page title" />
+			<TextField name="titleFull" label="Full page title" />
+			<TextField name="contactUsButtonLabel" label="'Contact us' button label" />
 		</LocaleSideDimension>
 
 		<H2>Contact form</H2>
 		<LocaleSideDimension>
-			<TextField name="$locale.userMessageLabel" label="Label of the 'message' field" />
-			<TextField name="$locale.userContactLabel" label="Label of the 'user phone or mail' field" />
-			<TextField name="$locale.submitButtonText" label="Submit button text" />
+			<TextField name="userMessageLabel" label="Label of the 'message' field" />
+			<TextField name="userContactLabel" label="Label of the 'user phone or mail' field" />
+			<TextField name="submitButtonText" label="Submit button text" />
 			<H3>User feedback messages</H3>
-			<TextField name="$locale.formSuccessMessage" label="Success" />
-			<TextField name="$locale.formErrorMessage" label="Generic failure" />
-			<TextField name="$locale.unfilledMessageMessage" label="Unfilled user message" />
-			<TextField name="$locale.unfilledContactMessage" label="Unfilled phone or mail" />
+			<TextField name="formSuccessMessage" label="Success" />
+			<TextField name="formErrorMessage" label="Generic failure" />
+			<TextField name="unfilledMessageMessage" label="Unfilled user message" />
+			<TextField name="unfilledContactMessage" label="Unfilled phone or mail" />
 		</LocaleSideDimension>
 
 		{seoForm}

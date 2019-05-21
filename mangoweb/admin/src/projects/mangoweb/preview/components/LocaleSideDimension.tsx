@@ -1,4 +1,4 @@
-import { Component, SideDimensions, Variable } from 'cms-admin'
+import { Component, SideDimensions, ToOne, Variable } from 'cms-admin'
 import * as React from 'react'
 import { LangDimension } from '../dimensions'
 
@@ -22,6 +22,6 @@ export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 			}
 		}}
 	>
-		{props.children}
+		<ToOne field="$locale">{props.children}</ToOne>
 	</SideDimensions>
 ))
