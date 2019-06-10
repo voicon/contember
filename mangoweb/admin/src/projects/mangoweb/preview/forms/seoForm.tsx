@@ -9,9 +9,9 @@ export const seoForm = (
 		<ToOne field="seo">
 			<ImageField name="ogImage" label="OG image" />
 			<LocaleSideDimension>
-				<TextAreaField name="$locale.description" label="Description" />
-				<TextField name="$locale.ogTitle" label="OG title" />
-				<TextAreaField name="$locale.ogDescription" label="OG description" />
+				<TextAreaField name="description" label="Description" />
+				<TextField name="ogTitle" label="OG title" />
+				<TextAreaField name="ogDescription" label="OG description" />
 			</LocaleSideDimension>
 		</ToOne>
 	</>

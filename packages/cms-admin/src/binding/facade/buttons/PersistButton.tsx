@@ -1,49 +1,36 @@
 import * as React from 'react'
 import { Button, Intent } from '../../../components'
-import { MetaOperationsContext, MetaOperationsContextValue } from '../../coreComponents'
+import { MetaOperationsContext } from '../../coreComponents'
+import { DirtinessContext, MutationStateContext } from '../../coreComponents/PersistState'
 
-export interface PersistButtonProps {}
+export type PersistButtonProps = React.PropsWithChildren<{}>
 
-interface PersistButtonState {
-	isLoading: boolean
-}
+export const PersistButton = React.memo((props: PersistButtonProps) => {
+	const isMutating = React.useContext(MutationStateContext)
+	const isDirty = React.useContext(DirtinessContext)
+	const value = React.useContext(MetaOperationsContext)
+	const buttonRef = React.useRef<HTMLButtonElement | null>(null)
 
-export class PersistButton extends React.PureComponent<PersistButtonProps, PersistButtonState> {
-	public readonly state: PersistButtonState = {
-		isLoading: false
-	}
+	const isDisabled = isMutating || !isDirty
 
-	private getOnPersist = (triggerPersist: () => Promise<void>) => () => {
-		if (this.state.isLoading) {
-			return
-		}
-
-		triggerPersist().finally(() => this.setState({ isLoading: false }))
-		this.setState({
-			isLoading: true
-		})
-	}
-
-	public render() {
+	if (value) {
 		return (
-			<MetaOperationsContext.Consumer>
-				{(value: MetaOperationsContextValue) => {
-					if (value) {
-						return (
-							<Button
-								intent={Intent.Success}
-								// icon="floppy-disk"
-								onClick={this.getOnPersist(value.triggerPersist)}
-								// intent={Intent.PRIMARY}
-								// loading={this.state.isLoading}
-								// large={true}
-							>
-								{this.props.children || 'Save'}
-							</Button>
-						)
-					}
+			<Button
+				intent={Intent.Success}
+				// icon="floppy-disk"
+				onClick={() => {
+					value.triggerPersist()
+
+					buttonRef.current && buttonRef.current.blur()
 				}}
-			</MetaOperationsContext.Consumer>
+				// intent={Intent.PRIMARY}
+				disabled={isDisabled}
+				ref={buttonRef}
+				// large={true}
+			>
+				{props.children || 'Save'}
+			</Button>
 		)
 	}
-}
+	return null
+})

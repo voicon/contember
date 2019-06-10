@@ -17,7 +17,7 @@ const menuItemForm = (
 			]}
 		/>
 		<LocaleSideDimension>
-			<TextField name="$locale.label" label="Menu item label" />
+			<TextField name="label" label="Menu item label" />
 		</LocaleSideDimension>
 	</>
 )

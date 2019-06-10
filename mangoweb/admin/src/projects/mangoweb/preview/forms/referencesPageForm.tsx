@@ -8,8 +8,8 @@ export const referencesPageForm = (
 	<>
 		<H2>General</H2>
 		<LocaleSideDimension>
-			<TextField name="$locale.titleShort" label="Abbreviated page title" />
-			<TextField name="$locale.titleFull" label="Full page title" />
+			<TextField name="titleShort" label="Abbreviated page title" />
+			<TextField name="titleFull" label="Full page title" />
 		</LocaleSideDimension>
 
 		{seoForm}

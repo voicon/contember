@@ -17,11 +17,11 @@ export const contactForm = (
 			<TextField name="email" label="E-mail" />
 			<TextField name="phoneNumber" label="Phone number" />
 			<LocaleSideDimension>
-				<TextField name="$locale.title" label="Title" />
-				<TextField name="$locale.entity" label="Legal entity" />
-				<TextAreaField name="$locale.address" label="Address" />
-				<TextAreaField name="$locale.description" label="Location description" />
-				<TextAreaField name="$locale.additionalInfo" label="Additional info" />
+				<TextField name="title" label="Title" />
+				<TextField name="entity" label="Legal entity" />
+				<TextAreaField name="address" label="Address" />
+				<TextAreaField name="description" label="Location description" />
+				<TextAreaField name="additionalInfo" label="Additional info" />
 			</LocaleSideDimension>
 		</Repeater>
 	</>

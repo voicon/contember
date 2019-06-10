@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import * as React from 'react'
 import {
 	SortableContainer,
@@ -18,6 +19,7 @@ import {
 	Props,
 	SyntheticChildrenProvider
 } from '../../coreComponents'
+import { MutationStateContext } from '../../coreComponents/PersistState'
 import {
 	DataBindingError,
 	EntityAccessor,
@@ -108,53 +110,68 @@ namespace Sortable {
 		return sortBy
 	}
 
-	export interface DragHandleProps {}
+	export interface DragHandleProps {
+		isMutating: boolean
+	}
 
-	export const DragHandle = SortableHandle((props: Props<DragHandleProps>) => (
-		<div className="sortable-item-handle">
-			<DragHandleIcon />
-		</div>
-	))
-
-	export interface SortableItemProps extends Repeater.ItemProps {}
-
-	export const SortableItem = SortableElement((props: Props<SortableItemProps & SortableElementProps>) => (
-		<li className="sortable-item">
-			<DragHandle />
-			<div className="sortable-item-content">
-				<Repeater.Item {...props}>{props.children}</Repeater.Item>
+	export const DragHandle = React.memo(
+		SortableHandle((props: Props<DragHandleProps>) => (
+			<div
+				className={cn(
+					'sortable-item-handle',
+					(console.log(props) as any) || false,
+					props.isMutating && 'sortable-item-handle-disabled'
+				)}
+			>
+				<DragHandleIcon />
 			</div>
-		</li>
-	))
+		))
+	)
+
+	export interface SortableItemProps extends Repeater.ItemProps, DragHandleProps {}
+
+	export const SortableItem = React.memo(
+		SortableElement((props: Props<SortableItemProps & SortableElementProps>) => (
+			<li className="sortable-item">
+				<DragHandle isMutating={props.isMutating} />
+				<div className="sortable-item-content">
+					<Repeater.Item {...props}>{props.children}</Repeater.Item>
+				</div>
+			</li>
+		))
+	)
 
 	export interface SortableListProps extends EntityCollectionPublicProps {
 		entities: EntityAccessor[]
 		addNew: EntityCollectionAccessor['addNew']
 	}
 
-	export const SortableList = SortableContainer((props: Props<SortableListProps & SortableContainerProps>) => {
-		return (
-			<Repeater.Cloneable addNew={props.addNew} enableAddingNew={props.enableAddingNew}>
-				<ul className="sortable">
-					{props.entities.map((item, index) => {
-						return (
+	export const SortableList = React.memo(
+		SortableContainer((props: Props<SortableListProps & SortableContainerProps>) => {
+			const isMutating = React.useContext(MutationStateContext)
+			return (
+				<Repeater.Cloneable addNew={props.addNew} enableAddingNew={props.enableAddingNew}>
+					<ul className="sortable">
+						{props.entities.map((item, index) => (
 							<SortableItem
 								entity={item}
-								key={item.getKey()}
 								index={index}
+								key={item.getKey()}
+								disabled={isMutating}
+								isMutating={isMutating}
 								displayUnlinkButton={
 									props.enableUnlink !== false && (props.entities.length > 1 || props.enableUnlinkAll === true)
 								}
 								removeType={props.removeType}
 							>
-								<DataContext.Provider value={item}>{props.children}</DataContext.Provider>
+								{props.children}
 							</SortableItem>
-						)
-					})}
-				</ul>
-			</Repeater.Cloneable>
-		)
-	})
+						))}
+					</ul>
+				</Repeater.Cloneable>
+			)
+		})
+	)
 
 	export interface SortableInnerProps extends SortablePublicProps {
 		entities: EntityCollectionAccessor

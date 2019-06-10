@@ -9,9 +9,9 @@ export const personForm = (
 		<TextField name="shortName" label="Short name" />
 		<TextField name="longName" label="Full name" />
 		<LocaleSideDimension>
-			<TextField name="$locale.urlSlug" label="URL" />
-			<TextField name="$locale.position" label="Position" />
-			<TextAreaField name="$locale.bio" label="Short bio" />
+			<TextField name="urlSlug" label="URL" />
+			<TextField name="position" label="Position" />
+			<TextAreaField name="bio" label="Short bio" />
 		</LocaleSideDimension>
 
 		<H2>Photos</H2>

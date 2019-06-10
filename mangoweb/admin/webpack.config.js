@@ -55,7 +55,10 @@ module.exports = ({ production }) => ({
 	target: 'web',
 	resolve: {
 		extensions: ['.js', '.ts', '.tsx'],
-		mainFields: ['main']
+		mainFields: ['main'],
+		alias: {
+			react: path.resolve('node_modules/react')
+		}
 	},
 	module: {
 		rules: [

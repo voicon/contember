@@ -2,23 +2,24 @@ import { Icon } from '@blueprintjs/core'
 import { IconName, IconNames } from '@blueprintjs/icons'
 import * as React from 'react'
 import { Button, ButtonProps } from '../../../components'
+import { MutationStateContext } from '../../coreComponents/PersistState'
 import { EntityCollectionAccessor } from '../../dao'
 
-export interface AddNewButtonProps extends ButtonProps {
+export interface AddNewButtonProps extends React.PropsWithChildren<ButtonProps> {
 	addNew: EntityCollectionAccessor['addNew']
 	icon?: IconName
 }
 
-export class AddNewButton extends React.PureComponent<AddNewButtonProps> {
-	public render() {
-		const { addNew, icon, ...rest } = this.props
+export const AddNewButton = React.memo((props: AddNewButtonProps) => {
+	const isMutating = React.useContext(MutationStateContext)
+	const { addNew, icon, ...rest } = props
+	if (addNew) {
 		return (
-			addNew && (
-				<Button onClick={addNew} small {...rest}>
-					<Icon icon={icon || IconNames.ADD} />
-					{this.props.children || 'Add'}
-				</Button>
-			)
+			<Button onClick={addNew} disabled={isMutating} small {...rest}>
+				<Icon icon={icon || IconNames.ADD} />
+				{props.children || 'Add'}
+			</Button>
 		)
 	}
-}
+	return null
+})

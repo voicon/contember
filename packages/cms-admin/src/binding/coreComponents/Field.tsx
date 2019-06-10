@@ -10,13 +10,13 @@ import {
 	FieldAccessor,
 	FieldMarker
 } from '../dao'
-import { MutationStateRetriever } from '../facade/aux'
 import { VariableInputTransformer } from '../model/VariableInputTransformer'
 import { QueryLanguage } from '../queryLanguage'
 import { DataContext, DataContextValue } from './DataContext'
 import { EnforceSubtypeRelation } from './EnforceSubtypeRelation'
 import { EnvironmentContext } from './EnvironmentContext'
 import { FieldMarkerProvider } from './MarkerProvider'
+import { MutationStateContext } from './PersistState'
 
 export interface FieldPublicProps {
 	name: FieldName
@@ -120,36 +120,32 @@ namespace Field {
 		children: (rawMetadata: RawMetadata) => React.ReactNode
 	}
 
-	export class DataRetriever extends React.Component<DataRetrieverProps> {
-		public render() {
-			return (
-				<EnvironmentContext.Consumer>
-					{environment =>
-						QueryLanguage.wrapRelativeSingleField(
-							this.props.name,
-							fieldName => (
-								<MutationStateRetriever>
-									{isMutating => (
-										<DataContext.Consumer>
-											{(data: DataContextValue) =>
-												this.props.children({
-													fieldName,
-													data,
-													isMutating,
-													environment
-												})
-											}
-										</DataContext.Consumer>
-									)}
-								</MutationStateRetriever>
-							),
-							environment
-						)
-					}
-				</EnvironmentContext.Consumer>
+	export const DataRetriever = React.memo((props: DataRetrieverProps) => {
+		const environment = React.useContext(EnvironmentContext)
+		const isMutating = React.useContext(MutationStateContext)
+
+		const propsName = props.name
+		const propsChildren = props.children
+
+		return React.useMemo(() => {
+			return QueryLanguage.wrapRelativeSingleField(
+				propsName,
+				fieldName => (
+					<DataContext.Consumer>
+						{(data: DataContextValue) =>
+							propsChildren({
+								fieldName,
+								data,
+								isMutating,
+								environment
+							})
+						}
+					</DataContext.Consumer>
+				),
+				environment
 			)
-		}
-	}
+		}, [environment, isMutating, propsName, propsChildren])
+	})
 }
 
 export { Field }

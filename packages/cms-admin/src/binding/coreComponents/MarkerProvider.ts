@@ -1,11 +1,15 @@
 import * as React from 'react'
 import { Environment, FieldMarker, MarkerTreeRoot, ReferenceMarker } from '../dao'
 
+export interface RenderFunction<P = any> {
+	(props: Props<P>): React.ReactElement | null
+}
+
 export interface DataBindingComponent {
 	displayName: string
 }
 
-export type Props<P> = React.Component<P>['props']
+export type Props<P> = React.PropsWithChildren<P>
 
 export interface EnvironmentDeltaProvider<P = any> extends DataBindingComponent {
 	generateEnvironmentDelta: (props: Props<P>, oldEnvironment: Environment) => Partial<Environment.NameStore>
