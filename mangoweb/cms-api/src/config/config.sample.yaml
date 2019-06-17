@@ -48,5 +48,25 @@ projects:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
 
+    - id: cffeb246-4f04-41e7-8f00-f2e8b933f651
+      slug: pilsner
+      name: Pilsner
+      stages:
+        - id: e7e502d4-e997-49c1-990a-60337c4ed6ce
+          slug: prod
+          name: Production
+      dbCredentials:
+        host: '%env.DB_HOST%'
+        port: '%env.DB_PORT::number%'
+        user: '%env.DB_USER%'
+        password: '%env.DB_PASSWORD%'
+        database: 'cms-pilsner'
+      s3:
+        bucket: 'cms-api.mgw.cz'
+        prefix: 'dev/pilsner'
+        region: 'eu-central-1'
+        credentials:
+          key: 'AKIAIO53JZYNOKXXYMDA'
+          secret: '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'
 server:
     port: '%env.SERVER_PORT::number%'
