@@ -48,26 +48,26 @@ projects:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
 
-    - id: 290ea433-54d4-4d4c-a85f-64c1ef965aef
-      slug: pilsner-beta
-      directory: pilsner
-      name: Pilsner Beta
-      stages:
-        - id: 2e0088c4-3245-4994-8ce6-efc28ac6e5be
-          slug: prod
-          name: Production
-      dbCredentials:
-        host: '%env.PILSNER_BETA_DB_HOST%'
-        port: '5432'
-        user: '%env.PILSNER_BETA_DB_USER%'
-        password: '%env.PILSNER_BETA_DB_PASSWORD%'
-        database: '%env.PILSNER_BETA_DB_NAME%'
-      s3:
-        bucket: 'cms-api.mgw.cz'
-        prefix: 'beta/pilsner'
-        region: 'eu-central-1'
-        credentials:
-          key: 'AKIAIO53JZYNOKXXYMDA'
-          secret: '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'
+#    - id: 290ea433-54d4-4d4c-a85f-64c1ef965aef
+#      slug: pilsner-beta
+#      directory: pilsner
+#      name: Pilsner Beta
+#      stages:
+#        - id: 2e0088c4-3245-4994-8ce6-efc28ac6e5be
+#          slug: prod
+#          name: Production
+#      dbCredentials:
+#        host: '%env.PILSNER_BETA_DB_HOST%'
+#        port: '5432'
+#        user: '%env.PILSNER_BETA_DB_USER%'
+#        password: '%env.PILSNER_BETA_DB_PASSWORD%'
+#        database: '%env.PILSNER_BETA_DB_NAME%'
+#      s3:
+#        bucket: 'cms-api.mgw.cz'
+#        prefix: 'beta/pilsner'
+#        region: 'eu-central-1'
+#        credentials:
+#          key: 'AKIAIO53JZYNOKXXYMDA'
+#          secret: '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'
 server:
     port: '%env.SERVER_PORT::number%'
