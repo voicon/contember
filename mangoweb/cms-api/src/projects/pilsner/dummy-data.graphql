@@ -1,0 +1,300 @@
+mutation {
+	createSite(
+		data: {
+			name: "International"
+			slug: "int"
+			frontPage: {
+				create: {
+					title: "PilsnerUrquell"
+					scrollString: "scroll"
+					headerImage: {
+						create: {
+							url: "https://imgproxy.mangoweb.org/echn8GykyNE04rnbclcqB7xi399Isg3hLPLgg9b7Onc/fit/2048/9999/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE4LzA0L2hlYWRlci0xLmpwZw.jpg"
+							phoneUrl: "https://imgproxy.mangoweb.org/jXx48MQV96vCMer0erYtPZ_nIlDrmJ6qqrwogDLanc0/fit/750/9999/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE4LzA1L3B1LWhlYWRlci5qcGc.jpg"
+						}
+					}
+					seo: { create: { title: "Pilsner Urquell" } }
+					link: { create: { url: "/" } }
+					content: {
+						create: {
+							blocks: [
+								{
+									create: {
+										order: 1
+										type: frontTextBox
+										title: "The original Pilsner"
+										text: "In 1842, at our brewery in Plzeň, brewer Josef Groll<br>introduced the world to the first golden ‘pilsner’ lager, and<br>changed beer forever. His invention soon became the<br>most popular style of beer on the planet."
+									}
+								}
+								{
+									create: {
+										order: 2
+										type: frontHalfImageLeft
+										title: "WANT TO SEE HOW WE MAKE THE WORLD’S FIRST PILSNER?"
+										text: "You’re always welcome to tour our brewery. In September we also host an Origins Tour in the"
+										image: {
+											create: {
+												image: {
+													create: {
+														url: "https://imgproxy.mangoweb.org/VclGZ2Ix2wJ73FzH1qmbPNkABHb6FkVkctTwNS2Zi6k/fit/1200/9999/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE4LzA1L2NlbGxhci1mdWxsLTEuanBn.jpg"
+													}
+												}
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+			blogPage: {
+				create: {
+					seo: { create: { title: "Stories" } }
+					link: { create: { url: "/stories" } }
+				}
+			}
+			pubsPage: {
+				create: {
+					title: "FIND PILSNER URQUELL PUBS & TANKOVNA BARS"
+					headerImage: {
+						create: {
+							url: "https://imgproxy.mangoweb.org/rFjkkxoYO2Td1MeGFJE8D9iw258cAvz7P3QZ7cnNsrw/fill/1920/840/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE5LzA1LzEwLXdlbGwtc2VydmVkLWhlcmUtdGFua292bmEtYW5kLXRhcHN0ZXItc3Rvcmllcy10YW5rLWJhci1idWRhcGVzdC1odW5nYXJ5LWFua2VydF8xOTIwLmpwZw.jpg"
+						}
+					}
+					seo: { create: { title: "Pubs | Pilsner Urquell" } }
+					link: { create: { url: "/pubs" } }
+				}
+			}
+			tapstersPage: {
+				create: {
+					title: "MEET OUR INTERNATIONAL TEAM OF TAPSTERS"
+					headerImage: {
+						create: {
+							url: "https://imgproxy.mangoweb.org/RTTpTThlQa2TaXno5u_Bb6B4sA_vXkZfX0cUE0lFWos/fill/1920/840/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE5LzA1L2hlcm9faW1hZ2VfcmV0dXMtMi5qcGc.jpg"
+						}
+					}
+					seo: { create: { title: "Tapsters | Pilsner Urquell" } }
+					link: { create: { url: "/tapsters" } }
+				}
+			}
+			footer: {
+				create: {
+					dontDriveSticky: "don’t drink and drive  / <a href=\"https://aboutalcohol.com\" target=\"_blank\" rel=\"nofollow\">aboutalcohol.com</a>"
+					dontDriveHeading: "DON’T DRINK<br> AND DRIVE"
+					dontDriveLink: "<a href=\"https://www.aboutalcohol.com/\" target=\"_blank\" rel=\"nofollow\">aboutalcohol.com</a>"
+					contactLabel: "CONTACT US"
+					contactLink: "mailto:info@pilsnerurquell.com"
+					copyright: "COPYRIGHT © 2018 PLZEŇSKÝ PRAZDROJ, A.S."
+					links: [
+						{ create: { order: 1, caption: "Terms of Use", linkUrl: "#" } }
+						{ create: { order: 2, caption: "Privacy policy", linkUrl: "#" } }
+					]
+				}
+			}
+			categories: [
+				{
+					create: {
+						name: "Our brewery"
+						seo: { create: { title: "Our brewery | Pilsner Urquell" } }
+						link: { create: { url: "/stories/our-brewery" } }
+						posts: [
+							{
+								create: {
+									site: { connect: { slug: "int" } }
+									title: "HOW PILSNER URQUELL CHANGED BEER FOREVER"
+									perex: "Josef Groll changed beer forever when he brewed Pilsner Urquell for the first time in 1842. People had been drinking beer since about 7,000 BC, but no one had ever seen or tasted a golden lager quite like this."
+									publishedAt: "2019-06-01 12:00"
+									headerImage: {
+										create: {
+											url: "https://imgproxy.mangoweb.org/73qQ3ox85hyKYfqU2U2dbVyCYl2qbwqLefSUgQb8BYQ/fill/1920/840/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE5LzAyL3B1XzItMS5qcGc.jpg"
+										}
+									}
+									listingImage: {
+										create: {
+											url: "https://imgproxy.mangoweb.org/YRCG0RcO3QVVJTrzpOFFiSglz2oU9zvmg5-Ii6ZBYUM/fill/600/600/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE5LzAyL3B1XzEtMS5qcGc.jpg"
+										}
+									}
+									link: {
+										create: {
+											url: "/stories/how-pilsner-urquell-changed-beer-forever/"
+										}
+									}
+									seo: {
+										create: {
+											title: "How Pilsner Urquell Changed Beer Forever | Pilsner Urquell"
+										}
+									}
+									tags: [
+										{
+											create: {
+												name: "brewing"
+												site: { connect: { slug: "int" } }
+												seo: { create: { title: "Brewing" } }
+												link: { create: { url: "/stories/brewing" } }
+											}
+										}
+									]
+									content: {
+										create: {
+											blocks: [
+												{
+													create: {
+														order: 1
+														type: contentTextSection
+														text: "Thousands of years ago when people began brewing, they mostly kept the beer in clay pots. But at some point brewers realised they could carbonate beer by storing it in airtight containers while the yeast continued to ferment."
+													}
+												}
+											]
+										}
+									}
+								}
+							}
+						]
+					}
+				}
+				{
+					create: {
+						name: "Our ingredients"
+						seo: { create: { title: "our ingredients" } }
+						link: { create: { url: "/stories/our-ingredients" } }
+					}
+				}
+			]
+			socialLinks: [
+				{
+					create: {
+						network: facebook
+						url: "https://www.facebook.com/PilsnerUrquellCzech/"
+					}
+				}
+			]
+			tapsters: [
+				{
+					create: {
+						name: "Adam Vlcek"
+						subtitle: "Tapster"
+						locationText: "Asia Head Tapster"
+						link: { create: { url: "/tapsters/adam-vlcek" } }
+						seo: { create: { title: "Tapster Adam Vlcek" } }
+						perex: "“As a tapster i feel like i’m making a real difference – i’m changing people’s minds and perceptions about beer.”"
+						content: {
+							create: {
+								blocks: [
+									{
+										create: {
+											order: 1
+											type: contentTextSection
+											text: "I was born in Plzen but I’m in Korea at the moment! It’s a great privilege to share the Czech beer culture in other countries. For me, there’s nowhere else in the world that loves the serve or cares more about beer than Czech. I want to develop my skills in a different culture, where I can make a difference. I used to work as a Pilsner Urquell tour guide and I now feel very lucky to be a Tapster. It is a great honour to be trusted with such an iconic beer. Craft beer really just means a good beer that is lovingly made from a brewery focusing on quality – which describes Pilsner Urquell perfectly."
+										}
+									}
+								]
+							}
+						}
+						headerImage: {
+							create: {
+								url: "https://imgproxy.mangoweb.org/KK4eNQEPAo0IGVLHu244w0s1D9YxYqEkUHSztmuElZM/fill/1920/840/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE5LzA1L2ltZy5qcGc.jpg"
+							}
+						}
+						attributes: [
+							{
+								create: {
+									title: "Born in"
+									values: { create: { value: "Plzen, Czech republic" } }
+								}
+								create: {
+									title: "Works at"
+									values: { create: { value: "Asia countries" } }
+								}
+							}
+						]
+					}
+				}
+			]
+			pubs: [
+				{
+					create: {
+						name: "ALBERT’S SCHLOSS"
+						subtitle: "Tankovna"
+						locationText: "Manchester, UK"
+						headerImage: {
+							create: {
+								url: "https://imgproxy.mangoweb.org/MNnI0zJjJVeA3zMDGO08RLQ1CVcquDlEt_btpkJWtrU/fill/1920/840/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE5LzA1L2FsYmVydHMtc2NobG9zc18xOTIwLTIuanBn.jpg"
+							}
+						}
+						seo: { create: { title: "Albert's Schloss Pub | Pilsner" } }
+						link: { create: { url: "/pubs/alberts-schloss" } }
+						perex: ""
+						attributes: [
+							{
+								create: {
+									title: "Address"
+									values: [
+										{
+											create: {
+												value: "27 Peter St, Manchester M2 5QR "
+												url: "https://www.google.com/maps/place/Albert's+Schloss/@53.4782179,-2.2500226,17z/data=!3m1!4b1!4m5!3m4!1s0x487bb1c27cd1d88b:0x597996a6f9ea4dd1!8m2!3d53.4782147!4d-2.2478286"
+											}
+										}
+									]
+								}
+							}
+						]
+						content: {
+							create: {
+								blocks: [
+									{
+										create: {
+											order: 1
+											type: contentTextSection
+											text: "In downtown Manchester there is a bar that sells the highest volume of unpasteurised Pilsner Urquell beer in the world outside Czech. That’s a surprising and unexpected fact. But then everything about Albert’s Schloss is surprising and unexpected."
+										}
+									}
+								]
+							}
+						}
+						location: {
+							create: { name: "Manchaster", parent: { create: { name: "UK" } } }
+						}
+					}
+				}
+			]
+		}
+	) {
+		id
+	}
+
+	createMenu(
+		data: {
+			site: { connect: { slug: "int" } }
+			items: [
+				{
+					create: { order: 1, caption: "Home", link: { connect: { url: "/" } } }
+				}
+				{
+					create: {
+						order: 2
+						caption: "Pubs"
+						link: { connect: { url: "/pubs" } }
+					}
+				}
+				{
+					create: {
+						order: 3
+						caption: "Stories"
+						link: { connect: { url: "/stories" } }
+					}
+				}
+				{
+					create: {
+						order: 4
+						caption: "Tapsters"
+						link: { connect: { url: "/tapsters" } }
+					}
+				}
+			]
+		}
+	) {
+		id
+	}
+}

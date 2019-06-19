@@ -5,6 +5,7 @@ import * as path from 'path'
 import Quanti from './projects/quanti/src'
 import Mangoweb from './projects/mangoweb/src/model'
 import Blog from './projects/blog/src/model'
+import Pilsner from './projects/pilsner/src/'
 ;(async () => {
 	const configFile = path.join(__dirname, '../../src/config/config.yaml')
 	const config = await readConfig(configFile)
@@ -13,7 +14,8 @@ import Blog from './projects/blog/src/model'
 	const container = new CompositionRoot().createMasterContainer(config, projectsDirectory, {
 		quanti: Quanti,
 		mangoweb: Mangoweb,
-		blog: Blog
+		blog: Blog,
+		pilsner: Pilsner
 	})
 
 	container.cli.run(process.argv)
