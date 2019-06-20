@@ -1,4 +1,4 @@
-import { AllowAllPermissionFactory, SchemaDefinition } from 'cms-api'
+import { AllowAllPermissionFactory, InputValidation, SchemaDefinition } from 'cms-api'
 import { Acl, Schema } from 'cms-common'
 import * as modelDefinition from './model'
 
@@ -17,7 +17,7 @@ const acl: Acl.Schema = {
 const schema: Schema = {
 	model: model,
 	acl: acl,
-	validation: {}
+	validation: InputValidation.parseDefinition(modelDefinition)
 }
 
 export default schema
