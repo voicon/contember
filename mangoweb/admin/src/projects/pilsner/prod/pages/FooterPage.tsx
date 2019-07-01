@@ -11,8 +11,8 @@ export const FooterPage = (
 				<h2>Contact us</h2>
 			</div>
 			<div className={'inputBox-row'}>
-				<TextField name={'contactLabel'} label={'Label'}/>
-				<TextField name={'contactLink'} label={'Link'}/>
+				<TextField name={'contactLabel'} label={'Label'} />
+				<TextField name={'contactLink'} label={'Link'} />
 			</div>
 		</div>
 
@@ -20,24 +20,24 @@ export const FooterPage = (
 			<div className={'inputBox-header'}>
 				<h2>Copyright</h2>
 			</div>
-			<TextField name={'copyright'}/>
-			<TextField name={'copyrightJap'} label={'JAP version only'}/>
+			<TextField name={'copyright'} />
+			<TextField name={'copyrightJap'} label={'JAP version only'} />
 		</div>
 
 		<div className={'inputBox'}>
 			<div className={'inputBox-header'}>
 				<h2>Don't drink and drive</h2>
 			</div>
-			<TextField name={'dontDriveSticky'} label={'Sticky'}/>
-			<TextField name={'dontDriveHeading'} label={'Main text'}/>
-			<TextField name={'dontDriveLink'} label={'Link'}/>
+			<TextField name={'dontDriveSticky'} label={'Sticky'} />
+			<TextField name={'dontDriveHeading'} label={'Main text'} />
+			<TextField name={'dontDriveLink'} label={'Link'} />
 		</div>
 		<div className={'inputBox'}>
 			<div className={'inputBox-header'}>
 				<h2>Links</h2>
 			</div>
 			<SortableRepeater sortBy={'order'} field={'links'}>
-				<TextField name={'caption'}/>
+				<TextField name={'caption'} />
 				<AlternativeFields
 					name="linkType"
 					alternatives={[
@@ -45,14 +45,14 @@ export const FooterPage = (
 							new Literal('external'),
 							'External',
 							<>
-								<TextField name={'linkUrl'} label={'URL'}/>
+								<TextField name={'linkUrl'} label={'URL'} />
 							</>
 						],
 						[
 							new Literal('internal'),
 							'Internal',
 							<>
-								<SelectField name={'link'} label={'link'} options={'Linkable.url'}/>
+								<SelectField name={'link'} label={'link'} options={'Linkable.url'} />
 							</>
 						]
 					]}

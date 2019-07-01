@@ -10,7 +10,7 @@ export const PubForm = Component(
 			<TextField name="locationText" label="Location" />
 			<TextAreaField name="perex" label="Perex" />
 
-			<GenericContentForm/>
+			<GenericContentForm />
 		</>
 	),
 	'PubForm'

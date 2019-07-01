@@ -12,15 +12,15 @@ export const GenericContentForm = Component(
 						new Literal('contentTextSection'),
 						'Text section',
 						<>
-							<TextField name="title" label={'Title'}/>
-							<TextAreaField name="text" label={'Text'}/>
+							<TextField name="title" label={'Title'} />
+							<TextAreaField name="text" label={'Text'} />
 						</>
 					],
 					[
 						new Literal('contentImage'),
 						'Image',
 						<>
-							<ImageField name={'image.image'} label={'Image'}/>
+							<ImageField name={'image.image'} label={'Image'} />
 						</>
 					]
 				]}

@@ -12,7 +12,11 @@ const TranslationField = Component(
 )
 
 export const TranslationsPage = (
-	<MultiEditPage pageName={'translations'} entity={'Translatable'} rendererProps={{ title: 'String translations', enableAddingNew: false, }}>
+	<MultiEditPage
+		pageName={'translations'}
+		entity={'Translatable'}
+		rendererProps={{ title: 'String translations', enableAddingNew: false }}
+	>
 		<TextField label="Identifier" name="identifier" />
 		<TranslationField />
 	</MultiEditPage>

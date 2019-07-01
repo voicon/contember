@@ -7,7 +7,7 @@ export const LinkForm = Component(() => {
 		<div>
 			<H2>URL</H2>
 			<ToOne field="link">
-				<TextField name="url" label="URL"/>
+				<TextField name="url" label="URL" />
 			</ToOne>
 		</div>
 	)

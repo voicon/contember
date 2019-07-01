@@ -7,7 +7,10 @@ export class Location {
 		.cascadeOnDelete()
 		.notNull()
 	name = d.stringColumn().notNull()
-	slug = d.stringColumn().notNull().unique()
+	slug = d
+		.stringColumn()
+		.notNull()
+		.unique()
 	altName = d.stringColumn()
 	children: d.OneHasManyDefinition = d.oneHasMany(Location, 'parent')
 	parent: d.ManyHasOneDefinition = d.manyHasOne(Location, 'children').setNullOnDelete()

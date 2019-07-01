@@ -11,8 +11,8 @@ export const TapsterPage = (
 			<StandaloneEdit entityName={'TapstersPage'} where={env => ({ site: { slug: getSite(env) } })}>
 				<ImageField name={'headerImage'} label={'Header image'} />
 				<TextField name={'title'} label={'Title'} />
-				<LinkForm/>
-				<SeoForm/>
+				<LinkForm />
+				<SeoForm />
 			</StandaloneEdit>
 		</div>
 		<Grid

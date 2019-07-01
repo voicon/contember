@@ -11,9 +11,8 @@ export const PubPage = (
 			<StandaloneEdit entityName={'PubsPage'} where={env => ({ site: { slug: getSite(env) } })}>
 				<ImageField name={'headerImage'} label={'Header image'} />
 				<TextField name={'title'} label={'Title'} />
-				<LinkForm/>
-				<SeoForm/>
-
+				<LinkForm />
+				<SeoForm />
 			</StandaloneEdit>
 		</div>
 		<Grid

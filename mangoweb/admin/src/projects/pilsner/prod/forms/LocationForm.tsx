@@ -6,7 +6,7 @@ export const LocationForm = Component<{ withLocation?: boolean }>(
 		<>
 			<TextField name="name" label="Name" />
 			<TextField name="altName" label="Alternative name" />
-			{prop.withLocation && <SelectField name="parent" label="Parent" options={'Location.name'}/>}
+			{prop.withLocation && <SelectField name="parent" label="Parent" options={'Location.name'} />}
 		</>
 	),
 	'LocationForm'

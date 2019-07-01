@@ -10,6 +10,6 @@ export const LocationEditPage = (
 			title: 'Edit location'
 		}}
 	>
-		<LocationForm withLocation={true}/>
+		<LocationForm withLocation={true} />
 	</EditPage>
 )

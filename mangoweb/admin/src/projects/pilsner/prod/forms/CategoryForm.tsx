@@ -5,9 +5,9 @@ import { LinkForm, SeoForm } from './'
 export const CategoryForm = Component(
 	() => (
 		<>
-			<TextField name="name" label="Name"/>
-			<LinkForm/>
-			<SeoForm/>
+			<TextField name="name" label="Name" />
+			<LinkForm />
+			<SeoForm />
 		</>
 	),
 	'CategoryForm'

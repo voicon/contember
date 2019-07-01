@@ -6,9 +6,9 @@ export const GenericPageForm = Component(
 	() => (
 		<>
 			<TextField name="title" label="Title" />
-			<GenericContentForm/>
-			<LinkForm/>
-			<SeoForm/>
+			<GenericContentForm />
+			<LinkForm />
+			<SeoForm />
 		</>
 	),
 	'GenericPageForm'

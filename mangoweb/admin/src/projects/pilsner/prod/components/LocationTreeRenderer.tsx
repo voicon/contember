@@ -1,8 +1,14 @@
 import * as React from 'react'
-import { CollectionRenderer, CommonRendererProps, DataContext, DataRendererProps, DefaultRenderer, EntityAccessor } from 'cms-admin'
+import {
+	CollectionRenderer,
+	CommonRendererProps,
+	DataContext,
+	DataRendererProps,
+	DefaultRenderer,
+	EntityAccessor
+} from 'cms-admin'
 
-export interface LocationTreeRendererProps extends CommonRendererProps {
-}
+export interface LocationTreeRendererProps extends CommonRendererProps {}
 
 const getParentId = (entity: EntityAccessor): string | null =>
 	(entity.data.getField('parent') as EntityAccessor).getPersistedKey() || null

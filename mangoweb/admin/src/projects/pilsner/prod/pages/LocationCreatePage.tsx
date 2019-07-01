@@ -11,7 +11,7 @@ export const LocationCreatePage = (
 			title: 'Create new location'
 		}}
 	>
-		<SiteField/>
-		<LocationForm/>
+		<SiteField />
+		<LocationForm />
 	</CreatePage>
 )

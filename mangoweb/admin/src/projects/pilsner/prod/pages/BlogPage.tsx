@@ -9,7 +9,7 @@ export const BlogPage = (
 		<h1>Stories</h1>
 		<div>
 			<StandaloneEdit entityName={'BlogPage'} where={env => ({ site: { slug: getSite(env) } })}>
-				<LinkForm/>
+				<LinkForm />
 				<SeoForm />
 			</StandaloneEdit>
 		</div>
