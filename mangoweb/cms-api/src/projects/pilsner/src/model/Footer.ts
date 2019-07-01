@@ -21,9 +21,14 @@ export class Footer {
 }
 
 export class FooterLink {
-	order = d.intColumn()
-	footer = d.manyHasOne(Footer, 'links')
+	footer = d
+		.manyHasOne(Footer, 'links')
+		.cascadeOnDelete()
+		.notNull()
+	order = d.intColumn().notNull()
 	caption = d.stringColumn()
+
+	linkType = d.enumColumn(d.createEnum('internal', 'external')).notNull()
 	link = d.manyHasOne(Linkable).cascadeOnDelete()
 	linkUrl = d.stringColumn()
 }

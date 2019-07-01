@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"build": "tsc --build",
-		"start": "dotenv -- nodemon --watch dist --ext js --delay 500ms ./dist/src/index.js start",
+		"start": "dotenv -- nodemon --watch dist --ext js --delay 500ms --inspect=0.0.0.0 ./dist/src/index.js start",
 		"console": "dotenv -- node ./dist/src/index.js",
 		"reset": "dotenv --  node ./dist/src/index.js drop && dotenv --  node ./dist/src/index.js update",
 		"sync": "dotenv --  node ./dist/src/index.js update"

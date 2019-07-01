@@ -12,7 +12,7 @@ const config: ProjectConfig[] = [
 			footer: { path: '/footer' },
 
 			blog: { path: '/stories' },
-			blogNew: { path: '/stories/new' },
+			blogCreate: { path: '/stories/new' },
 			blogEdit: { path: '/stories/:id' },
 
 			pubs: { path: '/pubs' },
@@ -27,10 +27,16 @@ const config: ProjectConfig[] = [
 			pageCreate: { path: '/page/create' },
 			pageEdit: { path: '/page/:id' },
 
-			menuItems: { path: '/menu' },
+			menu: { path: '/menu' },
 			categories: { path: '/categories' },
+			categoryCreate: { path: '/categories/new' },
+			categoryEdit: { path: '/categories/:id' },
 			tags: { path: '/tags' },
+			tagCreate: { path: '/tags/new' },
+			tagEdit: { path: '/tags/:id' },
 			locations: { path: '/locations' },
+			locationCreate: { path: '/locations/new' },
+			locationEdit: { path: '/locations/:id' },
 			social: { path: '/social-networks' },
 
 			sites: { path: '/sites' },

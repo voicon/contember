@@ -7,7 +7,7 @@ export class Linkable {
 		.notNull()
 		.unique()
 
-	redirect: d.OneHasOneDefinition = d.oneHasOne(Redirect, 'link')
+	redirect: d.OneHasOneDefinition = d.oneHasOne(Redirect, 'link').cascadeOnDelete()
 
 	post: d.OneHasOneDefinition = d.oneHasOne(Post, 'link').cascadeOnDelete()
 	tapster: d.OneHasOneDefinition = d.oneHasOne(Tapster, 'link').cascadeOnDelete()
