@@ -7,18 +7,26 @@ export class Content {
 
 export const ContentBlockType = d.createEnum(
 	'frontTextBox',
+	'frontHalfImageLight',
 	'frontHalfImageLeft',
 	'frontHalfImageRight',
 	'frontCarousel',
-	'frontGallery',
-	'frontPhotoBox',
+	'frontDesktopGallery',
+	'frontPhoneGallery',
+	'frontPhotoBoxLeft',
+	'frontPhotoBoxRight',
+	'frontLargeImage',
 	'frontLargeImageWithTextBox',
 	'contentTextSection',
-	'contentImage'
+	'contentImage',
+	'contentHtml'
 )
 
 export class ContentBlock {
-	content = d.manyHasOne(Content, 'blocks')
+	content = d
+		.manyHasOne(Content, 'blocks')
+		.cascadeOnDelete()
+		.notNull()
 	order = d.intColumn().notNull()
 	type = d.enumColumn(ContentBlockType)
 
@@ -27,18 +35,21 @@ export class ContentBlock {
 	text = d.stringColumn()
 	url = d.stringColumn()
 
-	image = d.manyHasOne(ContentImage).onDelete(d.OnDelete.setNull)
-	gallery = d.oneHasOne(ContentGallery).onDelete(d.OnDelete.setNull)
+	image = d.manyHasOne(Image).setNullOnDelete()
+	gallery = d.oneHasOne(ContentGallery).setNullOnDelete()
 }
 
 export class ContentGallery {
-	type = d.stringColumn()
 	images = d.oneHasMany(ContentImage, 'gallery')
 }
 
 export class ContentImage {
-	type = d.stringColumn()
-	gallery: d.ManyHasOneDefinition = d.manyHasOne(ContentGallery, 'images').cascadeOnDelete()
+	gallery: d.ManyHasOneDefinition = d
+		.manyHasOne(ContentGallery, 'images')
+		.notNull()
+		.cascadeOnDelete()
+	order = d.intColumn().notNull()
+
 	caption = d.stringColumn()
 	image = d.manyHasOne(Image).cascadeOnDelete()
 }

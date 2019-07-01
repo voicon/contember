@@ -13,6 +13,7 @@
 		"cms-admin": "0.0.0",
 		"cms-admin-server": "0.0.0",
 		"cms-client": "0.0.0",
+		"cms-common": "0.0.0",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6",
 		"resolve-url-loader": "^2.3.0",

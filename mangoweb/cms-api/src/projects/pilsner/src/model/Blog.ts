@@ -14,6 +14,8 @@ export class Post {
 
 	headerImage = d.manyHasOne(Image)
 	listingImage = d.manyHasOne(Image)
+	listingTopImage = d.manyHasOne(Image)
+
 	imageDescription = d.stringColumn()
 
 	title = d.stringColumn().notNull()
@@ -29,6 +31,8 @@ export class Category {
 		.manyHasOne(Site, 'categories')
 		.cascadeOnDelete()
 		.notNull()
+
+	order = d.intColumn().notNull()
 
 	link = d.oneHasOneInversed(Linkable, 'category').notNull()
 	seo = d.oneHasOne(Seo).notNull()

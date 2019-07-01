@@ -1,12 +1,25 @@
 import * as React from 'react'
-import { LayoutDefault } from 'cms-admin'
+import { DimensionsSwitcher, LayoutDefault } from 'cms-admin'
 import { SideMenu } from './SideMenu'
 import logo from './logo.svg'
+import { IconNames } from '@blueprintjs/icons'
 
 const layout = {
 	header: {
 		title: logo,
-		left: false,
+		left: (
+			<DimensionsSwitcher
+				entityName="Site"
+				dimension="site"
+				labelName="name"
+				maxItems={1}
+				valueName="slug"
+				emptyText="Choose a site"
+				buttonProps={{
+					icon: IconNames.GLOBE
+				}}
+			/>
+		),
 		right: false
 	},
 	side: <SideMenu />

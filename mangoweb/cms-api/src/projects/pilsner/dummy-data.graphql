@@ -254,7 +254,7 @@ mutation {
 							}
 						}
 						location: {
-							create: { name: "Manchaster", parent: { create: { name: "UK" } } }
+							create: { site: {connect: {slug: "int"}}, name: "Manchaster", parent: { create: { site: {connect: {slug: "int"}}, name: "UK" } } }
 						}
 					}
 				}
@@ -295,6 +295,48 @@ mutation {
 			]
 		}
 	) {
+		id
+	}
+
+	createGenericPage(data: {
+		site: {connect: {slug: "int"}}
+
+		title: "Privacy policy"
+		seo: {create: {title: "privacy policy"}}
+		link: {create: {url: "/privacy-policy"}}
+		content: {create: {blocks: [{create: {order: 1, type: contentTextSection, text: "abcde"}}]}}
+	}) {
+		id
+	}
+
+	deSite:    createSite(
+		data: {
+			name: "Deutsch"
+			slug: "de"
+			frontPage: {
+				create: {
+					title: "PilsnerUrquell DE"
+					scrollString: "scroll"
+					headerImage: {
+						create: {
+							url: "https://imgproxy.mangoweb.org/echn8GykyNE04rnbclcqB7xi399Isg3hLPLgg9b7Onc/fit/2048/9999/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE4LzA0L2hlYWRlci0xLmpwZw.jpg"
+							phoneUrl: "https://imgproxy.mangoweb.org/jXx48MQV96vCMer0erYtPZ_nIlDrmJ6qqrwogDLanc0/fit/750/9999/no/1/aHR0cHM6Ly9zMy5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbS91cGxvYWRzLm1hbmdvd2ViLm9yZy9zaGFyZWQtcHJvZC9hZG1pbi5waWxzbmVydXJxdWVsbC5jb20vdXBsb2Fkcy8yMDE4LzA1L3B1LWhlYWRlci5qcGc.jpg"
+						}
+					}
+					seo: { create: { title: "Pilsner Urquell DE" } }
+					link: { create: { url: "/de" } }
+					content: {create: {blocks:[]}}
+				}
+			}
+		}
+	) {
+		id
+	}
+
+	t1: createTranslatable(data: {identifier: "year", translations: [{create: {value: "year", site: {connect: {slug: "int"}}}}]}) {
+		id
+	}
+	t2: createTranslatable(data: {identifier: "month"}) {
 		id
 	}
 }
