@@ -1,10 +1,14 @@
-import { SchemaDefinition as d } from 'cms-api'
+import { InputValidation as v, SchemaDefinition as d } from 'cms-api'
 
 export const One = d.createEnum('One')
 export const MediumType = d.createEnum('image', 'video')
 
 export class Locale {
+	@v.required('The locale slug is required.')
+	@v.assertPattern(/^[a-z]+$/, 'The locale slug must consist of lowercase letters only.')
 	slug = d.stringColumn().unique()
+
+	@v.required('The switch to label is required.')
 	switchToLabel = d.stringColumn()
 }
 
