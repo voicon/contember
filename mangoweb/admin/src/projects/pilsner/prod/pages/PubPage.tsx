@@ -6,15 +6,15 @@ import { LinkForm, SeoForm } from '../forms'
 
 export const PubPage = (
 	<GenericPage pageName={'pubs'}>
-		<h1>Pubs</h1>
 		<div>
 			<StandaloneEdit entityName={'PubsPage'} where={env => ({ site: { slug: getSite(env) } })}>
-				<ImageField name={'headerImage'} label={'Header image'} />
-				<TextField name={'title'} label={'Title'} />
+				<TextField name={'title'} large={true} />
 				<LinkForm />
+				<ImageField name={'headerImage'} label={'Header image'} />
 				<SeoForm />
 			</StandaloneEdit>
 		</div>
+		<h2>Pubs</h2>
 		<Grid
 			entityName={'Pub'}
 			createButton={{

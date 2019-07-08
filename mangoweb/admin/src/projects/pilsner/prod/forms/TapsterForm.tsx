@@ -1,13 +1,29 @@
 import * as React from 'react'
-import { Component, TextAreaField, TextField } from 'cms-admin'
+import { Component, SelectField, TextAreaField, TextField } from 'cms-admin'
+import { ImageField } from '../components'
+import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
 
-export const TapsterForm = Component(
-	() => (
+interface TapsterFormProps {
+	withLocation: boolean
+}
+
+export const TapsterForm = Component<TapsterFormProps>(
+	props => (
 		<>
+			<ImageField name={'headerImage'} label={'Header image'} />
+			<ImageField name={'listingImage'} label={'Listing image'} />
+			<TextField name="imageDescription" label="Image description" />
+
 			<TextField name="name" label="Name" />
 			<TextField name="subtitle" label="Subtitle" />
 			<TextField name="locationText" label="Location" />
+			{props.withLocation && <SelectField name={'location'} label={'Location'} options={'Location.name'} />}
 			<TextAreaField name="perex" label="Perex" />
+			<AttributesForm field={'attributeSet'} />
+			<GenericContentForm />
+
+			<LinkForm />
+			<SeoForm />
 		</>
 	),
 	'TapsterForm'

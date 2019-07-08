@@ -1,4 +1,3 @@
-import { H2 } from '@blueprintjs/core'
 import { Component, TextAreaField, TextField, ToOne } from 'cms-admin'
 import * as React from 'react'
 import { ImageField } from '../components'
@@ -7,8 +6,8 @@ export interface SeoFormProps {}
 
 export const SeoForm = Component<SeoFormProps>((props: SeoFormProps) => {
 	return (
-		<div>
-			<H2>Page SEO</H2>
+		<div className={'inputBox'}>
+			<div className={'inputBox-header'}>Page SEO</div>
 			<ToOne field="seo">
 				<TextField name="title" label="Title" />
 				<TextAreaField name="description" label="Description" />

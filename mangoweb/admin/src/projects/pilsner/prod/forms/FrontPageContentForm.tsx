@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AlternativeFields, Component, Literal, SortableRepeater, TextAreaField, TextField } from 'cms-admin'
+import { AlternativeFields, Component, Literal, SortableRepeater, TextAreaField, TextField, ToOne } from 'cms-admin'
 import { ImageField } from '../components'
 
 export const FrontPageContentForm = Component(
@@ -18,30 +18,55 @@ export const FrontPageContentForm = Component(
 						</>
 					],
 					[
-						new Literal('frontHalfImageLeft'),
-						'Image with text half split',
+						new Literal('frontHalfImageLight'),
+						'"Light" image with text half split',
 						<>
 							<TextField name="title" label={'Title'} />
 							<TextAreaField name="text" label={'Text'} />
-							<ImageField name={'image.image'} label={'Image'} />
+							<ImageField name={'image'} label={'Image'} />
+						</>
+					],
+					[
+						new Literal('frontHalfImageLeft'),
+						'Image with text half split left',
+						<>
+							<TextField name="title" label={'Title'} />
+							<TextAreaField name="text" label={'Text'} />
+							<ImageField name={'image'} label={'Image'} />
 						</>
 					],
 					[
 						new Literal('frontHalfImageRight'),
-						'Image with text half split #2',
+						'Image with text half split right',
 						<>
 							<TextField name="title" label={'Title'} />
 							<TextAreaField name="text" label={'Text'} />
-							<ImageField name={'image.image'} label={'Image'} />
+							<ImageField name={'image'} label={'Image'} />
 						</>
 					],
 					[
-						new Literal('frontPhotoBox'),
-						'Photo box',
+						new Literal('frontPhotoBoxLeft'),
+						'Photo box left',
 						<>
 							<TextField name="title" label={'Title'} />
 							<TextAreaField name="text" label={'Text'} />
-							<ImageField name={'image.image'} label={'Image'} />
+							<ImageField name={'image'} label={'Image'} />
+						</>
+					],
+					[
+						new Literal('frontPhotoBoxRight'),
+						'Photo box right',
+						<>
+							<TextField name="title" label={'Title'} />
+							<TextAreaField name="text" label={'Text'} />
+							<ImageField name={'image'} label={'Image'} />
+						</>
+					],
+					[
+						new Literal('frontLargeImage'),
+						'Large photo',
+						<>
+							<ImageField name={'image'} label={'Image'} />
 						</>
 					],
 					[
@@ -51,7 +76,43 @@ export const FrontPageContentForm = Component(
 							<TextField name="title" label={'Title'} />
 							<TextField name="subtitle" label={'Subtitle'} />
 							<TextAreaField name="text" label={'Text'} />
-							<ImageField name={'image.image'} label={'Image'} />
+							<ImageField name={'image'} label={'Image'} />
+						</>
+					],
+					[
+						new Literal('frontPhoneGallery'),
+						'Phone gallery',
+						<>
+							<ToOne field={'gallery'}>
+								<SortableRepeater sortBy={'order'} field={'images'}>
+									<ImageField name={'image'} label={'Image'} single={true} />
+								</SortableRepeater>
+							</ToOne>
+						</>
+					],
+					[
+						new Literal('frontDesktopGallery'),
+						'Desktop gallery',
+						<>
+							<ToOne field={'gallery'}>
+								<SortableRepeater sortBy={'order'} field={'images'}>
+									<ImageField name={'image'} label={'Image'} single={true} />
+								</SortableRepeater>
+							</ToOne>
+						</>
+					],
+					[
+						new Literal('frontCarousel'),
+						'Carousel',
+						<>
+							<TextField name="title" label={'Title'} />
+							<TextAreaField name="text" label={'Text'} />
+							<ToOne field={'gallery'}>
+								<SortableRepeater sortBy={'order'} field={'images'}>
+									<TextAreaField name="caption" label={'Caption'} />
+									<ImageField name={'image'} label={'Image'} />
+								</SortableRepeater>
+							</ToOne>
 						</>
 					]
 				]}
