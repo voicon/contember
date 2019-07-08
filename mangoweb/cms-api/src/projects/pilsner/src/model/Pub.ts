@@ -22,6 +22,6 @@ export class Pub {
 	perex = d.stringColumn().notNull()
 	content = d.oneHasOne(Content).notNull()
 	attributeSet = d.oneHasOne(AttributeSet).notNull()
-	location = d.manyHasOne(Location)
+	location = d.manyHasOne(Location, 'pubs')
 	tags = d.manyHasMany(Tag)
 }
