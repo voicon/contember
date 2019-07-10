@@ -24,10 +24,10 @@ const renderTree = (childAccessor: ChildAccessor, parent: string | null, childre
 		return null
 	}
 	return (
-		<ul>
+		<ul className={'tree-list'}>
 			{entities.map(it => (
 				<DataContext.Provider value={it} key={it.getKey()}>
-					<li key={it.getKey()}>
+					<li key={it.getKey()} className={'tree-item'}>
 						{children}
 						{renderTree(childAccessor, it.getPersistedKey() || null, children)}
 					</li>
@@ -45,7 +45,10 @@ export class LocationTreeRenderer extends React.PureComponent<DataRendererProps 
 					<>
 						{DefaultRenderer.renderTitle(this.props.title)}
 						{this.props.beforeContent}
-						{entities.length > 0 && renderTree(childAccessorFactory(entities), null, this.props.children)}
+
+						{entities.length > 0 && (
+							<div className={'tree'}>{renderTree(childAccessorFactory(entities), null, this.props.children)}</div>
+						)}
 						{!!entities.length || <div>There are no items to display.</div>}
 					</>
 				)}
