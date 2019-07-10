@@ -20,4 +20,5 @@ export class MenuItem {
 		.manyHasOne(Linkable)
 		.notNull()
 		.cascadeOnDelete()
+	showCategories = d.boolColumn().notNull()
 }

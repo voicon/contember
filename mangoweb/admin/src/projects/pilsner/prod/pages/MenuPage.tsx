@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { EditPage, SelectField, SortableRepeater, TextField } from 'cms-admin'
+import { EditPage, SelectField, SortableRepeater, TextField, CheckboxField } from 'cms-admin'
 import { getSite } from '../utils/environment'
 
 export const MenuPage = (
@@ -9,6 +9,7 @@ export const MenuPage = (
 		<SortableRepeater sortBy={'order'} field={'items'}>
 			<TextField name={'caption'} label={'Caption'} />
 			<SelectField name={'link'} label={'link'} options={'Linkable.url'} />
+			<CheckboxField name={'showCategories'} label={'Show categories'} />
 		</SortableRepeater>
 	</EditPage>
 )
