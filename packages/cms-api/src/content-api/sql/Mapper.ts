@@ -1,7 +1,6 @@
 import { Acl, Input, Model } from 'cms-common'
 import { acceptEveryFieldVisitor, getColumnName } from '../../content-schema/modelUtils'
-import InsertVisitor from './insert/InsertVisitor'
-import UpdateVisitor from './update/UpdateVisitor'
+import SqlCreateInputProcessor from './insert/SqlCreateInputProcessor'
 import ObjectNode from '../graphQlResolver/ObjectNode'
 import SelectHydrator from './select/SelectHydrator'
 import Path from './select/Path'
@@ -16,6 +15,9 @@ import WhereBuilder from './select/WhereBuilder'
 import JunctionTableManager from './JunctionTableManager'
 import DeleteExecutor from './delete/DeleteExecutor'
 import SelectBuilder from '../../core/database/SelectBuilder'
+import CreateInputVisitor from '../inputProcessing/CreateInputVisitor'
+import SqlUpdateInputProcessor from './update/SqlUpdateInputProcessor'
+import UpdateInputVisitor from '../inputProcessing/UpdateInputVisitor'
 
 class Mapper {
 	constructor(
@@ -73,6 +75,16 @@ class Mapper {
 		return await (indexByAlias !== null ? hydrator.hydrateAll(rows, indexByAlias) : hydrator.hydrateAll(rows))
 	}
 
+	public async selectUnique(
+		entity: Model.Entity,
+		query: ObjectNode<Input.UniqueQueryInput>
+	): Promise<SelectHydrator.ResultObject | null> {
+		const where = this.uniqueWhereExpander.expand(entity, query.args.by)
+		const queryExpanded = query.withArg<Input.ListQueryInput>('filter', where)
+
+		return (await this.select(entity, queryExpanded))[0] || null
+	}
+
 	public async selectGrouped(
 		entity: Model.Entity,
 		input: ObjectNode<Input.ListQueryInput>,
@@ -110,15 +122,15 @@ class Mapper {
 		const where = this.predicateFactory.create(entity, Acl.Operation.create, Object.keys(data))
 		const insertBuilder = this.insertBuilderFactory.create(entity)
 		insertBuilder.addWhere(where)
-		const promises = acceptEveryFieldVisitor(
-			this.schema,
-			entity,
-			new InsertVisitor(this.schema, data, insertBuilder, this)
-		)
+
+		const visitor = new CreateInputVisitor(new SqlCreateInputProcessor(insertBuilder, this), this.schema, data)
+		const promises = acceptEveryFieldVisitor<any>(this.schema, entity, visitor)
+
+		const promise = Promise.all(Object.values(promises).filter((it: any) => !!it))
 
 		const result = await insertBuilder.execute()
 
-		await Promise.all(Object.values(promises).filter((it: any) => !!it))
+		await promise
 
 		return result
 	}
@@ -136,8 +148,9 @@ class Mapper {
 		updateBuilder.addOldWhere(predicateWhere)
 		updateBuilder.addNewWhere(predicateWhere)
 
-		const updateVisitor = new UpdateVisitor(primaryValue, data, updateBuilder, this)
-		const promises = acceptEveryFieldVisitor(this.schema, entity, updateVisitor)
+		const updateVisitor = new SqlUpdateInputProcessor(primaryValue, data, updateBuilder, this)
+		const visitor = new UpdateInputVisitor(updateVisitor, this.schema, data)
+		const promises = acceptEveryFieldVisitor<any>(this.schema, entity, visitor)
 		const executeResult = updateBuilder.execute()
 
 		await Promise.all(Object.values(promises).filter((it: any) => !!it))

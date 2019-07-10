@@ -7,6 +7,7 @@ import {
 	EntityAccessor,
 	EntityForRemovalAccessor,
 	Environment,
+	ErrorAccessor,
 	FieldAccessor,
 	FieldMarker
 } from '../dao'
@@ -29,6 +30,7 @@ export interface FieldMetadata<
 > {
 	fieldName: FieldName
 	data: FieldAccessor<Persisted, Produced>
+	errors: ErrorAccessor[]
 	isMutating: DataTreeMutationState
 	environment: Environment
 }
@@ -60,6 +62,7 @@ class Field<
 									fieldName={fieldName}
 									data={(fieldData as unknown) as FieldAccessor<Persisted, Produced>}
 									isMutating={isMutating}
+									errors={fieldData.errors}
 									environment={environment}
 								>
 									{this.props.children}
@@ -90,7 +93,7 @@ class Field<
 }
 
 namespace Field {
-	export interface RawMetadata extends Pick<FieldMetadata, Exclude<keyof FieldMetadata, 'data'>> {
+	export interface RawMetadata extends Omit<FieldMetadata, 'data' | 'errors'> {
 		data: DataContextValue
 	}
 
@@ -109,6 +112,7 @@ namespace Field {
 			return this.props.children({
 				fieldName: this.props.fieldName,
 				data: this.props.data,
+				errors: this.props.errors,
 				isMutating: this.props.isMutating,
 				environment: this.props.environment
 			})

@@ -1,3 +1,28 @@
+type _FieldPathFragment {
+  field: String!
+}
+
+type _IndexPathFragment {
+  index: Int!
+  alias: String
+}
+
+union _PathFragment = _FieldPathFragment | _IndexPathFragment
+
+type _ValidationError {
+  path: [_PathFragment!]!
+  message: _ValidationMessage!
+}
+
+type _ValidationMessage {
+  text: String!
+}
+
+type _ValidationResult {
+  valid: Boolean!
+  errors: [_ValidationError!]!
+}
+
 type FieldMeta {
   readable: Boolean
   updatable: Boolean
@@ -8,8 +33,8 @@ type Info {
 }
 
 type Mutation {
-  createTest(data: TestCreateInput!): Test!
-  updateTest(by: TestUniqueWhere!, data: TestUpdateInput!): Test
+  createTest(data: TestCreateInput!): TestCreateResult!
+  updateTest(by: TestUniqueWhere!, data: TestUpdateInput!): TestUpdateResult!
   generateUploadUrl(contentType: String!): SignedUpload!
 }
 
@@ -21,6 +46,8 @@ enum OrderDirection {
 type Query {
   getTest(by: TestUniqueWhere!): Test
   listTest(filter: TestWhere, orderBy: [TestOrderBy!], offset: Int, limit: Int): [Test]
+  validateCreateTest(data: TestCreateInput!): _ValidationResult!
+  validateUpdateTest(by: TestUniqueWhere!, data: TestUpdateInput!): _ValidationResult!
   _info: Info
 }
 
@@ -58,6 +85,12 @@ input TestCreateInput {
   _create: Boolean
 }
 
+type TestCreateResult {
+  ok: Boolean!
+  node: Test
+  validation: _ValidationResult!
+}
+
 type TestMeta {
   id: FieldMeta
   c: FieldMeta
@@ -75,6 +108,12 @@ input TestUniqueWhere {
 input TestUpdateInput {
   b: String
   _update: Boolean
+}
+
+type TestUpdateResult {
+  ok: Boolean!
+  node: Test
+  validation: _ValidationResult!
 }
 
 input TestWhere {

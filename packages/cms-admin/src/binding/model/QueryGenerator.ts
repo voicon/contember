@@ -1,4 +1,5 @@
 import { CrudQueryBuilder } from 'cms-client'
+import { GetQueryArguments } from 'cms-client/dist/src/crudQueryBuilder'
 import { assertNever, ucfirst } from 'cms-common'
 import { PRIMARY_KEY_NAME, TYPENAME_KEY_NAME } from '../bindingTypes'
 import {
@@ -11,8 +12,9 @@ import {
 	SingleEntityTreeConstraints
 } from '../dao'
 
-type Mutations = 'create' | 'update' | 'delete'
-type QueryBuilder = Pick<CrudQueryBuilder.CrudQueryBuilder, Exclude<keyof CrudQueryBuilder.CrudQueryBuilder, Mutations>>
+type BaseQueryBuilder = Omit<CrudQueryBuilder.CrudQueryBuilder, CrudQueryBuilder.Mutations>
+
+type ReadBuilder = CrudQueryBuilder.ReadBuilder.Builder<never>
 
 export class QueryGenerator {
 	constructor(private tree: MarkerTreeRoot) {}
@@ -25,7 +27,7 @@ export class QueryGenerator {
 		}
 	}
 
-	private addSubQuery(subTree: MarkerTreeRoot, baseQueryBuilder?: QueryBuilder): QueryBuilder {
+	private addSubQuery(subTree: MarkerTreeRoot, baseQueryBuilder?: BaseQueryBuilder): BaseQueryBuilder {
 		if (!baseQueryBuilder) {
 			baseQueryBuilder = new CrudQueryBuilder.CrudQueryBuilder()
 		}
@@ -33,7 +35,7 @@ export class QueryGenerator {
 		if (subTree.constraints === undefined) {
 			const [populatedBaseQueryBuilder] = this.addMarkerTreeRootQueries(
 				baseQueryBuilder,
-				this.registerListQueryPart(subTree.fields, new CrudQueryBuilder.ListQueryBuilder())
+				this.registerQueryPart(subTree.fields, CrudQueryBuilder.ReadBuilder.instantiate())
 			)
 			return populatedBaseQueryBuilder
 		} else if (subTree.constraints.whereType === 'unique') {
@@ -45,44 +47,51 @@ export class QueryGenerator {
 	}
 
 	private addGetQuery(
-		baseQueryBuilder: QueryBuilder,
+		baseQueryBuilder: BaseQueryBuilder,
 		subTree: MarkerTreeRoot<SingleEntityTreeConstraints>
-	): QueryBuilder {
-		const boundedQueryBuilder = new CrudQueryBuilder.UnboundedGetQueryBuilder().where(subTree.constraints.where)
+	): BaseQueryBuilder {
 		const [populatedBaseQueryBuilder, populatedListQueryBuilder] = this.addMarkerTreeRootQueries(
 			baseQueryBuilder,
-			this.registerListQueryPart(
+			this.registerQueryPart(
 				subTree.fields,
-				new CrudQueryBuilder.ListQueryBuilder(boundedQueryBuilder.objectBuilder)
+				CrudQueryBuilder.ReadBuilder.instantiate<GetQueryArguments>().by(subTree.constraints.where)
 			)
 		)
 
-		return populatedBaseQueryBuilder.get(`get${subTree.entityName}`, populatedListQueryBuilder, subTree.id)
+		return populatedBaseQueryBuilder.get(
+			subTree.entityName,
+			CrudQueryBuilder.ReadBuilder.instantiate(
+				populatedListQueryBuilder ? populatedListQueryBuilder.objectBuilder : undefined
+			),
+			subTree.id
+		)
 	}
 
 	private addListQuery(
-		baseQueryBuilder: QueryBuilder,
+		baseQueryBuilder: BaseQueryBuilder,
 		subTree: MarkerTreeRoot<EntityListTreeConstraints>
-	): QueryBuilder {
-		let listQueryBuilder = new CrudQueryBuilder.ListQueryBuilder()
+	): BaseQueryBuilder {
+		const builder: CrudQueryBuilder.ReadBuilder.Builder<Exclude<CrudQueryBuilder.ReadArguments, 'filter'>> =
+			subTree.constraints && subTree.constraints.filter
+				? CrudQueryBuilder.ReadBuilder.instantiate().filter(subTree.constraints.filter)
+				: CrudQueryBuilder.ReadBuilder.instantiate()
 
-		if (subTree.constraints && subTree.constraints.filter) {
-			listQueryBuilder = listQueryBuilder.filter(subTree.constraints.filter)
-		}
-
-		;[baseQueryBuilder, listQueryBuilder] = this.addMarkerTreeRootQueries(
+		const [newBaseQueryBuilder, newReadBuilder] = this.addMarkerTreeRootQueries(
 			baseQueryBuilder,
-			this.registerListQueryPart(subTree.fields, listQueryBuilder)
+			this.registerQueryPart(subTree.fields, builder)
 		)
 
-		// This naming convention is unfortunate & temporary
-		return baseQueryBuilder.list(`list${subTree.entityName}`, listQueryBuilder, subTree.id)
+		return newBaseQueryBuilder.list(
+			subTree.entityName,
+			newReadBuilder || CrudQueryBuilder.ReadBuilder.instantiate(),
+			subTree.id
+		)
 	}
 
-	private *registerListQueryPart(
+	private *registerQueryPart(
 		fields: EntityFields,
-		builder: CrudQueryBuilder.ListQueryBuilder
-	): IterableIterator<MarkerTreeRoot | CrudQueryBuilder.ListQueryBuilder> {
+		builder: ReadBuilder
+	): IterableIterator<MarkerTreeRoot | ReadBuilder> {
 		builder = builder.column(PRIMARY_KEY_NAME)
 		builder = builder.column(TYPENAME_KEY_NAME)
 
@@ -97,37 +106,35 @@ export class QueryGenerator {
 				for (const referenceName in fieldValue.references) {
 					const reference = fieldValue.references[referenceName]
 
-					let subBuilder = new CrudQueryBuilder.ListQueryBuilder()
-					let relationField
-
-					if (reference.filter) {
-						subBuilder = subBuilder.filter(reference.filter)
-					}
-
-					if (reference.reducedBy) {
-						// Assuming there's exactly one as enforced by MarkerTreeGenerator
-						const reducerFields = Object.keys(reference.reducedBy)
-
-						subBuilder = subBuilder.by(reference.reducedBy)
-						relationField = `${fieldValue.fieldName}By${ucfirst(reducerFields[0])}`
-					} else {
-						relationField = fieldValue.fieldName
-					}
-
-					for (const item of this.registerListQueryPart(reference.fields, subBuilder)) {
-						if (item instanceof CrudQueryBuilder.ListQueryBuilder) {
+					let builderWithBody = CrudQueryBuilder.ReadBuilder.instantiate()
+					for (const item of this.registerQueryPart(reference.fields, builderWithBody)) {
+						if (item instanceof CrudQueryBuilder.ReadBuilder) {
 							// This branch will only get executed at most once per recursive call
-							subBuilder = new CrudQueryBuilder.ListQueryBuilder(item.objectBuilder)
+							builderWithBody = CrudQueryBuilder.ReadBuilder.instantiate(item.objectBuilder)
 						} else {
 							yield item
 						}
 					}
 
-					builder = builder.relation(
-						relationField,
-						subBuilder,
-						referenceName === relationField ? undefined : referenceName
-					)
+					const filteredBuilder: CrudQueryBuilder.ReadBuilder.Builder<
+						Exclude<CrudQueryBuilder.ReadArguments, 'filter'>
+					> = reference.filter ? builderWithBody.filter(reference.filter) : builderWithBody
+
+					if (reference.reducedBy) {
+						// Assuming there's exactly one reducer field as enforced by MarkerTreeGenerator
+						const relationField = `${fieldValue.fieldName}By${ucfirst(Object.keys(reference.reducedBy)[0])}`
+						builder = builder.reductionRelation(
+							relationField,
+							filteredBuilder.by(reference.reducedBy),
+							referenceName === relationField ? undefined : referenceName
+						)
+					} else {
+						builder = builder.anyRelation(
+							fieldValue.fieldName,
+							filteredBuilder,
+							referenceName === fieldValue.fieldName ? undefined : referenceName
+						)
+					}
 				}
 			} else {
 				yield fieldValue
@@ -137,14 +144,15 @@ export class QueryGenerator {
 		// Ideally, this would have been a `return`, not a `yield`, and the return type would have been something slightly
 		// different. Unfortunately, https://github.com/Microsoft/TypeScript/issues/2983 prevents this but it's not too big
 		// of a deal.
+		// UPDATE: waiting for https://github.com/microsoft/TypeScript/pull/30790 to be merged
 		yield builder
 	}
 
 	private addMarkerTreeRootQueries(
-		baseQueryBuilder: QueryBuilder,
-		subTrees: IterableIterator<MarkerTreeRoot | CrudQueryBuilder.ListQueryBuilder>
-	): [QueryBuilder, CrudQueryBuilder.ListQueryBuilder] {
-		let listQueryBuilder: CrudQueryBuilder.ListQueryBuilder | undefined = undefined
+		baseQueryBuilder: BaseQueryBuilder,
+		subTrees: IterableIterator<MarkerTreeRoot | ReadBuilder>
+	): [BaseQueryBuilder, ReadBuilder | undefined] {
+		let listQueryBuilder: ReadBuilder | undefined = undefined
 
 		for (const item of subTrees) {
 			if (item instanceof MarkerTreeRoot) {
@@ -154,6 +162,6 @@ export class QueryGenerator {
 			}
 		}
 
-		return [baseQueryBuilder, listQueryBuilder || new CrudQueryBuilder.ListQueryBuilder()]
+		return [baseQueryBuilder, listQueryBuilder]
 	}
 }

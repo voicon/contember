@@ -1,15 +1,20 @@
+import { Accessor } from './Accessor'
 import { EntityData } from './EntityData'
+import { Errorable } from './Errorable'
+import { ErrorAccessor } from './ErrorAccessor'
 
-class EntityAccessor {
+class EntityAccessor extends Accessor implements Errorable {
 	public readonly primaryKey: string | EntityAccessor.UnpersistedEntityID
 
 	public constructor(
 		primaryKey: string | EntityAccessor.UnpersistedEntityID | undefined,
 		public readonly typename: string | undefined,
 		public readonly data: EntityData,
+		public readonly errors: ErrorAccessor[],
 		public readonly replaceWith: (replacement: EntityAccessor) => void,
 		public readonly remove?: (removalType: EntityAccessor.RemovalType) => void
 	) {
+		super()
 		this.primaryKey = primaryKey || new EntityAccessor.UnpersistedEntityID()
 	}
 

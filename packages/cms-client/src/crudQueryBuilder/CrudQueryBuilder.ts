@@ -1,22 +1,28 @@
 import { isEmptyObject } from 'cms-common'
-import UnboundedGetQueryBuilder from './UnboundedGetQueryBuilder'
-import UpdateBuilder from './UpdateBuilder'
-import QueryBuilder from '../graphQlBuilder/QueryBuilder'
-import RootObjectBuilder from '../graphQlBuilder/RootObjectBuilder'
-import ListQueryBuilder from './ListQueryBuilder'
-import BoundedGetQueryBuilder from './BoundedGetQueryBuilder'
-import CreateBuilder from './CreateBuilder'
-import DeleteBuilder from './DeleteBuilder'
-
-type Mutations = 'create' | 'update' | 'delete'
-type Queries = 'get' | 'list'
+import { QueryBuilder, RootObjectBuilder } from '../graphQlBuilder'
+import { CrudQueryBuilderError } from './CrudQueryBuilderError'
+import { ReadBuilder } from './ReadBuilder'
+import {
+	CreateMutationArguments,
+	CreateMutationFields,
+	DeleteMutationArguments,
+	DeleteMutationFields,
+	GetQueryArguments,
+	ListQueryArguments,
+	Mutations,
+	Queries,
+	UpdateMutationArguments,
+	UpdateMutationFields,
+	WriteOperation
+} from './types'
+import { WriteBuilder } from './WriteBuilder'
 
 type Variables = {
 	[key: string]: any
 }
 type Client<T extends any> = (query: string | object, variables?: Variables) => PromiseLike<T>
 
-export default class CrudQueryBuilder {
+export class CrudQueryBuilder {
 	constructor(
 		private type: undefined | 'query' | 'mutation' = undefined,
 		private rootObjectBuilder: RootObjectBuilder = new RootObjectBuilder()
@@ -24,15 +30,14 @@ export default class CrudQueryBuilder {
 
 	public list(
 		name: string,
-		query: ((builder: ListQueryBuilder) => ListQueryBuilder) | ListQueryBuilder,
+		query: ReadBuilder.BuilderFactory<ListQueryArguments>,
 		alias?: string
-	): Pick<CrudQueryBuilder, Exclude<keyof CrudQueryBuilder, Mutations>> {
+	): Omit<CrudQueryBuilder, Mutations> {
 		if (this.type === 'mutation') {
-			throw new Error('Cannot combine queries and mutations')
+			throw new CrudQueryBuilderError('Cannot combine queries and mutations')
 		}
-		if (typeof query === 'function') {
-			query = query(new ListQueryBuilder())
-		}
+		name = `list${name}`
+		query = ReadBuilder.instantiateFromFactory(query)
 
 		const [objectName, objectBuilder] =
 			typeof alias === 'string' ? [alias, query.objectBuilder.name(name)] : [name, query.objectBuilder]
@@ -42,15 +47,14 @@ export default class CrudQueryBuilder {
 
 	public get(
 		name: string,
-		query: ((builder: UnboundedGetQueryBuilder) => BoundedGetQueryBuilder) | BoundedGetQueryBuilder,
+		query: ReadBuilder.BuilderFactory<GetQueryArguments>,
 		alias?: string
-	): Pick<CrudQueryBuilder, Exclude<keyof CrudQueryBuilder, Mutations>> {
+	): Omit<CrudQueryBuilder, Mutations> {
 		if (this.type === 'mutation') {
-			throw new Error('Cannot combine queries and mutations')
+			throw new CrudQueryBuilderError('Cannot combine queries and mutations')
 		}
-		if (typeof query === 'function') {
-			query = query(new UnboundedGetQueryBuilder())
-		}
+		name = `get${name}`
+		query = ReadBuilder.instantiateFromFactory(query)
 
 		const [objectName, objectBuilder] =
 			typeof alias === 'string' ? [alias, query.objectBuilder.name(name)] : [name, query.objectBuilder]
@@ -60,15 +64,14 @@ export default class CrudQueryBuilder {
 
 	public update(
 		name: string,
-		query: ((builder: UpdateBuilder) => UpdateBuilder) | UpdateBuilder,
+		query: WriteBuilder.BuilderFactory<UpdateMutationArguments, UpdateMutationFields, WriteOperation.Update>,
 		alias?: string
-	): Pick<CrudQueryBuilder, Exclude<keyof CrudQueryBuilder, Queries>> {
+	): Omit<CrudQueryBuilder, Queries> {
 		if (this.type === 'query') {
-			throw new Error('Cannot combine queries and mutations')
+			throw new CrudQueryBuilderError('Cannot combine queries and mutations')
 		}
-		if (typeof query === 'function') {
-			query = query(new UpdateBuilder())
-		}
+		name = `update${name}`
+		query = WriteBuilder.instantiateFromFactory(query)
 
 		if (isEmptyObject(query.objectBuilder.args.data)) {
 			return this
@@ -82,15 +85,14 @@ export default class CrudQueryBuilder {
 
 	public create(
 		name: string,
-		query: ((builder: CreateBuilder) => CreateBuilder) | CreateBuilder,
+		query: WriteBuilder.BuilderFactory<CreateMutationArguments, CreateMutationFields, WriteOperation.Create>,
 		alias?: string
-	): Pick<CrudQueryBuilder, Exclude<keyof CrudQueryBuilder, Queries>> {
+	): Omit<CrudQueryBuilder, Queries> {
 		if (this.type === 'query') {
-			throw new Error('Cannot combine queries and mutations')
+			throw new CrudQueryBuilderError('Cannot combine queries and mutations')
 		}
-		if (typeof query === 'function') {
-			query = query(new CreateBuilder())
-		}
+		name = `create${name}`
+		query = WriteBuilder.instantiateFromFactory(query)
 
 		if (isEmptyObject(query.objectBuilder.args.data)) {
 			return this
@@ -104,15 +106,14 @@ export default class CrudQueryBuilder {
 
 	public delete(
 		name: string,
-		query: ((builder: DeleteBuilder) => DeleteBuilder) | DeleteBuilder,
+		query: WriteBuilder.BuilderFactory<DeleteMutationArguments, DeleteMutationFields, WriteOperation.Delete>,
 		alias?: string
-	): Pick<CrudQueryBuilder, Exclude<keyof CrudQueryBuilder, Queries>> {
+	): Omit<CrudQueryBuilder, Queries> {
 		if (this.type === 'query') {
-			throw new Error('Cannot combine queries and mutations')
+			throw new CrudQueryBuilderError('Cannot combine queries and mutations')
 		}
-		if (typeof query === 'function') {
-			query = query(new DeleteBuilder())
-		}
+		name = `delete${name}`
+		query = WriteBuilder.instantiateFromFactory(query)
 
 		const [objectName, objectBuilder] =
 			typeof alias === 'string' ? [alias, query.objectBuilder.name(name)] : [name, query.objectBuilder]
@@ -128,11 +129,11 @@ export default class CrudQueryBuilder {
 			case 'query':
 				return builder.query(this.rootObjectBuilder)
 			default:
-				throw new Error(`Invalid type ${this.type}`)
+				throw new CrudQueryBuilderError(`Invalid type ${this.type}`)
 		}
 	}
 
 	async execute<T>(client: Client<T>, variables?: Variables): Promise<T> {
-		return await client(this.getGql(), variables)
+		return client(this.getGql(), variables)
 	}
 }

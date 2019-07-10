@@ -1,3 +1,28 @@
+type _FieldPathFragment {
+  field: String!
+}
+
+type _IndexPathFragment {
+  index: Int!
+  alias: String
+}
+
+union _PathFragment = _FieldPathFragment | _IndexPathFragment
+
+type _ValidationError {
+  path: [_PathFragment!]!
+  message: _ValidationMessage!
+}
+
+type _ValidationMessage {
+  text: String!
+}
+
+type _ValidationResult {
+  valid: Boolean!
+  errors: [_ValidationError!]!
+}
+
 type FieldMeta {
   readable: Boolean
   updatable: Boolean
@@ -8,11 +33,11 @@ type Info {
 }
 
 type Mutation {
-  createRoot(data: RootCreateInput!): Root!
-  deleteRoot(by: RootUniqueWhere!): Root
-  updateRoot(by: RootUniqueWhere!, data: RootUpdateInput!): Root
-  createOneHasManyEntity(data: OneHasManyEntityCreateInput!): OneHasManyEntity!
-  deleteOneHasManyEntity(by: OneHasManyEntityUniqueWhere!): OneHasManyEntity
+  createRoot(data: RootCreateInput!): RootCreateResult!
+  deleteRoot(by: RootUniqueWhere!): RootDeleteResult!
+  updateRoot(by: RootUniqueWhere!, data: RootUpdateInput!): RootUpdateResult!
+  createOneHasManyEntity(data: OneHasManyEntityCreateInput!): OneHasManyEntityCreateResult!
+  deleteOneHasManyEntity(by: OneHasManyEntityUniqueWhere!): OneHasManyEntityDeleteResult!
   generateUploadUrl(contentType: String!): SignedUpload!
 }
 
@@ -32,6 +57,17 @@ input OneHasManyEntityCreateInput {
 input OneHasManyEntityCreateR2EntityRelationInput {
   connect: RootUniqueWhere
   create: RootWithoutRCreateInput
+}
+
+type OneHasManyEntityCreateResult {
+  ok: Boolean!
+  node: OneHasManyEntity
+  validation: _ValidationResult!
+}
+
+type OneHasManyEntityDeleteResult {
+  ok: Boolean!
+  node: OneHasManyEntity
 }
 
 type OneHasManyEntityMeta {
@@ -72,8 +108,11 @@ enum OrderDirection {
 type Query {
   getRoot(by: RootUniqueWhere!): Root
   listRoot(filter: RootWhere, orderBy: [RootOrderBy!], offset: Int, limit: Int): [Root]
+  validateCreateRoot(data: RootCreateInput!): _ValidationResult!
+  validateUpdateRoot(by: RootUniqueWhere!, data: RootUpdateInput!): _ValidationResult!
   getOneHasManyEntity(by: OneHasManyEntityUniqueWhere!): OneHasManyEntity
   listOneHasManyEntity(filter: OneHasManyEntityWhere, orderBy: [OneHasManyEntityOrderBy!], offset: Int, limit: Int): [OneHasManyEntity]
+  validateCreateOneHasManyEntity(data: OneHasManyEntityCreateInput!): _ValidationResult!
   _info: Info
 }
 
@@ -91,6 +130,18 @@ input RootCreateInput {
 input RootCreateREntityRelationInput {
   connect: OneHasManyEntityUniqueWhere
   create: OneHasManyEntityWithoutR2CreateInput
+  alias: String
+}
+
+type RootCreateResult {
+  ok: Boolean!
+  node: Root
+  validation: _ValidationResult!
+}
+
+type RootDeleteResult {
+  ok: Boolean!
+  node: Root
 }
 
 type RootMeta {
@@ -108,6 +159,12 @@ input RootUniqueWhere {
 
 input RootUpdateInput {
   _update: Boolean
+}
+
+type RootUpdateResult {
+  ok: Boolean!
+  node: Root
+  validation: _ValidationResult!
 }
 
 input RootWhere {

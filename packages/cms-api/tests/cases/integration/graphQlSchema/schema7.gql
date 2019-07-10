@@ -1,3 +1,28 @@
+type _FieldPathFragment {
+  field: String!
+}
+
+type _IndexPathFragment {
+  index: Int!
+  alias: String
+}
+
+union _PathFragment = _FieldPathFragment | _IndexPathFragment
+
+type _ValidationError {
+  path: [_PathFragment!]!
+  message: _ValidationMessage!
+}
+
+type _ValidationMessage {
+  text: String!
+}
+
+type _ValidationResult {
+  valid: Boolean!
+  errors: [_ValidationError!]!
+}
+
 scalar DateTime
 
 input DateTimeCondition {
@@ -25,12 +50,12 @@ type Info {
 }
 
 type Mutation {
-  createPost(data: PostCreateInput!): Post!
-  deletePost(by: PostUniqueWhere!): Post
-  updatePost(by: PostUniqueWhere!, data: PostUpdateInput!): Post
-  createPostLocale(data: PostLocaleCreateInput!): PostLocale!
-  deletePostLocale(by: PostLocaleUniqueWhere!): PostLocale
-  updatePostLocale(by: PostLocaleUniqueWhere!, data: PostLocaleUpdateInput!): PostLocale
+  createPost(data: PostCreateInput!): PostCreateResult!
+  deletePost(by: PostUniqueWhere!): PostDeleteResult!
+  updatePost(by: PostUniqueWhere!, data: PostUpdateInput!): PostUpdateResult!
+  createPostLocale(data: PostLocaleCreateInput!): PostLocaleCreateResult!
+  deletePostLocale(by: PostLocaleUniqueWhere!): PostLocaleDeleteResult!
+  updatePostLocale(by: PostLocaleUniqueWhere!, data: PostLocaleUpdateInput!): PostLocaleUpdateResult!
   generateUploadUrl(contentType: String!): SignedUpload!
 }
 
@@ -56,6 +81,18 @@ input PostCreateInput {
 input PostCreateLocalesEntityRelationInput {
   connect: PostLocaleUniqueWhere
   create: PostLocaleWithoutPostCreateInput
+  alias: String
+}
+
+type PostCreateResult {
+  ok: Boolean!
+  node: Post
+  validation: _ValidationResult!
+}
+
+type PostDeleteResult {
+  ok: Boolean!
+  node: Post
 }
 
 type PostLocale {
@@ -76,6 +113,17 @@ input PostLocaleCreateInput {
 input PostLocaleCreatePostEntityRelationInput {
   connect: PostUniqueWhere
   create: PostWithoutLocalesCreateInput
+}
+
+type PostLocaleCreateResult {
+  ok: Boolean!
+  node: PostLocale
+  validation: _ValidationResult!
+}
+
+type PostLocaleDeleteResult {
+  ok: Boolean!
+  node: PostLocale
 }
 
 type PostLocaleMeta {
@@ -116,6 +164,12 @@ input PostLocaleUpdatePostEntityRelationInput {
   connect: PostUniqueWhere
   disconnect: Boolean
   delete: Boolean
+}
+
+type PostLocaleUpdateResult {
+  ok: Boolean!
+  node: PostLocale
+  validation: _ValidationResult!
 }
 
 input PostLocaleUpsertPostRelationInput {
@@ -173,11 +227,18 @@ input PostUpdateLocalesEntityRelationInput {
   connect: PostLocaleUniqueWhere
   disconnect: PostLocaleUniqueWhere
   delete: PostLocaleUniqueWhere
+  alias: String
 }
 
 input PostUpdateLocalesRelationInput {
   by: PostLocaleUniqueWhere
   data: PostLocaleWithoutPostUpdateInput
+}
+
+type PostUpdateResult {
+  ok: Boolean!
+  node: Post
+  validation: _ValidationResult!
 }
 
 input PostUpsertLocalesRelationInput {
@@ -208,8 +269,12 @@ input PostWithoutLocalesUpdateInput {
 type Query {
   getPost(by: PostUniqueWhere!): Post
   listPost(filter: PostWhere, orderBy: [PostOrderBy!], offset: Int, limit: Int): [Post]
+  validateCreatePost(data: PostCreateInput!): _ValidationResult!
+  validateUpdatePost(by: PostUniqueWhere!, data: PostUpdateInput!): _ValidationResult!
   getPostLocale(by: PostLocaleUniqueWhere!): PostLocale
   listPostLocale(filter: PostLocaleWhere, orderBy: [PostLocaleOrderBy!], offset: Int, limit: Int): [PostLocale]
+  validateCreatePostLocale(data: PostLocaleCreateInput!): _ValidationResult!
+  validateUpdatePostLocale(by: PostLocaleUniqueWhere!, data: PostLocaleUpdateInput!): _ValidationResult!
   _info: Info
 }
 

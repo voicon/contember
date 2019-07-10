@@ -1,3 +1,28 @@
+type _FieldPathFragment {
+  field: String!
+}
+
+type _IndexPathFragment {
+  index: Int!
+  alias: String
+}
+
+union _PathFragment = _FieldPathFragment | _IndexPathFragment
+
+type _ValidationError {
+  path: [_PathFragment!]!
+  message: _ValidationMessage!
+}
+
+type _ValidationMessage {
+  text: String!
+}
+
+type _ValidationResult {
+  valid: Boolean!
+  errors: [_ValidationError!]!
+}
+
 type FieldMeta {
   readable: Boolean
   updatable: Boolean
@@ -8,10 +33,10 @@ type Info {
 }
 
 type Mutation {
-  deleteRoot(by: RootUniqueWhere!): Root
-  updateRoot(by: RootUniqueWhere!, data: RootUpdateInput!): Root
-  deleteOneHasManyEntity(by: OneHasManyEntityUniqueWhere!): OneHasManyEntity
-  updateOneHasManyEntity(by: OneHasManyEntityUniqueWhere!, data: OneHasManyEntityUpdateInput!): OneHasManyEntity
+  deleteRoot(by: RootUniqueWhere!): RootDeleteResult!
+  updateRoot(by: RootUniqueWhere!, data: RootUpdateInput!): RootUpdateResult!
+  deleteOneHasManyEntity(by: OneHasManyEntityUniqueWhere!): OneHasManyEntityDeleteResult!
+  updateOneHasManyEntity(by: OneHasManyEntityUniqueWhere!, data: OneHasManyEntityUpdateInput!): OneHasManyEntityUpdateResult!
   generateUploadUrl(contentType: String!): SignedUpload!
 }
 
@@ -20,6 +45,11 @@ type OneHasManyEntity {
   id: UUID!
   a: String
   r2(filter: RootWhere): Root
+}
+
+type OneHasManyEntityDeleteResult {
+  ok: Boolean!
+  node: OneHasManyEntity
 }
 
 type OneHasManyEntityMeta {
@@ -51,6 +81,12 @@ input OneHasManyEntityUpdateR2EntityRelationInput {
   delete: Boolean
 }
 
+type OneHasManyEntityUpdateResult {
+  ok: Boolean!
+  node: OneHasManyEntity
+  validation: _ValidationResult!
+}
+
 input OneHasManyEntityWhere {
   id: UUIDCondition
   a: StringCondition
@@ -73,8 +109,10 @@ enum OrderDirection {
 type Query {
   getRoot(by: RootUniqueWhere!): Root
   listRoot(filter: RootWhere, orderBy: [RootOrderBy!], offset: Int, limit: Int): [Root]
+  validateUpdateRoot(by: RootUniqueWhere!, data: RootUpdateInput!): _ValidationResult!
   getOneHasManyEntity(by: OneHasManyEntityUniqueWhere!): OneHasManyEntity
   listOneHasManyEntity(filter: OneHasManyEntityWhere, orderBy: [OneHasManyEntityOrderBy!], offset: Int, limit: Int): [OneHasManyEntity]
+  validateUpdateOneHasManyEntity(by: OneHasManyEntityUniqueWhere!, data: OneHasManyEntityUpdateInput!): _ValidationResult!
   _info: Info
 }
 
@@ -82,6 +120,11 @@ type Root {
   _meta: RootMeta
   id: UUID!
   r(filter: OneHasManyEntityWhere, orderBy: [OneHasManyEntityOrderBy!], offset: Int, limit: Int): [OneHasManyEntity!]
+}
+
+type RootDeleteResult {
+  ok: Boolean!
+  node: Root
 }
 
 type RootMeta {
@@ -107,6 +150,13 @@ input RootUpdateREntityRelationInput {
   connect: OneHasManyEntityUniqueWhere
   disconnect: OneHasManyEntityUniqueWhere
   delete: OneHasManyEntityUniqueWhere
+  alias: String
+}
+
+type RootUpdateResult {
+  ok: Boolean!
+  node: Root
+  validation: _ValidationResult!
 }
 
 input RootUpdateRRelationInput {

@@ -1,9 +1,10 @@
 import { execute, sqlTransaction } from '../../../src/test'
-import { Model } from 'cms-common'
+import { Model, Validation } from 'cms-common'
 import SchemaBuilder from '../../../../src/content-schema/builder/SchemaBuilder'
 import { GQL, SQL } from '../../../src/tags'
 import { testUuid } from '../../../src/testUuid'
 import 'mocha'
+import * as v from '../../../../src/content-api/input-validation'
 
 describe('update', () => {
 	const selectUpdatePostSql = {
@@ -17,7 +18,7 @@ describe('update', () => {
 	}
 
 	describe('columns (author)', () => {
-		it('update "public".name', async () => {
+		it('update name', async () => {
 			await execute({
 				schema: new SchemaBuilder()
 					.entity('Author', e => e.column('name', c => c.type(Model.ColumnType.String)))
@@ -27,7 +28,10 @@ describe('update', () => {
             by: {id: "${testUuid(1)}"},
             data: {name: "John"}
           ) {
-          id
+          ok
+          author: node {
+            id
+          }
         }
       }`,
 				executes: [
@@ -57,7 +61,10 @@ describe('update', () => {
 				return: {
 					data: {
 						updateAuthor: {
-							id: testUuid(1),
+							ok: true,
+							author: {
+								id: testUuid(1),
+							},
 						},
 					},
 				},
@@ -93,7 +100,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {author: {create: {name: "John"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -128,7 +135,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -143,7 +150,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {author: {connect: {id: "${testUuid(1)}"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -167,7 +174,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -182,7 +189,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {author: {update: {name: "John"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -214,7 +221,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -229,7 +236,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {author: {upsert: {create: {name: "John"}, update: {name: "Jack"}}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -260,7 +267,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -275,7 +282,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {author: {upsert: {create: {name: "John"}, update: {name: "Jack"}}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -318,7 +325,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -333,7 +340,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {author: {disconnect: true}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -356,7 +363,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -371,7 +378,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {author: {delete: true}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -422,7 +429,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -468,7 +475,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {locales: [{create: {title: "Hello", locale: "cs"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -489,7 +496,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -504,7 +511,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {locales: [{update: {by: {locale: "cs"}, data: {title: "Hello"}}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -538,7 +545,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -553,7 +560,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {locales: [{upsert: {by: {locale: "cs"}, update: {title: "Hello"}, create: {title: "World"}}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -588,7 +595,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -603,7 +610,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {locales: [{upsert: {by: {locale: "cs"}, update: {title: "Hello"}, create: {title: "World", locale: "cs"}}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -633,7 +640,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -648,7 +655,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {locales: [{delete: {locale: "cs"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -678,7 +685,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -693,7 +700,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {locales: [{connect: {id: "${testUuid(1)}"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -718,7 +725,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -733,7 +740,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {locales: [{disconnect: {id: "${testUuid(1)}"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -758,7 +765,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -795,7 +802,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {setting: {create: {url: "http://mangoweb.cz"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -829,7 +836,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSite: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -844,7 +851,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {setting: {update: {url: "http://mangoweb.cz"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -876,7 +883,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSite: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -891,7 +898,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {setting: {connect: {id: "${testUuid(1)}"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -911,7 +918,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSite: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -926,7 +933,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {setting: {connect: {id: "${testUuid(1)}"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -959,7 +966,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSite: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -974,7 +981,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {setting: {connect: {id: "${testUuid(1)}"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1020,7 +1027,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSite: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1035,7 +1042,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {setting: {upsert: {update: {url: "http://mangoweb.cz"}, create: {url: "http://mgw.cz"}}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1067,7 +1074,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSite: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1082,7 +1089,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {setting: {upsert: {update: {url: "http://mangoweb.cz"}, create: {url: "http://mgw.cz"}}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1125,7 +1132,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSite: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1140,7 +1147,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {setting: {disconnect: true}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1164,7 +1171,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSite: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1179,7 +1186,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {setting: {delete: true}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1231,7 +1238,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSite: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1258,7 +1265,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {site: {create: {name: "Mangoweb"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1301,7 +1308,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1316,7 +1323,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {site: {create: {name: "Mangoweb"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1346,7 +1353,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1361,7 +1368,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {site: {update: {name: "Mangoweb"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1394,7 +1401,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1409,7 +1416,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {site: {upsert: {update: {name: "Mangoweb"}, create: {name: "Mgw"}}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1442,7 +1449,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1457,7 +1464,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
            data: {site: {upsert: {update: {name: "Mangoweb"}, create: {name: "Mgw"}}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1487,7 +1494,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1502,7 +1509,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {site: {disconnect: true}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1535,7 +1542,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1550,7 +1557,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {site: {delete: true}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1580,7 +1587,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1595,7 +1602,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {site: {connect: {id: "${testUuid(1)}"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1615,7 +1622,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1630,7 +1637,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {site: {connect: {id: "${testUuid(1)}"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1663,7 +1670,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1678,7 +1685,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {site: {connect: {id: "${testUuid(1)}"}}}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1724,7 +1731,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateSiteSetting: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1750,7 +1757,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {categories: [{connect: {id: "${testUuid(3)}"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1768,7 +1775,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1783,7 +1790,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {categories: [{create: {name: "Lorem"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1811,7 +1818,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1826,7 +1833,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {categories: [{delete: {id: "${testUuid(1)}"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1856,7 +1863,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1871,7 +1878,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {categories: [{disconnect: {id: "${testUuid(1)}"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1888,7 +1895,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1903,7 +1910,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {categories: [{update: {by: {id: "${testUuid(1)}"}, data: {name: "Lorem"}}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1933,7 +1940,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1950,7 +1957,7 @@ describe('update', () => {
 							1
 						)}"}, update: {name: "Lorem"}, create: {name: "Ipsum"}}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -1980,7 +1987,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -1997,7 +2004,7 @@ describe('update', () => {
 							1
 						)}"}, update: {name: "Lorem"}, create: {name: "Ipsum"}}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -2037,7 +2044,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -2064,7 +2071,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {posts: [{connect: {id: "${testUuid(1)}"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -2082,7 +2089,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateCategory: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -2097,7 +2104,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {posts: [{create: {title: "Lorem"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -2125,7 +2132,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateCategory: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -2140,7 +2147,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {posts: [{delete: {id: "${testUuid(1)}"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -2170,7 +2177,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateCategory: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -2185,7 +2192,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {posts: [{disconnect: {id: "${testUuid(1)}"}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -2202,7 +2209,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateCategory: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -2217,7 +2224,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {posts: [{update: {by: {id: "${testUuid(1)}"}, data: {title: "Lorem"}}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -2247,7 +2254,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateCategory: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -2262,7 +2269,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {posts: [{upsert: {by: {id: "${testUuid(1)}"}, update: {title: "Lorem"}, create: {title: "Ipsum"}}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -2292,7 +2299,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateCategory: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -2307,7 +2314,7 @@ describe('update', () => {
             by: {id: "${testUuid(2)}"},
             data: {posts: [{upsert: {by: {id: "${testUuid(1)}"}, update: {title: "Lorem"}, create: {title: "Ipsum"}}}]}
           ) {
-          id
+          ok
         }
       }`,
 				executes: [
@@ -2347,7 +2354,7 @@ describe('update', () => {
 				return: {
 					data: {
 						updateCategory: {
-							id: testUuid(2),
+							ok: true,
 						},
 					},
 				},
@@ -2356,7 +2363,7 @@ describe('update', () => {
 	})
 
 	describe('acl', () => {
-		it('update "public".name', async () => {
+		it('update name', async () => {
 			await execute({
 				schema: new SchemaBuilder()
 					.entity('Author', e => e.column('name', c => c.type(Model.ColumnType.String)))
@@ -2366,7 +2373,7 @@ describe('update', () => {
             by: {id: "${testUuid(1)}"},
             data: {name: "John"}
           ) {
-          id
+          ok
         }
       }`,
 				permissions: {
@@ -2416,14 +2423,14 @@ describe('update', () => {
 				return: {
 					data: {
 						updateAuthor: {
-							id: testUuid(1),
+							ok: true,
 						},
 					},
 				},
 			})
 		})
 
-		it('update "public".name - denied', async () => {
+		it('update name - denied', async () => {
 			await execute({
 				schema: new SchemaBuilder()
 					.entity('Author', e => e.column('name', c => c.type(Model.ColumnType.String)))
@@ -2433,7 +2440,7 @@ describe('update', () => {
             by: {id: "${testUuid(1)}"},
             data: {name: "John"}
           ) {
-          id
+          ok
         }
       }`,
 				permissions: {
@@ -2481,9 +2488,7 @@ describe('update', () => {
 					]),
 				],
 				return: {
-					data: {
-						updateAuthor: null,
-					},
+					data: null,
 					errors: [
 						{
 							locations: [
@@ -2500,7 +2505,7 @@ describe('update', () => {
 			})
 		})
 
-		it('update "public".m:n', async () => {
+		it('update m:n', async () => {
 			await execute({
 				schema: new SchemaBuilder()
 					.entity('Post', e =>
@@ -2553,8 +2558,8 @@ describe('update', () => {
 						{connect: {id: "${testUuid(2)}"}},          
 						{disconnect: {id: "${testUuid(3)}"}},          
           ]}) {
-            id
-          }	
+          ok
+        }	
 				}`,
 				executes: sqlTransaction([
 					{
@@ -2624,11 +2629,123 @@ describe('update', () => {
 				return: {
 					data: {
 						updatePost: {
-							id: '123e4567-e89b-12d3-a456-000000000001',
+							ok: true,
 						},
 					},
 				},
 			})
+		})
+	})
+
+	const bookSchema = new SchemaBuilder()
+		.entity('Book', entity =>
+			entity.column('name', c => c.type(Model.ColumnType.String)).oneHasMany('tags', r => r.target('Tag'))
+		)
+		.entity('Tag', e => e.column('label'))
+		.buildSchema()
+
+	const bookValidation: Validation.Schema = {
+		Book: {
+			name: v.assert(v.rules.notEmpty(), 'Book name is required').buildRules(),
+			tags: v
+				.assert(v.rules.notEmpty(), 'You have to fill tags')
+				.assert(v.rules.minLength(2), 'You have to fill at least two tags')
+				.buildRules(),
+		},
+		Tag: {
+			label: v.assert(v.rules.notEmpty(), 'Tag label is required').buildRules(),
+		},
+	}
+
+	it('update book with validation - failed', async () => {
+		await execute({
+			schema: bookSchema,
+			validation: bookValidation,
+			query: GQL`
+          mutation {
+              updateBook(by: {id: "${testUuid(1)}"}, data: {name: "", tags: [{connect: {id: "${testUuid(
+				2
+			)}"}}, {disconnect: {id: "${testUuid(3)}"}}]}) {
+                  ok
+                  validation {
+                      valid
+                      errors {
+                          message {
+                              text
+                          }
+                          path {
+                              ... on _IndexPathFragment {
+                                  index
+                              }
+                              ... on _FieldPathFragment {
+                                  field
+                              }
+                          }
+                      }
+                  }
+                  node {
+                      id
+                  }
+              }
+          }`,
+			executes: [
+				...sqlTransaction([
+					{
+						sql: SQL`select "root_"."name" as "root_name", "root_"."id" as "root_id", "root_"."id" as "root_id" from  "public"."book" as "root_"   where "root_"."id" = ?`,
+						parameters: [testUuid(1)],
+						response: {
+							rows: [{ root_name: 'John', root_id: testUuid(1) }],
+						},
+					},
+					{
+						sql: SQL`select "root_"."book_id" as "__grouping_key", "root_"."id" as "root_id" from  "public"."tag" as "root_"   where "root_"."book_id" in (?)`,
+						parameters: [testUuid(1)],
+						response: {
+							rows: [{ __grouping_key: testUuid(1), root_id: testUuid(3) }],
+						},
+					},
+					{
+						sql: SQL`select "root_"."id" as "root_id" from  "public"."tag" as "root_"  where "root_"."id" = ?`,
+						parameters: [testUuid(2)],
+						response: {
+							rows: [{ root_id: testUuid(2) }],
+						},
+					},
+				]),
+			],
+			return: {
+				data: {
+					updateBook: {
+						node: null,
+						ok: false,
+						validation: {
+							errors: [
+								{
+									message: {
+										text: 'Book name is required',
+									},
+									path: [
+										{
+											field: 'name',
+										},
+									],
+								},
+								{
+									message: {
+										text: 'You have to fill at least two tags',
+									},
+									path: [
+										{
+											field: 'tags',
+										},
+									],
+								},
+							],
+							valid: false,
+						},
+					},
+				},
+			},
 		})
 	})
 })

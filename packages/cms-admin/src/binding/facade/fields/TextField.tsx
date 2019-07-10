@@ -20,9 +20,10 @@ export const TextField = SimpleRelativeSingleField<TextFieldProps>(props => {
 	}
 	return (
 		<Field<string> name={props.name}>
-			{({ data, isMutating, environment }): React.ReactNode => (
+			{({ data, isMutating, environment, errors }): React.ReactNode => (
 				<FormGroup
 					label={props.label ? environment.applySystemMiddleware('labelMiddleware', props.label) : undefined}
+					errors={errors}
 					horizontal={props.horizontal}
 				>
 					<InputGroup

@@ -25,6 +25,48 @@ export type ReceivedEntityData<A = never> =
 	  }
 export type ReceivedData<A = never> = A | ReceivedEntityData<A> | ReceivedEntityData<A>[]
 
+export interface ReceivedDataTree<A = never> {
+	[treeId: string]: ReceivedData<A>
+}
+
+export interface FieldPathErrorFragment {
+	__typename: '_FieldPathFragment'
+	field: string
+}
+
+export interface IndexPathErrorFragment {
+	__typename: '_IndexPathFragment'
+	index: number
+	alias: string | null
+}
+
+export type ErrorPathNodeType = FieldPathErrorFragment | IndexPathErrorFragment
+
+export type MutationErrorPath = ErrorPathNodeType[]
+
+export interface MutationError {
+	path: MutationErrorPath
+	message: {
+		text: string
+	}
+}
+
+export interface MutationResult {
+	ok: boolean
+	validation: {
+		valid: boolean
+		errors: MutationError[]
+	}
+}
+
+export interface MutationRequestResult {
+	[alias: string]: MutationResult
+}
+
+export interface QueryRequestResult {
+	data: ReceivedData
+}
+
 export type VariableInput = VariableScalar | VariableLiteral | Literal
 
 export type Filter<T = VariableInput> = Input.Where<Input.Condition<Input.ColumnValue<T>>>

@@ -1,3 +1,28 @@
+type _FieldPathFragment {
+  field: String!
+}
+
+type _IndexPathFragment {
+  index: Int!
+  alias: String
+}
+
+union _PathFragment = _FieldPathFragment | _IndexPathFragment
+
+type _ValidationError {
+  path: [_PathFragment!]!
+  message: _ValidationMessage!
+}
+
+type _ValidationMessage {
+  text: String!
+}
+
+type _ValidationResult {
+  valid: Boolean!
+  errors: [_ValidationError!]!
+}
+
 type FieldMeta {
   readable: Boolean
   updatable: Boolean
@@ -14,6 +39,7 @@ type FrontPage {
 input FrontPageCreateInHouseVideosEntityRelationInput {
   connect: VideoUniqueWhere
   create: VideoWithoutFrontPageCreateInput
+  alias: String
 }
 
 input FrontPageCreateInput {
@@ -26,6 +52,17 @@ input FrontPageCreateInput {
 input FrontPageCreateIntroVideoEntityRelationInput {
   connect: VideoUniqueWhere
   create: VideoWithoutFrontPageForIntroCreateInput
+}
+
+type FrontPageCreateResult {
+  ok: Boolean!
+  node: FrontPage
+  validation: _ValidationResult!
+}
+
+type FrontPageDeleteResult {
+  ok: Boolean!
+  node: FrontPage
 }
 
 type FrontPageMeta {
@@ -54,6 +91,7 @@ input FrontPageUpdateInHouseVideosEntityRelationInput {
   connect: VideoUniqueWhere
   disconnect: VideoUniqueWhere
   delete: VideoUniqueWhere
+  alias: String
 }
 
 input FrontPageUpdateInHouseVideosRelationInput {
@@ -70,6 +108,12 @@ input FrontPageUpdateInput {
 
 input FrontPageUpdateIntroVideoEntityRelationInput {
   update: VideoWithoutFrontPageForIntroUpdateInput
+}
+
+type FrontPageUpdateResult {
+  ok: Boolean!
+  node: FrontPage
+  validation: _ValidationResult!
 }
 
 input FrontPageUpsertInHouseVideosRelationInput {
@@ -117,12 +161,12 @@ type Info {
 }
 
 type Mutation {
-  createFrontPage(data: FrontPageCreateInput!): FrontPage!
-  deleteFrontPage(by: FrontPageUniqueWhere!): FrontPage
-  updateFrontPage(by: FrontPageUniqueWhere!, data: FrontPageUpdateInput!): FrontPage
-  createVideo(data: VideoCreateInput!): Video!
-  deleteVideo(by: VideoUniqueWhere!): Video
-  updateVideo(by: VideoUniqueWhere!, data: VideoUpdateInput!): Video
+  createFrontPage(data: FrontPageCreateInput!): FrontPageCreateResult!
+  deleteFrontPage(by: FrontPageUniqueWhere!): FrontPageDeleteResult!
+  updateFrontPage(by: FrontPageUniqueWhere!, data: FrontPageUpdateInput!): FrontPageUpdateResult!
+  createVideo(data: VideoCreateInput!): VideoCreateResult!
+  deleteVideo(by: VideoUniqueWhere!): VideoDeleteResult!
+  updateVideo(by: VideoUniqueWhere!, data: VideoUpdateInput!): VideoUpdateResult!
   generateUploadUrl(contentType: String!): SignedUpload!
 }
 
@@ -153,8 +197,12 @@ enum OrderDirection {
 type Query {
   getFrontPage(by: FrontPageUniqueWhere!): FrontPage
   listFrontPage(filter: FrontPageWhere, orderBy: [FrontPageOrderBy!], offset: Int, limit: Int): [FrontPage]
+  validateCreateFrontPage(data: FrontPageCreateInput!): _ValidationResult!
+  validateUpdateFrontPage(by: FrontPageUniqueWhere!, data: FrontPageUpdateInput!): _ValidationResult!
   getVideo(by: VideoUniqueWhere!): Video
   listVideo(filter: VideoWhere, orderBy: [VideoOrderBy!], offset: Int, limit: Int): [Video]
+  validateCreateVideo(data: VideoCreateInput!): _ValidationResult!
+  validateUpdateVideo(by: VideoUniqueWhere!, data: VideoUpdateInput!): _ValidationResult!
   _info: Info
 }
 
@@ -222,6 +270,17 @@ input VideoCreateInput {
   _create: Boolean
 }
 
+type VideoCreateResult {
+  ok: Boolean!
+  node: Video
+  validation: _ValidationResult!
+}
+
+type VideoDeleteResult {
+  ok: Boolean!
+  node: Video
+}
+
 type VideoMeta {
   id: FieldMeta
   vimeoId: FieldMeta
@@ -259,6 +318,12 @@ input VideoUpdateInput {
   frontPageForIntro: VideoUpdateFrontPageForIntroEntityRelationInput
   frontPage: VideoUpdateFrontPageEntityRelationInput
   _update: Boolean
+}
+
+type VideoUpdateResult {
+  ok: Boolean!
+  node: Video
+  validation: _ValidationResult!
 }
 
 input VideoUpsertFrontPageRelationInput {

@@ -1,38 +1,49 @@
-import ObjectBuilder from './ObjectBuilder'
-import Literal from './Literal'
-import RootObjectBuilder from './RootObjectBuilder'
+import { ObjectBuilder } from './ObjectBuilder'
+import { Literal } from './Literal'
+import { RootObjectBuilder } from './RootObjectBuilder'
 
-interface GenericObjectBuilder {
-	readonly objects: { [name: string]: ObjectBuilder }
-}
-
-export default class QueryCompiler {
+export class QueryCompiler {
 	constructor(private operation: 'query' | 'mutation', private builder: RootObjectBuilder) {}
 
 	public create(): string {
-		return `${this.operation} {
-${this.formatObject(this.builder).join('\n')}     
-}`
+		return `${this.operation} {\n${this.formatRootObject(this.builder)}\n}`
 	}
 
-	private formatObject(builder: GenericObjectBuilder): string[] {
-		const result = []
+	private formatRootObject(builder: RootObjectBuilder): string {
+		const lines: string[] = []
 
-		for (let alias in builder.objects) {
-			const subObject = builder.objects[alias]
-			result.push(
-				alias + (subObject.objectName ? `: ${subObject.objectName}` : '') + this.formatArgs(subObject.args, 0) + ' {'
-			)
-			for (let fieldName of subObject.fields) {
-				result.push('\t' + fieldName)
-			}
-
-			const formatted = this.formatObject(subObject)
-			result.push(...formatted)
-			result.push('}')
+		for (const alias in builder.objects) {
+			lines.push(...this.formatObject(alias, builder.objects[alias]).map(val => `\t${val}`))
 		}
 
-		return result.map(val => '\t' + val)
+		return lines.join('\n')
+	}
+
+	private formatObject(alias: string, builder: ObjectBuilder): string[] {
+		const result = []
+
+		result.push(`${alias}${builder.objectName ? `: ${builder.objectName}` : ''}${this.formatArgs(builder.args, 0)} {`)
+
+		result.push(...this.formatObjectBody(builder))
+
+		result.push('}')
+
+		return result
+	}
+
+	private formatObjectBody(builder: ObjectBuilder): string[] {
+		const result = []
+		for (const fieldName of builder.fields) {
+			result.push(fieldName)
+		}
+		for (const typeName in builder.fragments) {
+			const fragment = builder.fragments[typeName]
+			result.push(`... on ${typeName} {`, ...this.formatObjectBody(fragment), '}')
+		}
+		for (const alias in builder.objects) {
+			result.push(...this.formatObject(alias, builder.objects[alias]))
+		}
+		return result.map(val => `\t${val}`)
 	}
 
 	private formatArgs(args: any, level: number): string {
@@ -53,7 +64,7 @@ ${this.formatObject(this.builder).join('\n')}
 
 		if (Array.isArray(args)) {
 			const vals = args.map(val => this.formatArgs(val, level + 1))
-			return '[' + vals.join(', ') + ']'
+			return `[${vals.join(', ')}]`
 		}
 		if (args instanceof Literal) {
 			return args.value
