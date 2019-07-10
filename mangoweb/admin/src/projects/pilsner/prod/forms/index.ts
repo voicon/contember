@@ -1,3 +1,4 @@
+export * from './AttributesForm'
 export * from './CategoryForm'
 export * from './PostForm'
 export * from './GenericPageForm'

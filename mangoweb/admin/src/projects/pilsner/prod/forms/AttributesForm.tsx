@@ -1,31 +1,24 @@
 import * as React from 'react'
-import { AlternativeFields, Component, Literal, SortableRepeater, TextAreaField, TextField } from 'cms-admin'
-import { ImageField } from '../components'
+import { Component, SortableRepeater, TextField, ToOne } from 'cms-admin'
 
-export const AttributesForm = Component(
-	() => (
-		<SortableRepeater sortBy={'order'} field={'content.blocks'}>
-			<AlternativeFields
-				name="type"
-				alternatives={[
-					[
-						new Literal('contentTextSection'),
-						'Text section',
-						<>
-							<TextField name="title" label={'Title'} />
-							<TextAreaField name="text" label={'Text'} />
-						</>
-					],
-					[
-						new Literal('contentImage'),
-						'Image',
-						<>
-							<ImageField name={'image.image'} label={'Image'} />
-						</>
-					]
-				]}
-			/>
-		</SortableRepeater>
+interface AttributesFormProps {
+	field: string
+}
+
+export const AttributesForm = Component<AttributesFormProps>(
+	props => (
+		<>
+			<ToOne {...props}>
+				<h2>Attributes</h2>
+				<SortableRepeater sortBy={'order'} field={'attributes'}>
+					<TextField name="title" label={'Title'} />
+					<SortableRepeater sortBy={'order'} field={'values'}>
+						<TextField name="value" label={'Value'} />
+						<TextField name="url" label={'URL'} />
+					</SortableRepeater>
+				</SortableRepeater>
+			</ToOne>
+		</>
 	),
 	'AttributesForm'
 )

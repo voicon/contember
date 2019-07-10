@@ -12,15 +12,12 @@ export const ImageField = Component<ImageFieldProps>((props: ImageFieldProps) =>
 		return <ImageUploadField label={props.label} name={`${props.name}.url`} />
 	}
 	return (
-		<FormGroup label={props.label}>
-			<div style={{ display: 'flex' }}>
-				<div style={{ flex: '1 1 50%' }}>
-					<ImageUploadField label={'Desktop'} name={`${props.name}.url`} />
-				</div>
-				<div style={{ flex: '1 1 50%' }}>
-					<ImageUploadField label={'Phone'} name={`${props.name}.phoneUrl`} />
-				</div>
+		<div className={'inputBox'}>
+			<div className={'inputBox-header'}>{props.label}</div>
+			<div className={'inputBox-row'}>
+				<ImageUploadField label={'Desktop'} name={`${props.name}.url`} />
+				<ImageUploadField label={'Phone'} name={`${props.name}.phoneUrl`} />
 			</div>
-		</FormGroup>
+		</div>
 	)
 })

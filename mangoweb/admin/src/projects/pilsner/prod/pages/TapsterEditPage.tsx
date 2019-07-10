@@ -10,6 +10,6 @@ export const TapsterEditPage = (
 			title: 'Edit tapster'
 		}}
 	>
-		<TapsterForm />
+		<TapsterForm withLocation={true} />
 	</EditPage>
 )
