@@ -5,6 +5,9 @@ const config: ProjectConfig[] = [
 		project: 'pilsner',
 		stage: 'prod',
 		component: () => import('./prod'),
+		defaultDimensions: {
+			site: ['en']
+		},
 		routes: {
 			dashboard: { path: '/' },
 
