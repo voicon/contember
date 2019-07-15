@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Component, TextAreaField, TextField } from 'cms-admin'
+import { CheckboxList, Component, TextAreaField, TextField } from 'cms-admin'
 import { ImageField } from '../components'
 import { GenericContentForm, LinkForm, SeoForm } from './'
 
@@ -14,6 +14,7 @@ export const PostForm = Component(
 
 			<TextAreaField name="perex" label="Perex" />
 			<GenericContentForm />
+			<CheckboxList name="tags" options="Tag[site.slug = 'en'].name" label="Tags" />
 
 			<SeoForm />
 		</>

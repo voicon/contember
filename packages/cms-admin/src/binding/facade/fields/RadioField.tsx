@@ -4,7 +4,7 @@ import { FormGroup } from '../../../components'
 import { FieldName } from '../../bindingTypes'
 import { Environment, ErrorAccessor } from '../../dao'
 import { Component } from '../aux'
-import { ChoiceField, ChoiceFieldProps } from './ChoiceField'
+import { ChoiceArity, ChoiceField, ChoiceFieldProps, SingleChoiceFieldMetadata } from './ChoiceField'
 
 export interface RadioFieldPublicProps {
 	name: FieldName
@@ -20,8 +20,8 @@ export type RadioFieldProps = RadioFieldPublicProps & RadioFieldInternalProps
 
 export const RadioField = Component<RadioFieldProps>(props => {
 	return (
-		<ChoiceField name={props.name} options={props.options}>
-			{({ data, currentValue, onChange, isMutating, environment, errors }) => {
+		<ChoiceField name={props.name} options={props.options} arity={ChoiceArity.Single}>
+			{({ data, currentValue, onChange, isMutating, environment, errors }: SingleChoiceFieldMetadata) => {
 				return (
 					<RadioFieldInner
 						name={props.name}
@@ -41,9 +41,9 @@ export const RadioField = Component<RadioFieldProps>(props => {
 }, 'RadioField')
 
 interface RadioFieldInnerProps extends RadioFieldPublicProps {
-	data: ChoiceField.Data<ChoiceField.DynamicValue | ChoiceField.StaticValue>
-	currentValue: ChoiceField.ValueRepresentation | null
-	onChange: (newValue: ChoiceField.ValueRepresentation) => void
+	data: SingleChoiceFieldMetadata['data']
+	currentValue: ChoiceField.ValueRepresentation
+	onChange: SingleChoiceFieldMetadata['onChange']
 	environment: Environment
 	errors: ErrorAccessor[]
 	isMutating: boolean
@@ -59,8 +59,8 @@ class RadioFieldInner extends React.PureComponent<RadioFieldInnerProps> {
 					onChange={event => this.props.onChange(parseInt(event.currentTarget.value, 10))}
 				>
 					{this.props.data.map(choice => {
-						const [value, label] = choice
-						return <Radio value={value} labelElement={label} key={value} />
+						const { key, label } = choice
+						return <Radio value={key} labelElement={label} key={key} />
 					})}
 				</RadioGroup>
 			</FormGroup>

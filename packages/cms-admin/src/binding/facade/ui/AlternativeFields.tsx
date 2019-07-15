@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Props } from '../../coreComponents'
 import { Environment } from '../../dao'
 import { RadioFieldPublicProps, SelectFieldInner } from '../fields'
-import { ChoiceField } from '../fields/ChoiceField'
+import { ChoiceArity, ChoiceField, SingleChoiceFieldMetadata } from '../fields/ChoiceField'
 
 export interface AlternativeFieldsProps extends RadioFieldPublicProps {
 	alternatives: AlternativeFields.ControllerFieldMetadata
@@ -15,8 +15,8 @@ class AlternativeFields extends React.PureComponent<AlternativeFieldsProps> {
 	public render(): React.ReactNode {
 		return (
 			<div className="alternativeFields">
-				<ChoiceField name={this.props.name} options={Object.values(this.props.alternatives)}>
-					{({ data, currentValue, onChange, isMutating, environment, errors }) => {
+				<ChoiceField name={this.props.name} options={Object.values(this.props.alternatives)} arity={ChoiceArity.Single}>
+					{({ data, currentValue, onChange, isMutating, environment, errors }: SingleChoiceFieldMetadata) => {
 						const alternatives: React.ReactNodeArray = []
 						for (let i = 0, length = this.props.alternatives.length; i < length; i++) {
 							alternatives.push(
@@ -62,7 +62,8 @@ class AlternativeFields extends React.PureComponent<AlternativeFieldsProps> {
 				{ChoiceField.generateSyntheticChildren(
 					{
 						name: props.name,
-						options: Object.values(props.alternatives)
+						options: Object.values(props.alternatives),
+						arity: ChoiceArity.Single
 					},
 					environment
 				)}

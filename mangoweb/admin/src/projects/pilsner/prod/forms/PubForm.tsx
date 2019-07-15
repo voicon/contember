@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Component, SelectField, TextAreaField, TextField } from 'cms-admin'
+import { CheckboxList, Component, SelectField, TextAreaField, TextField } from 'cms-admin'
 import { AttributesForm, GenericContentForm, SeoForm, LinkForm } from './'
 import { ImageField } from '../components'
 
@@ -21,6 +21,7 @@ export const PubForm = Component<PubFormProps>(
 			<TextAreaField name="perex" label="Perex" />
 			<AttributesForm field={'attributeSet'} />
 			<GenericContentForm />
+			<CheckboxList name="tags" options="Tag[site.slug = 'en'].name" label="Tags" />
 
 			<LinkForm />
 			<SeoForm />

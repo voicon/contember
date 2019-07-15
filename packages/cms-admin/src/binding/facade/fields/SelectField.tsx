@@ -1,9 +1,10 @@
+import { arrayDifference } from 'cms-common'
 import * as React from 'react'
 import { FormGroup, FormGroupProps, Select } from '../../../components'
 import { FieldName } from '../../bindingTypes'
 import { Environment, ErrorAccessor } from '../../dao'
 import { Component } from '../aux'
-import { ChoiceField, ChoiceFieldProps } from './ChoiceField'
+import { ChoiceArity, ChoiceField, ChoiceFieldProps, SingleChoiceFieldMetadata } from './ChoiceField'
 
 export interface SelectFieldPublicProps {
 	name: FieldName
@@ -20,8 +21,8 @@ export type SelectFieldProps = SelectFieldPublicProps & SelectFieldInternalProps
 
 export const SelectField = Component<SelectFieldProps>(props => {
 	return (
-		<ChoiceField name={props.name} options={props.options}>
-			{({ data, currentValue, onChange, environment, isMutating, errors }) => {
+		<ChoiceField name={props.name} options={props.options} arity={ChoiceArity.Single}>
+			{({ data, currentValue, onChange, environment, isMutating, errors }: SingleChoiceFieldMetadata) => {
 				return (
 					<SelectFieldInner
 						name={props.name}
@@ -41,10 +42,7 @@ export const SelectField = Component<SelectFieldProps>(props => {
 	)
 }, 'SelectField')
 
-export interface SelectFieldInnerProps extends SelectFieldPublicProps {
-	data: ChoiceField.Data<ChoiceField.DynamicValue | ChoiceField.StaticValue>
-	currentValue: ChoiceField.ValueRepresentation | null
-	onChange: (newValue: ChoiceField.ValueRepresentation) => void
+export interface SelectFieldInnerProps extends SelectFieldPublicProps, Omit<SingleChoiceFieldMetadata, 'fieldName'> {
 	environment: Environment
 	errors: ErrorAccessor[]
 	isMutating: boolean
@@ -59,10 +57,10 @@ export class SelectFieldInner extends React.PureComponent<SelectFieldInnerProps>
 				label: this.props.firstOptionCaption || (typeof this.props.label === 'string' ? this.props.label : '')
 			}
 		].concat(
-			this.props.data.map(([value, label]) => {
+			this.props.data.map(({ key, label }) => {
 				return {
 					disabled: false,
-					value,
+					value: key,
 					label: label as string
 				}
 			})
@@ -71,8 +69,10 @@ export class SelectFieldInner extends React.PureComponent<SelectFieldInnerProps>
 		return (
 			<FormGroup label={this.props.label} errors={this.props.errors}>
 				<Select
-					value={this.props.currentValue === null ? -1 : this.props.currentValue}
-					onChange={event => this.props.onChange(parseInt(event.currentTarget.value, 10))}
+					value={this.props.currentValue.toString()}
+					onChange={event => {
+						this.props.onChange(parseInt(event.currentTarget.value, 10))
+					}}
 					options={options}
 					disabled={this.props.isMutating}
 				/>

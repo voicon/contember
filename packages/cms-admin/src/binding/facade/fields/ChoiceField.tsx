@@ -7,8 +7,8 @@ import {
 	EntityListDataProvider,
 	Field,
 	FieldMetadata,
-	Props,
 	SyntheticChildrenProvider,
+	ToMany,
 	ToOne
 } from '../../coreComponents'
 import {
@@ -27,21 +27,41 @@ import {
 import { VariableInputTransformer } from '../../model/VariableInputTransformer'
 import { Parser, QueryLanguage } from '../../queryLanguage'
 
+export enum ChoiceArity {
+	Single = 'single',
+	Multiple = 'multiple'
+}
+
 export interface ChoiceFieldPublicProps {
 	name: FieldName
 }
 
-export interface ChoiceFieldMetadata extends Pick<FieldMetadata, Exclude<keyof FieldMetadata, 'data'>> {
+export interface BaseChoiceMetadata extends Omit<FieldMetadata, 'data'> {
 	data: ChoiceField.Data<ChoiceField.DynamicValue | ChoiceField.StaticValue>
-	currentValue: ChoiceField.ValueRepresentation | null
+}
+
+export interface SingleChoiceFieldMetadata extends BaseChoiceMetadata {
+	currentValue: ChoiceField.ValueRepresentation
 	onChange: (newValue: ChoiceField.ValueRepresentation) => void
 }
 
-export interface ChoiceFieldBaseProps extends ChoiceFieldPublicProps {
-	children: (metadata: ChoiceFieldMetadata) => React.ReactNode
+export interface MultipleChoiceFieldMetadata extends BaseChoiceMetadata {
+	currentValues: Array<ChoiceField.ValueRepresentation>
+	onChange: (optionKey: ChoiceField.ValueRepresentation, isChosen: boolean) => void
 }
 
-export interface ChoiceFieldProps extends ChoiceFieldBaseProps {
+export type ChoiceFieldBaseProps = ChoiceFieldPublicProps &
+	(
+		| {
+				arity: ChoiceArity.Single
+				children: (metadata: SingleChoiceFieldMetadata) => React.ReactNode
+		  }
+		| {
+				arity: ChoiceArity.Multiple
+				children: (metadata: MultipleChoiceFieldMetadata) => React.ReactNode
+		  })
+
+export type ChoiceFieldProps = ChoiceFieldBaseProps & {
 	options: ChoiceField.StaticProps['options'] | ChoiceField.DynamicProps['options']
 }
 
@@ -52,16 +72,18 @@ class ChoiceField extends React.PureComponent<ChoiceFieldProps> {
 		return (
 			<Field.DataRetriever name={this.props.name}>
 				{rawMetadata => {
-					const commonProps: ChoiceField.InnerBaseProps = {
+					const commonProps: any = {
 						rawMetadata,
-						children: this.props.children,
-						name: this.props.name
+						name: this.props.name,
+						options: this.props.options,
+						arity: this.props.arity,
+						children: this.props.children
 					}
 
 					if (Array.isArray(this.props.options)) {
-						return <ChoiceField.Static {...commonProps} options={this.props.options} />
+						return <ChoiceField.Static {...commonProps} />
 					}
-					return <ChoiceField.Dynamic {...commonProps} options={this.props.options} />
+					return <ChoiceField.Dynamic {...commonProps} />
 				}}
 			</Field.DataRetriever>
 		)
@@ -87,16 +109,19 @@ class ChoiceField extends React.PureComponent<ChoiceFieldProps> {
 					props.name,
 					fieldName => (
 						<>
-							<EntityListDataProvider
-								name={metadata.entityName}
-								filter={metadata.filter}
-								associatedField={metadata.fieldName}
-							>
+							<EntityListDataProvider name={metadata.entityName} filter={metadata.filter} associatedField={props.name}>
 								{metadata.children}
 							</EntityListDataProvider>
-							<ToOne field={fieldName}>
-								<Field name={PRIMARY_KEY_NAME} />
-							</ToOne>
+							{props.arity === ChoiceArity.Single && (
+								<ToOne field={fieldName}>
+									<Field name={PRIMARY_KEY_NAME} />
+								</ToOne>
+							)}
+							{props.arity === ChoiceArity.Multiple && (
+								<ToMany field={fieldName}>
+									<Field name={PRIMARY_KEY_NAME} />
+								</ToMany>
+							)}
 						</>
 					),
 					environment
@@ -120,18 +145,28 @@ namespace ChoiceField {
 	// This is just the JS array index as specified in options or as returned from the server.
 	export type ValueRepresentation = number
 
-	export type Data<ActualValue extends Environment.Value = string> = Array<[ValueRepresentation, Label, ActualValue]>
+	export interface SingleDatum<ActualValue extends Environment.Value = string> {
+		key: ValueRepresentation
+		label: Label
+		actualValue: ActualValue
+	}
 
-	export interface InnerBaseProps extends ChoiceFieldBaseProps {
+	export type Data<ActualValue extends Environment.Value = string> = SingleDatum<ActualValue>[]
+
+	export type InnerBaseProps = ChoiceFieldBaseProps & {
 		rawMetadata: Field.RawMetadata
 	}
 
-	export interface StaticProps extends InnerBaseProps {
+	export type StaticProps = InnerBaseProps & {
 		options: Array<[ChoiceField.LiteralValue, Label]> | Array<[ChoiceField.ScalarValue, Label]>
 	}
 
 	export class Static extends React.PureComponent<StaticProps> {
 		public render() {
+			if (this.props.arity === ChoiceArity.Multiple) {
+				throw new DataBindingError('Static multiple-choice choice fields are not supported yet.')
+			}
+
 			const rawOptions = this.props.options
 			const children = this.props.children
 
@@ -147,6 +182,10 @@ namespace ChoiceField {
 			return (
 				<Field name={this.props.rawMetadata.fieldName}>
 					{({ data, ...otherMetadata }): React.ReactNode => {
+						if (this.props.arity === ChoiceArity.Multiple) {
+							throw new DataBindingError('Static multiple-choice choice fields are not supported yet.')
+						}
+
 						const currentValue: ChoiceField.ValueRepresentation = options.findIndex(([value]) => {
 							return (
 								data.hasValue(value) ||
@@ -157,10 +196,12 @@ namespace ChoiceField {
 						}, null)
 
 						return children({
-							data: options.map(
-								(item, i): [ChoiceField.ValueRepresentation, Label, ChoiceField.StaticValue] => [i, item[1], item[0]]
-							),
-							currentValue: currentValue === -1 ? null : currentValue,
+							data: options.map((item, i) => ({
+								key: i,
+								label: item[1],
+								actualValue: item[0]
+							})),
+							currentValue,
 							onChange: (newValue: ChoiceField.ValueRepresentation) => {
 								data.onChange && data.onChange(options[newValue][0])
 							},
@@ -207,7 +248,7 @@ namespace ChoiceField {
 		}
 	}
 
-	export interface DynamicProps extends InnerBaseProps {
+	export type DynamicProps = InnerBaseProps & {
 		options: FieldName
 	}
 
@@ -225,17 +266,37 @@ namespace ChoiceField {
 				this.props.rawMetadata.environment
 			)
 
-			const fieldAccessor = data.data.getTreeRoot(fieldName)
+			const subTreeRootAccessor = data.data.getTreeRoot(this.props.rawMetadata.fieldName)
 			const currentValueEntity = data.data.getField(this.props.rawMetadata.fieldName)
 
+			if (!(subTreeRootAccessor instanceof AccessorTreeRoot)) {
+				throw new DataBindingError('Corrupted data: dynamic choice field options have not been retrieved.')
+			}
 			if (
-				!(fieldAccessor instanceof AccessorTreeRoot) ||
-				!(currentValueEntity instanceof EntityAccessor || currentValueEntity instanceof EntityForRemovalAccessor)
+				currentValueEntity === undefined ||
+				currentValueEntity instanceof FieldAccessor ||
+				currentValueEntity instanceof AccessorTreeRoot
 			) {
-				throw new DataBindingError('Corrupted data')
+				throw new DataBindingError(
+					'Corrupted data: dynamic choice field must be a reference, not a field or a sub-tree.'
+				)
 			}
 
-			const subTreeData = fieldAccessor.root
+			if (
+				this.props.arity === ChoiceArity.Single &&
+				!(currentValueEntity instanceof EntityAccessor || currentValueEntity instanceof EntityForRemovalAccessor)
+			) {
+				throw new DataBindingError(
+					'Corrupted data: dynamic single-choice field must be a reference to a single entity.'
+				)
+			}
+			if (this.props.arity === ChoiceArity.Multiple && !(currentValueEntity instanceof EntityCollectionAccessor)) {
+				throw new DataBindingError(
+					'Corrupted data: dynamic multiple-choice field must be a reference to a collection of entities.'
+				)
+			}
+
+			const subTreeData = subTreeRootAccessor.root
 
 			if (!(subTreeData instanceof EntityCollectionAccessor)) {
 				throw new DataBindingError('Corrupted data')
@@ -266,44 +327,94 @@ namespace ChoiceField {
 				optionEntities.push(entity)
 			}
 
-			let currentValue: ChoiceField.ValueRepresentation
+			const entities =
+				currentValueEntity instanceof EntityCollectionAccessor ? currentValueEntity.entities : [currentValueEntity]
 
-			if (currentValueEntity instanceof EntityAccessor) {
-				const currentKey = currentValueEntity.getKey()
-				currentValue = filteredData.findIndex(entity => {
-					const key = entity.getPersistedKey()
-					return !!key && key === currentKey
-				})
-			} else if (currentValueEntity instanceof EntityForRemovalAccessor) {
-				currentValue = -1
-			} else {
-				return assertNever(currentValueEntity)
+			const currentValues: ChoiceField.ValueRepresentation[] = []
+
+			for (const entity of entities) {
+				if (entity instanceof EntityAccessor) {
+					const currentKey = entity.getKey()
+					const index = filteredData.findIndex(entity => {
+						const key = entity.getPersistedKey()
+						return !!key && key === currentKey
+					})
+					if (index > -1) {
+						currentValues.push(index)
+					}
+				}
 			}
+
 			const normalizedData = optionEntities.map(
-				(item, i): [ChoiceField.ValueRepresentation, Label, ChoiceField.DynamicValue] => {
+				(item, i): ChoiceField.SingleDatum => {
 					const field = item.data.getField(fieldName)
 					const label: Label = field instanceof FieldAccessor ? field.currentValue : undefined
 
-					return [i, label, item.primaryKey]
+					return {
+						key: i,
+						label,
+
+						// We can get away with the "!" since this collection was created from filteredData above.
+						// If this is actually an unpersisted entity, we've got a huge problem.
+						actualValue: item.getPersistedKey()!
+					}
 				}
 			)
 
-			return this.props.children({
+			const baseMetadata: BaseChoiceMetadata = {
 				...this.props.rawMetadata,
 				data: normalizedData,
-				currentValue: currentValue === -1 ? null : currentValue,
-				onChange: (newValue: ChoiceField.ValueRepresentation) => {
-					if (newValue === -1) {
-						if (currentValueEntity instanceof EntityAccessor && currentValueEntity.remove) {
-							currentValueEntity.remove(EntityAccessor.RemovalType.Disconnect)
-						}
-					} else {
-						currentValueEntity.replaceWith(filteredData[newValue])
-					}
-				},
 				errors: currentValueEntity.errors,
 				fieldName: fieldName
-			})
+			}
+
+			if (this.props.arity === ChoiceArity.Multiple) {
+				return this.props.children({
+					...baseMetadata,
+					currentValues: currentValues,
+					onChange: (optionKey: ChoiceField.ValueRepresentation, isChosen: boolean) => {
+						if (currentValueEntity instanceof EntityCollectionAccessor && currentValueEntity.addNew) {
+							if (isChosen) {
+								currentValueEntity.addNew(optionEntities[optionKey])
+							} else {
+								const targetEntityId = optionEntities[optionKey].getPersistedKey()
+
+								for (const searchedEntity of currentValueEntity.entities) {
+									if (!(searchedEntity instanceof EntityAccessor)) {
+										continue
+									}
+									if (searchedEntity.getPersistedKey() === targetEntityId) {
+										searchedEntity.remove && searchedEntity.remove(EntityAccessor.RemovalType.Disconnect)
+										break
+									}
+								}
+							}
+						}
+					}
+				})
+			} else if (this.props.arity === ChoiceArity.Single) {
+				// No idea why this cast is necessary. TS is just being silly here…
+				return ((this.props.children as any) as (metadata: SingleChoiceFieldMetadata) => React.ReactNode)({
+					...baseMetadata,
+					currentValue: currentValues.length ? currentValues[0] : -1,
+					onChange: (newValue: ChoiceField.ValueRepresentation) => {
+						const entity = entities[0]
+						if (entity === undefined) {
+							return
+						}
+
+						if (newValue === -1) {
+							if (entity instanceof EntityAccessor && entity.remove) {
+								entity.remove(EntityAccessor.RemovalType.Disconnect)
+							}
+						} else {
+							entity.replaceWith(filteredData[newValue])
+						}
+					}
+				})
+			} else {
+				return assertNever(this.props)
+			}
 		}
 	}
 }

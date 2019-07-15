@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Component, SelectField, TextAreaField, TextField } from 'cms-admin'
+import { CheckboxList, Component, MultipleSelectField, SelectField, TextAreaField, TextField } from 'cms-admin'
 import { ImageField } from '../components'
 import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
 
@@ -21,6 +21,7 @@ export const TapsterForm = Component<TapsterFormProps>(
 			<TextAreaField name="perex" label="Perex" />
 			<AttributesForm field={'attributeSet'} />
 			<GenericContentForm />
+			<CheckboxList name="tags" options="Tag[site.slug = 'en'].name" label="Tags" />
 
 			<LinkForm />
 			<SeoForm />
