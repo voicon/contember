@@ -1,3 +1,4 @@
+import { CheckboxList, Component, SelectField, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
 import {
 	CheckboxList,
@@ -27,10 +28,7 @@ const TapsterFormInner = (props: TapsterFormProps, env: Environment) => (
 		<TextAreaField name="perex" label="Perex" />
 		<AttributesForm field={'attributeSet'} />
 		<GenericContentForm />
-		<CheckboxList name="tags" options={`Tag[site.slug = '${getSite(env)}'].name`} label="Tags" />
-
-		<LinkForm />
-		<SeoForm />
+		<CheckboxList name="tags" options="Tag[site.slug = $site].name" label="Tags" />
 	</>
 )
 
