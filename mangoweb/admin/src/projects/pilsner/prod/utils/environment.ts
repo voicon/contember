@@ -1,7 +1,7 @@
 import { Environment } from 'cms-admin'
 
 export const getSite = (env: Environment): string => {
-	const dimensions = env.getDimensions()
+	const dimensions = env.getAllDimensions()
 	if (!dimensions.site) {
 		throw new Error('Site dimension not found')
 	}
