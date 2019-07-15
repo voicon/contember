@@ -5,7 +5,7 @@ import { SiteField } from '../components'
 
 export const GenericPageCreatePage = (
 	<CreatePage
-		entity="Post"
+		entity="GenericPage"
 		pageName={'pageCreate'}
 		rendererProps={{
 			title: 'Create new page'

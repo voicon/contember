@@ -15,6 +15,8 @@ import ValidationContext from './ValidationContext'
 import { evaluateValidation } from './ValidationEvaluation'
 import { rules } from './ValidationDefinition'
 import { ValidationPath } from './ValidationPath'
+import NotNullFieldsVisitor from './NotNullFieldsVisitor'
+import { filterObject } from '../../utils/object'
 
 class InputValidator {
 	constructor(
@@ -26,7 +28,7 @@ class InputValidator {
 	) {}
 
 	async hasValidationRulesOnUpdate(entity: Model.Entity, data: Input.UpdateDataInput): Promise<boolean> {
-		const fieldsWithRules = this.getFieldsWithRules(entity, Object.keys(data))
+		const fieldsWithRules = this.getFieldsWithRules(entity, Object.keys(data), data)
 		if (fieldsWithRules.length > 0) {
 			return true
 		}
@@ -76,7 +78,7 @@ class InputValidator {
 	}
 
 	async hasValidationRulesOnCreate(entity: Model.Entity, data: Input.CreateDataInput): Promise<boolean> {
-		const fieldsWithRules = this.getFieldsWithRules(entity)
+		const fieldsWithRules = this.getFieldsWithRules(entity, undefined, data)
 		if (fieldsWithRules.length > 0) {
 			return true
 		}
@@ -132,13 +134,14 @@ class InputValidator {
 	async validateCreate(
 		entity: Model.Entity,
 		data: Input.CreateDataInput,
-		path: ValidationPath = []
+		path: ValidationPath = [],
+		overRelation: Model.AnyRelation | null
 	): Promise<InputValidator.Result> {
 		if (!(await this.hasValidationRulesOnCreate(entity, data))) {
 			return []
 		}
-		const entityRules = this.validationSchema[entity.name] || {}
-		const fieldsWithRules = this.getFieldsWithRules(entity)
+		const { [overRelation ? overRelation.name : '']: dropRule, ...entityRules } = this.getEntityRules(entity.name, data)
+		const fieldsWithRules = Object.keys(entityRules).filter(field => entityRules[field].length > 0)
 
 		const dependencies = this.buildDependencies(fieldsWithRules, entityRules)
 
@@ -159,16 +162,16 @@ class InputValidator {
 		entity: Model.Entity,
 		where: Input.UniqueWhere,
 		data: Input.UpdateDataInput,
-		path: ValidationPath = []
+		path: ValidationPath
 	): Promise<InputValidator.Result> {
 		if (!(await this.hasValidationRulesOnUpdate(entity, data))) {
 			return []
 		}
-		const entityRules = this.validationSchema[entity.name] || {}
+		const entityRules = this.getEntityRules(entity.name, data)
 
 		const dependencies = this.buildDependencies(Object.keys(data), entityRules)
 
-		const fieldsWithRules = this.getFieldsWithRules(entity, Object.keys(data))
+		const fieldsWithRules = this.getFieldsWithRules(entity, Object.keys(data), data)
 
 		let fieldsResult: InputValidator.Result = []
 		const node = (await this.validationContextFactory.createForUpdate(entity, { where }, data, dependencies)) || {}
@@ -184,9 +187,15 @@ class InputValidator {
 		return [...fieldsResult, ...relationResult]
 	}
 
-	private getFieldsWithRules(entity: Model.Entity, fields?: string[]) {
-		const entityRules = this.validationSchema[entity.name] || {}
-		return (fields || Object.keys(entityRules)).filter(field => entityRules[field] && entityRules[field].length > 0)
+	private getFieldsWithRules(
+		entity: Model.Entity,
+		fields: string[] | undefined,
+		data: Input.UpdateDataInput | Input.CreateDataInput
+	): string[] {
+		const entityRules = this.getEntityRules(entity.name, data)
+		const fields2 = fields || Object.keys(this.model.entities[entity.name].fields)
+
+		return fields2.filter(field => entityRules[field] && entityRules[field].length > 0)
 	}
 
 	private validateFields(
@@ -221,8 +230,29 @@ class InputValidator {
 			.map(it => entityRules[it] || [])
 			.reduce((acc, val) => [...acc, ...val], [])
 			.map(it => this.dependencyCollector.collect(it.validator))
-			.concat(fields.reduce((acc, field) => ({ ...acc, [field]: {} }), {}))
+			.concat(fields.reduce((acc, field) => (entityRules[field] ? { ...acc, [field]: {} } : acc), {}))
 			.reduce((acc, dependency) => DependencyMerger.merge(acc, dependency), {})
+	}
+
+	private getEntityRules(
+		entityName: string,
+		data: Input.UpdateDataInput | Input.CreateDataInput
+	): Validation.EntityRules {
+		const definedRules = this.validationSchema[entityName] || {}
+		const fieldsNotNullFlag = acceptEveryFieldVisitor(this.model, entityName, new NotNullFieldsVisitor())
+		const notNullFields = Object.keys(filterObject(fieldsNotNullFlag, (field, val) => val)).filter(
+			field => data[field] === undefined || data[field] === null
+		)
+		return notNullFields.reduce(
+			(entityRules, field) => ({
+				...entityRules,
+				[field]: [
+					...(entityRules[field] || []),
+					{ validator: rules.defined(), message: { text: 'Field is required' } },
+				],
+			}),
+			definedRules
+		)
 	}
 }
 

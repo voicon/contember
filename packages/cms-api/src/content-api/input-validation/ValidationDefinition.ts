@@ -109,6 +109,7 @@ const notOperation = (validator: Validation.Validator): Validation.Validator => 
 })
 
 const emptyOperation = (): Validation.Validator => ({ operation: 'empty', args: [] })
+const definedOperation = (): Validation.Validator => ({ operation: 'defined', args: [] })
 
 export const InContextOperation = 'inContext' as const
 const onOperation = (path: ValidationContext.ContextPath, validator: Validation.Validator): Validation.Validator => ({
@@ -149,6 +150,7 @@ export const rules = {
 	filter: filterOperation,
 	any: anyOperation,
 	every: everyOperation,
+	defined: definedOperation,
 }
 
 export function when(...conditions: Validation.Validator[]) {
@@ -199,8 +201,14 @@ export function parseDefinition(definitions: Record<string, EnumDefinition | { n
 							: fieldRules
 						return tuple(field, finalRules)
 					})
-					.reduce<Validation.EntityRules>((ruleSet, [field, rules]) => ({ ...ruleSet, [field]: rules }), {})
+					.reduce<Validation.EntityRules>(
+						(ruleSet, [field, rules]) => (rules.length > 0 ? { ...ruleSet, [field]: rules } : ruleSet),
+						{}
+					)
 			)
 		})
-		.reduce<Validation.Schema>((acc, [name, defs]) => ({ ...acc, [name]: defs }), {})
+		.reduce<Validation.Schema>(
+			(acc, [name, defs]) => (Object.keys(defs).length > 0 ? { ...acc, [name]: defs } : acc),
+			{}
+		)
 }

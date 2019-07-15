@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { GenericPage } from 'cms-admin'
+import { GenericPage, readEventStream, readLines } from 'cms-admin'
 
 export const DashboardPage = (
 	<GenericPage pageName="dashboard">

@@ -1,5 +1,6 @@
 import { Menu, MenuList, MenuPageLink } from 'cms-admin'
 import * as React from 'react'
+import { DeployButton } from './components'
 
 export class SideMenu extends React.Component {
 	render() {
@@ -23,6 +24,9 @@ export class SideMenu extends React.Component {
 				<MenuList title="System">
 					<MenuPageLink change={() => ({ name: 'translations' })}>Translations</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'sites' })}>Sites</MenuPageLink>
+				</MenuList>
+				<MenuList title="Deployment">
+					<DeployButton />
 				</MenuList>
 			</Menu>
 		)
