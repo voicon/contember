@@ -1,6 +1,7 @@
 export * from './Attribute'
 export * from './Blog'
 export * from './Content'
+export * from './Deployment'
 export * from './Footer'
 export * from './Links'
 export * from './Localization'
