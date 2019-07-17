@@ -10,6 +10,6 @@ export const PubEditPage = (
 			title: 'Edit pub'
 		}}
 	>
-		<PubForm withLocation={true} />
+		<PubForm />
 	</EditPage>
 )

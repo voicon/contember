@@ -12,9 +12,7 @@ import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
 import { ImageField } from '../components'
 import { getSite } from '../utils/environment'
 
-interface PubFormProps {
-	withLocation: boolean
-}
+interface PubFormProps {}
 
 const PubFormInner = (props: PubFormProps, env: Environment) => (
 	<>
@@ -25,7 +23,7 @@ const PubFormInner = (props: PubFormProps, env: Environment) => (
 		<TextField name="name" label="Name" />
 		<TextField name="subtitle" label="Subtitle" />
 		<TextField name="locationText" label="Location" />
-		{props.withLocation && <SelectField name={'location'} label={'Location'} options={'Location.name'} />}
+		<SelectField name={'location'} label={'Location'} options={'Location.name'} />
 		<TextAreaField name="perex" label="Perex" />
 		<AttributesForm field={'attributeSet'} />
 		<GenericContentForm />

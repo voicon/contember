@@ -12,9 +12,7 @@ import { ImageField } from '../components'
 import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
 import { getSite } from '../utils/environment'
 
-interface TapsterFormProps {
-	withLocation: boolean
-}
+interface TapsterFormProps {}
 
 const TapsterFormInner = (props: TapsterFormProps, env: Environment) => (
 	<>
@@ -25,7 +23,7 @@ const TapsterFormInner = (props: TapsterFormProps, env: Environment) => (
 		<TextField name="name" label="Name" />
 		<TextField name="subtitle" label="Subtitle" />
 		<TextField name="locationText" label="Location" />
-		{props.withLocation && <SelectField name={'location'} label={'Location'} options={'Location.name'} />}
+		<SelectField name={'location'} label={'Location'} options={'Location.name'} />
 		<TextAreaField name="perex" label="Perex" />
 		<AttributesForm field={'attributeSet'} />
 		<GenericContentForm />
