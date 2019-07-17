@@ -1,5 +1,4 @@
-import { FieldText, GenericPage, TextField } from 'cms-admin'
-import { Input } from 'cms-common'
+import { FieldText, GenericPage, Literal, TextField } from 'cms-admin'
 import * as React from 'react'
 import { Grid, ImageField, StandaloneEdit } from '../components'
 import { LinkForm, SeoForm } from '../forms'
@@ -18,7 +17,7 @@ export const PubPage = (
 		<h2>Pubs</h2>
 		<Grid
 			entityName="Pub"
-			orderBy={[{ name: Input.OrderDirection.asc }]}
+			orderBy={[{ name: new Literal('asc') }]}
 			createButton={{
 				pageName: 'pubCreate',
 				label: 'Add pub'

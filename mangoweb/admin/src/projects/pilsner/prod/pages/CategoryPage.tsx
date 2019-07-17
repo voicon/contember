@@ -1,6 +1,5 @@
-import { Input } from 'cms-common'
+import { FieldText, GenericPage, Literal } from 'cms-admin'
 import * as React from 'react'
-import { FieldText, GenericPage } from 'cms-admin'
 import { Grid } from '../components'
 
 export const CategoryPage = (
@@ -8,7 +7,7 @@ export const CategoryPage = (
 		<h1>Categories</h1>
 		<Grid
 			entityName="Category"
-			orderBy={[{ name: Input.OrderDirection.asc }]}
+			orderBy={[{ name: new Literal('asc') }]}
 			createButton={{
 				pageName: 'categoryCreate',
 				label: 'Create category'

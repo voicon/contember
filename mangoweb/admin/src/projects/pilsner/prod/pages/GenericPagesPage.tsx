@@ -1,14 +1,13 @@
-import { Input } from 'cms-common'
-import { Grid } from '../components'
+import { FieldText, GenericPage, Literal } from 'cms-admin'
 import * as React from 'react'
-import { FieldText, GenericPage } from 'cms-admin'
+import { Grid } from '../components'
 
 export const GenericPagesPage = (
 	<GenericPage pageName={'pages'}>
 		<h1>Pages</h1>
 		<Grid
 			entityName="GenericPage"
-			orderBy={[{ title: Input.OrderDirection.asc }]}
+			orderBy={[{ title: new Literal('asc') }]}
 			createButton={{
 				pageName: 'pageCreate',
 				label: 'Create page'

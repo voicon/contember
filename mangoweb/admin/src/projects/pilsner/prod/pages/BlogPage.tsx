@@ -1,6 +1,5 @@
-import { Input } from 'cms-common'
+import { FieldText, GenericPage, Literal } from 'cms-admin'
 import * as React from 'react'
-import { FieldText, GenericPage } from 'cms-admin'
 import { Grid, StandaloneEdit } from '../components'
 import { LinkForm, SeoForm } from '../forms'
 import { getSite } from '../utils/environment'
@@ -16,7 +15,7 @@ export const BlogPage = (
 		</div>
 		<Grid
 			entityName="Post"
-			orderBy={[{ title: Input.OrderDirection.asc }]}
+			orderBy={[{ title: new Literal('asc') }]}
 			createButton={{
 				pageName: 'blogCreate',
 				label: 'Create post'
