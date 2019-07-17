@@ -1,3 +1,4 @@
+import { Input } from 'cms-common'
 import * as React from 'react'
 import { FieldText, GenericPage, TextField } from 'cms-admin'
 import { Grid, ImageField, StandaloneEdit } from '../components'
@@ -16,7 +17,8 @@ export const TapsterPage = (
 		</div>
 		<h2>Tapsters</h2>
 		<Grid
-			entityName={'Tapster'}
+			entityName="Tapster"
+			orderBy={[{ name: Input.OrderDirection.asc }]}
 			createButton={{
 				pageName: 'tapsterCreate',
 				label: 'Add tapster'

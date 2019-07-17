@@ -102,7 +102,7 @@ export default () => (
 			{() => (
 				<Layout>
 					<h1>All posts</h1>
-					<EntityListDataProvider name="Post">
+					<EntityListDataProvider entityName="Post">
 						<ToMany field="locales[locale = cs]">
 							<TextField name="title" label="Title" />
 						</ToMany>
