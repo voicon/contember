@@ -1,8 +1,10 @@
 import * as React from 'react'
 import {
+	Component,
 	DataContext,
 	EntityAccessor,
 	Field,
+	FieldAccessor,
 	Literal,
 	readEventStream,
 	readLines,
@@ -29,11 +31,36 @@ class DeployRenderer extends React.PureComponent<RendererProps> {
 	}
 }
 
+const DeployButtonInner = Component<{
+	children: (apiConfig: { apiKey: string; apiEndpoint: string }) => React.ReactNode
+}>(
+	props => (
+		<DataContext.Consumer>
+			{data => {
+				if (!(data instanceof EntityAccessor)) {
+					throw new Error()
+				}
+				const apiKey = (data.data.getField('apiKey') as FieldAccessor).currentValue as string
+				const apiEndpoint = (data.data.getField('apiEndpoint') as FieldAccessor).currentValue as string
+
+				return props.children({ apiKey, apiEndpoint })
+			}}
+		</DataContext.Consumer>
+	),
+	'DeployButtonInner',
+	() => (
+		<>
+			<Field name={'apiKey'} />
+			<Field name={'apiEndpoint'} />
+		</>
+	)
+)
+
 export class DeployButton extends React.Component<Props, State> {
 	state: State = {}
 
-	async handleDeploy(key: string) {
-		const response = await fetch('http://localhost:8000/api/v1/deploy', {
+	async handleDeploy(endpoint: string, key: string) {
+		const response = await fetch(endpoint, {
 			method: 'POST',
 			headers: {
 				'X-Api-Key': key
@@ -46,31 +73,49 @@ export class DeployButton extends React.Component<Props, State> {
 		}
 	}
 
-	render() {
+	renderButton() {
+		if (
+			this.state.deploymentStatus &&
+			this.state.deploymentStatus.state !== 'done' &&
+			this.state.deploymentStatus.state !== 'failed'
+		) {
+			return null
+		}
+		return (
+			<SingleEntityDataProvider
+				where={{ unique: new Literal('one') }}
+				name={'DeploymentConfig'}
+				renderer={DeployRenderer}
+				rendererProps={{}}
+			>
+				<DeployButtonInner>
+					{({ apiKey, apiEndpoint }) => (
+						<button onClick={() => this.handleDeploy(apiEndpoint, apiKey)} className={'button'}>
+							Deploy
+						</button>
+					)}
+				</DeployButtonInner>
+			</SingleEntityDataProvider>
+		)
+	}
+
+	renderProgress() {
 		if (!this.state.deploymentStatus) {
-			return (
-				<SingleEntityDataProvider
-					where={{ unique: new Literal('one') }}
-					name={'DeploymentConfig'}
-					renderer={DeployRenderer}
-					rendererProps={{}}
-				>
-					<Field<string> name={'apiKey'}>
-						{data =>
-							data.data.currentValue && (
-								<button onClick={() => this.handleDeploy(data.data.currentValue!)} className={'button'}>
-									Deploy
-								</button>
-							)
-						}
-					</Field>
-				</SingleEntityDataProvider>
-			)
+			return null
 		}
 		return (
 			<>
-				{Math.round(this.state.deploymentStatus.progress * 100)}% - {this.state.deploymentStatus.state} (
-				{this.state.deploymentStatus.failureReason})
+				{Math.round(this.state.deploymentStatus.progress * 100)}% - {this.state.deploymentStatus.state}
+				{this.state.deploymentStatus.failureReason && <>({this.state.deploymentStatus.failureReason})</>}
+			</>
+		)
+	}
+
+	render() {
+		return (
+			<>
+				{this.renderProgress()}
+				{this.renderButton()}
 			</>
 		)
 	}
