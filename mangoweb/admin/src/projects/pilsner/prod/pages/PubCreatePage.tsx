@@ -12,6 +12,6 @@ export const PubCreatePage = (
 		}}
 	>
 		<SiteField />
-		<PubForm withLocation={false} />
+		<PubForm />
 	</CreatePage>
 )

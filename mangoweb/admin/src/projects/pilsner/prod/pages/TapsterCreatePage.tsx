@@ -12,6 +12,6 @@ export const TapsterCreatePage = (
 		}}
 	>
 		<SiteField />
-		<TapsterForm withLocation={false} />
+		<TapsterForm />
 	</CreatePage>
 )

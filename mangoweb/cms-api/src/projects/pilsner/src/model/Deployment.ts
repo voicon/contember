@@ -6,6 +6,7 @@ export class DeploymentConfig {
 		.notNull()
 		.unique()
 	apiKey = d.stringColumn().notNull()
+	apiEndpoint = d.stringColumn().notNull()
 }
 
 export class Deployment {
