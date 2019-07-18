@@ -1,5 +1,3 @@
-import { CheckboxList, Component, SelectField, TextAreaField, TextField } from 'cms-admin'
-import * as React from 'react'
 import {
 	CheckboxList,
 	Component,
@@ -9,9 +7,9 @@ import {
 	TextAreaField,
 	TextField
 } from 'cms-admin'
+import * as React from 'react'
 import { ImageField } from '../components'
-import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
-import { getSite } from '../utils/environment'
+import { AttributesForm, GenericContentForm } from './'
 
 interface TapsterFormProps {}
 
