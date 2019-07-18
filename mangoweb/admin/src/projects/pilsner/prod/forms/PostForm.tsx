@@ -1,8 +1,7 @@
-import * as React from 'react'
 import { CheckboxList, Component, Environment, EnvironmentContext, TextAreaField, TextField } from 'cms-admin'
+import * as React from 'react'
 import { ImageField } from '../components'
 import { GenericContentForm, LinkForm, SeoForm } from './'
-import { getSite } from '../utils/environment'
 
 const PostFormInner = (env: Environment) => (
 	<>
@@ -14,8 +13,8 @@ const PostFormInner = (env: Environment) => (
 
 		<TextAreaField name="perex" label="Perex" />
 		<GenericContentForm />
-		<CheckboxList name="tags" options={`Tag[site.slug = '${getSite(env)}'].name`} label="Tags" />
-		<CheckboxList name="categories" options={`Category[site.slug = '${getSite(env)}'].name`} label="Categories" />
+		<CheckboxList name="tags" options={`Tag[site.slug = $site].name`} label="Tags" />
+		<CheckboxList name="categories" options={`Category[site.slug = $site].name`} label="Categories" />
 		<SeoForm />
 	</>
 )

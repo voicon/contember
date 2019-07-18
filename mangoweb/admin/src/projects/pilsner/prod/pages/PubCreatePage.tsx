@@ -1,7 +1,7 @@
-import * as React from 'react'
 import { CreatePage } from 'cms-admin'
-import { PubForm } from '../forms'
+import * as React from 'react'
 import { SiteField } from '../components'
+import { PubForm } from '../forms'
 
 export const PubCreatePage = (
 	<CreatePage

@@ -1,7 +1,7 @@
-import * as React from 'react'
 import { CreatePage } from 'cms-admin'
-import { TagForm } from '../forms'
+import * as React from 'react'
 import { SiteField } from '../components'
+import { TagForm } from '../forms'
 
 export const TagCreatePage = (
 	<CreatePage

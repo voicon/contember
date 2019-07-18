@@ -1,4 +1,3 @@
-import * as React from 'react'
 import {
 	CollectionRenderer,
 	CommonRendererProps,
@@ -7,6 +6,7 @@ import {
 	DefaultRenderer,
 	EntityAccessor
 } from 'cms-admin'
+import * as React from 'react'
 
 export interface LocationTreeRendererProps extends CommonRendererProps {}
 

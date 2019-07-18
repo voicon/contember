@@ -1,7 +1,7 @@
-import * as React from 'react'
 import { CreatePage } from 'cms-admin'
-import { CategoryForm } from '../forms'
+import * as React from 'react'
 import { SiteField } from '../components'
+import { CategoryForm } from '../forms'
 
 export const CategoryCreatePage = (
 	<CreatePage

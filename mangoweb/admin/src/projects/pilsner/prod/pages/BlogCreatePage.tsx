@@ -1,7 +1,7 @@
-import * as React from 'react'
 import { CreatePage } from 'cms-admin'
-import { PostForm } from '../forms'
+import * as React from 'react'
 import { SiteField } from '../components'
+import { PostForm } from '../forms'
 
 export const BlogCreatePage = (
 	<CreatePage

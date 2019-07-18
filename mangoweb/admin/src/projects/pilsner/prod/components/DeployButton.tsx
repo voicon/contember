@@ -1,4 +1,3 @@
-import * as React from 'react'
 import {
 	Component,
 	DataContext,
@@ -11,6 +10,7 @@ import {
 	RendererProps,
 	SingleEntityDataProvider
 } from 'cms-admin'
+import * as React from 'react'
 
 interface Props {}
 

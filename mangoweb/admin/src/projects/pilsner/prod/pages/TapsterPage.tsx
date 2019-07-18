@@ -2,12 +2,11 @@ import { FieldText, GenericPage, Literal, TextField } from 'cms-admin'
 import * as React from 'react'
 import { Grid, ImageField, StandaloneEdit } from '../components'
 import { LinkForm, SeoForm } from '../forms'
-import { getSite } from '../utils/environment'
 
 export const TapsterPage = (
 	<GenericPage pageName={'tapsters'}>
 		<div>
-			<StandaloneEdit entityName={'TapstersPage'} where={env => ({ site: { slug: getSite(env) } })}>
+			<StandaloneEdit entityName={'TapstersPage'} where="(site.slug = $site)">
 				<TextField name={'title'} large={true} />
 				<LinkForm />
 				<ImageField name={'headerImage'} label={'Header image'} />

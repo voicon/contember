@@ -1,6 +1,6 @@
-import * as React from 'react'
 import { Component, TextField } from 'cms-admin'
-import { SeoForm, LinkForm, GenericContentForm } from './'
+import * as React from 'react'
+import { GenericContentForm, LinkForm, SeoForm } from './'
 
 export const GenericPageForm = Component(
 	() => (

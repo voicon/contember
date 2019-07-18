@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { EditPage } from 'cms-admin'
+import * as React from 'react'
 import { PubForm } from '../forms'
 
 export const PubEditPage = (

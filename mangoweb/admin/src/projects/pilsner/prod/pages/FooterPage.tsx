@@ -1,10 +1,8 @@
-import * as React from 'react'
 import { AlternativeFields, EditPage, Literal, SelectField, SortableRepeater, TextField } from 'cms-admin'
-import { getSite } from '../utils/environment'
-import { ImageField } from '../components'
+import * as React from 'react'
 
 export const FooterPage = (
-	<EditPage pageName={'footer'} entity={'Footer'} where={({}, env) => ({ site: { slug: getSite(env) } })}>
+	<EditPage pageName={'footer'} entity={'Footer'} where="(site.slug = $site)">
 		<h1 style={{ color: '#777' }}>Footer</h1>
 		<div className={'inputBox'}>
 			<div className={'inputBox-header'}>

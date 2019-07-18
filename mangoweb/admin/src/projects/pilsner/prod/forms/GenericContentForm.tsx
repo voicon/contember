@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { AlternativeFields, Component, Literal, SortableRepeater, TextAreaField, TextField } from 'cms-admin'
+import * as React from 'react'
 import { ImageField } from '../components'
 
 export const GenericContentForm = Component(

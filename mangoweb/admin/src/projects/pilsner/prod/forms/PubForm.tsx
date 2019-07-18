@@ -1,4 +1,3 @@
-import * as React from 'react'
 import {
 	CheckboxList,
 	Component,
@@ -8,9 +7,9 @@ import {
 	TextAreaField,
 	TextField
 } from 'cms-admin'
-import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
+import * as React from 'react'
 import { ImageField } from '../components'
-import { getSite } from '../utils/environment'
+import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
 
 interface PubFormProps {}
 
@@ -27,7 +26,7 @@ const PubFormInner = (props: PubFormProps, env: Environment) => (
 		<TextAreaField name="perex" label="Perex" />
 		<AttributesForm field={'attributeSet'} />
 		<GenericContentForm />
-		<CheckboxList name="tags" options={`Tag[site.slug = '${getSite(env)}'].name`} label="Tags" />
+		<CheckboxList name="tags" options={`Tag[site.slug = $site].name`} label="Tags" />
 
 		<LinkForm />
 		<SeoForm />

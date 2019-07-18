@@ -1,8 +1,8 @@
-import * as React from 'react'
-import { DimensionsSwitcher, LayoutDefault } from 'cms-admin'
-import { SideMenu } from './SideMenu'
-import logo from './logo.svg'
 import { IconNames } from '@blueprintjs/icons'
+import { DimensionsSwitcher, LayoutDefault } from 'cms-admin'
+import * as React from 'react'
+import logo from './logo.svg'
+import { SideMenu } from './SideMenu'
 
 const layout = {
 	header: {
