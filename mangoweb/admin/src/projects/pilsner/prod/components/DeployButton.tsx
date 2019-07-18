@@ -4,7 +4,6 @@ import {
 	EntityAccessor,
 	Field,
 	FieldAccessor,
-	Literal,
 	readEventStream,
 	readLines,
 	RendererProps,
@@ -83,7 +82,7 @@ export class DeployButton extends React.Component<Props, State> {
 		}
 		return (
 			<SingleEntityDataProvider
-				where={{ unique: new Literal('one') }}
+				where="(unique = one)"
 				entityName={'DeploymentConfig'}
 				renderer={DeployRenderer}
 				rendererProps={{}}
