@@ -68,7 +68,7 @@ export default () => (
 		<Page<{ edit_post2: { id: string } }> name="edit_post2">
 			{({ id }) => (
 				<Layout>
-					<SingleEntityDataProvider name="Post" where={{ id }}>
+					<SingleEntityDataProvider entityName="Post" where={{ id }}>
 						<TextField name="publishedAt" label="Time" />
 						<SelectField name="author" options="Author.name" label="Author" />
 
@@ -102,7 +102,7 @@ export default () => (
 			{() => (
 				<Layout>
 					<h1>All posts</h1>
-					<EntityListDataProvider name="Post">
+					<EntityListDataProvider entityName="Post">
 						<ToMany field="locales[locale = cs]">
 							<TextField name="title" label="Title" />
 						</ToMany>

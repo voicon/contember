@@ -1,4 +1,4 @@
-import { Component, FieldName, FormGroup, FormGroupProps, ImageUploadField } from 'cms-admin'
+import { Component, FieldName, FormGroupProps, ImageUploadField } from 'cms-admin'
 import * as React from 'react'
 
 export interface ImageFieldProps {

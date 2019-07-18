@@ -1,13 +1,12 @@
+import { FieldText, GenericPage, Literal, TextField } from 'cms-admin'
 import * as React from 'react'
-import { FieldText, GenericPage, TextField } from 'cms-admin'
 import { Grid, ImageField, StandaloneEdit } from '../components'
-import { getSite } from '../utils/environment'
 import { LinkForm, SeoForm } from '../forms'
 
 export const PubPage = (
 	<GenericPage pageName={'pubs'}>
 		<div>
-			<StandaloneEdit entityName={'PubsPage'} where={env => ({ site: { slug: getSite(env) } })}>
+			<StandaloneEdit entityName={'PubsPage'} where="(site.slug = $site)">
 				<TextField name={'title'} large={true} />
 				<LinkForm />
 				<ImageField name={'headerImage'} label={'Header image'} />
@@ -16,7 +15,8 @@ export const PubPage = (
 		</div>
 		<h2>Pubs</h2>
 		<Grid
-			entityName={'Pub'}
+			entityName="Pub"
+			orderBy={[{ name: new Literal('asc') }]}
 			createButton={{
 				pageName: 'pubCreate',
 				label: 'Add pub'

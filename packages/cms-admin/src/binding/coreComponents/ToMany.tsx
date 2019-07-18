@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { FormErrors } from '../../components/ui/FormErrors'
 import { FieldName, Filter, RelativeEntityList } from '../bindingTypes'
 import { EntityAccessor, EntityCollectionAccessor, EntityFields, Environment, ReferenceMarker } from '../dao'
 import { VariableInputTransformer } from '../model/VariableInputTransformer'
@@ -64,12 +65,7 @@ namespace ToMany {
 			fields: EntityFields,
 			environment: Environment
 		): ReferenceMarker {
-			return new ReferenceMarker(
-				props.field,
-				ReferenceMarker.ExpectedCount.PossiblyMany,
-				fields,
-				VariableInputTransformer.transformFilter(props.filter, environment)
-			)
+			return new ReferenceMarker(props.field, ReferenceMarker.ExpectedCount.PossiblyMany, fields, props.filter)
 		}
 	}
 
@@ -90,7 +86,7 @@ namespace ToMany {
 							const field = data.data.getField(
 								this.props.field,
 								ReferenceMarker.ExpectedCount.PossiblyMany,
-								VariableInputTransformer.transformFilter(this.props.filter, this.props.environment)
+								this.props.filter
 							)
 
 							if (field instanceof EntityCollectionAccessor) {
@@ -109,13 +105,18 @@ namespace ToMany {
 
 	export class AccessorRenderer extends React.PureComponent<AccessorRendererProps> {
 		public render() {
-			return this.props.accessor.entities.map(
-				datum =>
-					datum instanceof EntityAccessor && (
-						<DataContext.Provider value={datum} key={datum.getKey()}>
-							{this.props.children}
-						</DataContext.Provider>
-					)
+			return (
+				<>
+					<FormErrors errors={this.props.accessor.errors} />
+					{this.props.accessor.entities.map(
+						datum =>
+							datum instanceof EntityAccessor && (
+								<DataContext.Provider value={datum} key={datum.getKey()}>
+									{this.props.children}
+								</DataContext.Provider>
+							)
+					)}
+				</>
 			)
 		}
 	}

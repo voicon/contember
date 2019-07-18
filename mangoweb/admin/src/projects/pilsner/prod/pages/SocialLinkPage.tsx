@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { Literal, MultiEditPage, SelectField, TextField } from 'cms-admin'
+import * as React from 'react'
 
 export const SocialLinkPage = (
 	<MultiEditPage entity="SocialLink" pageName="social" rendererProps={{ title: 'Social networks' }}>

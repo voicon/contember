@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { EditPage } from 'cms-admin'
+import * as React from 'react'
 import { TagForm } from '../forms'
 
 export const TagEditPage = (

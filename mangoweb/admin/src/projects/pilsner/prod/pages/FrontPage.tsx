@@ -1,11 +1,10 @@
-import * as React from 'react'
 import { EditPage, TextField } from 'cms-admin'
+import * as React from 'react'
 import { ImageField } from '../components'
-import { FrontPageContentForm, SeoForm, LinkForm } from '../forms'
-import { getSite } from '../utils/environment'
+import { FrontPageContentForm, LinkForm, SeoForm } from '../forms'
 
 export const FrontPage = (
-	<EditPage pageName={'frontPage'} entity={'FrontPage'} where={({}, env) => ({ site: { slug: getSite(env) } })}>
+	<EditPage pageName={'frontPage'} entity={'FrontPage'} where="(site.slug = $site)">
 		<h1>Front page</h1>
 		<LinkForm />
 		<ImageField name={'headerImage'} label={'Header image'} />

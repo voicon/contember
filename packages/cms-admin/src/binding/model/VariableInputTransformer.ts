@@ -1,6 +1,6 @@
 import { GraphQlBuilder } from 'cms-client'
 import { assertNever } from 'cms-common'
-import { Filter, Scalar, VariableInput } from '../bindingTypes'
+import { By, Filter, Scalar, VariableInput } from '../bindingTypes'
 import { DataBindingError, Environment, Literal, VariableLiteral, VariableScalar } from '../dao'
 
 export class VariableInputTransformer {
@@ -14,10 +14,17 @@ export class VariableInputTransformer {
 		return VariableInputTransformer.transformWhere(input, environment) as Filter<GraphQlBuilder.Literal>
 	}
 
-	private static transformWhere = (
-		where: VariableInputTransformer.Where<VariableInput>,
+	public static transformBy(input: By | undefined, environment: Environment): By<GraphQlBuilder.Literal> | undefined {
+		if (input === undefined) {
+			return undefined
+		}
+		return VariableInputTransformer.transformWhere(input, environment) as By<GraphQlBuilder.Literal>
+	}
+
+	private static transformWhere(
+		where: VariableInputTransformer.Where<VariableInput> | By,
 		environment: Environment
-	): VariableInputTransformer.Where<GraphQlBuilder.Literal> => {
+	): VariableInputTransformer.Where<GraphQlBuilder.Literal> {
 		const mapped: VariableInputTransformer.Where<GraphQlBuilder.Literal> = {}
 
 		for (const key in where) {
@@ -63,7 +70,7 @@ export class VariableInputTransformer {
 	}
 
 	public static transformVariableScalar(variableScalar: VariableScalar, environment: Environment): Scalar {
-		const value = environment.getValue(variableScalar.variable)
+		const value = environment.getValueOrElse(variableScalar.variable, undefined)
 
 		if (typeof value !== 'string' && typeof value !== 'boolean' && typeof value !== 'number' && value !== null) {
 			throw new DataBindingError(
@@ -77,7 +84,7 @@ export class VariableInputTransformer {
 		variableLiteral: VariableLiteral,
 		environment: Environment
 	): GraphQlBuilder.Literal {
-		const value = environment.getValue(variableLiteral.variable)
+		const value = environment.getValueOrElse(variableLiteral.variable, undefined)
 
 		if (typeof value !== 'string') {
 			throw new DataBindingError(

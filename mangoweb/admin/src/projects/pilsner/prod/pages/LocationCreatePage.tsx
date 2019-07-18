@@ -1,7 +1,7 @@
-import * as React from 'react'
 import { CreatePage } from 'cms-admin'
-import { LocationForm } from '../forms'
+import * as React from 'react'
 import { SiteField } from '../components'
+import { LocationForm } from '../forms'
 
 export const LocationCreatePage = (
 	<CreatePage

@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { Component, SelectField, TextField } from 'cms-admin'
+import * as React from 'react'
 
 export const LocationForm = Component(
 	prop => (

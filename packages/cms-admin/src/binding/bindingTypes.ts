@@ -1,3 +1,4 @@
+import { GraphQlBuilder } from 'cms-client'
 import { Input } from 'cms-common'
 import { Literal, VariableLiteral, VariableScalar } from './dao'
 
@@ -69,4 +70,6 @@ export interface QueryRequestResult {
 
 export type VariableInput = VariableScalar | VariableLiteral | Literal
 
-export type Filter<T = VariableInput> = Input.Where<Input.Condition<Input.ColumnValue<T>>>
+export type Filter<T = Literal> = Input.Where<Input.Condition<Input.ColumnValue<T>>>
+
+export type By<T = Literal> = Input.UniqueWhere<T>

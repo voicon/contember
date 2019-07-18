@@ -1,4 +1,3 @@
-import { isEmptyObject } from 'cms-common'
 import * as React from 'react'
 import { EntityName, FieldName, Filter } from '../bindingTypes'
 import { Props, ToMany, ToOne } from '../coreComponents'
@@ -96,4 +95,10 @@ export namespace QueryLanguage {
 			children: wrap(generateField(fieldName), ToOne.AtomicPrimitive, toOneProps, environment)
 		}
 	}
+
+	export const parseUniqueWhere = (input: string, environment: Environment) =>
+		Parser.parseQueryLanguageExpression(input, Parser.EntryPoint.UniqueWhere, environment)
+
+	export const parseFilter = (input: string, environment: Environment) =>
+		Parser.parseQueryLanguageExpression(input, Parser.EntryPoint.Filter, environment)
 }

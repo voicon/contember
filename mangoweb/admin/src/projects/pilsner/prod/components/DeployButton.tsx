@@ -1,16 +1,15 @@
-import * as React from 'react'
 import {
 	Component,
 	DataContext,
 	EntityAccessor,
 	Field,
 	FieldAccessor,
-	Literal,
 	readEventStream,
 	readLines,
 	RendererProps,
 	SingleEntityDataProvider
 } from 'cms-admin'
+import * as React from 'react'
 
 interface Props {}
 
@@ -83,8 +82,8 @@ export class DeployButton extends React.Component<Props, State> {
 		}
 		return (
 			<SingleEntityDataProvider
-				where={{ unique: new Literal('one') }}
-				name={'DeploymentConfig'}
+				where="(unique = one)"
+				entityName={'DeploymentConfig'}
 				renderer={DeployRenderer}
 				rendererProps={{}}
 			>

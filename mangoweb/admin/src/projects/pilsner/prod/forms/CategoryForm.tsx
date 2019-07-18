@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { Component, TextField } from 'cms-admin'
+import * as React from 'react'
 import { LinkForm, SeoForm } from './'
 
 export const CategoryForm = Component(

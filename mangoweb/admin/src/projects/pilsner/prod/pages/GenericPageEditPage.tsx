@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { EditPage } from 'cms-admin'
+import * as React from 'react'
 import { GenericPageForm } from '../forms'
 
 export const GenericPageEditPage = (

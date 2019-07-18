@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { Component, SortableRepeater, TextField, ToOne } from 'cms-admin'
+import * as React from 'react'
 
 interface AttributesFormProps {
 	field: string

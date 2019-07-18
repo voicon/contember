@@ -1,6 +1,6 @@
-import { CreateButton, EditButton } from '../components'
-import * as React from 'react'
 import { FieldText, ListPage } from 'cms-admin'
+import * as React from 'react'
+import { CreateButton, EditButton } from '../components'
 import { LocationTreeRenderer } from '../components/LocationTreeRenderer'
 
 export const LocationPage = (
