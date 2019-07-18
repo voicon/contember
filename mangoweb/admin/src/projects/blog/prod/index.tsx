@@ -68,7 +68,7 @@ export default () => (
 		<Page<{ edit_post2: { id: string } }> name="edit_post2">
 			{({ id }) => (
 				<Layout>
-					<SingleEntityDataProvider name="Post" where={{ id }}>
+					<SingleEntityDataProvider entityName="Post" where={{ id }}>
 						<TextField name="publishedAt" label="Time" />
 						<SelectField name="author" options="Author.name" label="Author" />
 

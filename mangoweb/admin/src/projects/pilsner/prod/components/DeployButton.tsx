@@ -84,7 +84,7 @@ export class DeployButton extends React.Component<Props, State> {
 		return (
 			<SingleEntityDataProvider
 				where={{ unique: new Literal('one') }}
-				name={'DeploymentConfig'}
+				entityName={'DeploymentConfig'}
 				renderer={DeployRenderer}
 				rendererProps={{}}
 			>

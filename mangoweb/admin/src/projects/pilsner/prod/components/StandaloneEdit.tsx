@@ -12,7 +12,7 @@ interface StandaloneEditProps {
 export const StandaloneEdit: React.ComponentType<StandaloneEditProps> = props => (
 	<EnvironmentContext.Consumer>
 		{environment => (
-			<SingleEntityDataProvider where={props.where(environment)} name={props.entityName}>
+			<SingleEntityDataProvider where={props.where(environment)} entityName={props.entityName}>
 				{props.children}
 			</SingleEntityDataProvider>
 		)}
