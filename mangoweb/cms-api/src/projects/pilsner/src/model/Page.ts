@@ -62,3 +62,13 @@ export class GenericPage {
 	title = d.stringColumn().notNull()
 	content = d.oneHasOne(Content).notNull()
 }
+
+export class PourPage {
+	site = d
+		.oneHasOne(Site, 'pourPage')
+		.cascadeOnDelete()
+		.notNull()
+
+	link = d.oneHasOneInversed(Linkable, 'pourPage').notNull()
+	seo = d.oneHasOne(Seo).notNull()
+}

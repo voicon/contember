@@ -1,0 +1,144 @@
+{
+	"modifications": [
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "PourPage",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "pour_page",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Linkable",
+			"owningSide": {
+				"name": "pourPage",
+				"inversedBy": "link",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "PourPage",
+				"joiningColumn": {
+					"columnName": "pour_page_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "link",
+				"ownedBy": "pourPage",
+				"target": "Linkable",
+				"type": "OneHasOne",
+				"nullable": false
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "PourPage",
+			"owningSide": {
+				"name": "site",
+				"inversedBy": "pourPage",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Site",
+				"joiningColumn": {
+					"columnName": "site_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "pourPage",
+				"ownedBy": "site",
+				"target": "PourPage",
+				"type": "OneHasOne",
+				"nullable": true
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "PourPage",
+			"owningSide": {
+				"name": "seo",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Seo",
+				"joiningColumn": {
+					"columnName": "seo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/PourPage",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"read": {
+								"id": true,
+								"site": true,
+								"link": true,
+								"seo": true
+							},
+							"update": {
+								"id": true,
+								"site": true,
+								"link": true,
+								"seo": true
+							},
+							"create": {
+								"id": true,
+								"site": true,
+								"link": true,
+								"seo": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Linkable/operations/read/pourPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Linkable/operations/update/pourPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Linkable/operations/create/pourPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/read/pourPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/update/pourPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/create/pourPage",
+					"value": true
+				}
+			]
+		}
+	]
+}

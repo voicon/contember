@@ -1,4 +1,4 @@
-import { BlogPage, Category, FrontPage, GenericPage, Post, Pub, PubsPage, Tag, Tapster, TapstersPage } from './'
+import { BlogPage, Category, FrontPage, GenericPage, Post, PourPage, Pub, PubsPage, Tag, Tapster, TapstersPage } from './'
 import { SchemaDefinition as d } from 'cms-api'
 
 export class Linkable {
@@ -19,6 +19,7 @@ export class Linkable {
 	blogPage: d.OneHasOneDefinition = d.oneHasOne(BlogPage, 'link').cascadeOnDelete()
 	pubsPage: d.OneHasOneDefinition = d.oneHasOne(PubsPage, 'link').cascadeOnDelete()
 	tapstersPage: d.OneHasOneDefinition = d.oneHasOne(TapstersPage, 'link').cascadeOnDelete()
+	pourPage: d.OneHasOneDefinition = d.oneHasOne(PourPage, 'link').cascadeOnDelete()
 	genericPage: d.OneHasOneDefinition = d.oneHasOne(GenericPage, 'link').cascadeOnDelete()
 }
 
