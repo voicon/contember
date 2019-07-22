@@ -6,7 +6,7 @@ export const Category = Component(
 	() => (
 		<>
 			<LocaleSideDimension>
-				<TextField label="Name" name="$locale.name" />
+				<TextField label="Name" name="name" />
 			</LocaleSideDimension>
 		</>
 	),

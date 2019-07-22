@@ -7,9 +7,9 @@ import { Link } from './Link'
 export const Contact = Component(
 	() => (
 		<LocaleSideDimension>
-			<TextField label="Header" name="$locale.header" />
-			<Seo name="$locale.seo" />
-			<Link name="$locale.link" />
+			<TextField label="Header" name="header" />
+			<Seo name="seo" />
+			<Link name="link" />
 		</LocaleSideDimension>
 	),
 	'Contact'

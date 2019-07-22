@@ -1,19 +1,19 @@
-import { Component, SideDimensions, Variable } from 'cms-admin'
+import { Component, SideDimensions, ToOne, Variable } from 'cms-admin'
 import * as React from 'react'
+import { LangDimension } from '../../mangoweb/preview/dimensions'
 
 interface LangSideDimensionProps {}
 
 export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 	<SideDimensions
 		dimension="locale"
-		variables={currentLang => {
+		variableName="currentLangSlug"
+		variables={currentLangSlug => {
 			return {
-				locale: `locales(locale.slug='${currentLang}')`,
-				currentLocaleSlug: currentLang,
 				flag: {
 					en: '🇬🇧',
 					cs: '🇨🇿'
-				}[currentLang as 'en' | 'cs'],
+				}[currentLangSlug as LangDimension],
 				labelMiddleware: label => (
 					<>
 						<Variable name="flag" /> {label}
@@ -22,6 +22,6 @@ export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 			}
 		}}
 	>
-		{props.children}
+		<ToOne field="locales(locale.slug=$currentLangSlug)">{props.children}</ToOne>
 	</SideDimensions>
 ))

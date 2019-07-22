@@ -11,11 +11,11 @@ export const Place = Component(
 			<FloatField label="Latitude" name="gpsLat" />
 			<FloatField label="Longitude" name="gpsLng" />
 			<LocaleSideDimension>
-				<TextField label="Name" name="$locale.name" />
-				<TextAreaField label="Address" name="$locale.address" />
-				<TextField label="IČO/DIČ line" name="$locale.subAddress" />
-				<TextField label="Telefon" name="$locale.phone" />
-				<TextField label="E-mail" name="$locale.email" />
+				<TextField label="Name" name="name" />
+				<TextAreaField label="Address" name="address" />
+				<TextField label="IČO/DIČ line" name="subAddress" />
+				<TextField label="Telefon" name="phone" />
+				<TextField label="E-mail" name="email" />
 			</LocaleSideDimension>
 		</>
 	),
