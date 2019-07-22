@@ -6,8 +6,8 @@ export const MenuItem = Component(
 	() => (
 		<>
 			<LocaleSideDimension>
-				<TextField label="Label" name="$locale.label" />
-				<SelectField label="Target" name="$locale.target" options="Linkable.url" />
+				<TextField label="Label" name="label" />
+				<SelectField label="Target" name="target" options="Linkable.url" />
 			</LocaleSideDimension>
 		</>
 	),

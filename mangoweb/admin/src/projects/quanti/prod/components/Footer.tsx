@@ -6,7 +6,7 @@ export const Footer = Component(
 	() => (
 		<>
 			<LocaleSideDimension>
-				<TextAreaField label="Address in footer" name="$locale.address" />
+				<TextAreaField label="Address in footer" name="address" />
 			</LocaleSideDimension>
 		</>
 	),

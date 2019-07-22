@@ -29,7 +29,7 @@ export const Page = Component(
 	() => (
 		<>
 			<LocaleSideDimension>
-				<TextField large={true} label="Header" name="$locale.header" />
+				<TextField large={true} label="Header" name="header" />
 			</LocaleSideDimension>
 			<Image label="Image" name="image" />
 			<SelectField
@@ -40,18 +40,18 @@ export const Page = Component(
 				options="Category.locales(locale.slug='cs').name"
 			/>
 			<LocaleSideDimension>
-				<State name="$locale.state" />
-				<TextAreaField label="Perex" name="$locale.perex" />
-				<SortableRepeater field="$locale.content" label="Content" sortBy="order">
+				<State name="state" />
+				<TextAreaField label="Perex" name="perex" />
+				<SortableRepeater field="content" label="Content" sortBy="order">
 					<Block />
 				</SortableRepeater>
 				<RichTextField
 					label="Contact us"
-					name="$locale.contactUs"
+					name="contactUs"
 					blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]}
 				/>
-				<Seo name="$locale.seo" />
-				<Link name="$locale.link" />
+				<Seo name="seo" />
+				<Link name="link" />
 			</LocaleSideDimension>
 		</>
 	),
@@ -91,7 +91,7 @@ export const PageListCells = Component(
 			</Table.Cell>
 			<Table.Cell>
 				<LocaleSideDimension>
-					<FieldText name="$locale.header" />
+					<FieldText name="header" />
 				</LocaleSideDimension>
 			</Table.Cell>
 			<Table.Cell>

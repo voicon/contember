@@ -7,13 +7,13 @@ interface LangSideDimensionProps {}
 export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 	<SideDimensions
 		dimension="lang"
-		variables={currentLang => {
+		variableName="currentLangSlug"
+		variables={currentLangSlug => {
 			return {
-				locale: `locales(locale.slug='${currentLang}')`,
 				flag: {
 					en: '🇬🇧',
 					cs: '🇨🇿'
-				}[currentLang as LangDimension],
+				}[currentLangSlug as LangDimension],
 				labelMiddleware: label => (
 					<>
 						<Variable name="flag" /> {label}
@@ -22,6 +22,6 @@ export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 			}
 		}}
 	>
-		<ToOne field="$locale">{props.children}</ToOne>
+		<ToOne field="locales(locale.slug=$currentLangSlug)">{props.children}</ToOne>
 	</SideDimensions>
 ))

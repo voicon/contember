@@ -10,9 +10,9 @@ export const Person = Component(
 			<TextField label="Email" name="email" />
 			<CheckboxField label="Show on front page" name="showOnFrontPage" />
 			<LocaleSideDimension>
-				<TextField label="Quote" name="$locale.quote" />
-				<TextField label="Name" name="$locale.name" />
-				<TextField label="Position" name="$locale.position" />
+				<TextField label="Quote" name="quote" />
+				<TextField label="Name" name="name" />
+				<TextField label="Position" name="position" />
 			</LocaleSideDimension>
 		</>
 	),
