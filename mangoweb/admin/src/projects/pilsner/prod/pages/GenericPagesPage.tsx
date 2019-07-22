@@ -8,6 +8,7 @@ export const GenericPagesPage = (
 		<Grid
 			entityName="GenericPage"
 			orderBy={[{ title: new Literal('asc') }]}
+			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'pageCreate',
 				label: 'Create page'

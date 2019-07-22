@@ -1,14 +1,15 @@
-import { CheckboxField, EditPage, SelectField, SortableRepeater, TextField } from 'cms-admin'
+import { CheckboxField, EditPage, SelectField, SortableRepeater, TextField, ToOne } from 'cms-admin'
 import * as React from 'react'
 
 export const MenuPage = (
-	<EditPage pageName={'menu'} entity={'Menu'} where="(site.slug = $site)">
+	<EditPage pageName={'menu'} entity={'Site'} where="(slug = $site)">
 		<h1>Menu</h1>
-
-		<SortableRepeater sortBy={'order'} field={'items'}>
-			<TextField name={'caption'} label={'Caption'} />
-			<SelectField name={'link'} label={'link'} options={'Linkable.url'} />
-			<CheckboxField name={'showCategories'} label={'Show categories'} />
-		</SortableRepeater>
+		<ToOne field={'menu'}>
+			<SortableRepeater sortBy={'order'} field={'items'}>
+				<TextField name={'caption'} label={'Caption'} />
+				<SelectField name={'link'} label={'link'} options={'Linkable.url'} />
+				<CheckboxField name={'showCategories'} label={'Show categories'} />
+			</SortableRepeater>
+		</ToOne>
 	</EditPage>
 )

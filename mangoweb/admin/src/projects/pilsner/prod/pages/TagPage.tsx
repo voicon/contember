@@ -8,6 +8,7 @@ export const TagPage = (
 		<Grid
 			entityName="Tag"
 			orderBy={[{ name: new Literal('asc') }]}
+			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'tagCreate',
 				label: 'Create tag'
