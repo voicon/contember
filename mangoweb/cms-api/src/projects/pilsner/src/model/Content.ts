@@ -34,6 +34,7 @@ export class ContentBlock {
 	subtitle = d.stringColumn()
 	text = d.stringColumn()
 	url = d.stringColumn()
+	buttonCaption = d.stringColumn()
 
 	image = d.manyHasOne(Image).setNullOnDelete()
 	gallery = d.oneHasOne(ContentGallery).setNullOnDelete()

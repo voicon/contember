@@ -24,6 +24,8 @@ export const FrontPageContentForm = Component(
 							<TextField name="title" label={'Title'} />
 							<TextAreaField name="text" label={'Text'} />
 							<ImageField name={'image'} label={'Image'} />
+							<TextField name="buttonCaption" label={'Button caption'} />
+							<TextField name="url" label={'Button url'} />
 						</>
 					],
 					[
