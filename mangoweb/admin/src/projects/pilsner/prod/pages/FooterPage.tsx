@@ -35,8 +35,8 @@ export const FooterPage = (
 				<div className={'inputBox-header'}>
 					<h2>Links</h2>
 				</div>
-				<SortableRepeater sortBy={'order'} field={'links'}>
-					<TextField name={'caption'}/>
+				<SortableRepeater sortBy={'order'} field={'links'} removeType={'delete'}>
+					<TextField name={'caption'} />
 					<AlternativeFields
 						name="linkType"
 						alternatives={[

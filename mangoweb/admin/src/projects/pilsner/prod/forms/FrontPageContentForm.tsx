@@ -86,7 +86,7 @@ export const FrontPageContentForm = Component(
 						'Phone gallery',
 						<>
 							<ToOne field={'gallery'}>
-								<SortableRepeater sortBy={'order'} field={'images'}>
+								<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
 									<ImageField name={'image'} label={'Image'} single={true} />
 								</SortableRepeater>
 							</ToOne>
@@ -97,7 +97,7 @@ export const FrontPageContentForm = Component(
 						'Desktop gallery',
 						<>
 							<ToOne field={'gallery'}>
-								<SortableRepeater sortBy={'order'} field={'images'}>
+								<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
 									<ImageField name={'image'} label={'Image'} single={true} />
 								</SortableRepeater>
 							</ToOne>
@@ -110,7 +110,7 @@ export const FrontPageContentForm = Component(
 							<TextField name="title" label={'Title'} />
 							<TextAreaField name="text" label={'Text'} />
 							<ToOne field={'gallery'}>
-								<SortableRepeater sortBy={'order'} field={'images'}>
+								<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
 									<TextAreaField name="caption" label={'Caption'} />
 									<ImageField name={'image'} label={'Image'} />
 								</SortableRepeater>

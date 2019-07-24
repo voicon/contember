@@ -3,7 +3,7 @@ import * as React from 'react'
 
 export const SocialLinkPage = (
 	<EditPage pageName={'social'} entity={'Site'} where="(slug = $site)">
-		<Repeater field={'socialLinks'}>
+		<Repeater field={'socialLinks'} removeType={'delete'}>
 			<SelectField
 				name={'network'}
 				label="Social network"

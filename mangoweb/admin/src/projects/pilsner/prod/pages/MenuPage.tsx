@@ -5,7 +5,7 @@ export const MenuPage = (
 	<EditPage pageName={'menu'} entity={'Site'} where="(slug = $site)">
 		<h1>Menu</h1>
 		<ToOne field={'menu'}>
-			<SortableRepeater sortBy={'order'} field={'items'}>
+			<SortableRepeater sortBy={'order'} field={'items'} removeType={'delete'}>
 				<TextField name={'caption'} label={'Caption'} />
 				<SelectField name={'link'} label={'link'} options={'Linkable.url'} />
 				<CheckboxField name={'showCategories'} label={'Show categories'} />
