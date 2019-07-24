@@ -1,4 +1,16 @@
-import { BlogPage, Category, FrontPage, GenericPage, Post, PourPage, Pub, PubsPage, Tag, Tapster, TapstersPage } from './'
+import {
+	BlogPage,
+	Category,
+	FrontPage,
+	GenericPage,
+	Post,
+	PourPage,
+	Pub,
+	PubsPage,
+	Tag,
+	Tapster,
+	TapstersPage
+} from './'
 import { SchemaDefinition as d } from 'cms-api'
 
 export class Linkable {
