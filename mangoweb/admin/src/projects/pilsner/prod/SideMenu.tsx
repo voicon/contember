@@ -10,7 +10,7 @@ export class SideMenu extends React.Component {
 					<MenuPageLink change={() => ({ name: 'frontPage' })}>Front page</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'blog' })}>Stories</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'pubs' })}>Pubs</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'tapsters' })}>Tapster</MenuPageLink>
+					<MenuPageLink change={() => ({ name: 'tapsters' })}>Tapsters</MenuPageLink>
 					<MenuPageLink change={() => ({ name: 'pages' })}>Pages</MenuPageLink>
 				</MenuList>
 				<MenuList title="Settings">
