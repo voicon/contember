@@ -21,8 +21,8 @@ export class Tapster {
 	locationText = d.stringColumn().notNull()
 
 	perex = d.stringColumn().notNull()
-	content = d.oneHasOne(Content).notNull()
-	attributeSet = d.oneHasOne(AttributeSet).notNull()
+	content = d.oneHasOne(Content, 'tapster').notNull()
+	attributeSet = d.oneHasOne(AttributeSet, 'tapster').notNull()
 	location = d.manyHasOne(Location, 'tapsters')
 	tags = d.manyHasMany(Tag)
 }

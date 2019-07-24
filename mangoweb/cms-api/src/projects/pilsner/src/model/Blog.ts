@@ -20,7 +20,7 @@ export class Post {
 
 	title = d.stringColumn().notNull()
 	perex = d.stringColumn().notNull()
-	content = d.oneHasOne(Content).notNull()
+	content = d.oneHasOne(Content, 'post').notNull()
 
 	tags = d.manyHasMany(Tag)
 	categories: d.ManyHasManyDefinition = d.manyHasMany(Category, 'posts')

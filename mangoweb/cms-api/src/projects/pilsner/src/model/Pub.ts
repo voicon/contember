@@ -20,8 +20,8 @@ export class Pub {
 	locationText = d.stringColumn().notNull()
 
 	perex = d.stringColumn().notNull()
-	content = d.oneHasOne(Content).notNull()
-	attributeSet = d.oneHasOne(AttributeSet).notNull()
+	content = d.oneHasOne(Content, 'pub').notNull()
+	attributeSet = d.oneHasOne(AttributeSet, 'pub').notNull()
 	location = d.manyHasOne(Location, 'pubs')
 	tags = d.manyHasMany(Tag)
 }

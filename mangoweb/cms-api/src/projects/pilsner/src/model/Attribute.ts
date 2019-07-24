@@ -1,7 +1,11 @@
 import { SchemaDefinition as d } from 'cms-api'
+import { Pub } from './Pub'
+import { Tapster } from './Tapster'
 
 export class AttributeSet {
 	attributes = d.oneHasMany(Attribute, 'set')
+	pub: d.OneHasOneInversedDefinition = d.oneHasOneInversed(Pub, 'attributeSet')
+	tapster: d.OneHasOneInversedDefinition = d.oneHasOneInversed(Tapster, 'attributeSet')
 }
 
 export class Attribute {
