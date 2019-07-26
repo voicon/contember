@@ -9,7 +9,6 @@ export default class Side extends React.Component {
 				<MenuList title="Menu">
 					<MenuPageLinkPrimary
 						change={() => ({ name: 'dashboard', params: {} })}
-						avatar={<Icon icon="dashboard" color="currentColor" />}
 						name="Dashboard"
 						// note="The starting point"
 					/>
