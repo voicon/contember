@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PROJECT_ROOT="$(dirname "$DIR")"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+CURRENT_DIR="$(pwd)"
+RELATIVE_DIR="/src/$(realpath --relative-to="$PROJECT_ROOT" "$CURRENT_DIR")"
 
 # project root
 cd "$PROJECT_ROOT"
 
 docker-compose run --rm \
-	--workdir=/src \
+	--workdir=$RELATIVE_DIR \
+	-p 9001:9001 \
 	--entrypoint=npm \
     api "$@"
