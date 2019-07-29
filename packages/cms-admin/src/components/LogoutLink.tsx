@@ -20,7 +20,11 @@ type Props = LogoutDispatchProps & LogoutLinkProps
 
 class LogoutLink extends React.Component<Props, {}> {
 	onClick = () => {
-		// this.props
+		if (navigator.credentials && navigator.credentials.preventSilentAccess) {
+			navigator.credentials.preventSilentAccess()
+		}
+
+		this.props.logout()
 	}
 
 	defaultComponent: React.StatelessComponent<InnerProps> = () => (

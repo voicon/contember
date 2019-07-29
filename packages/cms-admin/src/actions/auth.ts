@@ -3,6 +3,7 @@ import { SET_ERROR, SET_IDENTITY, SET_LOADING, SET_LOGOUT } from '../reducer/aut
 import { pushRequest } from './request'
 import { ActionCreator } from './types'
 import { AuthIdentity } from '../state/auth'
+import { invokeIfSupportsCredentials } from '../utils/invokeIfSupportsCredentials'
 
 export const login = (email: string, password: string, rememberMe: boolean): ActionCreator => async (
 	dispatch,
@@ -20,6 +21,17 @@ export const login = (email: string, password: string, rememberMe: boolean): Act
 		services.config.loginToken
 	)
 	if (signIn.ok) {
+		await invokeIfSupportsCredentials(async () => {
+			const credentials = await navigator.credentials.create({
+				password: {
+					password,
+					id: email
+				}
+			})
+			if (credentials) {
+				await navigator.credentials.store(credentials)
+			}
+		})
 		dispatch(
 			createAction<AuthIdentity>(SET_IDENTITY, () => ({
 				token: signIn.result.token,
@@ -33,6 +45,18 @@ export const login = (email: string, password: string, rememberMe: boolean): Act
 			createAction(SET_ERROR, () => signIn.errors.map((err: any) => err.endUserMessage || err.code).join(', '))()
 		)
 	}
+}
+
+export const tryAutoLogin = (): ActionCreator => async dispatch => {
+	await invokeIfSupportsCredentials(async () => {
+		const credentials = await navigator.credentials.get({
+			password: true,
+			mediation: 'silent'
+		})
+		if (credentials instanceof PasswordCredential && credentials.password) {
+			dispatch(login(credentials.id, credentials.password, false))
+		}
+	})
 }
 
 const loginMutation = `

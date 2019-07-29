@@ -2,7 +2,7 @@ import { Callout, Card, Elevation } from '@blueprintjs/core'
 import { Button, FormGroup, InputGroup } from '..'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { login } from '../../actions/auth'
+import { login, tryAutoLogin } from '../../actions/auth'
 import { Dispatch } from '../../actions/types'
 import State from '../../state'
 import { AuthStatus } from '../../state/auth'
@@ -15,6 +15,10 @@ class Login extends React.PureComponent<Login.Props, Login.State> {
 		rememberMe: false
 	}
 
+	componentDidMount() {
+		this.props.tryAutoLogin()
+	}
+
 	render() {
 		const loading = this.props.status === AuthStatus.LOADING
 
@@ -22,7 +26,7 @@ class Login extends React.PureComponent<Login.Props, Login.State> {
 			<div className="centerCard-wrap">
 				<Card elevation={Elevation.ONE} className="centerCard">
 					<div className="login-site">
-						<img src="https://www.mangoweb.cz/images/logo.png" className="login-site-logo" />
+						<img src="https://www.mangoweb.cz/favicon-64x64.png" className="login-site-logo" />
 						<h1 className="login-site-name">manGoweb CMS</h1>
 					</div>
 					<form
@@ -85,6 +89,7 @@ class Login extends React.PureComponent<Login.Props, Login.State> {
 namespace Login {
 	export interface DispatchProps {
 		login: (email: string, password: string, rememberMe: boolean) => void
+		tryAutoLogin: () => void
 	}
 
 	export interface StateProps {
@@ -104,6 +109,7 @@ namespace Login {
 export default connect<Login.StateProps, Login.DispatchProps, {}, State>(
 	({ auth }) => ({ errorMessage: auth.errorMessage, status: auth.status }),
 	(dispatch: Dispatch) => ({
-		login: (email: string, password: string, rememberMe: boolean) => dispatch(login(email, password, rememberMe))
+		login: (email: string, password: string, rememberMe: boolean) => dispatch(login(email, password, rememberMe)),
+		tryAutoLogin: () => dispatch(tryAutoLogin())
 	})
 )(Login)
