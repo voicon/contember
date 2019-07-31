@@ -3,7 +3,7 @@
 		"bootstrap": "lerna bootstrap --ci",
 		"bootstrap:hoist": "lerna bootstrap --ci --hoist",
 		"update": "lerna bootstrap --no-ci",
-		"clean": "rm -rf node_modules {mangoweb,packages}/*/{dist,node_modules}",
+		"clean": "rm -rf node_modules packages/*/{dist,node_modules} {instances,projects}/*/*/{dist,node_modules}",
 		"ts:build": "tsc --build --verbose",
 		"ts:watch": "tsc --build --verbose --watch",
 		"ts:clean": "tsc --build --clean",

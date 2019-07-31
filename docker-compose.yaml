@@ -13,7 +13,7 @@ services:
         image: node:10
         volumes:
             - ./:/src:cached
-        working_dir: /src/mangoweb/cms-api
+        working_dir: /src/instances/mangoweb/api
         environment:
             NODE_ENV: development
             DB_HOST: db
@@ -36,7 +36,7 @@ services:
         image: node:10
         volumes:
             - ./:/src:cached
-        working_dir: /src/mangoweb/admin
+        working_dir: /src/instances/mangoweb/admin
         environment:
             API_SERVER: "http://localhost:4477"
             SERVER_PORT: 4000

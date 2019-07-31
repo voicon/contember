@@ -1,6 +1,0 @@
-dist/
-generated/
-node_modules/
-yarn-error.log
-.env
-src/config/config.yaml
