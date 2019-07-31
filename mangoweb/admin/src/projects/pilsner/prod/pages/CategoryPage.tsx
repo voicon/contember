@@ -8,6 +8,7 @@ export const CategoryPage = (
 		<Grid
 			entityName="Category"
 			orderBy={[{ name: new Literal('asc') }]}
+			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'categoryCreate',
 				label: 'Create category'

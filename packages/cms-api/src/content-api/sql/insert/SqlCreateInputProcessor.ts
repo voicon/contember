@@ -22,12 +22,9 @@ export default class SqlCreateInputProcessor implements CreateInputProcessor {
 	manyHasManyInversed = {
 		connect: async (context: Context.ManyHasManyInversedContext & { input: Input.UniqueWhere }): Promise<void> => {
 			const primaryInversed = await this.insertBuilder.insert
-			await this.mapper.connectJunction(
-				context.targetEntity,
-				context.targetRelation,
-				{ [context.targetEntity.primary]: context.input[context.targetEntity.primary] },
-				{ [context.entity.primary]: primaryInversed }
-			)
+			await this.mapper.connectJunction(context.targetEntity, context.targetRelation, context.input, {
+				[context.entity.primary]: primaryInversed,
+			})
 		},
 		create: async (context: Context.ManyHasManyInversedContext & { input: Input.CreateDataInput }): Promise<void> => {
 			const primaryInversed = await this.insertBuilder.insert
@@ -48,7 +45,7 @@ export default class SqlCreateInputProcessor implements CreateInputProcessor {
 				context.entity,
 				context.relation,
 				{ [context.entity.primary]: primary },
-				{ [context.targetEntity.primary]: context.input[context.targetEntity.primary] }
+				context.input
 			)
 		},
 		create: async (context: Context.ManyHasManyOwnerContext & { input: Input.CreateDataInput }): Promise<void> => {

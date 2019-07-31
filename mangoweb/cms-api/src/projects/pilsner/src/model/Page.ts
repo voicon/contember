@@ -13,7 +13,7 @@ export class FrontPage {
 	headerImage = d.manyHasOne(Image)
 	title = d.stringColumn().notNull()
 	scrollString = d.stringColumn()
-	content = d.oneHasOne(Content).notNull()
+	content = d.oneHasOne(Content, 'frontPage').notNull()
 }
 
 export class BlogPage {
@@ -60,5 +60,15 @@ export class GenericPage {
 	seo = d.oneHasOne(Seo).notNull()
 
 	title = d.stringColumn().notNull()
-	content = d.oneHasOne(Content).notNull()
+	content = d.oneHasOne(Content, 'genericPage').notNull()
+}
+
+export class PourPage {
+	site = d
+		.oneHasOne(Site, 'pourPage')
+		.cascadeOnDelete()
+		.notNull()
+
+	link = d.oneHasOneInversed(Linkable, 'pourPage').notNull()
+	seo = d.oneHasOne(Seo).notNull()
 }

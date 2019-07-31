@@ -1,12 +1,13 @@
 import { FieldText, ListPage } from 'cms-admin'
 import * as React from 'react'
-import { CreateButton, EditButton } from '../components'
+import { CreateButton, EditButton, Grid } from '../components'
 import { LocationTreeRenderer } from '../components/LocationTreeRenderer'
 
 export const LocationPage = (
 	<ListPage
 		pageName={'locations'}
 		entity={'Location'}
+		filter="[site.slug = $site]"
 		renderer={LocationTreeRenderer}
 		rendererProps={{
 			title: 'Locations',

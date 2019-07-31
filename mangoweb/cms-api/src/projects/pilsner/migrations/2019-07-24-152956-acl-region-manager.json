@@ -1,0 +1,1747 @@
+{
+	"modifications": [
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/regionManager",
+					"value": {
+						"stages": "*",
+						"entities": {
+							"ContentImage": {
+								"predicates": {
+									"site": {
+										"gallery": {
+											"block": {
+												"content": {
+													"and": [
+														{
+															"or": [
+																{
+																	"pub": {
+																		"id": {
+																			"null": true
+																		}
+																	}
+																},
+																{
+																	"pub": {
+																		"site": {
+																			"slug": "site"
+																		}
+																	}
+																}
+															]
+														},
+														{
+															"or": [
+																{
+																	"tapster": {
+																		"id": {
+																			"null": true
+																		}
+																	}
+																},
+																{
+																	"tapster": {
+																		"site": {
+																			"slug": "site"
+																		}
+																	}
+																}
+															]
+														},
+														{
+															"or": [
+																{
+																	"frontPage": {
+																		"id": {
+																			"null": true
+																		}
+																	}
+																},
+																{
+																	"frontPage": {
+																		"site": {
+																			"slug": "site"
+																		}
+																	}
+																}
+															]
+														},
+														{
+															"or": [
+																{
+																	"genericPage": {
+																		"id": {
+																			"null": true
+																		}
+																	}
+																},
+																{
+																	"genericPage": {
+																		"site": {
+																			"slug": "site"
+																		}
+																	}
+																}
+															]
+														},
+														{
+															"or": [
+																{
+																	"post": {
+																		"id": {
+																			"null": true
+																		}
+																	}
+																},
+																{
+																	"post": {
+																		"site": {
+																			"slug": "site"
+																		}
+																	}
+																}
+															]
+														}
+													]
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"gallery": "site",
+										"order": "site",
+										"caption": "site",
+										"image": "site"
+									},
+									"read": {
+										"id": "site",
+										"gallery": "site",
+										"order": "site",
+										"caption": "site",
+										"image": "site"
+									},
+									"update": {
+										"id": "site",
+										"gallery": "site",
+										"order": "site",
+										"caption": "site",
+										"image": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContentGallery": {
+								"predicates": {
+									"site": {
+										"block": {
+											"content": {
+												"and": [
+													{
+														"or": [
+															{
+																"pub": {
+																	"id": {
+																		"null": true
+																	}
+																}
+															},
+															{
+																"pub": {
+																	"site": {
+																		"slug": "site"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"or": [
+															{
+																"tapster": {
+																	"id": {
+																		"null": true
+																	}
+																}
+															},
+															{
+																"tapster": {
+																	"site": {
+																		"slug": "site"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"or": [
+															{
+																"frontPage": {
+																	"id": {
+																		"null": true
+																	}
+																}
+															},
+															{
+																"frontPage": {
+																	"site": {
+																		"slug": "site"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"or": [
+															{
+																"genericPage": {
+																	"id": {
+																		"null": true
+																	}
+																}
+															},
+															{
+																"genericPage": {
+																	"site": {
+																		"slug": "site"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"or": [
+															{
+																"post": {
+																	"id": {
+																		"null": true
+																	}
+																}
+															},
+															{
+																"post": {
+																	"site": {
+																		"slug": "site"
+																	}
+																}
+															}
+														]
+													}
+												]
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"block": "site",
+										"images": "site"
+									},
+									"read": {
+										"id": "site",
+										"block": "site",
+										"images": "site"
+									},
+									"update": {
+										"id": "site",
+										"block": "site",
+										"images": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContentBlock": {
+								"predicates": {
+									"site": {
+										"content": {
+											"and": [
+												{
+													"or": [
+														{
+															"pub": {
+																"id": {
+																	"null": true
+																}
+															}
+														},
+														{
+															"pub": {
+																"site": {
+																	"slug": "site"
+																}
+															}
+														}
+													]
+												},
+												{
+													"or": [
+														{
+															"tapster": {
+																"id": {
+																	"null": true
+																}
+															}
+														},
+														{
+															"tapster": {
+																"site": {
+																	"slug": "site"
+																}
+															}
+														}
+													]
+												},
+												{
+													"or": [
+														{
+															"frontPage": {
+																"id": {
+																	"null": true
+																}
+															}
+														},
+														{
+															"frontPage": {
+																"site": {
+																	"slug": "site"
+																}
+															}
+														}
+													]
+												},
+												{
+													"or": [
+														{
+															"genericPage": {
+																"id": {
+																	"null": true
+																}
+															}
+														},
+														{
+															"genericPage": {
+																"site": {
+																	"slug": "site"
+																}
+															}
+														}
+													]
+												},
+												{
+													"or": [
+														{
+															"post": {
+																"id": {
+																	"null": true
+																}
+															}
+														},
+														{
+															"post": {
+																"site": {
+																	"slug": "site"
+																}
+															}
+														}
+													]
+												}
+											]
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"content": "site",
+										"order": "site",
+										"type": "site",
+										"title": "site",
+										"subtitle": "site",
+										"text": "site",
+										"url": "site",
+										"buttonCaption": "site",
+										"image": "site",
+										"gallery": "site"
+									},
+									"read": {
+										"id": "site",
+										"content": "site",
+										"order": "site",
+										"type": "site",
+										"title": "site",
+										"subtitle": "site",
+										"text": "site",
+										"url": "site",
+										"buttonCaption": "site",
+										"image": "site",
+										"gallery": "site"
+									},
+									"update": {
+										"id": "site",
+										"content": "site",
+										"order": "site",
+										"type": "site",
+										"title": "site",
+										"subtitle": "site",
+										"text": "site",
+										"url": "site",
+										"buttonCaption": "site",
+										"image": "site",
+										"gallery": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Content": {
+								"predicates": {
+									"site": {
+										"and": [
+											{
+												"or": [
+													{
+														"pub": {
+															"id": {
+																"null": true
+															}
+														}
+													},
+													{
+														"pub": {
+															"site": {
+																"slug": "site"
+															}
+														}
+													}
+												]
+											},
+											{
+												"or": [
+													{
+														"tapster": {
+															"id": {
+																"null": true
+															}
+														}
+													},
+													{
+														"tapster": {
+															"site": {
+																"slug": "site"
+															}
+														}
+													}
+												]
+											},
+											{
+												"or": [
+													{
+														"frontPage": {
+															"id": {
+																"null": true
+															}
+														}
+													},
+													{
+														"frontPage": {
+															"site": {
+																"slug": "site"
+															}
+														}
+													}
+												]
+											},
+											{
+												"or": [
+													{
+														"genericPage": {
+															"id": {
+																"null": true
+															}
+														}
+													},
+													{
+														"genericPage": {
+															"site": {
+																"slug": "site"
+															}
+														}
+													}
+												]
+											},
+											{
+												"or": [
+													{
+														"post": {
+															"id": {
+																"null": true
+															}
+														}
+													},
+													{
+														"post": {
+															"site": {
+																"slug": "site"
+															}
+														}
+													}
+												]
+											}
+										]
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"blocks": "site",
+										"tapster": "site",
+										"pub": "site",
+										"genericPage": "site",
+										"frontPage": "site",
+										"post": "site"
+									},
+									"read": {
+										"id": "site",
+										"blocks": "site",
+										"tapster": "site",
+										"pub": "site",
+										"genericPage": "site",
+										"frontPage": "site",
+										"post": "site"
+									},
+									"update": {
+										"id": "site",
+										"blocks": "site",
+										"tapster": "site",
+										"pub": "site",
+										"genericPage": "site",
+										"frontPage": "site",
+										"post": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Redirect": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"link": false,
+										"target": false
+									},
+									"read": {
+										"id": false,
+										"link": false,
+										"target": false
+									},
+									"update": {
+										"id": false,
+										"link": false,
+										"target": false
+									},
+									"delete": false
+								}
+							},
+							"FooterLink": {
+								"predicates": {
+									"site": {
+										"footer": {
+											"site": {
+												"slug": "site"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"footer": "site",
+										"order": "site",
+										"caption": "site",
+										"linkType": "site",
+										"link": "site",
+										"linkUrl": "site"
+									},
+									"read": {
+										"id": "site",
+										"footer": "site",
+										"order": "site",
+										"caption": "site",
+										"linkType": "site",
+										"link": "site",
+										"linkUrl": "site"
+									},
+									"update": {
+										"id": "site",
+										"footer": "site",
+										"order": "site",
+										"caption": "site",
+										"linkType": "site",
+										"link": "site",
+										"linkUrl": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"AttributeValue": {
+								"predicates": {
+									"site": {
+										"attribute": {
+											"set": {
+												"and": [
+													{
+														"or": [
+															{
+																"pub": {
+																	"id": {
+																		"null": true
+																	}
+																}
+															},
+															{
+																"pub": {
+																	"site": {
+																		"slug": "site"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"or": [
+															{
+																"tapster": {
+																	"id": {
+																		"null": true
+																	}
+																}
+															},
+															{
+																"tapster": {
+																	"site": {
+																		"slug": "site"
+																	}
+																}
+															}
+														]
+													}
+												]
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"attribute": "site",
+										"order": "site",
+										"value": "site",
+										"url": "site"
+									},
+									"read": {
+										"id": "site",
+										"attribute": "site",
+										"order": "site",
+										"value": "site",
+										"url": "site"
+									},
+									"update": {
+										"id": "site",
+										"attribute": "site",
+										"order": "site",
+										"value": "site",
+										"url": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Attribute": {
+								"predicates": {
+									"site": {
+										"set": {
+											"and": [
+												{
+													"or": [
+														{
+															"pub": {
+																"id": {
+																	"null": true
+																}
+															}
+														},
+														{
+															"pub": {
+																"site": {
+																	"slug": "site"
+																}
+															}
+														}
+													]
+												},
+												{
+													"or": [
+														{
+															"tapster": {
+																"id": {
+																	"null": true
+																}
+															}
+														},
+														{
+															"tapster": {
+																"site": {
+																	"slug": "site"
+																}
+															}
+														}
+													]
+												}
+											]
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"set": "site",
+										"order": "site",
+										"title": "site",
+										"values": "site"
+									},
+									"read": {
+										"id": "site",
+										"set": "site",
+										"order": "site",
+										"title": "site",
+										"values": "site"
+									},
+									"update": {
+										"id": "site",
+										"set": "site",
+										"order": "site",
+										"title": "site",
+										"values": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"AttributeSet": {
+								"predicates": {
+									"site": {
+										"and": [
+											{
+												"or": [
+													{
+														"pub": {
+															"id": {
+																"null": true
+															}
+														}
+													},
+													{
+														"pub": {
+															"site": {
+																"slug": "site"
+															}
+														}
+													}
+												]
+											},
+											{
+												"or": [
+													{
+														"tapster": {
+															"id": {
+																"null": true
+															}
+														}
+													},
+													{
+														"tapster": {
+															"site": {
+																"slug": "site"
+															}
+														}
+													}
+												]
+											}
+										]
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"attributes": "site",
+										"pub": "site",
+										"tapster": "site"
+									},
+									"read": {
+										"id": "site",
+										"attributes": "site",
+										"pub": "site",
+										"tapster": "site"
+									},
+									"update": {
+										"id": "site",
+										"attributes": "site",
+										"pub": "site",
+										"tapster": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"MenuItem": {
+								"predicates": {
+									"site": {
+										"menu": {
+											"site": {
+												"slug": "site"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"menu": "site",
+										"order": "site",
+										"caption": "site",
+										"link": "site",
+										"showCategories": "site"
+									},
+									"read": {
+										"id": "site",
+										"menu": "site",
+										"order": "site",
+										"caption": "site",
+										"link": "site",
+										"showCategories": "site"
+									},
+									"update": {
+										"id": "site",
+										"menu": "site",
+										"order": "site",
+										"caption": "site",
+										"link": "site",
+										"showCategories": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"DeploymentConfig": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"unique": false,
+										"apiKey": false,
+										"apiEndpoint": false
+									},
+									"read": {
+										"id": true,
+										"unique": true,
+										"apiKey": true,
+										"apiEndpoint": true
+									},
+									"update": {
+										"id": false,
+										"unique": false,
+										"apiKey": false,
+										"apiEndpoint": false
+									},
+									"delete": false
+								}
+							},
+							"Deployment": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"startedAt": false,
+										"finishedAt": false,
+										"failedAt": false,
+										"failureReason": false
+									},
+									"read": {
+										"id": true,
+										"startedAt": true,
+										"finishedAt": true,
+										"failedAt": true,
+										"failureReason": true
+									},
+									"update": {
+										"id": false,
+										"startedAt": false,
+										"finishedAt": false,
+										"failedAt": false,
+										"failureReason": false
+									},
+									"delete": false
+								}
+							},
+							"Translatable": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"identifier": false,
+										"translations": false
+									},
+									"read": {
+										"id": true,
+										"identifier": true,
+										"translations": true
+									},
+									"update": {
+										"id": false,
+										"identifier": false,
+										"translations": false
+									},
+									"delete": false
+								}
+							},
+							"Post": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"publishedAt": "site",
+										"headerImage": "site",
+										"listingImage": "site",
+										"listingTopImage": "site",
+										"imageDescription": "site",
+										"title": "site",
+										"perex": "site",
+										"content": "site",
+										"tags": "site",
+										"categories": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"publishedAt": "site",
+										"headerImage": "site",
+										"listingImage": "site",
+										"listingTopImage": "site",
+										"imageDescription": "site",
+										"title": "site",
+										"perex": "site",
+										"content": "site",
+										"tags": "site",
+										"categories": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"publishedAt": "site",
+										"headerImage": "site",
+										"listingImage": "site",
+										"listingTopImage": "site",
+										"imageDescription": "site",
+										"title": "site",
+										"perex": "site",
+										"content": "site",
+										"tags": "site",
+										"categories": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Category": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"order": "site",
+										"link": "site",
+										"seo": "site",
+										"posts": "site",
+										"name": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"order": "site",
+										"link": "site",
+										"seo": "site",
+										"posts": "site",
+										"name": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"order": "site",
+										"link": "site",
+										"seo": "site",
+										"posts": "site",
+										"name": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Footer": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"contactLabel": "site",
+										"contactLink": "site",
+										"copyright": "site",
+										"copyrightJap": "site",
+										"dontDriveSticky": "site",
+										"dontDriveHeading": "site",
+										"dontDriveLink": "site",
+										"links": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"contactLabel": "site",
+										"contactLink": "site",
+										"copyright": "site",
+										"copyrightJap": "site",
+										"dontDriveSticky": "site",
+										"dontDriveHeading": "site",
+										"dontDriveLink": "site",
+										"links": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"contactLabel": "site",
+										"contactLink": "site",
+										"copyright": "site",
+										"copyrightJap": "site",
+										"dontDriveSticky": "site",
+										"dontDriveHeading": "site",
+										"dontDriveLink": "site",
+										"links": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Translation": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"translatable": "site",
+										"site": "site",
+										"value": "site"
+									},
+									"read": {
+										"id": "site",
+										"translatable": "site",
+										"site": "site",
+										"value": "site"
+									},
+									"update": {
+										"id": "site",
+										"translatable": "site",
+										"site": "site",
+										"value": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Location": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"name": "site",
+										"slug": "site",
+										"altName": "site",
+										"children": "site",
+										"parent": "site",
+										"pubs": "site",
+										"tapsters": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"name": "site",
+										"slug": "site",
+										"altName": "site",
+										"children": "site",
+										"parent": "site",
+										"pubs": "site",
+										"tapsters": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"name": "site",
+										"slug": "site",
+										"altName": "site",
+										"children": "site",
+										"parent": "site",
+										"pubs": "site",
+										"tapsters": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Menu": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"items": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"items": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"items": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FrontPage": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"headerImage": "site",
+										"title": "site",
+										"scrollString": "site",
+										"content": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"headerImage": "site",
+										"title": "site",
+										"scrollString": "site",
+										"content": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"headerImage": "site",
+										"title": "site",
+										"scrollString": "site",
+										"content": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"BlogPage": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"PubsPage": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"headerImage": "site",
+										"title": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"headerImage": "site",
+										"title": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"headerImage": "site",
+										"title": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"TapstersPage": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"headerImage": "site",
+										"title": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"headerImage": "site",
+										"title": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"headerImage": "site",
+										"title": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"GenericPage": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"title": "site",
+										"content": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"title": "site",
+										"content": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"title": "site",
+										"content": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"PourPage": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Pub": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"publishedAt": "site",
+										"headerImage": "site",
+										"listingImage": "site",
+										"imageDescription": "site",
+										"name": "site",
+										"subtitle": "site",
+										"locationText": "site",
+										"perex": "site",
+										"content": "site",
+										"attributeSet": "site",
+										"location": "site",
+										"tags": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"publishedAt": "site",
+										"headerImage": "site",
+										"listingImage": "site",
+										"imageDescription": "site",
+										"name": "site",
+										"subtitle": "site",
+										"locationText": "site",
+										"perex": "site",
+										"content": "site",
+										"attributeSet": "site",
+										"location": "site",
+										"tags": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"publishedAt": "site",
+										"headerImage": "site",
+										"listingImage": "site",
+										"imageDescription": "site",
+										"name": "site",
+										"subtitle": "site",
+										"locationText": "site",
+										"perex": "site",
+										"content": "site",
+										"attributeSet": "site",
+										"location": "site",
+										"tags": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"SocialLink": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"network": "site",
+										"url": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"network": "site",
+										"url": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"network": "site",
+										"url": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Tag": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"name": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"name": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"name": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Tapster": {
+								"predicates": {
+									"site": {
+										"site": {
+											"slug": "site"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"publishedAt": "site",
+										"headerImage": "site",
+										"listingImage": "site",
+										"imageDescription": "site",
+										"name": "site",
+										"subtitle": "site",
+										"locationText": "site",
+										"perex": "site",
+										"content": "site",
+										"attributeSet": "site",
+										"location": "site",
+										"tags": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"publishedAt": "site",
+										"headerImage": "site",
+										"listingImage": "site",
+										"imageDescription": "site",
+										"name": "site",
+										"subtitle": "site",
+										"locationText": "site",
+										"perex": "site",
+										"content": "site",
+										"attributeSet": "site",
+										"location": "site",
+										"tags": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"link": "site",
+										"seo": "site",
+										"publishedAt": "site",
+										"headerImage": "site",
+										"listingImage": "site",
+										"imageDescription": "site",
+										"name": "site",
+										"subtitle": "site",
+										"locationText": "site",
+										"perex": "site",
+										"content": "site",
+										"attributeSet": "site",
+										"location": "site",
+										"tags": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Site": {
+								"predicates": {
+									"site": {
+										"slug": "site"
+									}
+								},
+								"operations": {
+									"create": {
+										"id": false,
+										"name": false,
+										"slug": false,
+										"frontPage": false,
+										"pubsPage": false,
+										"tapstersPage": false,
+										"blogPage": false,
+										"pourPage": false,
+										"genericPages": false,
+										"socialLinks": false,
+										"footer": false,
+										"posts": false,
+										"categories": false,
+										"translations": false,
+										"menu": false,
+										"pubs": false,
+										"tags": false,
+										"tapsters": false,
+										"locations": false
+									},
+									"read": {
+										"id": "site",
+										"name": "site",
+										"slug": "site",
+										"frontPage": "site",
+										"pubsPage": "site",
+										"tapstersPage": "site",
+										"blogPage": "site",
+										"pourPage": "site",
+										"genericPages": "site",
+										"socialLinks": "site",
+										"footer": "site",
+										"posts": "site",
+										"categories": "site",
+										"translations": "site",
+										"menu": "site",
+										"pubs": "site",
+										"tags": "site",
+										"tapsters": "site",
+										"locations": "site"
+									},
+									"update": {
+										"id": "site",
+										"name": false,
+										"slug": false,
+										"frontPage": "site",
+										"pubsPage": "site",
+										"tapstersPage": "site",
+										"blogPage": "site",
+										"pourPage": "site",
+										"genericPages": "site",
+										"socialLinks": "site",
+										"footer": "site",
+										"posts": "site",
+										"categories": "site",
+										"translations": "site",
+										"menu": "site",
+										"pubs": "site",
+										"tags": "site",
+										"tapsters": "site",
+										"locations": "site"
+									},
+									"delete": false
+								}
+							},
+							"Linkable": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"url": true,
+										"redirect": true,
+										"post": true,
+										"tapster": true,
+										"pub": true,
+										"tag": true,
+										"category": true,
+										"frontPage": true,
+										"blogPage": true,
+										"pubsPage": true,
+										"tapstersPage": true,
+										"pourPage": true,
+										"genericPage": true
+									},
+									"read": {
+										"id": true,
+										"url": true,
+										"redirect": true,
+										"post": true,
+										"tapster": true,
+										"pub": true,
+										"tag": true,
+										"category": true,
+										"frontPage": true,
+										"blogPage": true,
+										"pubsPage": true,
+										"tapstersPage": true,
+										"pourPage": true,
+										"genericPage": true
+									},
+									"update": {
+										"id": true,
+										"url": true,
+										"redirect": true,
+										"post": true,
+										"tapster": true,
+										"pub": true,
+										"tag": true,
+										"category": true,
+										"frontPage": true,
+										"blogPage": true,
+										"pubsPage": true,
+										"tapstersPage": true,
+										"pourPage": true,
+										"genericPage": true
+									},
+									"delete": true
+								}
+							},
+							"Image": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"url": true,
+										"phoneUrl": true
+									},
+									"read": {
+										"id": true,
+										"url": true,
+										"phoneUrl": true
+									},
+									"update": {
+										"id": true,
+										"url": true,
+										"phoneUrl": true
+									},
+									"delete": true
+								}
+							},
+							"Seo": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"title": true,
+										"description": true,
+										"ogImage": true,
+										"ogTitle": true,
+										"ogDescription": true
+									},
+									"read": {
+										"id": true,
+										"title": true,
+										"description": true,
+										"ogImage": true,
+										"ogTitle": true,
+										"ogDescription": true
+									},
+									"update": {
+										"id": true,
+										"title": true,
+										"description": true,
+										"ogImage": true,
+										"ogTitle": true,
+										"ogDescription": true
+									},
+									"delete": true
+								}
+							}
+						}
+					}
+				}
+			]
+		}
+	]
+}

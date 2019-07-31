@@ -1,0 +1,20 @@
+{
+	"modifications": [
+		{
+			"modification": "removeUniqueConstraint",
+			"entityName": "SocialLink",
+			"constraintName": "unique_SocialLink_network_c3e40b"
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "SocialLink",
+			"unique": {
+				"fields": [
+					"site",
+					"network"
+				],
+				"name": "unique_SocialLink_site_network_7fc2cf"
+			}
+		}
+	]
+}

@@ -22,6 +22,8 @@ const routes = {
 	pageCreate: { path: '/page/create' },
 	pageEdit: { path: '/page/:id' },
 
+	pour: { path: '/pour' },
+
 	menu: { path: '/menu' },
 	categories: { path: '/categories' },
 	categoryCreate: { path: '/categories/new' },

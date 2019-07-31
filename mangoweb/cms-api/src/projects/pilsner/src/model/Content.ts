@@ -1,8 +1,14 @@
-import { Image } from './'
+import { FrontPage, GenericPage, Image, Post, Pub, Tapster } from './'
 import { SchemaDefinition as d } from 'cms-api'
 
 export class Content {
 	blocks: d.OneHasManyDefinition = d.oneHasMany(ContentBlock, 'content')
+
+	tapster: d.OneHasOneInversedDefinition = d.oneHasOneInversed(Tapster, 'content')
+	pub: d.OneHasOneInversedDefinition = d.oneHasOneInversed(Pub, 'content')
+	genericPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(GenericPage, 'content')
+	frontPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(FrontPage, 'content')
+	post: d.OneHasOneInversedDefinition = d.oneHasOneInversed(Post, 'content')
 }
 
 export const ContentBlockType = d.createEnum(
@@ -34,12 +40,14 @@ export class ContentBlock {
 	subtitle = d.stringColumn()
 	text = d.stringColumn()
 	url = d.stringColumn()
+	buttonCaption = d.stringColumn()
 
 	image = d.manyHasOne(Image).setNullOnDelete()
-	gallery = d.oneHasOne(ContentGallery).setNullOnDelete()
+	gallery = d.oneHasOne(ContentGallery, 'block').setNullOnDelete()
 }
 
 export class ContentGallery {
+	block: d.OneHasOneInversedDefinition = d.oneHasOneInversed(ContentBlock, 'gallery')
 	images = d.oneHasMany(ContentImage, 'gallery')
 }
 

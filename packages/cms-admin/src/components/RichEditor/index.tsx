@@ -29,7 +29,8 @@ export enum RichEditorSerializer {
 export enum LineBreakBehavior {
 	NEWLINE = 'newline',
 	NEWBLOCK = 'newblock',
-	DISABLE = 'disable'
+	DISABLE = 'disable',
+	SMART = 'smart'
 }
 
 export interface RichEditorProps {
@@ -145,7 +146,7 @@ export default class RichEditor extends React.Component<RichEditorProps, RichTex
 									onClick={this.changeBlockMarkingTo(block.block)}
 								/>
 							))}
-						{blocks.length > 1 && marksToShow.length > 0 && <Divider />}
+						{/*{blocks.length > 1 && marksToShow.length > 0 && <Divider />}*/}
 						{marksToShow.map(mark => (
 							<ActionButton
 								icon={this.getIcon(mark)}
@@ -230,12 +231,17 @@ export default class RichEditor extends React.Component<RichEditorProps, RichTex
 			mark = Mark.UNDERLINED
 		} else if (event.key === 'Enter') {
 			event.preventDefault()
+			if (this.props.lineBreakBehavior === LineBreakBehavior.SMART && event.shiftKey) {
+				editor.insertText('\n')
+				return
+			}
 			switch (this.props.lineBreakBehavior) {
 				case LineBreakBehavior.DISABLE:
 					break
 				case LineBreakBehavior.NEWLINE:
 					editor.insertText('\n')
 					break
+				case LineBreakBehavior.SMART:
 				case LineBreakBehavior.NEWBLOCK:
 					if (editor.value.selection.isExpanded) {
 						editor.delete()
