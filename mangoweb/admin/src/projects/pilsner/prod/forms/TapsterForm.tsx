@@ -8,7 +8,7 @@ export const TapsterForm = Component(
 		<>
 			<TextField name="name" label="Name" />
 			<TextField name="subtitle" label="Subtitle" />
-			<LinkForm/>
+			<LinkForm />
 
 			<ImageField name={'headerImage'} label={'Header image'} />
 			<ImageField name={'listingImage'} label={'Listing image'} />
@@ -21,7 +21,7 @@ export const TapsterForm = Component(
 			<GenericContentForm />
 			<CheckboxList name="tags" options="Tag[site.slug = $site].name" label="Tags" />
 
-			<SeoForm/>
+			<SeoForm />
 		</>
 	),
 	'TapsterForm'
