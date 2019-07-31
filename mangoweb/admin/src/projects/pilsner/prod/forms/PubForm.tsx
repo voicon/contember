@@ -6,12 +6,14 @@ import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
 export const PubForm = Component(
 	() => (
 		<>
+			<TextField name="name" label="Name" />
+			<TextField name="subtitle" label="Subtitle" />
+			<LinkForm />
+
 			<ImageField name={'headerImage'} label={'Header image'} />
 			<ImageField name={'listingImage'} label={'Listing image'} />
 			<TextField name="imageDescription" label="Image description" />
 
-			<TextField name="name" label="Name" />
-			<TextField name="subtitle" label="Subtitle" />
 			<TextField name="locationText" label="Location" />
 			<SelectField name={'location'} label={'Location'} options={'Location.name'} />
 			<TextAreaField name="perex" label="Perex" />
@@ -19,7 +21,6 @@ export const PubForm = Component(
 			<GenericContentForm />
 			<CheckboxList name="tags" options={`Tag[site.slug = $site].name`} label="Tags" />
 
-			<LinkForm />
 			<SeoForm />
 		</>
 	),

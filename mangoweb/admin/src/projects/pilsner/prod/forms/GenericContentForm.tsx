@@ -1,4 +1,15 @@
-import { AlternativeFields, Component, Literal, SortableRepeater, TextAreaField, TextField } from 'cms-admin'
+import {
+	AlternativeFields,
+	Block,
+	Component,
+	LineBreakBehavior,
+	Literal,
+	Mark,
+	RichTextField,
+	SortableRepeater,
+	TextAreaField,
+	TextField
+} from 'cms-admin'
 import * as React from 'react'
 import { ImageField } from '../components'
 
@@ -14,8 +25,15 @@ export const GenericContentForm = Component(
 							new Literal('contentTextSection'),
 							'Text section',
 							<>
-								<TextField name="title" label={'Title'} />
-								<TextAreaField name="text" label={'Text'} />
+								<RichTextField
+									label="Text"
+									name="text"
+									lineBreakBehavior={LineBreakBehavior.SMART}
+									blocks={[
+										{ block: Block.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK, Mark.ITALIC] },
+										{ block: Block.HEADING, marks: [] }
+									]}
+								/>
 							</>
 						],
 						[
