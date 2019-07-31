@@ -3,6 +3,7 @@ import { Site } from './Site'
 import { Pub } from './Pub'
 import { Tapster } from './Tapster'
 
+@d.Unique('site', 'slug')
 export class Location {
 	site = d
 		.manyHasOne(Site, 'locations')
@@ -12,7 +13,6 @@ export class Location {
 	slug = d
 		.stringColumn()
 		.notNull()
-		.unique()
 	altName = d.stringColumn()
 	children: d.OneHasManyDefinition = d.oneHasMany(Location, 'parent')
 	parent: d.ManyHasOneDefinition = d.manyHasOne(Location, 'children').setNullOnDelete()
