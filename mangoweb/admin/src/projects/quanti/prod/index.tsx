@@ -182,7 +182,7 @@ export default () => (
 			}}
 		>
 			<Table.Cell>
-				<FieldText name="sentAt" formatter={val => (val ? new Date(val).toLocaleString() : '')} />
+				<FieldText<string | number> name="sentAt" format={val => val && new Date(val).toLocaleString()} />
 			</Table.Cell>
 			<Table.Cell>
 				<FieldText name="contact" />
