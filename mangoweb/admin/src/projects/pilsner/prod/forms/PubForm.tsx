@@ -1,6 +1,6 @@
-import { CheckboxList, Component, SelectField, TextAreaField, TextField } from 'cms-admin'
+import { CheckboxList, Component, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
-import { ImageField } from '../components'
+import { ImageField, LocationField } from '../components'
 import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
 
 export const PubForm = Component(
@@ -15,7 +15,7 @@ export const PubForm = Component(
 			<TextField name="imageDescription" label="Image description" />
 
 			<TextField name="locationText" label="Location" />
-			<SelectField name={'location'} label={'Location'} options={'Location.name'} />
+			<LocationField name="location" label="Location" />
 			<TextAreaField name="perex" label="Perex" />
 			<AttributesForm field={'attributeSet'} />
 			<GenericContentForm />

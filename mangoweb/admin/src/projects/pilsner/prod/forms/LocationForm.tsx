@@ -1,5 +1,6 @@
-import { Component, SelectField, TextField } from 'cms-admin'
+import { Component, TextField } from 'cms-admin'
 import * as React from 'react'
+import { LocationField } from '../components'
 
 export const LocationForm = Component(
 	prop => (
@@ -7,7 +8,7 @@ export const LocationForm = Component(
 			<TextField name="name" label="Name" />
 			<TextField name="slug" label="Slug" />
 			<TextField name="altName" label="Alternative name" />
-			<SelectField name="parent" label="Parent" options={'Location.name'} />
+			<LocationField name="parent" label="Parent" />
 		</>
 	),
 	'LocationForm'
