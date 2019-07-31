@@ -1,4 +1,4 @@
-import { FieldText, ListPage } from 'cms-admin'
+import { Field, FieldText, ListPage } from 'cms-admin'
 import * as React from 'react'
 import { CreateButton, EditButton, Grid } from '../components'
 import { LocationTreeRenderer } from '../components/LocationTreeRenderer'
@@ -15,7 +15,7 @@ export const LocationPage = (
 		}}
 	>
 		<FieldText name={'name'} />
-		<FieldText name={'parent.name'} formatter={() => null} />
+		<Field name={'parent.name'} />
 		<EditButton pageName={'locationEdit'} label={'Edit'} />
 	</ListPage>
 )
