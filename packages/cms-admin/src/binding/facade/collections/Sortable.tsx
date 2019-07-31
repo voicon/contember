@@ -20,19 +20,12 @@ import {
 	SyntheticChildrenProvider
 } from '../../coreComponents'
 import { MutationStateContext } from '../../coreComponents/PersistState'
-import {
-	DataBindingError,
-	EntityAccessor,
-	EntityCollectionAccessor,
-	Environment,
-	FieldAccessor,
-	VariableScalar
-} from '../../dao'
+import { EntityAccessor, EntityCollectionAccessor, Environment, FieldAccessor } from '../../dao'
 import { Repeater } from './Repeater'
 import EntityCollectionPublicProps = Repeater.EntityCollectionPublicProps
 
 export interface SortablePublicProps extends EntityCollectionPublicProps {
-	sortBy: FieldName | VariableScalar
+	sortBy: FieldName
 }
 
 export interface SortableInternalProps {
@@ -85,7 +78,7 @@ class Sortable extends React.PureComponent<SortableProps> {
 	public static generateSyntheticChildren(props: Props<SortableProps>, environment: Environment): React.ReactNode {
 		return (
 			<>
-				<Field name={Sortable.resolveSortByFieldName(props.sortBy, environment)} isNonbearing={true} />
+				<Field name={props.sortBy} isNonbearing={true} />
 				{props.children}
 			</>
 		)
@@ -93,23 +86,6 @@ class Sortable extends React.PureComponent<SortableProps> {
 }
 
 namespace Sortable {
-	export const resolveSortByFieldName = (sortBy: FieldName | VariableScalar, environment: Environment): FieldName => {
-		if (sortBy instanceof VariableScalar) {
-			const fieldName = environment.getValueOrElse(sortBy.variable, undefined)
-
-			if (fieldName === undefined) {
-				throw new DataBindingError(`Attempting to sort by a variable field '${sortBy.variable}' which is not defined.`)
-			}
-			if (typeof fieldName !== 'string') {
-				throw new DataBindingError(
-					`Attempting to sort by a variable field '${sortBy.variable}' which exists but resolves to a non-string value.`
-				)
-			}
-			return fieldName
-		}
-		return sortBy
-	}
-
 	export interface DragHandleProps {
 		isMutating: boolean
 	}
@@ -137,14 +113,19 @@ namespace Sortable {
 
 	export interface SortableListProps extends EntityCollectionPublicProps {
 		entities: EntityAccessor[]
-		addNew: EntityCollectionAccessor['addNew']
+		prependNew?: EntityCollectionAccessor['addNew']
+		appendNew?: EntityCollectionAccessor['addNew']
 	}
 
 	export const SortableList = React.memo(
 		SortableContainer((props: Props<SortableListProps & SortableContainerProps>) => {
 			const isMutating = React.useContext(MutationStateContext)
 			return (
-				<Repeater.Cloneable addNew={props.addNew} enableAddingNew={props.enableAddingNew}>
+				<Repeater.Cloneable
+					prependNew={props.prependNew}
+					appendNew={props.appendNew}
+					enableAddingNew={props.enableAddingNew}
+				>
 					<ul className="sortable">
 						{props.entities.map((item, index) => (
 							<SortableItem
@@ -167,6 +148,10 @@ namespace Sortable {
 		})
 	)
 
+	export interface EntityOrder {
+		[primaryKey: string]: number
+	}
+
 	export interface SortableInnerProps extends SortablePublicProps {
 		entities: EntityCollectionAccessor
 		environment: Environment
@@ -175,13 +160,32 @@ namespace Sortable {
 	export class SortableInner extends React.PureComponent<SortableInnerProps> {
 		private entities: EntityAccessor[] = []
 
-		private getOnSortEnd = (environment: Environment): SortEndHandler => ({ oldIndex, newIndex }, e) => {
-			const order: { [primaryKey: string]: number } = {}
+		private getOnSortEnd = (accessor: EntityCollectionAccessor): SortEndHandler => ({ oldIndex, newIndex }) => {
+			this.reconcileOrderFields(accessor, oldIndex, newIndex)
+		}
+
+		private getBatchUpdater = (order: EntityOrder) => (getAccessor: () => EntityCollectionAccessor) => {
+			let collectionAccessor: EntityCollectionAccessor = getAccessor()
+			for (const entity of collectionAccessor.entities) {
+				if (!(entity instanceof EntityAccessor)) {
+					continue
+				}
+				const target = order[entity.getKey()]
+				const orderField = entity.data.getField(this.props.sortBy)
+
+				if (target !== undefined && orderField instanceof FieldAccessor && orderField.onChange) {
+					orderField.onChange(target)
+					collectionAccessor = getAccessor()
+				}
+			}
+		}
+
+		private computeNewEntityOrder(oldIndex: number, newIndex: number): EntityOrder {
+			const order: EntityOrder = {}
 
 			for (let i = 0, len = this.entities.length; i < len; i++) {
 				const entity = this.entities[i]
-				const fieldName = Sortable.resolveSortByFieldName(this.props.sortBy, environment)
-				const orderField = entity.data.getField(fieldName)
+				const orderField = entity.data.getField(this.props.sortBy)
 
 				if (orderField instanceof FieldAccessor && orderField.onChange) {
 					let targetValue
@@ -201,51 +205,19 @@ namespace Sortable {
 					}
 				}
 			}
-			const fieldName = Sortable.resolveSortByFieldName(this.props.sortBy, environment)
-
-			this.props.entities.batchUpdates &&
-				this.props.entities.batchUpdates(getAccessor => {
-					let collectionAccessor: EntityCollectionAccessor = getAccessor()
-					for (let i = 0, length = collectionAccessor.entities.length; i < length; i++) {
-						const entity = collectionAccessor.entities[i]
-
-						if (!(entity instanceof EntityAccessor)) {
-							continue
-						}
-						const target = order[entity.getKey()]
-						const orderField = entity.data.getField(fieldName)
-
-						if (target !== undefined && orderField instanceof FieldAccessor && orderField.onChange) {
-							orderField.onChange(target)
-							collectionAccessor = getAccessor()
-						}
-					}
-				})
+			return order
 		}
 
-		private updateUnpersistedEntities() {
-			const fieldName = Sortable.resolveSortByFieldName(this.props.sortBy, this.props.environment)
-			for (let i = 0, length = this.entities.length; i < length; i++) {
-				const entity = this.entities[i]
-
-				if (entity.primaryKey instanceof EntityAccessor.UnpersistedEntityID) {
-					const orderField = entity.data.getField(fieldName)
-
-					if (orderField instanceof FieldAccessor && orderField.currentValue === null && orderField.onChange) {
-						orderField.onChange(i)
-					}
-				}
-			}
+		private reconcileOrderFields(accessor: EntityCollectionAccessor, oldIndex: number, newIndex: number) {
+			const order = this.computeNewEntityOrder(oldIndex, newIndex)
+			accessor.batchUpdates && accessor.batchUpdates(this.getBatchUpdater(order))
 		}
 
-		public render() {
-			const fieldName = Sortable.resolveSortByFieldName(this.props.sortBy, this.props.environment)
-			const entities = this.props.entities.entities.filter(
-				(item): item is EntityAccessor => item instanceof EntityAccessor
-			)
+		private prepareEntities(accessor: EntityCollectionAccessor): EntityAccessor[] {
+			const entities = accessor.entities.filter((item): item is EntityAccessor => item instanceof EntityAccessor)
 
-			this.entities = entities.sort((a, b) => {
-				const [aField, bField] = [a.data.getField(fieldName), b.data.getField(fieldName)]
+			return entities.sort((a, b) => {
+				const [aField, bField] = [a.data.getField(this.props.sortBy), b.data.getField(this.props.sortBy)]
 
 				if (
 					aField instanceof FieldAccessor &&
@@ -257,15 +229,50 @@ namespace Sortable {
 				}
 				return 0
 			})
+		}
+
+		private prependNew = () => {
+			this.props.entities.addNew &&
+				this.props.entities.addNew((getCollectionAccessor, newIndex) => {
+					let accessor = getCollectionAccessor()
+					let newlyAdded = accessor.entities[newIndex]
+
+					if (!(newlyAdded instanceof EntityAccessor)) {
+						return
+					}
+
+					const sortableField = newlyAdded.data.getField(this.props.sortBy)
+
+					if (!(sortableField instanceof FieldAccessor)) {
+						return
+					}
+
+					sortableField.onChange && sortableField.onChange(this.entities.length)
+
+					accessor = getCollectionAccessor()
+					newlyAdded = accessor.entities[newIndex]
+
+					if (!(newlyAdded instanceof EntityAccessor)) {
+						return
+					}
+
+					this.entities.push(newlyAdded)
+					this.reconcileOrderFields(accessor, this.entities.length - 1, 0)
+				})
+		}
+
+		public render() {
+			this.entities = this.prepareEntities(this.props.entities)
 
 			return (
 				<SortableList
 					entities={this.entities}
-					onSortEnd={this.getOnSortEnd(this.props.environment)}
+					onSortEnd={this.getOnSortEnd(this.props.entities)}
 					useDragHandle={true}
 					lockAxis="y"
 					lockToContainerEdges={true}
-					addNew={this.props.entities.addNew}
+					prependNew={this.prependNew}
+					appendNew={this.props.entities.addNew}
 					enableUnlinkAll={this.props.enableUnlinkAll}
 					enableAddingNew={this.props.enableAddingNew}
 					enableUnlink={this.props.enableUnlink}
@@ -278,7 +285,26 @@ namespace Sortable {
 		}
 
 		componentDidUpdate(): void {
-			this.updateUnpersistedEntities()
+			this.fixOrderlessEntities()
+		}
+
+		private fixOrderlessEntities() {
+			this.props.entities.batchUpdates &&
+				this.props.entities.batchUpdates(getAccessor => {
+					let collectionAccessor: EntityCollectionAccessor = getAccessor()
+					for (const [i, entity] of this.entities.entries()) {
+						if (!(entity instanceof EntityAccessor)) {
+							continue
+						}
+
+						const orderField = entity.data.getField(this.props.sortBy)
+
+						if (orderField instanceof FieldAccessor && orderField.currentValue === null && orderField.onChange) {
+							orderField.onChange(i)
+							collectionAccessor = getAccessor()
+						}
+					}
+				})
 		}
 	}
 }

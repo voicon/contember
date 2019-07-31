@@ -1,4 +1,3 @@
-import cn from 'classnames'
 import * as React from 'react'
 import { Props } from '../../coreComponents'
 import { Environment } from '../../dao'
@@ -16,32 +15,28 @@ class AlternativeFields extends React.PureComponent<AlternativeFieldsProps> {
 		return (
 			<div className="alternativeFields">
 				<ChoiceField name={this.props.name} options={Object.values(this.props.alternatives)} arity={ChoiceArity.Single}>
-					{({ data, currentValue, onChange, isMutating, environment, errors }: SingleChoiceFieldMetadata) => {
-						const alternatives: React.ReactNodeArray = []
-						for (let i = 0, length = this.props.alternatives.length; i < length; i++) {
-							alternatives.push(
-								<div className={cn('alternativeFields-item', i === currentValue && 'is-active')} key={i}>
-									{this.props.alternatives[i][2]}
+					{({ data, currentValue, onChange, isMutating, environment, errors }: SingleChoiceFieldMetadata) => (
+						<>
+							<SelectFieldInner
+								name={this.props.name}
+								label={this.props.label}
+								data={data}
+								currentValue={currentValue}
+								onChange={onChange}
+								environment={environment}
+								errors={errors}
+								firstOptionCaption="Choose…"
+								isMutating={isMutating}
+							/>
+							{currentValue in this.props.alternatives && (
+								<div className="alternativeFields-items">
+									<div className="alternativeFields-item" key={currentValue}>
+										{this.props.alternatives[currentValue][2]}
+									</div>
 								</div>
-							)
-						}
-						return (
-							<>
-								<SelectFieldInner
-									name={this.props.name}
-									label={this.props.label}
-									data={data}
-									currentValue={currentValue}
-									onChange={onChange}
-									environment={environment}
-									errors={errors}
-									firstOptionCaption="Choose…"
-									isMutating={isMutating}
-								/>
-								<div className="alternativeFields-items">{alternatives}</div>
-							</>
-						)
-					}}
+							)}
+						</>
+					)}
 				</ChoiceField>
 			</div>
 		)

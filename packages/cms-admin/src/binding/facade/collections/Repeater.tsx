@@ -1,5 +1,5 @@
-import { FormGroup, IFormGroupProps } from '@blueprintjs/core'
 import * as React from 'react'
+import { FormGroup, FormGroupProps } from '../../../components/ui'
 import {
 	DataContext,
 	EnforceSubtypeRelation,
@@ -82,7 +82,7 @@ namespace Repeater {
 	}
 
 	export interface EntityCollectionPublicProps extends ItemPublicProps {
-		label?: IFormGroupProps['label']
+		label?: FormGroupProps['label']
 		enableUnlink?: boolean
 		enableUnlinkAll?: boolean
 		enableAddingNew?: boolean
@@ -98,7 +98,7 @@ namespace Repeater {
 			return (
 				// Intentionally not applying label system middleware
 				<FormGroup label={this.props.label}>
-					<Cloneable entities={this.props.entities} enableAddingNew={this.props.enableAddingNew}>
+					<Cloneable appendNew={this.props.entities.addNew} enableAddingNew={this.props.enableAddingNew}>
 						{entities.map(entity => (
 							<Item
 								displayUnlinkButton={
@@ -118,8 +118,8 @@ namespace Repeater {
 	}
 
 	export interface CloneableProps {
-		entities?: EntityCollectionAccessor
-		addNew?: EntityCollectionAccessor['addNew']
+		prependNew?: EntityCollectionAccessor['addNew']
+		appendNew?: EntityCollectionAccessor['addNew']
 		enableAddingNew?: boolean
 	}
 
@@ -129,11 +129,9 @@ namespace Repeater {
 				this.props.children
 			) : (
 				<div className="cloneable">
+					{this.props.prependNew && <AddNewButton addNew={this.props.prependNew} className="cloneable-button" />}
 					<div className="cloneable-content">{this.props.children}</div>
-					<AddNewButton
-						addNew={this.props.entities ? this.props.entities.addNew : this.props.addNew}
-						className="cloneable-button"
-					/>
+					{this.props.appendNew && <AddNewButton addNew={this.props.appendNew} className="cloneable-button" />}
 				</div>
 			)
 		}
