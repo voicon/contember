@@ -9,12 +9,12 @@ const layout = {
 		title: logo,
 		left: (
 			<DimensionsSwitcher
-				entityName="Site"
+				options="Site"
 				dimension="site"
-				labelName="name"
+				defaultValue={[{ slug: 'en', label: 'English' }]}
+				labelField="name"
 				maxItems={1}
-				valueName="slug"
-				emptyText="Choose a site"
+				slugField="slug"
 				buttonProps={{
 					icon: IconNames.GLOBE
 				}}
