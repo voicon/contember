@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -e
 
-SYMLINKS=$(find ./instances/*/*/node_modules -maxdepth 1 -type l)
+SYMLINKS=$(find ./instances/*/*/node_modules -maxdepth 2 -type l)
 
 for SYMLINK in $SYMLINKS; do
 	REALPATH=$(readlink -f $SYMLINK)

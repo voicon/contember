@@ -1,7 +1,6 @@
 FROM node:10
 
 ADD ./ .
-ADD ./src/config/config.prod.yaml ./src/config/config.yaml
 
 ENV SERVER_PORT 4000
 ENV NODE_ENV "production"
