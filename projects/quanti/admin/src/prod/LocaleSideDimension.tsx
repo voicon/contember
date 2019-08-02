@@ -3,7 +3,6 @@ import * as React from 'react'
 
 type LangDimension = 'cs' | 'en'
 
-
 interface LangSideDimensionProps {}
 
 export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
