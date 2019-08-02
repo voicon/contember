@@ -11,6 +11,8 @@
 		{ "path": "./packages/cms-server-common" },
 		{ "path": "./instances/mangoweb/api" },
 		{ "path": "./instances/mangoweb/admin" },
+		{ "path": "./instances/pilsner/api" },
+		{ "path": "./instances/pilsner/admin" },
 		{ "path": "./projects/mangoweb/admin"},
 		{ "path": "./projects/mangoweb/api"},
 		{ "path": "./projects/pilsner/admin"},

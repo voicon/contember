@@ -1,0 +1,36 @@
+tenant:
+  db:
+    host: '%env.DB_HOST%'
+    port: '%env.DB_PORT::number%'
+    user: '%env.DB_USER%'
+    password: '%env.DB_PASSWORD%'
+    database: '%env.DB_NAME%'
+
+projects:
+  - id: cffeb246-4f04-41e7-8f00-f2e8b933f651
+    slug: pilsner
+    directory: "@mangoweb/contember-project-pilsner-api"
+    name: Pilsner
+    stages:
+      - id: e7e502d4-e997-49c1-990a-60337c4ed6ce
+        slug: prod
+        name: Production
+#      - id: 5070720f-6851-4af7-9aec-c5faf45c1e4f
+#        slug: preview
+#        name: Preview
+#        base: prod
+    dbCredentials:
+      host: '%env.DB_HOST%'
+      port: '%env.DB_PORT::number%'
+      user: '%env.DB_USER%'
+      password: '%env.DB_PASSWORD%'
+      database: '%env.DB_NAME%'
+    s3:
+      bucket: '%env.S3_BUCKET%'
+      prefix: ''
+      endpoint: '%env.S3_ENDPOINT%'
+      credentials:
+        key: '%env.S3_KEY%'
+        secret: '%env.S3_SECRET%'
+server:
+  port: '%env.SERVER_PORT::number%'
