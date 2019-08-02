@@ -27,7 +27,9 @@ export class SideMenu extends React.Component {
 					<MenuPageLink change={() => ({ name: 'sites' })}>Sites</MenuPageLink>
 				</MenuList>
 				<MenuList title="Deployment">
-					<DeployButton />
+					<li className="menuSecondaryItem" style={{ paddingLeft: '1.75em' }}>
+						<DeployButton />
+					</li>
 				</MenuList>
 			</Menu>
 		)

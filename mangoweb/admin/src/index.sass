@@ -12,15 +12,23 @@ $c-dimensionSwitcher-bg: white
 			border-top-color: currentColor
 
 .inputBox
-	background: white
-	margin-bottom: 10px
-	padding: 5px 10px
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04)
+	+box
+	margin-bottom: $spacing-normal
+
 	&-header
-		margin: -5px -10px 0 -10px
-		padding: 10px
-		border-bottom: 1px solid #f8f8f8
-		margin-bottom: 10px
+		$fs: $fs-normal
+		$line-height: $fs * 1.2
+		$line-height-offset: ($line-height - $fs) / 2
+
+		font-size: $fs
+		line-height: $line-height
+
+		&::after
+			content: ''
+			display: block
+			margin: calc(var(--box-vertical-spacing) - #{$line-height-offset}) calc(-1 * var(--box-horizontal-spacing)) var(--box-vertical-spacing)
+			border-bottom: 1px solid #f8f8f8
+
 		h2
 			font-size: 1.2em
 			color: #777
