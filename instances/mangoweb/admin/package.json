@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"start": "dotenv -- webpack-dev-server --env.development --debug --history-api-fallback --hot --inline --progress --colors",
-		"build": "tsc --build && webpack --env.production --colors",
+		"build": "webpack --env.production --colors",
 		"run-admin": "dotenv -- run-admin"
 	},
 	"dependencies": {

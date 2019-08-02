@@ -3,7 +3,6 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"build": "tsc --build",
 		"start": "dotenv -- nodemon --watch dist --watch node_modules --ext js --delay 500ms --inspect=0.0.0.0 ./dist/src/index.js start",
 		"console": "dotenv -- node ./dist/src/index.js",
 		"reset": "dotenv --  node ./dist/src/index.js drop && dotenv --  node ./dist/src/index.js update",
