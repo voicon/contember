@@ -18,7 +18,7 @@ build:
   image: node:10
 
   script:
-    - npm install
+    - npm ci
     - npm run bootstrap
     - npm run build
 
