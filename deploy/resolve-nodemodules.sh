@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -e
 
-SYMLINKS=$(find ./mangoweb/*/node_modules -maxdepth 1 -type l)
+SYMLINKS=$(find ./instances/*/*/node_modules -maxdepth 1 -type l)
 
 for SYMLINK in $SYMLINKS; do
 	REALPATH=$(readlink -f $SYMLINK)
@@ -9,5 +9,5 @@ for SYMLINK in $SYMLINKS; do
 	cp -RL $REALPATH $SYMLINK
 done
 
-find mangoweb/*/node_modules -type d -name typescript -exec rm -rf "{}" +
-rm -rf mangoweb/admin/node_modules/resolve-url-loader/tmp
+find ./instances/*/*/node_modules -type d -name typescript -exec rm -rf "{}" +
+rm -rf ./instances/*/admin/node_modules/resolve-url-loader/tmp
