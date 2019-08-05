@@ -28,6 +28,7 @@ projects:
     s3:
       bucket: '%env.S3_BUCKET%'
       prefix: ''
+      region: ''
       endpoint: '%env.S3_ENDPOINT%'
       credentials:
         key: '%env.S3_KEY%'
