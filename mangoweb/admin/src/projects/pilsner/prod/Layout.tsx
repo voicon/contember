@@ -25,7 +25,7 @@ const layout = {
 	side: <SideMenu />
 }
 
-export class Layout extends React.Component {
+export class Layout extends React.PureComponent {
 	render() {
 		return <LayoutDefault {...layout} content={this.props.children} />
 	}
