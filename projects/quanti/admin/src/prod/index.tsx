@@ -31,7 +31,7 @@ import { Place } from './components/Place'
 import { SocialNetwork } from './components/SocialNetwork'
 import { Layout } from './Layout'
 import { LocaleSideDimension } from './LocaleSideDimension'
-import '../../../../../src/projects/quanti/prod/_theme.sass'
+import '../../../src/prod/_theme.sass'
 
 export default () => (
 	<Pages project="quanti" stage="prod" layout={Layout}>

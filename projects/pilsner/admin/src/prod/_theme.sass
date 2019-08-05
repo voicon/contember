@@ -1,2 +1,15 @@
 \:root
 	--brand-accent-color: #006449
+
+$c-dimensionSwitcher-bg: white
+.dimensionSwitcher
+	&-button
+		background: $c-dimensionSwitcher-bg
+		border: none
+
+		&::after
+			content: ''
+			display: inline-block
+			border: 1em transparent
+			border-top-color: currentColor
+
