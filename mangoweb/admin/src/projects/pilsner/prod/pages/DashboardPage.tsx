@@ -59,7 +59,7 @@ export const DashboardPage = (
 				/>
 				<br />
 				<br />
-				<CreateButton pageName="pubCreate" label="Add new pub" />
+				<CreateButton pageName="pubCreate" label="Add a new pub" />
 			</Tile>
 			<Tile>
 				<img
@@ -71,7 +71,7 @@ export const DashboardPage = (
 				/>
 				<br />
 				<br />
-				<CreateButton pageName="tapsterCreate" label="Add new tapster" />
+				<CreateButton pageName="tapsterCreate" label="Add a new tapster" />
 			</Tile>
 		</TileList>
 	</GenericPage>
