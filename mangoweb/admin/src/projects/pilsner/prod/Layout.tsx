@@ -9,10 +9,9 @@ const layout = {
 		title: logo,
 		left: (
 			<DimensionsSwitcher
-				options="Site"
+				options="Site.name"
 				dimension="site"
 				defaultValue={[{ slug: 'en', label: 'English' }]}
-				labelField="name"
 				maxItems={1}
 				slugField="slug"
 				buttonProps={{
