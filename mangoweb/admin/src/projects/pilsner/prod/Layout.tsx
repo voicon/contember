@@ -9,12 +9,12 @@ const layout = {
 		title: logo,
 		left: (
 			<DimensionsSwitcher
-				entityName="Site"
+				optionEntities="Site"
 				dimension="site"
-				labelName="name"
+				defaultValue={[{ slug: 'en', label: 'English' }]}
 				maxItems={1}
-				valueName="slug"
-				emptyText="Choose a site"
+				labelField="name"
+				slugField="slug"
 				buttonProps={{
 					icon: IconNames.GLOBE
 				}}
@@ -25,7 +25,7 @@ const layout = {
 	side: <SideMenu />
 }
 
-export class Layout extends React.Component {
+export class Layout extends React.PureComponent {
 	render() {
 		return <LayoutDefault {...layout} content={this.props.children} />
 	}

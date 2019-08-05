@@ -8,11 +8,11 @@ const layout = {
 		title: 'Quanti',
 		left: (
 			<DimensionsSwitcher
-				entityName="Locale"
+				optionEntities="Locale"
 				dimension="locale"
-				labelName="slug"
-				valueName="slug"
-				emptyText="Choose language"
+				defaultValue={[{ slug: 'cs', label: 'cs' }]}
+				labelField="slug"
+				slugField="slug"
 				buttonProps={{
 					icon: IconNames.GLOBE
 				}}
