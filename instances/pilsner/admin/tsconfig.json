@@ -1,0 +1,17 @@
+{
+	"extends": "../../../tsconfig.settings.json",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"typeRoots": [
+			"node_modules/@types",
+			"src/types"
+		],
+		"jsx": "react",
+		"module": "esnext"
+	},
+	"references": [
+		{"path": "../../../packages/cms-admin/src"},
+		{"path": "../../../packages/cms-admin-server/src"},
+		{"path": "../../../projects/pilsner/admin"}
+	]
+}

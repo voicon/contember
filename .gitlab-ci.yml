@@ -18,30 +18,21 @@ build:
   image: node:10
 
   script:
-    - npm install
+    - npm ci
     - npm run bootstrap
     - npm run build
 
   artifacts:
     paths:
-      - mangoweb/admin/node_modules
-      - mangoweb/admin/public
-      - mangoweb/admin/webpack-assets.json
-      - mangoweb/cms-api/dist
-      - mangoweb/cms-api/node_modules
-      - node_modules
-      - packages/cms-admin/dist
-      - packages/cms-admin/node_modules
-      - packages/cms-admin-server/dist
-      - packages/cms-admin-server/node_modules
-      - packages/cms-api/dist
-      - packages/cms-api/node_modules
-      - packages/cms-client/dist
-      - packages/cms-client/node_modules
-      - packages/cms-common/dist
-      - packages/cms-common/node_modules
-      - packages/cms-server-common/dist
-      - packages/cms-server-common/node_modules
+      - "instances/*/admin/public"
+      - "instances/*/admin/webpack-assets.json"
+      - "instances/*/*/node_modules"
+      - "instances/*/*/dist"
+      - "node_modules"
+      - "packages/*/dist"
+      - "packages/*/node_modules"
+      - "projects/*/*/dist"
+#      - "projects/*/*/node_modules"
 
 test:
   stage: test:run
@@ -54,6 +45,7 @@ test:
     TEST_DB_PORT: 5432
 
   script:
+    - npm run bootstrap
     - npm run test
 
 eslint:
@@ -162,3 +154,15 @@ deploy:prod:admin:
 
   script:
     - /usr/bin/deploy
+
+build:pilsner:
+  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/docker-ecr:1.1
+  stage: deploy:build
+  only:
+    refs:
+      - build/pilsner
+  variables:
+    VERSION: "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
+  script:
+    - sh deploy/resolve-nodemodules.sh
+    - ./deploy/build.sh pilsner

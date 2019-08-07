@@ -1,8 +1,10 @@
 /lerna-debug.log
-/mangoweb/*/dist
-/mangoweb/*/node_modules
+/instances/*/*/dist
+/instances/*/*/node_modules
+/projects/*/*/dist
+/projects/*/*/node_modules
+/projects/*/api/migrations
 /node_modules
 /packages/*/dist
 /packages/*/node_modules
-mangoweb/cms-api/src/projects/*/migrations
 /mangoweb/admin/webpack-assets.json

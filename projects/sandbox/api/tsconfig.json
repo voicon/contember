@@ -1,0 +1,19 @@
+{
+	"extends": "../../../tsconfig.settings.json",
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"outDir": "./dist",
+		"lib": [
+			"esnext"
+		]
+	},
+	"references": [
+		{
+			"path": "../../../packages/cms-api/src"
+		},
+		{
+			"path": "../../../packages/cms-common/src"
+		}
+	]
+}

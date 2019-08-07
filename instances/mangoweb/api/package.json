@@ -1,0 +1,25 @@
+{
+	"name": "@mangoweb/contember-instance-mangoweb-api",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"start": "dotenv -- nodemon --watch dist --watch node_modules --ext js --delay 500ms --inspect=0.0.0.0 ./dist/src/index.js start",
+		"console": "dotenv -- node ./dist/src/index.js",
+		"reset": "dotenv --  node ./dist/src/index.js drop && dotenv --  node ./dist/src/index.js update",
+		"sync": "dotenv --  node ./dist/src/index.js update"
+	},
+	"dependencies": {
+		"cms-api": "^0.0.0",
+		"cms-common": "^0.0.0",
+		"@mangoweb/contember-project-mangoweb-api": "0.0.0",
+		"@mangoweb/contember-project-pilsner-api": "0.0.0",
+		"@mangoweb/contember-project-quanti-api": "0.0.0",
+		"@mangoweb/contember-project-sandbox-api": "0.0.0"
+	},
+	"devDependencies": {
+		"dotenv-cli": "^1.4.0",
+		"nodemon": "^1.18.3",
+		"tslint": "^5.10.0",
+		"typescript": "^3.5.2"
+	}
+}

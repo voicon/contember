@@ -1,0 +1,17 @@
+{
+	"name": "@mangoweb/contember-project-quanti-api",
+	"private": true,
+	"version": "0.0.0",
+	"scripts": {
+	},
+	"main": "dist/src/index.js",
+	"typings": "dist/src/index.d.ts",
+	"dependencies": {
+		"cms-api": "^0.0.0",
+		"cms-common": "^0.0.0"
+	},
+	"devDependencies": {
+		"tslint": "^5.10.0",
+		"typescript": "^3.5.2"
+	}
+}
