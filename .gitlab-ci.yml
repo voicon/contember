@@ -160,7 +160,7 @@ build:pilsner:
   stage: deploy:build
   only:
     refs:
-      - /^pr/dir-struct$/ # build/pilsner
+      - build/pilsner
   variables:
     VERSION: "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
   script:
