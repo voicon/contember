@@ -46,13 +46,13 @@ const DeployButtonInner = Component<{
 			}}
 		</DataContext.Consumer>
 	),
-	'DeployButtonInner',
 	() => (
 		<>
 			<Field name={'apiKey'} />
 			<Field name={'apiEndpoint'} />
 		</>
 	),
+	'DeployButtonInner',
 )
 
 export class DeployButton extends React.Component<Props, State> {
