@@ -1,4 +1,5 @@
 FROM node:10
+WORKDIR /src
 
 ADD ./ .
 ADD ./src/config/config.prod.yaml ./src/config/config.yaml
