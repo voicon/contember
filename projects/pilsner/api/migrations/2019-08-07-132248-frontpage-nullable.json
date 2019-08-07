@@ -1,0 +1,20 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "Site",
+			"fieldName": "frontPage"
+		},
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "Site",
+			"relation": {
+				"name": "frontPage",
+				"ownedBy": "site",
+				"target": "FrontPage",
+				"type": "OneHasOne",
+				"nullable": true
+			}
+		}
+	]
+}
