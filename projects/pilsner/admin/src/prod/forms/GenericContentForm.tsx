@@ -9,6 +9,7 @@ import {
 	SortableRepeater,
 	TextAreaField,
 	TextField,
+	ToOne,
 } from 'cms-admin'
 import * as React from 'react'
 import { ImageField } from '../components'
@@ -48,6 +49,18 @@ export const GenericContentForm = Component(
 							'HTML',
 							<>
 								<TextAreaField name="text" label={'Text'} />
+							</>,
+						],
+						[
+							new Literal('contentGallery'),
+							'Desktop gallery',
+							<>
+								<ToOne field={'gallery'}>
+									<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+										<ImageField name={'image'} label={'Image'} />
+										<TextField name={'caption'} label={'Caption'} />
+									</SortableRepeater>
+								</ToOne>
 							</>,
 						],
 					]}
