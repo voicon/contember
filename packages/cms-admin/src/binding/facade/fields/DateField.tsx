@@ -1,34 +1,32 @@
 import * as React from 'react'
-import { ChangeEvent } from 'react'
-import { FormGroup, FormGroupProps, TextArea } from '../../../components'
+import DatePicker from 'react-datepicker'
+import { FormGroup, FormGroupProps } from '../../../components/ui'
 import { FieldName } from '../../bindingTypes'
 import { Field } from '../../coreComponents'
 import { FieldAccessor } from '../../dao'
 import { SimpleRelativeSingleField } from '../auxiliary'
 
-export interface TextAreaFieldProps {
+export interface DateFieldProps {
 	name: FieldName
 	label?: FormGroupProps['label']
-	large?: boolean
 }
 
-export const TextAreaField = SimpleRelativeSingleField<TextAreaFieldProps>(props => {
-	const generateOnChange = (data: FieldAccessor<string>) => (e: ChangeEvent<HTMLTextAreaElement>) => {
-		data.updateValue && data.updateValue(e.target.value)
+export const DateField = SimpleRelativeSingleField<DateFieldProps>(props => {
+	const generateOnChange = (data: FieldAccessor<string>) => (date: Date | null) => {
+		data.updateValue && data.updateValue(date ? date.toISOString() : null)
 	}
 	return (
 		<Field<string> name={props.name}>
 			{({ data, isMutating, environment, errors }): React.ReactNode => (
 				<FormGroup label={environment.applySystemMiddleware('labelMiddleware', props.label)} errors={errors}>
-					<TextArea
-						value={data.currentValue || ''}
+					<DatePicker
+						selected={data.currentValue !== null ? new Date(data.currentValue) : null}
 						onChange={generateOnChange(data)}
 						readOnly={isMutating}
-						large={props.large}
-						// fill={true}
+						isClearable={true}
 					/>
 				</FormGroup>
 			)}
 		</Field>
 	)
-}, 'TextAreaField')
+}, 'DateField')
