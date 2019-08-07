@@ -1,11 +1,12 @@
 import { CheckboxList, Component, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
-import { ImageField } from '../components'
+import { ImageField, IsPublishedField } from '../components'
 import { GenericContentForm, LinkForm, SeoForm } from './'
 
 export const PostForm = Component(
 	() => (
 		<>
+			<IsPublishedField />
 			<TextField name="title" large={true} label={'Title'} />
 			<LinkForm />
 			<ImageField name={'headerImage'} label={'Header image'} />
