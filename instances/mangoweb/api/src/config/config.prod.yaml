@@ -10,6 +10,7 @@ projects:
     - id: 2b71cf74-5271-4142-b258-b2ce14722187
       slug: mangoweb
       name: manGoweb
+      directory: "@mangoweb/contember-project-mangoweb-api"
       stages:
           - id: 7c78c41a-6a71-4adc-ae9a-0b8592480619
             slug: preview
@@ -30,6 +31,7 @@ projects:
     - id: 9b5f50a8-c35b-46fc-abf6-090c7a68edd5
       slug: quanti
       name: Quanti
+      directory: "@mangoweb/contember-project-quanti-api"
       stages:
         - id: bac2b042-6b65-47fd-9cb6-ba04a589c241
           slug: prod
@@ -50,7 +52,7 @@ projects:
 
     - id: 290ea433-54d4-4d4c-a85f-64c1ef965aef
       slug: pilsner-beta
-      directory: pilsner
+      directory: "@mangoweb/contember-project-pilsner-api"
       name: Pilsner Beta
       stages:
         - id: 2e0088c4-3245-4994-8ce6-efc28ac6e5be
