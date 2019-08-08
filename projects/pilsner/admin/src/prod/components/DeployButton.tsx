@@ -7,7 +7,7 @@ import {
 	readEventStream,
 	readLines,
 	RendererProps,
-	SingleEntityDataProvider
+	SingleEntityDataProvider,
 } from 'cms-admin'
 import * as React from 'react'
 
@@ -52,7 +52,7 @@ const DeployButtonInner = Component<{
 			<Field name={'apiKey'} />
 			<Field name={'apiEndpoint'} />
 		</>
-	)
+	),
 )
 
 export class DeployButton extends React.Component<Props, State> {
@@ -62,8 +62,8 @@ export class DeployButton extends React.Component<Props, State> {
 		const response = await fetch(endpoint, {
 			method: 'POST',
 			headers: {
-				'X-Api-Key': key
-			}
+				'X-Api-Key': key,
+			},
 		})
 		const reader = response.body!.getReader()
 		const lines = readLines(reader)

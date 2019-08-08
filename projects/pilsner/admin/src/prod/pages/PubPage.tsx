@@ -22,10 +22,10 @@ export const PubPage = (
 			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'pubCreate',
-				label: 'Add pub'
+				label: 'Add pub',
 			}}
 			editButton={{
-				pageName: 'pubEdit'
+				pageName: 'pubEdit',
 			}}
 		>
 			<FieldText name="name" />

@@ -8,5 +8,5 @@ export interface VideoProps {
 
 export const Video = Component<VideoProps>(
 	props => <VideoUploadField label={`${props.label || 'Video'}: url`} name={`${props.name}.url`} />,
-	'Image'
+	'Image',
 )

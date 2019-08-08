@@ -7,7 +7,7 @@ export const TapsterEditPage = (
 		entity="Tapster"
 		pageName={'tapsterEdit'}
 		rendererProps={{
-			title: 'Edit tapster'
+			title: 'Edit tapster',
 		}}
 	>
 		<TapsterForm />

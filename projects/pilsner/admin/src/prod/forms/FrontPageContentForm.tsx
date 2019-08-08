@@ -15,7 +15,7 @@ export const FrontPageContentForm = Component(
 							<TextField name="title" label={'Title'} />
 							<TextField name="subtitle" label={'Subtitle'} />
 							<TextAreaField name="text" label={'Text'} />
-						</>
+						</>,
 					],
 					[
 						new Literal('frontHalfImageLight'),
@@ -26,7 +26,7 @@ export const FrontPageContentForm = Component(
 							<ImageField name={'image'} label={'Image'} />
 							<TextField name="buttonCaption" label={'Button caption'} />
 							<TextField name="url" label={'Button url'} />
-						</>
+						</>,
 					],
 					[
 						new Literal('frontHalfImageLeft'),
@@ -35,7 +35,7 @@ export const FrontPageContentForm = Component(
 							<TextField name="title" label={'Title'} />
 							<TextAreaField name="text" label={'Text'} />
 							<ImageField name={'image'} label={'Image'} />
-						</>
+						</>,
 					],
 					[
 						new Literal('frontHalfImageRight'),
@@ -44,7 +44,7 @@ export const FrontPageContentForm = Component(
 							<TextField name="title" label={'Title'} />
 							<TextAreaField name="text" label={'Text'} />
 							<ImageField name={'image'} label={'Image'} />
-						</>
+						</>,
 					],
 					[
 						new Literal('frontPhotoBoxLeft'),
@@ -53,7 +53,7 @@ export const FrontPageContentForm = Component(
 							<TextField name="title" label={'Title'} />
 							<TextAreaField name="text" label={'Text'} />
 							<ImageField name={'image'} label={'Image'} />
-						</>
+						</>,
 					],
 					[
 						new Literal('frontPhotoBoxRight'),
@@ -62,14 +62,14 @@ export const FrontPageContentForm = Component(
 							<TextField name="title" label={'Title'} />
 							<TextAreaField name="text" label={'Text'} />
 							<ImageField name={'image'} label={'Image'} />
-						</>
+						</>,
 					],
 					[
 						new Literal('frontLargeImage'),
 						'Large photo',
 						<>
 							<ImageField name={'image'} label={'Image'} />
-						</>
+						</>,
 					],
 					[
 						new Literal('frontLargeImageWithTextBox'),
@@ -79,7 +79,7 @@ export const FrontPageContentForm = Component(
 							<TextField name="subtitle" label={'Subtitle'} />
 							<TextAreaField name="text" label={'Text'} />
 							<ImageField name={'image'} label={'Image'} />
-						</>
+						</>,
 					],
 					[
 						new Literal('frontPhoneGallery'),
@@ -90,7 +90,7 @@ export const FrontPageContentForm = Component(
 									<ImageField name={'image'} label={'Image'} single={true} />
 								</SortableRepeater>
 							</ToOne>
-						</>
+						</>,
 					],
 					[
 						new Literal('frontDesktopGallery'),
@@ -101,7 +101,7 @@ export const FrontPageContentForm = Component(
 									<ImageField name={'image'} label={'Image'} single={true} />
 								</SortableRepeater>
 							</ToOne>
-						</>
+						</>,
 					],
 					[
 						new Literal('frontCarousel'),
@@ -115,11 +115,11 @@ export const FrontPageContentForm = Component(
 									<ImageField name={'image'} label={'Image'} />
 								</SortableRepeater>
 							</ToOne>
-						</>
-					]
+						</>,
+					],
 				]}
 			/>
 		</SortableRepeater>
 	),
-	'FrontPageContentForm'
+	'FrontPageContentForm',
 )

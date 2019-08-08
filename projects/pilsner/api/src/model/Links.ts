@@ -9,7 +9,7 @@ import {
 	PubsPage,
 	Tag,
 	Tapster,
-	TapstersPage
+	TapstersPage,
 } from './'
 import { SchemaDefinition as d } from 'cms-api'
 

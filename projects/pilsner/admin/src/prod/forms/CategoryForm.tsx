@@ -10,5 +10,5 @@ export const CategoryForm = Component(
 			<SeoForm />
 		</>
 	),
-	'CategoryForm'
+	'CategoryForm',
 )

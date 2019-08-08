@@ -14,7 +14,7 @@ export default class HeaderLeft extends React.PureComponent {
 					labelField="name"
 					slugField="slug"
 					buttonProps={{
-						icon: IconNames.GLOBE
+						icon: IconNames.GLOBE,
 					}}
 				/>
 			</>

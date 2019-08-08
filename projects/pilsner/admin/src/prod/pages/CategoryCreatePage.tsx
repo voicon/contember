@@ -8,7 +8,7 @@ export const CategoryCreatePage = (
 		entity="Category"
 		pageName={'categoryCreate'}
 		rendererProps={{
-			title: 'Create new category'
+			title: 'Create new category',
 		}}
 	>
 		<SiteField />

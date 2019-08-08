@@ -10,5 +10,5 @@ export const LocationField = Component(
 			<FieldText<string> name="parent.name" format={val => val && `, ${val}`} />
 		</SelectField>
 	),
-	'LocationField'
+	'LocationField',
 )

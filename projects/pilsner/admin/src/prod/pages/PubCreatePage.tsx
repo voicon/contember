@@ -8,7 +8,7 @@ export const PubCreatePage = (
 		entity="Pub"
 		pageName={'pubCreate'}
 		rendererProps={{
-			title: 'Add new pub'
+			title: 'Add new pub',
 		}}
 	>
 		<SiteField />

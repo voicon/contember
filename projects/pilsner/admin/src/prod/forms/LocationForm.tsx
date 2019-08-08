@@ -11,5 +11,5 @@ export const LocationForm = Component(
 			<LocationField name="parent" label="Parent" />
 		</>
 	),
-	'LocationForm'
+	'LocationForm',
 )

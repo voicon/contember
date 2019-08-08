@@ -9,7 +9,7 @@ const acl: Acl.Schema = {
 	roles: {
 		admin: {
 			stages: '*',
-			entities: PermissionsBuilder.create(model).allowAll().permissions
+			entities: PermissionsBuilder.create(model).allowAll().permissions,
 		},
 		regionManager: {
 			stages: '*',
@@ -39,27 +39,27 @@ const acl: Acl.Schema = {
 					and: [
 						{ or: [{ pub: { id: { ['null']: true } } }, { pub: PermissionsBuilder.predicateReference('site') }] },
 						{
-							or: [{ tapster: { id: { ['null']: true } } }, { tapster: PermissionsBuilder.predicateReference('site') }]
-						}
-					]
+							or: [{ tapster: { id: { ['null']: true } } }, { tapster: PermissionsBuilder.predicateReference('site') }],
+						},
+					],
 				})
 				.allowAll('site')
 
 				.onEntity('Attribute')
 				.addPredicate('site', {
-					set: PermissionsBuilder.predicateReference('site')
+					set: PermissionsBuilder.predicateReference('site'),
 				})
 				.allowAll('site')
 
 				.onEntity('AttributeValue')
 				.addPredicate('site', {
-					attribute: PermissionsBuilder.predicateReference('site')
+					attribute: PermissionsBuilder.predicateReference('site'),
 				})
 				.allowAll('site')
 
 				.onEntity('FooterLink')
 				.addPredicate('site', {
-					footer: PermissionsBuilder.predicateReference('site')
+					footer: PermissionsBuilder.predicateReference('site'),
 				})
 				.allowAll('site')
 
@@ -71,24 +71,24 @@ const acl: Acl.Schema = {
 					and: [
 						{ or: [{ pub: { id: { ['null']: true } } }, { pub: PermissionsBuilder.predicateReference('site') }] },
 						{
-							or: [{ tapster: { id: { ['null']: true } } }, { tapster: PermissionsBuilder.predicateReference('site') }]
+							or: [{ tapster: { id: { ['null']: true } } }, { tapster: PermissionsBuilder.predicateReference('site') }],
 						},
 						{
 							or: [
 								{ frontPage: { id: { ['null']: true } } },
-								{ frontPage: PermissionsBuilder.predicateReference('site') }
-							]
+								{ frontPage: PermissionsBuilder.predicateReference('site') },
+							],
 						},
 						{
 							or: [
 								{ genericPage: { id: { ['null']: true } } },
-								{ genericPage: PermissionsBuilder.predicateReference('site') }
-							]
+								{ genericPage: PermissionsBuilder.predicateReference('site') },
+							],
 						},
 						{
-							or: [{ post: { id: { ['null']: true } } }, { post: PermissionsBuilder.predicateReference('site') }]
-						}
-					]
+							or: [{ post: { id: { ['null']: true } } }, { post: PermissionsBuilder.predicateReference('site') }],
+						},
+					],
 				})
 				.allowAll('site')
 
@@ -102,15 +102,15 @@ const acl: Acl.Schema = {
 
 				.onEntity('ContentImage')
 				.addPredicate('site', { gallery: PermissionsBuilder.predicateReference('site') })
-				.allowAll('site').permissions
-		}
-	}
+				.allowAll('site').permissions,
+		},
+	},
 }
 
 const schema: Schema = {
 	model: model,
 	acl: acl,
-	validation: InputValidation.parseDefinition(modelDefinition)
+	validation: InputValidation.parseDefinition(modelDefinition),
 }
 
 export default schema

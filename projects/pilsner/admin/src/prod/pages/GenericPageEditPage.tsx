@@ -7,7 +7,7 @@ export const GenericPageEditPage = (
 		entity="GenericPage"
 		pageName={'pageEdit'}
 		rendererProps={{
-			title: 'Edit page'
+			title: 'Edit page',
 		}}
 	>
 		<GenericPageForm />

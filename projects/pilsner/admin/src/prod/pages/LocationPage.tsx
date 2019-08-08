@@ -10,7 +10,7 @@ export const LocationPage = (
 		renderer={LocationTreeRenderer}
 		rendererProps={{
 			title: 'Locations',
-			beforeContent: <CreateButton pageName={'locationCreate'} label={'Create location'} />
+			beforeContent: <CreateButton pageName={'locationCreate'} label={'Create location'} />,
 		}}
 	>
 		<FieldText name={'name'} />

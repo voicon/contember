@@ -22,10 +22,10 @@ export const TapsterPage = (
 			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'tapsterCreate',
-				label: 'Add tapster'
+				label: 'Add tapster',
 			}}
 			editButton={{
-				pageName: 'tapsterEdit'
+				pageName: 'tapsterEdit',
 			}}
 		>
 			<FieldText name="name" />

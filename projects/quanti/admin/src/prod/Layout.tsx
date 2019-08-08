@@ -14,13 +14,13 @@ const layout = {
 				labelField="slug"
 				slugField="slug"
 				buttonProps={{
-					icon: IconNames.GLOBE
+					icon: IconNames.GLOBE,
 				}}
 			/>
 		),
-		right: false
+		right: false,
 	},
-	side: <SideMenu />
+	side: <SideMenu />,
 }
 
 export class Layout extends React.Component {

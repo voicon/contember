@@ -7,9 +7,9 @@ const layout = {
 	header: {
 		title: 'manGoweb',
 		left: <HeaderLeft />,
-		right: false
+		right: false,
 	},
-	side: <Side />
+	side: <Side />,
 }
 
 export default class Layout extends React.Component {

@@ -13,7 +13,7 @@ const menuItemForm = (
 				[new Literal('team'), 'Team'],
 				[new Literal('whatWeDo'), 'What we do'],
 				[new Literal('references'), 'References'],
-				[new Literal('contact'), 'Contact']
+				[new Literal('contact'), 'Contact'],
 			]}
 		/>
 		<LocaleSideDimension>

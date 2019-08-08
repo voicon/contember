@@ -16,5 +16,5 @@ export const Person = Component(
 			</LocaleSideDimension>
 		</>
 	),
-	'Person'
+	'Person',
 )

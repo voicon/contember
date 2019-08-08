@@ -15,9 +15,9 @@ export const SocialNetwork = Component<SocialNetworkProps>(
 				[new Literal('Facebook'), 'Facebook'],
 				[new Literal('Twitter'), 'Twitter'],
 				[new Literal('LinkedIn'), 'LinkedIn'],
-				[new Literal('Instagram'), 'Instagram']
+				[new Literal('Instagram'), 'Instagram'],
 			]}
 		/>
 	),
-	'SocialNetwork'
+	'SocialNetwork',
 )

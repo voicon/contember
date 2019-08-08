@@ -8,5 +8,5 @@ export interface ImageProps {
 
 export const Image = Component<ImageProps>(
 	props => <ImageUploadField label={`${props.label || 'Image'}: url`} name={`${props.name}.url`} />,
-	'Image'
+	'Image',
 )

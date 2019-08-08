@@ -7,7 +7,7 @@ export const CategoryEditPage = (
 		entity="Category"
 		pageName={'categoryEdit'}
 		rendererProps={{
-			title: 'Edit category'
+			title: 'Edit category',
 		}}
 	>
 		<CategoryForm />

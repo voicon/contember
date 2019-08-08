@@ -11,5 +11,5 @@ export const GenericPageForm = Component(
 			<SeoForm />
 		</>
 	),
-	'GenericPageForm'
+	'GenericPageForm',
 )

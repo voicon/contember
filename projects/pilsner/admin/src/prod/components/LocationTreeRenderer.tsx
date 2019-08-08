@@ -4,7 +4,7 @@ import {
 	DataContext,
 	DataRendererProps,
 	DefaultRenderer,
-	EntityAccessor
+	EntityAccessor,
 } from 'cms-admin'
 import * as React from 'react'
 

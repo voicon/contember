@@ -13,7 +13,7 @@ import { Schema } from 'cms-common'
 		quanti: Quanti,
 		mangoweb: Mangoweb,
 		blog: Blog,
-		pilsner: Pilsner
+		pilsner: Pilsner,
 	}
 
 	const configFile = path.join(__dirname, '../../src/config/config.yaml')

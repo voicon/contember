@@ -45,15 +45,15 @@ export const FooterPage = (
 								'External',
 								<>
 									<TextField name={'linkUrl'} label={'URL'} />
-								</>
+								</>,
 							],
 							[
 								new Literal('internal'),
 								'Internal',
 								<>
 									<SelectField name={'link'} label={'link'} options={'Linkable.url'} />
-								</>
-							]
+								</>,
+							],
 						]}
 					/>
 				</SortableRepeater>

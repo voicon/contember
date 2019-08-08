@@ -11,10 +11,10 @@ export const TagPage = (
 			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'tagCreate',
-				label: 'Create tag'
+				label: 'Create tag',
 			}}
 			editButton={{
-				pageName: 'tagEdit'
+				pageName: 'tagEdit',
 			}}
 		>
 			<FieldText name="name" />

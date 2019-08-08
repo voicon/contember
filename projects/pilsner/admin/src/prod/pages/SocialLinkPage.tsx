@@ -12,7 +12,7 @@ export const SocialLinkPage = (
 					[new Literal('facebook'), 'Facebook'],
 					[new Literal('twitter'), 'Twitter'],
 					[new Literal('youtube'), 'YouTube'],
-					[new Literal('instagram'), 'Instagram']
+					[new Literal('instagram'), 'Instagram'],
 				]}
 			/>
 			<TextField label="Url" name="url" />

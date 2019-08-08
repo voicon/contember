@@ -8,7 +8,7 @@ export const BlogCreatePage = (
 		entity="Post"
 		pageName={'blogCreate'}
 		rendererProps={{
-			title: 'Create new post'
+			title: 'Create new post',
 		}}
 	>
 		<SiteField />

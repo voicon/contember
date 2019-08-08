@@ -11,10 +11,10 @@ export const CategoryPage = (
 			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'categoryCreate',
-				label: 'Create category'
+				label: 'Create category',
 			}}
 			editButton={{
-				pageName: 'categoryEdit'
+				pageName: 'categoryEdit',
 			}}
 		>
 			<FieldText name="name" />

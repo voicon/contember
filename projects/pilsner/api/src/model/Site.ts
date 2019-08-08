@@ -15,7 +15,7 @@ import {
 	Tag,
 	Tapster,
 	TapstersPage,
-	Translation
+	Translation,
 } from './'
 
 export class Site {

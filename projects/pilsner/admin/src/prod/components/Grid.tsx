@@ -4,7 +4,7 @@ import {
 	RemoveButton,
 	Table,
 	TableRenderer,
-	TableRendererProps
+	TableRendererProps,
 } from 'cms-admin'
 import * as React from 'react'
 import { CreateButton, CreateButtonProps } from './CreateButton'
@@ -21,7 +21,7 @@ export const Grid: React.ComponentType<GridProps> = props => (
 		{...props}
 		renderer={TableRenderer}
 		rendererProps={{
-			beforeContent: props.createButton && <CreateButton {...props.createButton} />
+			beforeContent: props.createButton && <CreateButton {...props.createButton} />,
 		}}
 	>
 		{React.Children.toArray(props.children).map((it, i) => (

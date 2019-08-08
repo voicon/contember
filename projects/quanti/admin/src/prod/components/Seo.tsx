@@ -18,5 +18,5 @@ export const Seo = Component<SeoProps>(
 			<Image label="Facebook image" name={`${props.name}.ogImage`} />
 		</>
 	),
-	'Seo'
+	'Seo',
 )

@@ -5,7 +5,7 @@ const config: ProjectConfig[] = [
 		project: 'quanti',
 		stage: 'prod',
 		defaultDimensions: {
-			locale: ['cs']
+			locale: ['cs'],
 		},
 		component: () => import('./prod'),
 		routes: {
@@ -26,9 +26,9 @@ const config: ProjectConfig[] = [
 			contact: { path: '/contact' },
 			contactMessages: { path: '/contact-messages' },
 			diff: { path: '/diff' },
-			diff_stage: { path: '/diff/:targetStage' }
-		}
-	}
+			diff_stage: { path: '/diff/:targetStage' },
+		},
+	},
 ]
 
 export default config

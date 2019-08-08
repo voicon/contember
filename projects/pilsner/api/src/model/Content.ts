@@ -25,7 +25,7 @@ export const ContentBlockType = d.createEnum(
 	'frontLargeImageWithTextBox',
 	'contentTextSection',
 	'contentImage',
-	'contentHtml'
+	'contentHtml',
 )
 
 export class ContentBlock {

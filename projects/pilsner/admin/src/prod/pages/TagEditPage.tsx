@@ -7,7 +7,7 @@ export const TagEditPage = (
 		entity="Tag"
 		pageName={'tagEdit'}
 		rendererProps={{
-			title: 'Edit tag'
+			title: 'Edit tag',
 		}}
 	>
 		<TagForm />

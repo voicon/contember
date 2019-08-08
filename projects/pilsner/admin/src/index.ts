@@ -37,7 +37,7 @@ const routes = {
 	social: { path: '/social-networks' },
 
 	sites: { path: '/sites' },
-	translations: { path: '/translations' }
+	translations: { path: '/translations' },
 }
 const config: ProjectConfig[] = [
 	{
@@ -45,19 +45,19 @@ const config: ProjectConfig[] = [
 		stage: 'prod',
 		component: () => import('./prod'),
 		defaultDimensions: {
-			site: ['en']
+			site: ['en'],
 		},
-		routes: routes
+		routes: routes,
 	},
 	{
 		project: 'pilsner-beta',
 		stage: 'prod',
 		component: () => import('./prod'),
 		defaultDimensions: {
-			site: ['en']
+			site: ['en'],
 		},
-		routes: routes
-	}
+		routes: routes,
+	},
 ]
 
 export default config

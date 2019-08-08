@@ -7,7 +7,7 @@ export const LocationEditPage = (
 		entity="Location"
 		pageName={'locationEdit'}
 		rendererProps={{
-			title: 'Edit location'
+			title: 'Edit location',
 		}}
 	>
 		<LocationForm />

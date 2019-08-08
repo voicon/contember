@@ -8,7 +8,7 @@ export const TapsterCreatePage = (
 		entity="Tapster"
 		pageName={'tapsterCreate'}
 		rendererProps={{
-			title: 'Add new tapster'
+			title: 'Add new tapster',
 		}}
 	>
 		<SiteField />

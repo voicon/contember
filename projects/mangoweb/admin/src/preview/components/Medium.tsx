@@ -21,19 +21,19 @@ export const Medium = Component<MediumProps>(
 						'Image',
 						<>
 							<ImageField name="image" label={props.imageLabel || 'The image'} />
-						</>
+						</>,
 					],
 					[
 						new Literal('video'),
 						'Video',
 						<>
 							<VideoField name="video" title={props.videoLabel || 'Video'} />
-						</>
-					]
+						</>,
+					],
 				]}
 				label={props.label}
 			/>
 		</ToOne>
 	),
-	'Medium'
+	'Medium',
 )

@@ -15,10 +15,10 @@ export const State = Component<StateProps>(
 				options={[
 					[new Literal('Draft'), 'Draft'],
 					[new Literal('ToBePublished'), 'To be published'],
-					[new Literal('Published'), 'Published']
+					[new Literal('Published'), 'Published'],
 				]}
 			/>
 		</>
 	),
-	'State'
+	'State',
 )

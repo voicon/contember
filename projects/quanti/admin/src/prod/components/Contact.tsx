@@ -12,5 +12,5 @@ export const Contact = Component(
 			<Link name="link" />
 		</LocaleSideDimension>
 	),
-	'Contact'
+	'Contact',
 )

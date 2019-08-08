@@ -10,5 +10,5 @@ export const Category = Component(
 			</LocaleSideDimension>
 		</>
 	),
-	'Category'
+	'Category',
 )

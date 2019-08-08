@@ -12,5 +12,5 @@ export const Links = Component<LinksProps>(
 			<CheckboxField label="Is primary" name="isPrimary" />
 		</Repeater>
 	),
-	'Links'
+	'Links',
 )

@@ -12,7 +12,7 @@ import {
 	personListForm,
 	whatWeDoForm,
 	whatWeDoListForm,
-	whatWeDoPageForm
+	whatWeDoPageForm,
 } from './forms'
 import { footerForm } from './forms/'
 import { languageForm } from './forms/languageForm'
@@ -30,7 +30,7 @@ export default () => (
 			entity="FrontPage"
 			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
-				title: 'Front Page'
+				title: 'Front Page',
 			}}
 		>
 			{frontPageForm}
@@ -41,8 +41,8 @@ export default () => (
 			rendererProps={{
 				title: 'Menu',
 				sortable: {
-					sortBy: 'order'
-				}
+					sortBy: 'order',
+				},
 			}}
 		>
 			{menuItemForm}
@@ -52,7 +52,7 @@ export default () => (
 			entity="Footer"
 			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
-				title: 'Footer'
+				title: 'Footer',
 			}}
 		>
 			{footerForm}
@@ -64,7 +64,7 @@ export default () => (
 			entity="TeamPage"
 			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
-				title: 'Team Page'
+				title: 'Team Page',
 			}}
 		>
 			{teamPageForm}
@@ -75,8 +75,8 @@ export default () => (
 				title: 'Team members',
 				beforeContent: <PageLink change={() => ({ name: 'create_person' })}>Create new</PageLink>,
 				sortable: {
-					sortBy: 'order'
-				}
+					sortBy: 'order',
+				},
 			}}
 		>
 			{personListForm}
@@ -88,7 +88,7 @@ export default () => (
 					<>
 						Edit <FieldText name="shortName" />
 					</>
-				)
+				),
 			}}
 		>
 			{personForm}
@@ -96,7 +96,7 @@ export default () => (
 		<CreatePage
 			entity="Person"
 			rendererProps={{
-				title: 'Create a new team member'
+				title: 'Create a new team member',
 			}}
 		>
 			{personForm}
@@ -108,7 +108,7 @@ export default () => (
 			entity="WhatWeDoPage"
 			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
-				title: 'What we do page'
+				title: 'What we do page',
 			}}
 		>
 			{whatWeDoPageForm}
@@ -118,7 +118,7 @@ export default () => (
 			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			pageName="multiEdit_whatWeDo"
 			rendererProps={{
-				title: 'What we do'
+				title: 'What we do',
 			}}
 		>
 			{whatWeDoListForm}
@@ -130,7 +130,7 @@ export default () => (
 					<>
 						Edit <FieldText name="activity" />
 					</>
-				)
+				),
 			}}
 		>
 			{whatWeDoForm}
@@ -142,7 +142,7 @@ export default () => (
 			entity="ReferencesPage"
 			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
-				title: 'References page'
+				title: 'References page',
 			}}
 		>
 			{referencesPageForm}
@@ -153,7 +153,7 @@ export default () => (
 			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			pageName="edit_references"
 			rendererProps={{
-				title: 'References'
+				title: 'References',
 			}}
 		>
 			{referencesForm}
@@ -165,7 +165,7 @@ export default () => (
 			entity="ContactPage"
 			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
-				title: 'Contact page'
+				title: 'Contact page',
 			}}
 		>
 			{contactPageForm}
@@ -174,7 +174,7 @@ export default () => (
 			entity="Contact"
 			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
 			rendererProps={{
-				title: 'Contact information'
+				title: 'Contact information',
 			}}
 		>
 			{contactForm}
@@ -199,7 +199,7 @@ export default () => (
 							</p>
 						</Callout>
 					</>
-				)
+				),
 			}}
 		>
 			{languageForm}
