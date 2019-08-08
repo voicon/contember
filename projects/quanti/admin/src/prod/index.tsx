@@ -17,7 +17,7 @@ import {
 	TableRenderer,
 	TextField,
 	DiffView,
-	DiffDialog
+	DiffDialog,
 } from 'cms-admin'
 import * as React from 'react'
 import { Category } from './components/Category'
@@ -65,8 +65,8 @@ export default () => (
 			rendererProps={{
 				title: 'Menu',
 				sortable: {
-					sortBy: 'order'
-				}
+					sortBy: 'order',
+				},
 			}}
 		>
 			<MenuItem />
@@ -90,7 +90,7 @@ export default () => (
 							</Button>
 						)}
 					/>
-				)
+				),
 			}}
 		>
 			<PageListCells />
@@ -167,7 +167,7 @@ export default () => (
 						[new Literal('emailContent'), 'emailContent'],
 						[new Literal('emailContact'), 'emailContact'],
 						[new Literal('emailSend'), 'emailSend'],
-						[new Literal('emailSentMessage'), 'emailSentMessage']
+						[new Literal('emailSentMessage'), 'emailSentMessage'],
 					]}
 				/>
 				<TextField label="Translated" name="translated" />
@@ -179,7 +179,7 @@ export default () => (
 			pageName="contactMessages"
 			renderer={TableRenderer}
 			rendererProps={{
-				title: 'Contact messages'
+				title: 'Contact messages',
 			}}
 		>
 			<Table.Cell>

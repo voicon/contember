@@ -8,7 +8,7 @@ export const LocationCreatePage = (
 		entity="Location"
 		pageName={'locationCreate'}
 		rendererProps={{
-			title: 'Create new location'
+			title: 'Create new location',
 		}}
 	>
 		<SiteField />

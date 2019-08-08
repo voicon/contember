@@ -10,5 +10,5 @@ export const TagForm = Component(
 			<SeoForm />
 		</>
 	),
-	'TagForm'
+	'TagForm',
 )

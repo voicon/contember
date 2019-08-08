@@ -7,7 +7,7 @@ export default (
 		viewBox="0 0 90 33"
 		style={{
 			position: 'relative',
-			top: '14px'
+			top: '14px',
 		}}
 	>
 		<defs>

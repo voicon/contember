@@ -20,5 +20,5 @@ export const AttributesForm = Component<AttributesFormProps>(
 			</ToOne>
 		</>
 	),
-	'AttributesForm'
+	'AttributesForm',
 )

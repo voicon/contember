@@ -20,5 +20,5 @@ export const PostForm = Component(
 			<SeoForm />
 		</>
 	),
-	'PostForm'
+	'PostForm',
 )

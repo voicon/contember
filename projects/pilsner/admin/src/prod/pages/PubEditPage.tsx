@@ -7,7 +7,7 @@ export const PubEditPage = (
 		entity="Pub"
 		pageName={'pubEdit'}
 		rendererProps={{
-			title: 'Edit pub'
+			title: 'Edit pub',
 		}}
 	>
 		<PubForm />

@@ -11,5 +11,5 @@ export const MenuItem = Component(
 			</LocaleSideDimension>
 		</>
 	),
-	'MenuItem'
+	'MenuItem',
 )

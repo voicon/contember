@@ -16,7 +16,7 @@ import {
 	SortableRepeater,
 	Table,
 	TextAreaField,
-	TextField
+	TextField,
 } from 'cms-admin'
 import { Image } from './Image'
 import { LocaleSideDimension } from '../LocaleSideDimension'
@@ -55,7 +55,7 @@ export const Page = Component(
 			</LocaleSideDimension>
 		</>
 	),
-	'Page'
+	'Page',
 )
 
 export const PageListHeader = Component(
@@ -80,7 +80,7 @@ export const PageListHeader = Component(
 			</Table.Row>
 		</>
 	),
-	'PageListHeader'
+	'PageListHeader',
 )
 
 export const PageListCells = Component(
@@ -110,5 +110,5 @@ export const PageListCells = Component(
 			</Table.Cell>
 		</>
 	),
-	'PageListCells'
+	'PageListCells',
 )

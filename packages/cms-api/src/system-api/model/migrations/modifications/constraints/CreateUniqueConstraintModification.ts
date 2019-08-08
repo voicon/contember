@@ -25,9 +25,7 @@ class CreateUniqueConstraintModification implements Modification<CreateUniqueCon
 				},
 				visitOneHasOneOwner: () => {
 					throw new Error(
-						`Cannot create unique key on 1:1 relation, this relation has unique key by default in ${
-							entity.name
-						}.${fieldName}`
+						`Cannot create unique key on 1:1 relation, this relation has unique key by default in ${entity.name}.${fieldName}`,
 					)
 				},
 				visitOneHasOneInversed: () => {
@@ -52,7 +50,7 @@ class CreateUniqueConstraintModification implements Modification<CreateUniqueCon
 					...entity.unique,
 					[this.data.unique.name]: this.data.unique,
 				},
-			}))
+			})),
 		)
 	}
 

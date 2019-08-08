@@ -7,7 +7,7 @@ import Pilsner from '@mangoweb/contember-project-pilsner-api'
 import { Schema } from 'cms-common'
 ;(async () => {
 	const projects: { [name: string]: Schema } = {
-		pilsner: Pilsner
+		pilsner: Pilsner,
 	}
 
 	const configFile = path.join(__dirname, '../../src/config/config.yaml')

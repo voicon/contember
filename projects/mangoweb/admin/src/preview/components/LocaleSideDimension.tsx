@@ -12,13 +12,13 @@ export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 			return {
 				flag: {
 					en: '🇬🇧',
-					cs: '🇨🇿'
+					cs: '🇨🇿',
 				}[currentLangSlug as LangDimension],
 				labelMiddleware: label => (
 					<>
 						<Variable name="flag" /> {label}
 					</>
-				)
+				),
 			}
 		}}
 	>

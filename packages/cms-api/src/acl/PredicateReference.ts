@@ -9,7 +9,7 @@ export const resolvePredicateReference = (
 	model: Model.Schema,
 	permissions: Acl.Permissions,
 	entity: Model.Entity,
-	predicate: Acl.PredicateDefinition<PredicateReference>
+	predicate: Acl.PredicateDefinition<PredicateReference>,
 ): Acl.PredicateDefinition => {
 	const predicateDefinitionProcessor = new PredicateDefinitionProcessor(model)
 	return predicateDefinitionProcessor.process<Acl.PredicateVariable | Input.Condition, PredicateReference>(
@@ -26,21 +26,19 @@ export const resolvePredicateReference = (
 				if (value instanceof PredicateReference) {
 					if (!permissions[targetEntity.name]) {
 						throw new Error(
-							`Permissions for entity ${targetEntity.name} not found. Make sure you are defining it in a right order.`
+							`Permissions for entity ${targetEntity.name} not found. Make sure you are defining it in a right order.`,
 						)
 					}
 					const predicate = permissions[targetEntity.name].predicates[value.name]
 					if (!predicate) {
 						throw new Error(
-							`Predicate ${value.name} of entity ${
-								targetEntity.name
-							} not found. Make sure you are defining it in a right order.`
+							`Predicate ${value.name} of entity ${targetEntity.name} not found. Make sure you are defining it in a right order.`,
 						)
 					}
 					return predicate
 				}
 				return value
 			},
-		}
+		},
 	)
 }

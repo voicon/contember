@@ -71,7 +71,7 @@ export const BlockType = d.createEnum(
 	'Perks',
 	'People',
 	'Category',
-	'Collapse'
+	'Collapse',
 )
 
 export class Numbers {

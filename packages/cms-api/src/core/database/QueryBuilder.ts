@@ -26,16 +26,14 @@ namespace QueryBuilder {
 
 	export function resolveValues(values: Values): ResolvedValues {
 		return Object.entries(values)
-			.map(
-				([key, value]): [string, Literal | Value | undefined] => {
-					if (typeof value === 'function') {
-						return [key, value(new QueryBuilder.ColumnExpressionFactory())]
-					} else if (value instanceof Literal) {
-						return [key, value]
-					}
-					return [key, new Literal('?', [value])]
+			.map(([key, value]): [string, Literal | Value | undefined] => {
+				if (typeof value === 'function') {
+					return [key, value(new QueryBuilder.ColumnExpressionFactory())]
+				} else if (value instanceof Literal) {
+					return [key, value]
 				}
-			)
+				return [key, new Literal('?', [value])]
+			})
 			.filter((it): it is [string, Literal] => it[1] !== undefined)
 			.reduce((result, [key, value]) => ({ ...result, [key]: value }), {})
 	}
@@ -56,7 +54,7 @@ namespace QueryBuilder {
 	}
 
 	export function columnExpressionToLiteral(
-		expr: QueryBuilder.ColumnIdentifier | QueryBuilder.ColumnExpression
+		expr: QueryBuilder.ColumnIdentifier | QueryBuilder.ColumnExpression,
 	): Literal | undefined {
 		if (typeof expr === 'function') {
 			return expr(new QueryBuilder.ColumnExpressionFactory())

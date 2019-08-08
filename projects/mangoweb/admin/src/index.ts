@@ -5,7 +5,7 @@ const config: ProjectConfig[] = [
 		project: 'mangoweb',
 		stage: 'preview',
 		defaultDimensions: {
-			lang: ['cs']
+			lang: ['cs'],
 		},
 		component: () => import('./preview'),
 		routes: {
@@ -30,9 +30,9 @@ const config: ProjectConfig[] = [
 			edit_contactPage: { path: '/contact-page' },
 			edit_contact: { path: '/contact-information' },
 
-			multiEdit_language: { path: '/languages' }
-		}
-	}
+			multiEdit_language: { path: '/languages' },
+		},
+	},
 ]
 
 export default config

@@ -14,21 +14,21 @@ builder.entity('Video', entity =>
 	entity
 		.column('src')
 		.oneHasOne('poster', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
-		.column('order', column => column.type(Model.ColumnType.Int))
+		.column('order', column => column.type(Model.ColumnType.Int)),
 )
 
 builder.entity('Medium', entity =>
 	entity
 		.column('type', column => column.type(Model.ColumnType.Enum, { enumName: 'mediumType' }))
 		.oneHasOne('image', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
-		.oneHasOne('video', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
+		.oneHasOne('video', relation => relation.target('Video').onDelete(Model.OnDelete.cascade)),
 )
 
 builder.entity('Language', entity =>
 	entity
 		.column('slug', column => column.type(Model.ColumnType.String).unique())
 		.column('name')
-		.column('switchToThis')
+		.column('switchToThis'),
 )
 
 builder.entity('PageSeo', entity =>
@@ -39,8 +39,8 @@ builder.entity('PageSeo', entity =>
 				.target('PageSeoLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
-				.ownedBy('pageSeo')
-		)
+				.ownedBy('pageSeo'),
+		),
 )
 
 builder.entity('PageSeoLocale', entity =>
@@ -49,7 +49,7 @@ builder.entity('PageSeoLocale', entity =>
 		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('description')
 		.column('ogTitle')
-		.column('ogDescription')
+		.column('ogDescription'),
 )
 
 // ****************************************************** GENERAL ******************************************************
@@ -64,15 +64,15 @@ builder.entity('MenuItem', entity =>
 				.target('MenuItemLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
-				.ownedBy('menuItem')
-		)
+				.ownedBy('menuItem'),
+		),
 )
 
 builder.entity('MenuItemLocale', entity =>
 	entity
 		.unique(['menuItem', 'locale'])
 		.manyHasOne('locale', relation => relation.target('Language').notNull())
-		.column('label')
+		.column('label'),
 )
 
 // FOOTER
@@ -82,22 +82,22 @@ builder.entity('Footer', entity =>
 			column
 				.type(Model.ColumnType.Enum, { enumName: 'one' })
 				.unique()
-				.notNull()
+				.notNull(),
 		)
 		.oneHasMany('inHouseVideos', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('buttons', relation =>
 			relation
 				.target('FooterButton')
 				.ownerNotNull()
-				.onDelete(Model.OnDelete.cascade)
+				.onDelete(Model.OnDelete.cascade),
 		)
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FooterLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
-				.ownedBy('footer')
-		)
+				.ownedBy('footer'),
+		),
 )
 
 builder.entity('FooterLocale', entity =>
@@ -105,7 +105,7 @@ builder.entity('FooterLocale', entity =>
 		.unique(['footer', 'locale'])
 		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('contactButtonText')
-		.column('inHouseVideosTitle')
+		.column('inHouseVideosTitle'),
 )
 
 builder.entity('FooterButton', entity =>
@@ -116,8 +116,8 @@ builder.entity('FooterButton', entity =>
 				.target('FooterButtonLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
-				.ownedBy('footerButton')
-		)
+				.ownedBy('footerButton'),
+		),
 )
 
 builder.entity('FooterButtonLocale', entity =>
@@ -125,7 +125,7 @@ builder.entity('FooterButtonLocale', entity =>
 		.unique(['footerButton', 'locale'])
 		.column('label')
 		.column('url')
-		.manyHasOne('locale', relation => relation.target('Language').notNull())
+		.manyHasOne('locale', relation => relation.target('Language').notNull()),
 )
 
 // **************************************************** FRONT PAGE *****************************************************
@@ -137,7 +137,7 @@ builder.entity('FrontPage', entity =>
 			column
 				.type(Model.ColumnType.Enum, { enumName: 'one' })
 				.unique()
-				.notNull()
+				.notNull(),
 		)
 		.oneHasOne('heroImage', relation => relation.target('Image').onDelete(Model.OnDelete.cascade))
 		.oneHasOne('introVideo', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
@@ -145,15 +145,15 @@ builder.entity('FrontPage', entity =>
 			relation
 				.target('PageSeo')
 				.inversedNotNull()
-				.onDelete(Model.OnDelete.cascade)
+				.onDelete(Model.OnDelete.cascade),
 		)
 		.oneHasMany('locales', relation =>
 			relation
 				.target('FrontPageLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
-				.ownedBy('frontPage')
-		)
+				.ownedBy('frontPage'),
+		),
 )
 
 builder.entity('FrontPageLocale', entity =>
@@ -172,16 +172,16 @@ builder.entity('FrontPageLocale', entity =>
 			relation
 				.target('FrontPageFeaturedClient')
 				.onDelete(Model.OnDelete.cascade)
-				.ownerNotNull()
+				.ownerNotNull(),
 		)
 
-		.column('videosTitle')
+		.column('videosTitle'),
 )
 
 builder.entity('FrontPageFeaturedClient', entity =>
 	entity
 		.manyHasOne('logo', relation => relation.target('Image'))
-		.column('order', column => column.type(Model.ColumnType.Int))
+		.column('order', column => column.type(Model.ColumnType.Int)),
 )
 
 // **************************************************** WHAT WE DO *****************************************************
@@ -198,14 +198,14 @@ builder.entity('WhatWeDo', entity =>
 		.oneHasOne('boomerangVideo', relation => relation.target('Video').onDelete(Model.OnDelete.cascade))
 		.column('descriptionHeading')
 		.column('urlSlug')
-		.oneHasMany('description', relation => relation.target('WhatWeDoDescription').onDelete(Model.OnDelete.cascade))
+		.oneHasMany('description', relation => relation.target('WhatWeDoDescription').onDelete(Model.OnDelete.cascade)),
 )
 
 builder.entity('WhatWeDoDescription', entity =>
 	entity
 		.column('heading')
 		.oneHasOne('featuredMedium', relation => relation.target('Medium').onDelete(Model.OnDelete.cascade))
-		.column('description')
+		.column('description'),
 )
 
 // WHAT WE DO PAGE
@@ -215,16 +215,16 @@ builder.entity('WhatWeDoPage', entity =>
 			column
 				.type(Model.ColumnType.Enum, { enumName: 'one' })
 				.unique()
-				.notNull()
+				.notNull(),
 		)
 		.oneHasMany('locales', relation =>
 			relation
 				.target('WhatWeDoPageLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('whatWeDoPage')
-				.ownerNotNull()
+				.ownerNotNull(),
 		)
-		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade))
+		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade)),
 )
 
 builder.entity('WhatWeDoPageLocale', entity =>
@@ -238,8 +238,8 @@ builder.entity('WhatWeDoPageLocale', entity =>
 				.target('WhatWeDo')
 				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('whatWeDoPageLocale')
-				.ownerNotNull()
-		)
+				.ownerNotNull(),
+		),
 )
 
 // ******************************************************* TEAM ********************************************************
@@ -251,9 +251,9 @@ builder.entity('TeamPage', entity =>
 			column
 				.type(Model.ColumnType.Enum, { enumName: 'one' })
 				.unique()
-				.notNull()
+				.notNull(),
 		)
-		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade))
+		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade)),
 )
 
 // PERSON
@@ -277,8 +277,8 @@ builder.entity('Person', entity =>
 				.target('PersonLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('person')
-				.ownerNotNull()
-		)
+				.ownerNotNull(),
+		),
 )
 
 builder.entity('PersonLocale', entity =>
@@ -287,7 +287,7 @@ builder.entity('PersonLocale', entity =>
 		.manyHasOne('locale', relation => relation.target('Language').notNull())
 		.column('position')
 		.column('bio')
-		.column('urlSlug')
+		.column('urlSlug'),
 )
 
 // **************************************************** REFERENCES *****************************************************
@@ -299,7 +299,7 @@ builder.entity('ReferencesPage', entity =>
 			column
 				.type(Model.ColumnType.Enum, { enumName: 'one' })
 				.unique()
-				.notNull()
+				.notNull(),
 		)
 		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('locales', relation =>
@@ -307,8 +307,8 @@ builder.entity('ReferencesPage', entity =>
 				.target('ReferencesPageLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('referencesPage')
-				.ownerNotNull()
-		)
+				.ownerNotNull(),
+		),
 )
 
 builder.entity('ReferencesPageLocale', entity =>
@@ -322,8 +322,8 @@ builder.entity('ReferencesPageLocale', entity =>
 				.target('Reference')
 				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('referencePageLocale')
-				.ownerNotNull()
-		)
+				.ownerNotNull(),
+		),
 )
 
 // REFERENCES
@@ -335,7 +335,7 @@ builder.entity(
 			.column('order', column => column.type(Model.ColumnType.Int))
 			.column('title')
 			.column('url')
-			.column('urlLabel')
+			.column('urlLabel'),
 	// TODO case studies
 )
 
@@ -348,7 +348,7 @@ builder.entity('ContactPage', entity =>
 			column
 				.type(Model.ColumnType.Enum, { enumName: 'one' })
 				.unique()
-				.notNull()
+				.notNull(),
 		)
 		.oneHasOne('seo', relation => relation.target('PageSeo').onDelete(Model.OnDelete.cascade))
 		.oneHasMany('locales', relation =>
@@ -356,8 +356,8 @@ builder.entity('ContactPage', entity =>
 				.target('ContactPageLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownedBy('contactPage')
-				.ownerNotNull()
-		)
+				.ownerNotNull(),
+		),
 )
 
 builder.entity('ContactPageLocale', entity =>
@@ -373,7 +373,7 @@ builder.entity('ContactPageLocale', entity =>
 		.column('formSuccessMessage')
 		.column('formErrorMessage')
 		.column('unfilledMessageMessage')
-		.column('unfilledContactMessage')
+		.column('unfilledContactMessage'),
 )
 
 // CONTACT
@@ -383,14 +383,14 @@ builder.entity('Contact', entity =>
 			column
 				.type(Model.ColumnType.Enum, { enumName: 'one' })
 				.unique()
-				.notNull()
+				.notNull(),
 		)
 		.column('facebook')
 		.column('linkedIn')
 		.column('instagram')
 		.column('twitter')
 		.column('mainEmail')
-		.oneHasMany('locations', relation => relation.target('ContactLocation').onDelete(Model.OnDelete.cascade))
+		.oneHasMany('locations', relation => relation.target('ContactLocation').onDelete(Model.OnDelete.cascade)),
 )
 
 builder.entity('ContactLocation', entity =>
@@ -402,8 +402,8 @@ builder.entity('ContactLocation', entity =>
 				.target('ContactLocationLocale')
 				.onDelete(Model.OnDelete.cascade)
 				.ownerNotNull()
-				.ownedBy('contactLocation')
-		)
+				.ownedBy('contactLocation'),
+		),
 )
 
 builder.entity('ContactLocationLocale', entity =>
@@ -414,7 +414,7 @@ builder.entity('ContactLocationLocale', entity =>
 		.column('entity')
 		.column('address')
 		.column('description')
-		.column('additionalInfo')
+		.column('additionalInfo'),
 )
 
 const model = builder.buildSchema()
@@ -423,15 +423,15 @@ const acl: Acl.Schema = {
 	roles: {
 		admin: {
 			stages: '*',
-			entities: new AllowAllPermissionFactory().create(model)
-		}
-	}
+			entities: new AllowAllPermissionFactory().create(model),
+		},
+	},
 }
 
 const schema: Schema = {
 	model: model,
 	acl: acl,
-	validation: {}
+	validation: {},
 }
 
 export default schema

@@ -19,5 +19,5 @@ export const Place = Component(
 			</LocaleSideDimension>
 		</>
 	),
-	'Place'
+	'Place',
 )

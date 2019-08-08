@@ -9,15 +9,15 @@ const acl: Acl.Schema = {
 	roles: {
 		admin: {
 			stages: '*',
-			entities: new AllowAllPermissionFactory().create(model)
-		}
-	}
+			entities: new AllowAllPermissionFactory().create(model),
+		},
+	},
 }
 
 const schema: Schema = {
 	model: model,
 	acl: acl,
-	validation: InputValidation.parseDefinition(modelDefinition)
+	validation: InputValidation.parseDefinition(modelDefinition),
 }
 
 export default schema

@@ -8,7 +8,7 @@ export const TagCreatePage = (
 		entity="Tag"
 		pageName={'tagCreate'}
 		rendererProps={{
-			title: 'Create new tag'
+			title: 'Create new tag',
 		}}
 	>
 		<SiteField />

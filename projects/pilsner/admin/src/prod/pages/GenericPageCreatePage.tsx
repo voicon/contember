@@ -8,7 +8,7 @@ export const GenericPageCreatePage = (
 		entity="GenericPage"
 		pageName={'pageCreate'}
 		rendererProps={{
-			title: 'Create new page'
+			title: 'Create new page',
 		}}
 	>
 		<SiteField />

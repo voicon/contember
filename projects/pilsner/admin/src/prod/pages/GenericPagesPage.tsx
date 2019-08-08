@@ -11,10 +11,10 @@ export const GenericPagesPage = (
 			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'pageCreate',
-				label: 'Create page'
+				label: 'Create page',
 			}}
 			editButton={{
-				pageName: 'pageEdit'
+				pageName: 'pageEdit',
 			}}
 		>
 			<FieldText name="title" />

@@ -8,7 +8,7 @@ import {
 	ReceivedDataTree,
 	ReceivedEntityData,
 	Scalar,
-	TYPENAME_KEY_NAME
+	TYPENAME_KEY_NAME,
 } from '../bindingTypes'
 import {
 	Accessor,
@@ -24,7 +24,7 @@ import {
 	FieldMarker,
 	MarkerTreeRoot,
 	ReferenceMarker,
-	RootAccessor
+	RootAccessor,
 } from '../dao'
 import { ErrorsPreprocessor } from './ErrorsPreprocessor'
 
@@ -45,7 +45,7 @@ class AccessorTreeGenerator {
 		persistedData: ReceivedDataTree<undefined> | undefined,
 		initialData: AccessorTreeRoot | ReceivedDataTree<undefined> | undefined,
 		updateData: AccessorTreeGenerator.UpdateData,
-		errors?: MutationRequestResult
+		errors?: MutationRequestResult,
 	): void {
 		const preprocessor = new ErrorsPreprocessor(errors)
 
@@ -64,8 +64,8 @@ class AccessorTreeGenerator {
 					? undefined
 					: initialData[this.tree.id],
 				updateData,
-				this.errorTreeRoot
-			)
+				this.errorTreeRoot,
+			),
 		)
 	}
 
@@ -73,7 +73,7 @@ class AccessorTreeGenerator {
 		tree: MarkerTreeRoot,
 		data: ReceivedData<undefined> | RootAccessor,
 		updateData: AccessorTreeGenerator.UpdateData,
-		errors?: ErrorsPreprocessor.ErrorTreeRoot
+		errors?: ErrorsPreprocessor.ErrorTreeRoot,
 	): AccessorTreeRoot {
 		const rootName = 'data'
 		const errorNode = errors === undefined ? undefined : errors[tree.id]
@@ -96,7 +96,7 @@ class AccessorTreeGenerator {
 			(entityData[rootName] =
 				Array.isArray(data) || data === undefined || data instanceof EntityCollectionAccessor
 					? this.generateEntityCollectionAccessor(rootName, tree.fields, data, errorNode, onUpdate)
-					: this.generateEntityAccessor(rootName, tree.fields, data, errorNode, onUpdate, entityData))
+					: this.generateEntityAccessor(rootName, tree.fields, data, errorNode, onUpdate, entityData)),
 		)
 	}
 
@@ -107,7 +107,7 @@ class AccessorTreeGenerator {
 		onUpdate: OnUpdate,
 		onReplace: OnReplace,
 		batchUpdates: BatchEntityUpdates,
-		onUnlink?: OnUnlink
+		onUnlink?: OnUnlink,
 	): EntityAccessor {
 		const entityData: EntityData.EntityData = {}
 		const id = data ? (data instanceof Accessor ? data.primaryKey : data[PRIMARY_KEY_NAME]) : undefined
@@ -130,7 +130,7 @@ class AccessorTreeGenerator {
 						: this.initialData === undefined
 						? undefined
 						: this.initialData[field.id],
-					() => undefined
+					() => undefined,
 				)
 			} else if (field instanceof ReferenceMarker) {
 				for (const referencePlaceholder in field.references) {
@@ -143,7 +143,7 @@ class AccessorTreeGenerator {
 
 					if (fieldData instanceof FieldAccessor || fieldData instanceof AccessorTreeRoot) {
 						throw new DataBindingError(
-							`The accessor tree does not correspond to the MarkerTree. This should absolutely never happen.`
+							`The accessor tree does not correspond to the MarkerTree. This should absolutely never happen.`,
 						)
 					}
 
@@ -157,9 +157,8 @@ class AccessorTreeGenerator {
 					if (reference.expectedCount === ReferenceMarker.ExpectedCount.UpToOne) {
 						if (Array.isArray(fieldData) || fieldData instanceof EntityCollectionAccessor) {
 							throw new DataBindingError(
-								`Received a collection of entities for field '${
-									field.fieldName
-								}' where a single entity was expected. ` + `Perhaps you wanted to use a <Repeater />?`
+								`Received a collection of entities for field '${field.fieldName}' where a single entity was expected. ` +
+									`Perhaps you wanted to use a <Repeater />?`,
 							)
 						} else if (
 							!(fieldData instanceof FieldAccessor) &&
@@ -171,12 +170,12 @@ class AccessorTreeGenerator {
 								fieldData || undefined,
 								referenceError,
 								onUpdate,
-								entityData
+								entityData,
 							)
 						} else {
 							throw new DataBindingError(
 								`Received a scalar value for field '${field.fieldName}' where a single entity was expected.` +
-									`Perhaps you meant to use a variant of <Field />?`
+									`Perhaps you meant to use a variant of <Field />?`,
 							)
 						}
 					} else if (reference.expectedCount === ReferenceMarker.ExpectedCount.PossiblyMany) {
@@ -186,7 +185,7 @@ class AccessorTreeGenerator {
 								reference.fields,
 								undefined,
 								referenceError,
-								onUpdate
+								onUpdate,
 							)
 						} else if (Array.isArray(fieldData) || fieldData instanceof EntityCollectionAccessor) {
 							entityData[referencePlaceholder] = this.generateEntityCollectionAccessor(
@@ -194,20 +193,19 @@ class AccessorTreeGenerator {
 								reference.fields,
 								fieldData,
 								referenceError,
-								onUpdate
+								onUpdate,
 							)
 						} else if (typeof fieldData === 'object') {
 							// Intentionally allowing `fieldData === null` here as well since this should only happen when a *hasOne
 							// relation is unlinked, e.g. a Person does not have a linked Nationality.
 							throw new DataBindingError(
-								`Received a referenced entity for field '${
-									field.fieldName
-								}' where a collection of entities was expected.` + `Perhaps you wanted to use a <SingleReference />?`
+								`Received a referenced entity for field '${field.fieldName}' where a collection of entities was expected.` +
+									`Perhaps you wanted to use a <SingleReference />?`,
 							)
 						} else {
 							throw new DataBindingError(
 								`Received a scalar value for field '${field.fieldName}' where a collection of entities was expected.` +
-									`Perhaps you meant to use a variant of <Field />?`
+									`Perhaps you meant to use a variant of <Field />?`,
 							)
 						}
 					} else {
@@ -230,12 +228,12 @@ class AccessorTreeGenerator {
 				} else if (Array.isArray(fieldData)) {
 					throw new DataBindingError(
 						`Received a collection of referenced entities where a single '${field.fieldName}' field was expected. ` +
-							`Perhaps you wanted to use a <Repeater />?`
+							`Perhaps you wanted to use a <Repeater />?`,
 					)
 				} else if (!(fieldData instanceof FieldAccessor) && typeof fieldData === 'object' && fieldData !== null) {
 					throw new DataBindingError(
 						`Received a referenced entity where a single '${field.fieldName}' field was expected. ` +
-							`Perhaps you wanted to use a <SingleReference />?`
+							`Perhaps you wanted to use a <SingleReference />?`,
 					)
 				} else {
 					const fieldErrors =
@@ -247,7 +245,7 @@ class AccessorTreeGenerator {
 					const onChange = (newValue: Scalar | GraphQlBuilder.Literal) => {
 						onUpdate(
 							placeholderName,
-							new FieldAccessor<Scalar | GraphQlBuilder.Literal>(placeholderName, newValue, fieldErrors, onChange)
+							new FieldAccessor<Scalar | GraphQlBuilder.Literal>(placeholderName, newValue, fieldErrors, onChange),
 						)
 					}
 					// `fieldData` will be `undefined` when a repeater creates a clone based on no data or when we're creating
@@ -260,7 +258,7 @@ class AccessorTreeGenerator {
 							? fieldData.currentValue
 							: fieldData,
 						fieldErrors,
-						onChange
+						onChange,
 					)
 				}
 			} else if (field instanceof ConnectionMarker) {
@@ -277,7 +275,7 @@ class AccessorTreeGenerator {
 			errors ? errors.errors : [],
 			onReplace,
 			batchUpdates,
-			onUnlink
+			onUnlink,
 		)
 	}
 
@@ -287,7 +285,7 @@ class AccessorTreeGenerator {
 		persistedData: AccessorTreeGenerator.InitialEntityData,
 		errors: ErrorsPreprocessor.ErrorNode | undefined,
 		parentOnUpdate: OnUpdate,
-		entityData: EntityData.EntityData
+		entityData: EntityData.EntityData,
 	): EntityAccessor {
 		let inBatchUpdateMode = false
 		const performUpdate = () => {
@@ -340,11 +338,11 @@ class AccessorTreeGenerator {
 		entityFields: EntityFields,
 		fieldData: Array<ReceivedEntityData<undefined>> | EntityCollectionAccessor | undefined,
 		errors: ErrorsPreprocessor.ErrorNode | undefined,
-		parentOnUpdate: OnUpdate
+		parentOnUpdate: OnUpdate,
 	): EntityCollectionAccessor {
 		if (errors && errors.nodeType !== ErrorsPreprocessor.ErrorNodeType.NumberIndexed) {
 			throw new DataBindingError(
-				`The error tree structure does not correspond to the marker tree. This should never happen.`
+				`The error tree structure does not correspond to the marker tree. This should never happen.`,
 			)
 		}
 
@@ -354,7 +352,7 @@ class AccessorTreeGenerator {
 				collectionAccessor.entities.slice(),
 				collectionAccessor.errors,
 				collectionAccessor.batchUpdates,
-				collectionAccessor.addNew
+				collectionAccessor.addNew,
 			))
 		}
 		const performUpdate = () => {
@@ -455,26 +453,26 @@ class AccessorTreeGenerator {
 	private withUpdatedField(
 		original: EntityAccessor,
 		fieldPlaceholder: string,
-		newData: EntityData.FieldData
+		newData: EntityData.FieldData,
 	): EntityAccessor {
 		return new EntityAccessor(
 			original.primaryKey,
 			original.typename,
 			new EntityData({
 				...original.data.allFieldData,
-				[fieldPlaceholder]: newData
+				[fieldPlaceholder]: newData,
 			}),
 			original.errors,
 			original.replaceWith,
 			original.batchUpdates,
-			original.remove
+			original.remove,
 		)
 	}
 
 	private asDifferentEntity(
 		original: EntityAccessor,
 		replacement: EntityAccessor,
-		onRemove?: EntityAccessor['remove']
+		onRemove?: EntityAccessor['remove'],
 	): EntityAccessor {
 		// TODO: we also need to update the callbacks inside replacement.data
 		return new EntityAccessor(
@@ -484,13 +482,13 @@ class AccessorTreeGenerator {
 			original.errors,
 			original.replaceWith,
 			original.batchUpdates,
-			onRemove || original.remove
+			onRemove || original.remove,
 		)
 	}
 
 	private removeEntity(
 		currentEntity: EntityData.FieldData,
-		removalType: EntityAccessor.RemovalType
+		removalType: EntityAccessor.RemovalType,
 	): EntityForRemovalAccessor | undefined {
 		if (currentEntity instanceof EntityAccessor) {
 			const id = currentEntity.primaryKey
@@ -502,7 +500,7 @@ class AccessorTreeGenerator {
 					currentEntity.data,
 					currentEntity.errors,
 					currentEntity.replaceWith,
-					removalType
+					removalType,
 				)
 			}
 		}
@@ -511,7 +509,7 @@ class AccessorTreeGenerator {
 
 	private rejectInvalidAccessorTree(): never {
 		throw new DataBindingError(
-			`The accessor tree does not correspond to the MarkerTree. This should absolutely never happen.`
+			`The accessor tree does not correspond to the MarkerTree. This should absolutely never happen.`,
 		)
 	}
 }

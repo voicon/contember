@@ -7,7 +7,7 @@ export const BlogEditPage = (
 		entity="Post"
 		pageName={'blogEdit'}
 		rendererProps={{
-			title: 'Edit blog post'
+			title: 'Edit blog post',
 		}}
 	>
 		<PostForm />

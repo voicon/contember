@@ -8,7 +8,7 @@ import {
 	RichTextField,
 	SortableRepeater,
 	TextAreaField,
-	TextField
+	TextField,
 } from 'cms-admin'
 import * as React from 'react'
 import { ImageField } from '../components'
@@ -31,29 +31,29 @@ export const GenericContentForm = Component(
 									lineBreakBehavior={LineBreakBehavior.SMART}
 									blocks={[
 										{ block: Block.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK, Mark.ITALIC] },
-										{ block: Block.HEADING, marks: [] }
+										{ block: Block.HEADING, marks: [] },
 									]}
 								/>
-							</>
+							</>,
 						],
 						[
 							new Literal('contentImage'),
 							'Image',
 							<>
 								<ImageField name={'image'} label={'Image'} />
-							</>
+							</>,
 						],
 						[
 							new Literal('contentHtml'),
 							'HTML',
 							<>
 								<TextAreaField name="text" label={'Text'} />
-							</>
-						]
+							</>,
+						],
 					]}
 				/>
 			</SortableRepeater>
 		</>
 	),
-	'GenericContentForm'
+	'GenericContentForm',
 )

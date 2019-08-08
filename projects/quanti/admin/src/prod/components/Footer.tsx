@@ -10,5 +10,5 @@ export const Footer = Component(
 			</LocaleSideDimension>
 		</>
 	),
-	'Footer'
+	'Footer',
 )

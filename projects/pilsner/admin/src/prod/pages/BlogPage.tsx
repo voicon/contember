@@ -20,10 +20,10 @@ export const BlogPage = (
 			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'blogCreate',
-				label: 'Create post'
+				label: 'Create post',
 			}}
 			editButton={{
-				pageName: 'blogEdit'
+				pageName: 'blogEdit',
 			}}
 		>
 			<FieldText name="title" />

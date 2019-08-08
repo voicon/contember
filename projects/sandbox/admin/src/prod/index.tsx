@@ -12,7 +12,7 @@ import {
 	ToMany,
 	LineBreakBehavior,
 	Block,
-	Mark
+	Mark,
 } from 'cms-admin'
 import * as React from 'react'
 
@@ -37,8 +37,8 @@ export default () => (
 				blocks={[
 					{
 						block: Block.PARAGRAPH,
-						marks: [Mark.BOLD]
-					}
+						marks: [Mark.BOLD],
+					},
 				]}
 			/>
 			<RichTextField
@@ -48,12 +48,12 @@ export default () => (
 				blocks={[
 					{
 						block: Block.HEADING,
-						marks: [Mark.UNDERLINED]
+						marks: [Mark.UNDERLINED],
 					},
 					{
 						block: Block.PARAGRAPH,
-						marks: [Mark.BOLD, Mark.ITALIC, Mark.LINK, Mark.UNDERLINED]
-					}
+						marks: [Mark.BOLD, Mark.ITALIC, Mark.LINK, Mark.UNDERLINED],
+					},
 				]}
 			/>
 			<h2>Featured links</h2>
@@ -77,7 +77,7 @@ export default () => (
 								dimension="lang"
 								variableName="currentLang"
 								variables={{
-									locale: env => `locales(locale=${env.getValue('currentLang')})`
+									locale: env => `locales(locale=${env.getValue('currentLang')})`,
 								}}
 							>
 								<TextField name="$locale.name" label="Name" />
@@ -88,7 +88,7 @@ export default () => (
 							dimension="lang"
 							variableName="currentLang"
 							variables={{
-								locale: env => `locales(locale=${env.getValue('currentLang')})`
+								locale: env => `locales(locale=${env.getValue('currentLang')})`,
 							}}
 						>
 							<TextField name="$locale.title" label="Title" />

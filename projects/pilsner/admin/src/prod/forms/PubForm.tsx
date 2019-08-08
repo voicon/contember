@@ -25,5 +25,5 @@ export const PubForm = Component(
 			<SeoForm />
 		</>
 	),
-	'PubForm'
+	'PubForm',
 )

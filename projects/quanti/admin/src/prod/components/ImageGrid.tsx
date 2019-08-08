@@ -17,5 +17,5 @@ export const ImageGrid = Component<ImageGridProps>(
 			<Image label="Position 6" name={`${props.name}.imagePosition6`} />
 		</>
 	),
-	'ImageGrid'
+	'ImageGrid',
 )

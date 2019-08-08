@@ -8,7 +8,7 @@ import {
 	RichTextField,
 	SelectField,
 	Block as BlockType,
-	Mark
+	Mark,
 } from 'cms-admin'
 import { Image } from './Image'
 import { ImageGrid } from './ImageGrid'
@@ -23,7 +23,7 @@ export const Block = Component(
 					[
 						new Literal('Text'),
 						'Text',
-						<RichTextField name="text" blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]} />
+						<RichTextField name="text" blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]} />,
 					],
 					[new Literal('Image'), 'Image', <Image name="image" />],
 					[new Literal('ImageGrid'), 'ImageGrid', <ImageGrid name="imageGrid" />],
@@ -33,7 +33,7 @@ export const Block = Component(
 						<SortableRepeater field="numbers" sortBy="order">
 							<TextField label="number" name="number" />
 							<TextField label="label" name="label" />
-						</SortableRepeater>
+						</SortableRepeater>,
 					],
 					[
 						new Literal('Perks'),
@@ -41,19 +41,19 @@ export const Block = Component(
 						<SortableRepeater field="perks" sortBy="order">
 							<TextField label="title" name="title" />
 							<TextField label="description" name="description" />
-						</SortableRepeater>
+						</SortableRepeater>,
 					],
 					[
 						new Literal('People'),
 						'People',
 						<SortableRepeater field="people" sortBy="order">
 							<SelectField label="Person" name="person" options="Person.locales(locale.slug='cs').name" />
-						</SortableRepeater>
+						</SortableRepeater>,
 					],
 					[
 						new Literal('Category'),
 						'Category',
-						<SelectField label="Category" name="category" options="Category.locales(locale.slug='cs').name" />
+						<SelectField label="Category" name="category" options="Category.locales(locale.slug='cs').name" />,
 					],
 					[
 						new Literal('Collapse'),
@@ -67,11 +67,11 @@ export const Block = Component(
 								<TextField label="link URL" name="linkTarget" />
 								<TextField label="link caption" name="linkCaption" />
 							</SortableRepeater>
-						</>
-					]
+						</>,
+					],
 				]}
 			/>
 		</>
 	),
-	'Block'
+	'Block',
 )

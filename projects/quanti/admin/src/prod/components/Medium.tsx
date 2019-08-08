@@ -17,11 +17,11 @@ export const Medium = Component<MediumProps>(
 				name="type"
 				alternatives={[
 					[new Literal('image'), 'Image', <Image name="image" label={props.imageLabel} />],
-					[new Literal('video'), 'Video', <Video name="video" label={props.videoLabel} />]
+					[new Literal('video'), 'Video', <Video name="video" label={props.videoLabel} />],
 				]}
 				label={props.label}
 			/>
 		</ToOne>
 	),
-	'Medium'
+	'Medium',
 )
