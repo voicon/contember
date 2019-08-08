@@ -1,7 +1,7 @@
 import { assertNever } from 'cms-common'
 import * as React from 'react'
 import { FieldName } from '../bindingTypes'
-import { MarkerProvider } from '../coreComponents'
+import { MarkerProvider, NamedComponent } from '../coreComponents'
 import {
 	ConnectionMarker,
 	DataBindingError,
@@ -16,6 +16,8 @@ import { Hashing } from '../utils'
 
 type NodeResult = FieldMarker | MarkerTreeRoot | ReferenceMarker | ConnectionMarker
 type RawNodeResult = NodeResult | NodeResult[] | undefined
+type DataMarker = MarkerProvider &
+	(React.ComponentClass<unknown> | React.FunctionComponent<unknown> | React.NamedExoticComponent<unknown>)
 
 export class MarkerTreeGenerator {
 	public constructor(
@@ -92,8 +94,7 @@ export class MarkerTreeGenerator {
 
 			// React.Component, React.PureComponent, React.FunctionComponent
 
-			const dataMarker = node.type as MarkerProvider &
-				(React.ComponentClass<unknown> | React.FunctionComponent<unknown> | React.NamedExoticComponent<unknown>)
+			const dataMarker = node.type as DataMarker
 
 			if ('generateEnvironmentDelta' in dataMarker && dataMarker.generateEnvironmentDelta) {
 				const delta = dataMarker.generateEnvironmentDelta(node.props, environment)
@@ -116,7 +117,7 @@ export class MarkerTreeGenerator {
 						environment,
 					)
 				}
-				throw new DataBindingError(`Each ${dataMarker.displayName} component must have children.`)
+				throw new DataBindingError(`Each ${this.getDataMarkerName(dataMarker)} component must have children.`)
 			}
 
 			if ('generateReferenceMarker' in dataMarker && dataMarker.generateReferenceMarker) {
@@ -141,7 +142,7 @@ export class MarkerTreeGenerator {
 
 					return referenceMarker
 				}
-				throw new DataBindingError(`Each ${dataMarker.displayName} component must have children.`)
+				throw new DataBindingError(`Each ${this.getDataMarkerName(dataMarker)} component must have children.`)
 			}
 
 			if ('generateConnectionMarker' in dataMarker && dataMarker.generateConnectionMarker) {
@@ -271,5 +272,9 @@ export class MarkerTreeGenerator {
 		throw new DataBindingError(
 			`Attempting to combine a connection reference for field '${connectionMarker.fieldName}'.`,
 		)
+	}
+
+	private getDataMarkerName(marker: DataMarker): string {
+		return marker.displayName || marker.name || 'Component'
 	}
 }

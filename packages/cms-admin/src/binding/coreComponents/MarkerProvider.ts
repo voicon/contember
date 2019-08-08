@@ -1,33 +1,23 @@
 import * as React from 'react'
 import { ConnectionMarker, Environment, FieldMarker, MarkerTreeRoot, ReferenceMarker } from '../dao'
 
-export interface RenderFunction<P = any> {
-	(props: Props<P>): React.ReactElement | null
-}
-
-export interface DataBindingComponent {
+export interface NamedComponent {
 	displayName: string
 }
 
-export type Props<P> = React.PropsWithChildren<P>
-
-export interface EnvironmentDeltaProvider<P = any> extends DataBindingComponent {
-	generateEnvironmentDelta: (props: Props<P>, oldEnvironment: Environment) => Partial<Environment.NameStore>
+export interface EnvironmentDeltaProvider<P extends {} = any> {
+	generateEnvironmentDelta: (props: P, oldEnvironment: Environment) => Partial<Environment.NameStore>
 }
 
-export interface FieldMarkerProvider<P = any> extends DataBindingComponent {
-	generateFieldMarker: (props: Props<P>, environment: Environment) => FieldMarker
+export interface FieldMarkerProvider<P extends {} = any> {
+	generateFieldMarker: (props: P, environment: Environment) => FieldMarker
 }
 
-export interface MarkerTreeRootProvider<P = any> extends DataBindingComponent {
-	generateMarkerTreeRoot: (
-		props: Props<P>,
-		fields: MarkerTreeRoot['fields'],
-		environment: Environment,
-	) => MarkerTreeRoot
+export interface MarkerTreeRootProvider<P extends {} = any> {
+	generateMarkerTreeRoot: (props: P, fields: MarkerTreeRoot['fields'], environment: Environment) => MarkerTreeRoot
 }
 
-export interface ReferenceMarkerProvider<P = any> extends DataBindingComponent {
+export interface ReferenceMarkerProvider<P extends {} = any> {
 	generateReferenceMarker: (
 		props: P,
 		fields: ReferenceMarker.Reference['fields'],
@@ -35,20 +25,19 @@ export interface ReferenceMarkerProvider<P = any> extends DataBindingComponent {
 	) => ReferenceMarker
 }
 
-export interface ConnectionMarkerProvider<P = any> extends DataBindingComponent {
+export interface ConnectionMarkerProvider<P extends {} = any> {
 	generateConnectionMarker: (props: P, environment: Environment) => ConnectionMarker
 }
 
-export interface SyntheticChildrenProvider<P = any> extends DataBindingComponent {
-	generateSyntheticChildren: (props: Props<P>, environment: Environment) => React.ReactNode
+export interface SyntheticChildrenProvider<P extends {} = any> {
+	generateSyntheticChildren: (props: P, environment: Environment) => React.ReactNode
 }
 
-export type MarkerProvider = Partial<
-	| EnvironmentDeltaProvider
-	| FieldMarkerProvider
-	| MarkerTreeRootProvider
-	| ReferenceMarkerProvider
-	| ConnectionMarkerProvider
-	| SyntheticChildrenProvider
-> &
-	DataBindingComponent
+export type CompleteMarkerProvider<P extends {} = any> = EnvironmentDeltaProvider<P> &
+	FieldMarkerProvider<P> &
+	MarkerTreeRootProvider<P> &
+	ReferenceMarkerProvider<P> &
+	ConnectionMarkerProvider<P> &
+	SyntheticChildrenProvider<P>
+
+export type MarkerProvider<P extends {} = any> = Partial<CompleteMarkerProvider<P>>

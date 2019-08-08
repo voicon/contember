@@ -1,15 +1,51 @@
+import { assertNever } from 'cms-common'
 import * as React from 'react'
-import { RenderFunction, SyntheticChildrenProvider } from '../../coreComponents'
+import { CompleteMarkerProvider, MarkerProvider, SyntheticChildrenProvider } from '../../coreComponents'
+import { Environment } from '../../dao'
 
-export const Component = <P extends {}>(
-	render: React.FunctionComponent<P>,
+function Component<P extends {}>(
+	statelessRender: React.FunctionComponent<P>,
 	displayName?: string,
-	generateSyntheticChildren: SyntheticChildrenProvider<P>['generateSyntheticChildren'] = render,
-) => {
-	const augmentedRender: React.NamedExoticComponent<P> & Partial<SyntheticChildrenProvider<P>> = React.memo<P>(render)
+): React.NamedExoticComponent<P> & SyntheticChildrenProvider<P>
+function Component<P extends {}>(
+	statefulRender: React.FunctionComponent<P>,
+	generateSyntheticChildren: (props: P, environment: Environment) => React.ReactNode,
+	displayName?: string,
+): React.NamedExoticComponent<P> & SyntheticChildrenProvider<P>
+function Component<P extends {}>(
+	statefulRender: React.FunctionComponent<P>,
+	markerProvisions: MarkerProvider<P>,
+	displayName?: string,
+): React.NamedExoticComponent<P> & MarkerProvider<P>
+function Component<P extends {}>(
+	render: React.FunctionComponent<P>,
+	decider?: string | ((props: P, environment: Environment) => React.ReactNode) | MarkerProvider<P>,
+	displayName?: string,
+) {
+	const augmentedRender: React.NamedExoticComponent<P> & MarkerProvider<P> = React.memo<P>(render)
+	if (decider === undefined || typeof decider === 'string') {
+		augmentedRender.displayName = decider
+		augmentedRender.generateSyntheticChildren = render
 
-	augmentedRender.generateSyntheticChildren = generateSyntheticChildren
-	augmentedRender.displayName = displayName || 'UserComponent'
+		return augmentedRender as React.NamedExoticComponent<P> & SyntheticChildrenProvider<P>
+	}
 
-	return augmentedRender as RenderFunction<P> & SyntheticChildrenProvider<P>
+	augmentedRender.displayName = displayName
+
+	if (typeof decider === 'function') {
+		augmentedRender.generateSyntheticChildren = decider
+
+		return augmentedRender
+	}
+	if (typeof decider === 'object') {
+		for (const provisionName in decider) {
+			const methodName = provisionName as keyof MarkerProvider<P>
+			;(augmentedRender[methodName] as MarkerProvider<P>[typeof methodName]) = decider[methodName]
+		}
+
+		return augmentedRender
+	}
+	return assertNever(decider)
 }
+
+export { Component }

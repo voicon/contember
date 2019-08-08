@@ -2,14 +2,16 @@ import * as React from 'react'
 import { FormErrors } from '../../components/ui/FormErrors'
 import { FieldName, Filter, RelativeEntityList } from '../bindingTypes'
 import { EntityAccessor, EntityCollectionAccessor, EntityFields, Environment, ReferenceMarker } from '../dao'
+import { Component } from '../facade/auxiliary'
 import { QueryLanguage } from '../queryLanguage'
-import { DataContext, DataContextValue } from './DataContext'
+import { DataContext, useEntityCollectionAccessor } from './DataContext'
 import { EnforceSubtypeRelation } from './EnforceSubtypeRelation'
 import { EnvironmentContext } from './EnvironmentContext'
-import { Props, ReferenceMarkerProvider, SyntheticChildrenProvider } from './MarkerProvider'
+import { SyntheticChildrenProvider } from './MarkerProvider'
 
 export interface ToManyProps {
 	field: RelativeEntityList
+	children?: React.ReactNode
 }
 
 class ToMany extends React.PureComponent<ToManyProps> {
@@ -23,7 +25,7 @@ class ToMany extends React.PureComponent<ToManyProps> {
 		)
 	}
 
-	public static generateSyntheticChildren(props: Props<ToManyProps>, environment: Environment): React.ReactNode {
+	public static generateSyntheticChildren(props: ToManyProps, environment: Environment): React.ReactNode {
 		return QueryLanguage.wrapRelativeEntityList(
 			props.field,
 			ToMany.getAtomicPrimitiveFactory(props.children),
@@ -37,88 +39,61 @@ namespace ToMany {
 		atomicPrimitiveProps: AtomicPrimitiveProps,
 	) => <ToMany.AtomicPrimitive {...atomicPrimitiveProps}>{children}</ToMany.AtomicPrimitive>
 
-	export interface AtomicPrimitivePublicProps {
+	export interface AtomicPrimitiveProps {
 		field: FieldName
 		filter?: Filter
 	}
 
-	export interface AtomicPrimitiveProps extends AtomicPrimitivePublicProps {
-		environment: Environment
+	export const AtomicPrimitive = Component<AtomicPrimitiveProps>(
+		props => {
+			const accessor = useEntityCollectionAccessor(props.field, props.filter)
+			if (!accessor) {
+				return null
+			}
+			return <AccessorRenderer accessor={accessor}>{props.children}</AccessorRenderer>
+		},
+		{
+			generateReferenceMarker(props: AtomicPrimitiveProps, fields: EntityFields): ReferenceMarker {
+				return new ReferenceMarker(props.field, ReferenceMarker.ExpectedCount.PossiblyMany, fields, props.filter)
+			},
+		},
+		'ToMany.AtomicPrimitive',
+	)
+
+	export interface AccessorRendererProps {
+		accessor: EntityCollectionAccessor
+		children?: React.ReactNode
 	}
 
-	export class AtomicPrimitive extends React.PureComponent<AtomicPrimitiveProps> {
-		public static displayName = 'ToMany.AtomicPrimitive'
+	export const AccessorRenderer = React.memo((props: AccessorRendererProps) => (
+		<>
+			<FormErrors errors={props.accessor.errors} />
+			{props.accessor.entities.map(
+				datum =>
+					datum instanceof EntityAccessor && (
+						<DataContext.Provider value={datum} key={datum.getKey()}>
+							{props.children}
+						</DataContext.Provider>
+					),
+			)}
+		</>
+	))
+	AccessorRenderer.displayName = 'ToMany.AccessorRenderer'
 
-		public render() {
-			return (
-				<AccessorRetriever field={this.props.field} filter={this.props.filter} environment={this.props.environment}>
-					{(accessor: EntityCollectionAccessor) => (
-						<AccessorRenderer accessor={accessor}>{this.props.children}</AccessorRenderer>
-					)}
-				</AccessorRetriever>
-			)
-		}
-
-		public static generateReferenceMarker(
-			props: Props<AtomicPrimitiveProps>,
-			fields: EntityFields,
-			environment: Environment,
-		): ReferenceMarker {
-			return new ReferenceMarker(props.field, ReferenceMarker.ExpectedCount.PossiblyMany, fields, props.filter)
-		}
-	}
-
-	type EnforceDataBindingCompatibility = EnforceSubtypeRelation<typeof AtomicPrimitive, ReferenceMarkerProvider>
-
+	// AccessorRetriever is really legacy API to retain support for class components
 	export interface AccessorRetrieverProps extends AtomicPrimitiveProps {
 		children: (accessor: EntityCollectionAccessor) => React.ReactNode
 	}
 
-	export class AccessorRetriever extends React.PureComponent<AccessorRetrieverProps> {
-		public static displayName = 'ToMany.AccessorRetriever'
+	export const AccessorRetriever = React.memo((props: AccessorRetrieverProps) => {
+		const accessor = useEntityCollectionAccessor(props.field, props.filter)
 
-		public render() {
-			return (
-				<DataContext.Consumer>
-					{(data: DataContextValue) => {
-						if (data instanceof EntityAccessor) {
-							const field = data.data.getField(
-								this.props.field,
-								ReferenceMarker.ExpectedCount.PossiblyMany,
-								this.props.filter,
-							)
-
-							if (field instanceof EntityCollectionAccessor) {
-								return this.props.children(field)
-							}
-						}
-					}}
-				</DataContext.Consumer>
-			)
+		if (accessor) {
+			return <>{props.children(accessor)}</>
 		}
-	}
-
-	export interface AccessorRendererProps {
-		accessor: EntityCollectionAccessor
-	}
-
-	export class AccessorRenderer extends React.PureComponent<AccessorRendererProps> {
-		public render() {
-			return (
-				<>
-					<FormErrors errors={this.props.accessor.errors} />
-					{this.props.accessor.entities.map(
-						datum =>
-							datum instanceof EntityAccessor && (
-								<DataContext.Provider value={datum} key={datum.getKey()}>
-									{this.props.children}
-								</DataContext.Provider>
-							),
-					)}
-				</>
-			)
-		}
-	}
+		return null
+	})
+	AccessorRetriever.displayName = 'ToMany.AccessorRetriever'
 }
 
 export { ToMany }

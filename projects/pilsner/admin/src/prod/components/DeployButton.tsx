@@ -31,7 +31,7 @@ class DeployRenderer extends React.PureComponent<RendererProps> {
 }
 
 const DeployButtonInner = Component<{
-	children: (apiConfig: { apiKey: string; apiEndpoint: string }) => React.ReactNode
+	renderButton: (apiConfig: { apiKey: string; apiEndpoint: string }) => React.ReactNode
 }>(
 	props => (
 		<DataContext.Consumer>
@@ -42,17 +42,17 @@ const DeployButtonInner = Component<{
 				const apiKey = (data.data.getField('apiKey') as FieldAccessor).currentValue as string
 				const apiEndpoint = (data.data.getField('apiEndpoint') as FieldAccessor).currentValue as string
 
-				return props.children({ apiKey, apiEndpoint })
+				return props.renderButton({ apiKey, apiEndpoint })
 			}}
 		</DataContext.Consumer>
 	),
-	'DeployButtonInner',
 	() => (
 		<>
 			<Field name={'apiKey'} />
 			<Field name={'apiEndpoint'} />
 		</>
 	),
+	'DeployButtonInner',
 )
 
 export class DeployButton extends React.Component<Props, State> {
@@ -87,13 +87,13 @@ export class DeployButton extends React.Component<Props, State> {
 				renderer={DeployRenderer}
 				rendererProps={{}}
 			>
-				<DeployButtonInner>
-					{({ apiKey, apiEndpoint }) => (
+				<DeployButtonInner
+					renderButton={({ apiKey, apiEndpoint }) => (
 						<button onClick={() => this.handleDeploy(apiEndpoint, apiKey)} className={'button'}>
 							Deploy
 						</button>
 					)}
-				</DeployButtonInner>
+				/>
 			</SingleEntityDataProvider>
 		)
 	}
