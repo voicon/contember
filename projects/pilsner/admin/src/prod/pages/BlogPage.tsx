@@ -16,7 +16,7 @@ export const BlogPage = (
 		</div>
 		<Grid
 			entityName="Post"
-			orderBy={[{ title: new Literal('asc') }]}
+			orderBy={[{ publishedAt: new Literal('desc') }]}
 			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'blogCreate',
@@ -27,6 +27,14 @@ export const BlogPage = (
 			}}
 		>
 			<FieldText name="title" />
+			<div style={{ color: '#444', fontSize: '11px' }}>
+				<FieldText
+					name="publishedAt"
+					format={(val: string | null) => {
+						return val ? 'Published on ' + new Date(val).toLocaleDateString() : 'Not published'
+					}}
+				/>
+			</div>
 		</Grid>
 	</GenericPage>
 )
