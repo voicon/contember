@@ -1,0 +1,51 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "Site",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			},
+			"fillValue": 0
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/read/order",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/update/order",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/create/order",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Site/operations/create/order",
+					"value": false
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Site/operations/read/order",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Site/operations/update/order",
+					"value": false
+				}
+			]
+		}
+	]
+}
