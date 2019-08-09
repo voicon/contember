@@ -1,5 +1,5 @@
 import { Content, Image, Linkable, Seo, Site, Tag } from './'
-import { SchemaDefinition as d } from 'cms-api'
+import { SchemaDefinition as d } from '@contember/schema-definition'
 
 export class Post {
 	site = d

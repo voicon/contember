@@ -9,8 +9,8 @@
 		]
 	},
 	"references": [
+		{ "path": "../../../packages/cms-api/src" },
 		{ "path": "../../../packages/schema/src" },
-		{ "path": "../../../packages/cms-common/src" },
 		{ "path": "../../../projects/pilsner/api" }
 	]
 }

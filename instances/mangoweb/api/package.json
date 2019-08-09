@@ -19,7 +19,6 @@
 	"devDependencies": {
 		"dotenv-cli": "^1.4.0",
 		"nodemon": "^1.18.3",
-		"tslint": "^5.10.0",
 		"typescript": "^3.5.2"
 	}
 }

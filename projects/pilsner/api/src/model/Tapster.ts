@@ -1,5 +1,5 @@
 import { AttributeSet, Content, Image, Linkable, Location, Seo, Site, Tag } from '../model'
-import { SchemaDefinition as d } from 'cms-api'
+import { SchemaDefinition as d } from '@contember/schema-definition'
 
 export class Tapster {
 	site = d

@@ -1,5 +1,5 @@
 import { FrontPage, GenericPage, Image, Post, Pub, Tapster } from './'
-import { SchemaDefinition as d } from 'cms-api'
+import { SchemaDefinition as d } from '@contember/schema-definition'
 
 export class Content {
 	blocks: d.OneHasManyDefinition = d.oneHasMany(ContentBlock, 'content')

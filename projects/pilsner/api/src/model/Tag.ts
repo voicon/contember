@@ -1,5 +1,5 @@
 import { Site, Linkable, Seo } from './'
-import { SchemaDefinition as d } from 'cms-api'
+import { SchemaDefinition as d } from '@contember/schema-definition'
 
 export class Tag {
 	site = d
