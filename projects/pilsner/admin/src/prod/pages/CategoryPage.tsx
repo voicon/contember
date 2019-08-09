@@ -1,23 +1,16 @@
-import { FieldText, GenericPage, Literal } from 'cms-admin'
+import { EditPage, GenericPage, Literal, SortableRepeater, FieldText } from 'cms-admin'
 import * as React from 'react'
-import { Grid } from '../components'
+import { CreateButton, EditButton, Grid } from '../components'
 
 export const CategoryPage = (
-	<GenericPage pageName={'categories'}>
+	<EditPage pageName={'categories'} entity={'Site'} where="(slug = $site)">
 		<h1>Categories</h1>
-		<Grid
-			entityName="Category"
-			orderBy={[{ name: new Literal('asc') }]}
-			filter="[site.slug = $site]"
-			createButton={{
-				pageName: 'categoryCreate',
-				label: 'Create category',
-			}}
-			editButton={{
-				pageName: 'categoryEdit',
-			}}
-		>
-			<FieldText name="name" />
-		</Grid>
-	</GenericPage>
+		<CreateButton pageName={'categoryCreate'} label={'Create category'} />
+		<SortableRepeater sortBy={'order'} field={'categories'} removeType={'delete'} enableAddingNew={false}>
+			<FieldText name={'name'} />
+			<div style={{ float: 'right' }}>
+				<EditButton pageName={'categoryEdit'} />
+			</div>
+		</SortableRepeater>
+	</EditPage>
 )
