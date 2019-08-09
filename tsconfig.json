@@ -9,6 +9,7 @@
 		{ "path": "./packages/cms-client" },
 		{ "path": "./packages/cms-admin-server" },
 		{ "path": "./packages/cms-server-common" },
+		{ "path": "./packages/schema" },
 		{ "path": "./instances/mangoweb/api" },
 		{ "path": "./instances/mangoweb/admin" },
 		{ "path": "./instances/pilsner/api" },

@@ -4,7 +4,7 @@ import { CompositionRoot, readConfig } from 'cms-api'
 import * as path from 'path'
 
 import Pilsner from '@mangoweb/contember-project-pilsner-api'
-import { Schema } from 'cms-common'
+import { Schema } from '@contember/schema'
 ;(async () => {
 	const projects: { [name: string]: Schema } = {
 		pilsner: Pilsner,

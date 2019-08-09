@@ -7,7 +7,7 @@ import Quanti from '@mangoweb/contember-project-quanti-api'
 import Mangoweb from '@mangoweb/contember-project-mangoweb-api'
 import Blog from '@mangoweb/contember-project-sandbox-api'
 import Pilsner from '@mangoweb/contember-project-pilsner-api'
-import { Schema } from 'cms-common'
+import { Schema } from '@contember/schema'
 ;(async () => {
 	const projects: { [name: string]: Schema } = {
 		quanti: Quanti,

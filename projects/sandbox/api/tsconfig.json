@@ -13,7 +13,7 @@
 			"path": "../../../packages/cms-api/src"
 		},
 		{
-			"path": "../../../packages/cms-common/src"
+			"path": "../../../packages/schema/src"
 		}
 	]
 }
