@@ -18,7 +18,7 @@ export const TapsterPage = (
 		<h2>Tapsters</h2>
 		<Grid
 			entityName="Tapster"
-			orderBy={[{ name: new Literal('asc') }]}
+			orderBy={[{ publishedAt: new Literal('desc') }]}
 			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'tapsterCreate',
@@ -30,6 +30,14 @@ export const TapsterPage = (
 		>
 			<FieldText name="name" />
 			<FieldText name="subtitle" />
+			<div style={{ color: '#444', fontSize: '11px' }}>
+				<FieldText
+					name="publishedAt"
+					format={(val: string | null) => {
+						return val ? 'Published on ' + new Date(val).toLocaleDateString() : 'Not published'
+					}}
+				/>
+			</div>
 		</Grid>
 	</GenericPage>
 )

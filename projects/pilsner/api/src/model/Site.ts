@@ -24,8 +24,9 @@ export class Site {
 		.stringColumn()
 		.notNull()
 		.unique()
+	order = d.intColumn().notNull()
 
-	frontPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(FrontPage, 'site').notNull()
+	frontPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(FrontPage, 'site')
 	pubsPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(PubsPage, 'site')
 	tapstersPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(TapstersPage, 'site')
 	blogPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(BlogPage, 'site')

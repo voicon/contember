@@ -20,7 +20,7 @@ const acl: Acl.Schema = {
 				.onEntity('Site')
 				.addPredicate('site', { slug: 'site' })
 				.allowOnlyRead('site')
-				.onField(PermissionsBuilder.everyField().except('name', 'slug'))
+				.onField(PermissionsBuilder.everyField().except('name', 'slug', 'order'))
 				.allowUpdate('site')
 
 				.onEntity(PermissionsBuilder.everyEntity().havingRelation('site'))

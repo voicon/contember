@@ -43,8 +43,6 @@ services:
         expose:
             - 4000
         command: npm run start
-        depends_on:
-            - db
     db:
         image: postgres:10-alpine
         restart: unless-stopped

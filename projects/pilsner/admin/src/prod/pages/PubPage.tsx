@@ -18,7 +18,7 @@ export const PubPage = (
 		<h2>Pubs</h2>
 		<Grid
 			entityName="Pub"
-			orderBy={[{ name: new Literal('asc') }]}
+			orderBy={[{ publishedAt: new Literal('desc') }]}
 			filter="[site.slug = $site]"
 			createButton={{
 				pageName: 'pubCreate',
@@ -30,6 +30,14 @@ export const PubPage = (
 		>
 			<FieldText name="name" />
 			<FieldText name="subtitle" />
+			<div style={{ color: '#444', fontSize: '11px' }}>
+				<FieldText
+					name="publishedAt"
+					format={(val: string | null) => {
+						return val ? 'Published on ' + new Date(val).toLocaleDateString() : 'Not published'
+					}}
+				/>
+			</div>
 		</Grid>
 	</GenericPage>
 )

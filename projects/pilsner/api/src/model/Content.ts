@@ -25,6 +25,7 @@ export const ContentBlockType = d.createEnum(
 	'frontLargeImageWithTextBox',
 	'contentTextSection',
 	'contentImage',
+	'contentGallery',
 	'contentHtml',
 )
 
