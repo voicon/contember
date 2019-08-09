@@ -1,5 +1,5 @@
-import { Acl, Input, Model } from 'cms-common'
-import PredicateDefinitionProcessor from './PredicateDefinitionProcessor'
+import { Acl, Input, Model } from '@contember/schema'
+import { PredicateDefinitionProcessor } from '@contember/schema-utils'
 
 class VariableInjector {
 	constructor(private readonly schema: Model.Schema, private readonly variables: Acl.VariablesMap) {}

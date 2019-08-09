@@ -10,10 +10,10 @@
 	},
 	"references": [
 		{
-			"path": "../../../packages/cms-api/src"
+			"path": "../../../packages/schema-definition/src"
 		},
 		{
-			"path": "../../../packages/cms-common/src"
+			"path": "../../../packages/schema/src"
 		}
 	]
 }

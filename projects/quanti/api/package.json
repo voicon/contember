@@ -7,11 +7,10 @@
 	"main": "dist/src/index.js",
 	"typings": "dist/src/index.d.ts",
 	"dependencies": {
-		"cms-api": "^0.0.0",
-		"cms-common": "^0.0.0"
+		"@contember/schema": "^0.0.0",
+		"@contember/schema-definition": "^0.0.0"
 	},
 	"devDependencies": {
-		"tslint": "^5.10.0",
 		"typescript": "^3.5.2"
 	}
 }

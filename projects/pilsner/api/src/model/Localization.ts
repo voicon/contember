@@ -1,4 +1,4 @@
-import { SchemaDefinition as d } from 'cms-api'
+import { SchemaDefinition as d } from '@contember/schema-definition'
 import { Site } from './Site'
 
 export class Translatable {

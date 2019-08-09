@@ -1,10 +1,10 @@
 import { resolveValue } from '../utils'
-import { Input, Model, Value } from 'cms-common'
+import { Input, Model, Value } from '@contember/schema'
 import Client from '../../../core/database/Client'
 import { Value as DbValue } from '../../../core/database/types'
 import WhereBuilder from '../select/WhereBuilder'
 import Path from '../select/Path'
-import { getColumnName, getColumnType } from '../../../content-schema/modelUtils'
+import { getColumnName, getColumnType } from '@contember/schema-utils'
 import Mapper from '../Mapper'
 import QueryBuilder from '../../../core/database/QueryBuilder'
 

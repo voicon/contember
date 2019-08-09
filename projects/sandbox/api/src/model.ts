@@ -1,5 +1,5 @@
-import { SchemaBuilder, AllowAllPermissionFactory } from 'cms-api'
-import { Acl, Model, Schema } from 'cms-common'
+import { SchemaBuilder, AllowAllPermissionFactory } from '@contember/schema-definition'
+import { Acl, Model, Schema } from '@contember/schema'
 
 const builder = new SchemaBuilder()
 builder.enum('siteVisibility', ['visible', 'hidden'])

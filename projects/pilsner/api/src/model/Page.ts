@@ -1,4 +1,4 @@
-import { SchemaDefinition as d } from 'cms-api'
+import { SchemaDefinition as d } from '@contember/schema-definition'
 import { Content, Image, Linkable, Seo, Site } from './'
 
 export class FrontPage {

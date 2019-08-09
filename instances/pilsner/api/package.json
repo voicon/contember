@@ -7,13 +7,11 @@
 	},
 	"dependencies": {
 		"cms-api": "^0.0.0",
-		"cms-common": "^0.0.0",
+		"@contember/schema": "^0.0.0",
 		"@mangoweb/contember-project-pilsner-api": "0.0.0"
 	},
 	"devDependencies": {
 		"dotenv-cli": "^1.4.0",
-		"nodemon": "^1.18.3",
-		"tslint": "^5.10.0",
 		"typescript": "^3.5.2"
 	}
 }

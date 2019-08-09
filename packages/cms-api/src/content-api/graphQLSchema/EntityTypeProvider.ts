@@ -5,8 +5,8 @@ import {
 	GraphQLObjectTypeConfig,
 	GraphQLOutputType,
 } from 'graphql'
-import { Acl, Input, Model } from 'cms-common'
-import { acceptFieldVisitor, getEntity as getEntityFromSchema } from '../../content-schema/modelUtils'
+import { Acl, Input, Model } from '@contember/schema'
+import { acceptFieldVisitor, getEntity as getEntityFromSchema } from '@contember/schema-utils'
 import singletonFactory from '../../utils/singletonFactory'
 import ColumnTypeResolver from './ColumnTypeResolver'
 import FieldTypeVisitor from './entities/FieldTypeVisitor'

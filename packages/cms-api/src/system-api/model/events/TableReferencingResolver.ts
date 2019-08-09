@@ -1,5 +1,5 @@
-import { Model } from 'cms-common'
-import { acceptEveryFieldVisitor } from '../../../content-schema/modelUtils'
+import { Model } from '@contember/schema'
+import { acceptEveryFieldVisitor } from '@contember/schema-utils'
 
 class TableReferencingResolver {
 	public getTableReferencing(schema: Model.Schema): TableReferencingResolver.Result {

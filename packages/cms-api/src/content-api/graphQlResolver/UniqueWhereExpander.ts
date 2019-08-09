@@ -1,5 +1,5 @@
-import { Input, Model } from 'cms-common'
-import { getTargetEntity } from '../../content-schema/modelUtils'
+import { Input, Model } from '@contember/schema'
+import { getTargetEntity } from '@contember/schema-utils'
 import { isUniqueWhere } from '../../content-schema/inputUtils'
 
 export default class UniqueWhereExpander {

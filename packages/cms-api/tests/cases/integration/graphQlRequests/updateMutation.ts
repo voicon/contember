@@ -1,10 +1,9 @@
 import { execute, sqlTransaction } from '../../../src/test'
-import { Model, Validation } from 'cms-common'
-import SchemaBuilder from '../../../../src/content-schema/builder/SchemaBuilder'
+import { Model, Validation } from '@contember/schema'
+import { SchemaBuilder, InputValidation as v } from '@contember/schema-definition'
 import { GQL, SQL } from '../../../src/tags'
 import { testUuid } from '../../../src/testUuid'
 import 'mocha'
-import * as v from '../../../../src/content-api/input-validation'
 
 describe('update', () => {
 	const selectUpdatePostSql = {
@@ -2572,14 +2571,7 @@ describe('update', () => {
 					data: null,
 					errors: [
 						{
-							locations: [
-								{
-									column: 9,
-									line: 2,
-								},
-							],
 							message: 'Mutation failed, operation denied by ACL rules',
-							path: ['updateAuthor'],
 						},
 					],
 				},

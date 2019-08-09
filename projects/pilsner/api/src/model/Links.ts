@@ -11,7 +11,7 @@ import {
 	Tapster,
 	TapstersPage,
 } from './'
-import { SchemaDefinition as d } from 'cms-api'
+import { SchemaDefinition as d } from '@contember/schema-definition'
 
 export class Linkable {
 	url = d

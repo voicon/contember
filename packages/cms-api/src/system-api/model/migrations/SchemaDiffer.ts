@@ -1,10 +1,11 @@
-import { deepCopy, Model, Schema } from 'cms-common'
-import { acceptFieldVisitor } from '../../../content-schema/modelUtils'
+import { Model, Schema } from '@contember/schema'
+import { acceptFieldVisitor } from '@contember/schema-utils'
+import { isIt } from '@contember/utils'
+import { deepCopy } from 'cms-common'
 import ImplementationException from '../../../core/exceptions/ImplementationException'
 import SchemaMigrator from '../../../content-schema/differ/SchemaMigrator'
 import ModificationBuilder from './modifications/ModificationBuilder'
 import Migration from './Migration'
-import { isIt } from '../../../utils/type'
 import { createPatch } from 'rfc6902'
 import deepEqual = require('fast-deep-equal')
 
@@ -111,8 +112,9 @@ class SchemaDiffer {
 								if (updatedColumn.columnName != originalColumn.columnName) {
 									builder.updateColumnName(entityName, fieldName, updatedColumn.columnName)
 								}
-								const updatedDefinition = Model.getColumnDefinition(updatedColumn)
-								const originalDefinition = Model.getColumnDefinition(originalColumn)
+								const { name: _a, columnName: _b, ...updatedDefinition } = updatedColumn
+								const { name: _c, columnName: _d, ...originalDefinition } = originalColumn
+
 								if (!deepEqual(updatedDefinition, originalDefinition)) {
 									builder.updateColumnDefinition(entityName, fieldName, updatedDefinition)
 								}

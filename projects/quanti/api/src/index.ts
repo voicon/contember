@@ -1,5 +1,5 @@
-import { AllowAllPermissionFactory, InputValidation, SchemaDefinition } from 'cms-api'
-import { Acl, Schema } from 'cms-common'
+import { AllowAllPermissionFactory, InputValidation, SchemaDefinition } from '@contember/schema-definition'
+import { Acl, Schema } from '@contember/schema'
 import * as modelDefinition from './model'
 
 const model = SchemaDefinition.createModel(modelDefinition)

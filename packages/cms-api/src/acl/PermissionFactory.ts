@@ -1,5 +1,5 @@
-import { Acl, Model } from 'cms-common'
-import { getEntity } from '../content-schema/modelUtils'
+import { Acl, Model } from '@contember/schema'
+import { getEntity } from '@contember/schema-utils'
 
 export default class PermissionFactory {
 	constructor(private readonly schema: Model.Schema) {}

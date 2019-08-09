@@ -1,8 +1,8 @@
-import { Model } from 'cms-common'
+import { Model } from '@contember/schema'
 import { execute, sqlTransaction } from '../../../src/test'
 import { GQL, SQL } from '../../../src/tags'
 import { testUuid } from '../../../src/testUuid'
-import SchemaBuilder from '../../../../src/content-schema/builder/SchemaBuilder'
+import { SchemaBuilder } from '@contember/schema-definition'
 import 'mocha'
 
 describe('Delete mutation', () => {

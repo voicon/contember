@@ -1,4 +1,4 @@
-import { InputValidation as v, SchemaDefinition as d } from 'cms-api'
+import { InputValidation as v, SchemaDefinition as d } from '@contember/schema-definition'
 
 export const One = d.createEnum('One')
 export const MediumType = d.createEnum('image', 'video')

@@ -1,6 +1,6 @@
 import EntityFieldsProvider from '../EntityFieldsProvider'
-import { acceptFieldVisitor } from '../../../content-schema/modelUtils'
-import { Model } from 'cms-common'
+import { acceptFieldVisitor } from '@contember/schema-utils'
+import { Model } from '@contember/schema'
 import HasManyToHasOneRelationReducerFieldVisitor from './HasManyToHasOneRelationReducerVisitor'
 
 class HasManyToHasOneReducer implements EntityFieldsProvider<HasManyToHasOneReducer.Meta> {
