@@ -6,6 +6,7 @@ import { LinkForm, SeoForm } from '../forms'
 export const TapsterPage = (
 	<GenericPage pageName={'tapsters'}>
 		<div>
+			<h1>Tapsters Page</h1>
 			<StandaloneEdit entityName={'Site'} where="(slug = $site)">
 				<ToOne field={'tapstersPage'}>
 					<TextField name={'title'} large={true} />

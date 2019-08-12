@@ -10,9 +10,11 @@ export const EditButton: React.ComponentType<EditButtonProps> = props => (
 	<PageLinkById
 		change={id => ({ name: props.pageName, params: { id } })}
 		Component={buttonProps => (
-			<Button {...buttonProps} Component="a">
-				{props.label || 'Edit'}
-			</Button>
+			<div style={{ marginLeft: '.75em', display: 'inline-block' }}>
+				<Button {...buttonProps} Component="a">
+					{props.label || 'Edit'}
+				</Button>
+			</div>
 		)}
 	/>
 )

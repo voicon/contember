@@ -2,7 +2,14 @@ import { EditPage, Literal, MultiEditPage, Repeater, SelectField, SortableRepeat
 import * as React from 'react'
 
 export const SocialLinkPage = (
-	<EditPage pageName={'social'} entity={'Site'} where="(slug = $site)">
+	<EditPage
+		pageName={'social'}
+		entity={'Site'}
+		where="(slug = $site)"
+		rendererProps={{
+			title: 'Social Networks',
+		}}
+	>
 		<Repeater field={'socialLinks'} removeType={'delete'}>
 			<SelectField
 				name={'network'}
