@@ -1,12 +1,13 @@
 import { Component, SlugField, TextField } from 'cms-admin'
 import * as React from 'react'
+import { getUrlFormatter } from '../utils/getUrlFormatter'
 import { SeoForm } from './'
 
 export const CategoryForm = Component(
 	() => (
 		<>
 			<TextField name="name" label="Name" />
-			<SlugField field="link.url" drivenBy="name" prefix="/category/" label="URL" />
+			<SlugField field="link.url" drivenBy="name" format={getUrlFormatter('/category/')} label="URL" />
 			<SeoForm />
 		</>
 	),
