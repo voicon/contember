@@ -1,4 +1,4 @@
-import { CheckboxList, Component, TextAreaField, TextField } from 'cms-admin'
+import { CheckboxList, Component, SlugField, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
 import { ImageField, IsPublishedField, LocationField } from '../components'
 import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
@@ -8,8 +8,8 @@ export const TapsterForm = Component(
 		<>
 			<IsPublishedField />
 			<TextField name="name" label="Name" />
+			<SlugField field="link.url" drivenBy="name" prefix="/tapsters/" label="URL" />
 			<TextField name="subtitle" label="Subtitle" />
-			<LinkForm />
 
 			<ImageField name={'headerImage'} label={'Header image'} />
 			<ImageField name={'listingImage'} label={'Listing image'} />
