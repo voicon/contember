@@ -6,8 +6,6 @@ services:
             - ./:/src:cached
         working_dir: /src
         command: npm run ts:watch
-        depends_on:
-            - db
 
     api:
         image: node:10
