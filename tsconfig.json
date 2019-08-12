@@ -12,6 +12,7 @@
 		{ "path": "./packages/cms-server-common" },
 		{ "path": "./packages/database" },
 		{ "path": "./packages/engine-common" },
+		{ "path": "./packages/engine-tenant-api" },
 		{ "path": "./packages/queryable" },
 		{ "path": "./packages/schema" },
 		{ "path": "./packages/schema-definition" },
