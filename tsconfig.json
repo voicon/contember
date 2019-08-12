@@ -10,6 +10,8 @@
 		{ "path": "./packages/cms-client" },
 		{ "path": "./packages/cms-admin-server" },
 		{ "path": "./packages/cms-server-common" },
+		{ "path": "./packages/database" },
+		{ "path": "./packages/queryable" },
 		{ "path": "./packages/schema" },
 		{ "path": "./packages/schema-definition" },
 		{ "path": "./packages/schema-utils" },
