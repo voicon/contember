@@ -1,12 +1,12 @@
-import { Component, TextField } from 'cms-admin'
+import { Component, Slug, TextField } from 'cms-admin'
 import * as React from 'react'
-import { LinkForm, SeoForm } from './'
+import { SeoForm } from './'
 
 export const TagForm = Component(
 	() => (
 		<>
 			<TextField name="name" label="Name" />
-			<LinkForm />
+			<Slug field="link.url" drivenBy="name" prefix="/tag/" label="URL" />
 			<SeoForm />
 		</>
 	),
