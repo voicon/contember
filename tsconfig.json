@@ -12,6 +12,7 @@
 		{ "path": "./packages/schema" },
 		{ "path": "./packages/schema-definition" },
 		{ "path": "./packages/schema-utils" },
+		{ "path": "./packages/ui" },
 		{ "path": "./packages/utils" },
 		{ "path": "./instances/mangoweb/api" },
 		{ "path": "./instances/mangoweb/admin" },

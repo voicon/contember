@@ -1,0 +1,19 @@
+@import '../common'
+
+.spinner
+	+size(1em)
+	+relative
+	animation: deopacify var(--cui-spinner-appearSpeed) ease-out both
+
+	&::before,
+	&::after
+		+absolute(0)
+		content: ''
+		display: block
+		border-radius: 50%
+		background: $cui-spinner-color
+		opacity: .6
+		animation: pulsate var(--cui-spinner-period) ease-out 0s infinite
+
+	&::after
+		animation-delay: calc(var(--cui-spinner-period) / -2)

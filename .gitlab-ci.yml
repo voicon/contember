@@ -20,6 +20,7 @@ build:
   script:
     - npm ci
     - npm run bootstrap
+    - npm run ci-clean
     - npm run build
 
   artifacts:

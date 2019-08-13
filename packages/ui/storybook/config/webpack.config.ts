@@ -1,0 +1,22 @@
+module.exports = ({ config }: any) => {
+	// https://github.com/storybookjs/storybook/issues/3346
+	config.module.rules = config.module.rules.filter(
+		(rule: any) => !(rule.use && rule.use.length && rule.use.find(({ loader }: any) => loader === 'babel-loader')),
+	)
+	config.module.rules.push({
+		test: /\.(ts|tsx)$/,
+		loader: require.resolve('babel-loader'),
+		options: {
+			presets: [['react-app', { flow: false, typescript: true }]],
+		},
+	})
+	config.resolve.extensions.push('.ts', '.tsx')
+	config.module.rules.push({
+		test: /\.((s*)css|sass)$/,
+		use: ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader'],
+		exclude: /node_modules/,
+		include: require('path').resolve('./'),
+	})
+
+	return config
+}
