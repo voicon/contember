@@ -1,4 +1,4 @@
-import { Menu } from 'cms-admin/src/ui'
+import { Menu } from 'cms-admin'
 import * as React from 'react'
 
 export class SideMenu extends React.Component {

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { DeployButton } from './components'
-import { Menu } from 'cms-admin/src/ui'
+import { Menu } from 'cms-admin'
 
 export class SideMenu extends React.Component {
 	render() {

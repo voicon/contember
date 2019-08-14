@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Menu } from 'cms-admin/src/ui'
+import { Menu } from 'cms-admin'
 
 export default class Side extends React.Component {
 	render() {
