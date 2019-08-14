@@ -33,7 +33,7 @@ build:
       - "packages/*/dist"
       - "packages/*/node_modules"
       - "projects/*/*/dist"
-#      - "projects/*/*/node_modules"
+      - "projects/*/*/node_modules"
 
 test:
   stage: test:run
