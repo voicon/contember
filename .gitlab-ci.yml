@@ -20,7 +20,7 @@ build:
   script:
     - npm ci
     - npm run bootstrap
-    - npm run ci-clean
+    - rm -rf {instances,projects}/*/{admin,api}/node_modules/typescript packages/*/node_modules/typescript
     - npm run build
 
   artifacts:
@@ -33,7 +33,7 @@ build:
       - "packages/*/dist"
       - "packages/*/node_modules"
       - "projects/*/*/dist"
-#      - "projects/*/*/node_modules"
+      - "projects/*/*/node_modules"
 
 test:
   stage: test:run
