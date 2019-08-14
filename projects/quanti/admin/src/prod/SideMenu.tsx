@@ -1,31 +1,31 @@
-import { Menu, MenuList, MenuPageLink } from 'cms-admin'
+import { Menu } from 'cms-admin/src/ui'
 import * as React from 'react'
 
 export class SideMenu extends React.Component {
 	render() {
 		return (
 			<Menu>
-				<MenuList>
-					<MenuPageLink change={() => ({ name: 'edit_frontPage' })}>Front page</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'list_page' })}>Pages</MenuPageLink>
-				</MenuList>
-				<MenuList title="Entities">
-					<MenuPageLink change={() => ({ name: 'people' })}>People</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'places' })}>Places</MenuPageLink>
-				</MenuList>
-				<MenuList title="Settings">
-					<MenuPageLink change={() => ({ name: 'menuItems' })}>Menu</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'footer' })}>Footer</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'social' })}>Social</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'joinUs' })}>Join us</MenuPageLink>
-				</MenuList>
-				<MenuList title="System">
-					<MenuPageLink change={() => ({ name: 'categories' })}>Categories</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'translations' })}>Translations</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'locales' })}>Locales</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'contactMessages' })}>Contact messages</MenuPageLink>
-					{/*<MenuPageLink change={() => ({ name: 'diff' })}>Staging</MenuPageLink>*/}
-				</MenuList>
+				<Menu.Item>
+					<Menu.Item title="Front page" change={{ name: 'edit_frontPage' }}></Menu.Item>
+					<Menu.Item title="Pages" change={{ name: 'list_page' }}></Menu.Item>
+				</Menu.Item>
+				<Menu.Item title="Entities">
+					<Menu.Item title="People" change={{ name: 'people' }}></Menu.Item>
+					<Menu.Item title="Places" change={{ name: 'places' }}></Menu.Item>
+				</Menu.Item>
+				<Menu.Item title="Settings">
+					<Menu.Item title="Menu" change={{ name: 'menuItems' }}></Menu.Item>
+					<Menu.Item title="Footer" change={{ name: 'footer' }}></Menu.Item>
+					<Menu.Item title="Social" change={{ name: 'social' }}></Menu.Item>
+					<Menu.Item title="Join us" change={{ name: 'joinUs' }}></Menu.Item>
+				</Menu.Item>
+				<Menu.Item title="System">
+					<Menu.Item title="Categories" change={{ name: 'categories' }}></Menu.Item>
+					<Menu.Item title="Translations" change={{ name: 'translations' }}></Menu.Item>
+					<Menu.Item title="Locales" change={{ name: 'locales' }}></Menu.Item>
+					<Menu.Item title="Contact messages" change={{ name: 'contactMessages' }}></Menu.Item>
+					{/*<Menu.Item title="Staging" change={{ name: 'diff' }}></Menu.Item>*/}
+				</Menu.Item>
 			</Menu>
 		)
 	}

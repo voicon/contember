@@ -1,4 +1,5 @@
 import {
+	Button,
 	Component,
 	DataContext,
 	EntityAccessor,
@@ -89,9 +90,7 @@ export class DeployButton extends React.Component<Props, State> {
 			>
 				<DeployButtonInner
 					renderButton={({ apiKey, apiEndpoint }) => (
-						<button onClick={() => this.handleDeploy(apiEndpoint, apiKey)} className={'button'}>
-							Deploy
-						</button>
+						<Button onClick={() => this.handleDeploy(apiEndpoint, apiKey)}>Deploy</Button>
 					)}
 				/>
 			</SingleEntityDataProvider>

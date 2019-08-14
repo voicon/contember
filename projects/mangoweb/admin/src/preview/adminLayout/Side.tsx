@@ -1,37 +1,37 @@
 import * as React from 'react'
-import { Menu, MenuList, MenuPageLink } from 'cms-admin'
+import { Menu } from 'cms-admin/src/ui'
 
 export default class Side extends React.Component {
 	render() {
 		return (
 			<Menu>
-				<MenuList>
-					<MenuPageLink change={() => ({ name: 'dashboard' })}>Dashboard</MenuPageLink>
-				</MenuList>
-				<MenuList title="General">
-					<MenuPageLink change={() => ({ name: 'edit_frontPage' })}>Front page</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'multiEdit_menuItem' })}>Menu</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'edit_footer' })}>Footer</MenuPageLink>
-				</MenuList>
-				<MenuList title="Team">
-					<MenuPageLink change={() => ({ name: 'edit_teamPage' })}>Team page</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'multiEdit_person' })}>Team members</MenuPageLink>
-				</MenuList>
-				<MenuList title="What we do">
-					<MenuPageLink change={() => ({ name: 'edit_whatWeDoPage' })}>What we do page</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'multiEdit_whatWeDo' })}>What we do</MenuPageLink>
-				</MenuList>
-				<MenuList title="References">
-					<MenuPageLink change={() => ({ name: 'edit_referencesPage' })}>References page</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'edit_references' })}>References</MenuPageLink>
-				</MenuList>
-				<MenuList title="Contact">
-					<MenuPageLink change={() => ({ name: 'edit_contactPage' })}>Contact page</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'edit_contact' })}>Contact info</MenuPageLink>
-				</MenuList>
-				<MenuList title="Miscellaneous">
-					<MenuPageLink change={() => ({ name: 'multiEdit_language' })}>Languages</MenuPageLink>
-				</MenuList>
+				<Menu.Item>
+					<Menu.Item title="Dashboard" change={{ name: 'dashboard' }}></Menu.Item>
+				</Menu.Item>
+				<Menu.Item title="General">
+					<Menu.Item title="Front page" change={{ name: 'edit_frontPage' }}></Menu.Item>
+					<Menu.Item title="Menu" change={{ name: 'multiEdit_menuItem' }}></Menu.Item>
+					<Menu.Item title="Footer" change={{ name: 'edit_footer' }}></Menu.Item>
+				</Menu.Item>
+				<Menu.Item title="Team">
+					<Menu.Item title="Team page" change={{ name: 'edit_teamPage' }}></Menu.Item>
+					<Menu.Item title="Team members" change={{ name: 'multiEdit_person' }}></Menu.Item>
+				</Menu.Item>
+				<Menu.Item title="What we do">
+					<Menu.Item title="What we do page" change={{ name: 'edit_whatWeDoPage' }}></Menu.Item>
+					<Menu.Item title="What we do" change={{ name: 'multiEdit_whatWeDo' }}></Menu.Item>
+				</Menu.Item>
+				<Menu.Item title="References">
+					<Menu.Item title="References page" change={{ name: 'edit_referencesPage' }}></Menu.Item>
+					<Menu.Item title="References" change={{ name: 'edit_references' }}></Menu.Item>
+				</Menu.Item>
+				<Menu.Item title="Contact">
+					<Menu.Item title="Contact page" change={{ name: 'edit_contactPage' }}></Menu.Item>
+					<Menu.Item title="Contact info" change={{ name: 'edit_contact' }}></Menu.Item>
+				</Menu.Item>
+				<Menu.Item title="Miscellaneous">
+					<Menu.Item title="Languages" change={{ name: 'multiEdit_language' }}></Menu.Item>
+				</Menu.Item>
 			</Menu>
 		)
 	}
