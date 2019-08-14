@@ -6,19 +6,22 @@ const routes = {
 	frontPage: { path: '/front-page' },
 	footer: { path: '/footer' },
 
-	blog: { path: '/stories' },
+	blogPage: { path: '/stories/page' },
+	blogList: { path: '/stories' },
 	blogCreate: { path: '/stories/new' },
 	blogEdit: { path: '/stories/:id' },
 
-	pubs: { path: '/pubs' },
+	pubsPage: { path: '/pubs/page' },
+	pubList: { path: '/pubs' },
 	pubCreate: { path: '/pubs/new' },
 	pubEdit: { path: '/pubs/:id' },
 
-	tapsters: { path: '/tapsters' },
+	tapstersPage: { path: '/tapsters/page' },
+	tapsterList: { path: '/tapsters' },
 	tapsterCreate: { path: '/tapsters/new' },
 	tapsterEdit: { path: '/tapsters/:id' },
 
-	pages: { path: '/page' },
+	pageList: { path: '/pages' },
 	pageCreate: { path: '/page/create' },
 	pageEdit: { path: '/page/:id' },
 

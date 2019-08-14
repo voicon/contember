@@ -9,21 +9,24 @@ export class SideMenu extends React.Component {
 				<Menu.Item>
 					<Menu.Item title="Front page" change={{ name: 'frontPage' }}></Menu.Item>
 					<Menu.Item title="Stories" active>
-						<Menu.Item title="Edit page" change={{ name: 'blog' }}></Menu.Item>
-						<Menu.Item title="All stories" change={{ name: 'blog' }}></Menu.Item>
+						<Menu.Item title="Edit page" change={{ name: 'blogPage' }}></Menu.Item>
+						<Menu.Item title="All stories" change={{ name: 'blogList' }}></Menu.Item>
 						<Menu.Item title="Add new story" change={{ name: 'blogCreate' }}></Menu.Item>
 					</Menu.Item>
 					<Menu.Item title="Pubs">
-						<Menu.Item title="Edit page" change={{ name: 'pubs' }}></Menu.Item>
-						<Menu.Item title="All pubs" change={{ name: 'pubs' }}></Menu.Item>
+						<Menu.Item title="Edit page" change={{ name: 'pubsPage' }}></Menu.Item>
+						<Menu.Item title="All pubs" change={{ name: 'pubList' }}></Menu.Item>
 						<Menu.Item title="Add new pub" change={{ name: 'pubCreate' }}></Menu.Item>
 					</Menu.Item>
-					<Menu.Item title="Tapsters" change={{ name: 'tapsters' }}>
-						<Menu.Item title="Edit page" change={{ name: 'tapsters' }}></Menu.Item>
-						<Menu.Item title="All pubs" change={{ name: 'tapsters' }}></Menu.Item>
+					<Menu.Item title="Tapsters">
+						<Menu.Item title="Edit page" change={{ name: 'tapstersPage' }}></Menu.Item>
+						<Menu.Item title="All pubs" change={{ name: 'tapsterList' }}></Menu.Item>
 						<Menu.Item title="Add new pub" change={{ name: 'tapsterCreate' }}></Menu.Item>
 					</Menu.Item>
-					<Menu.Item title="Pages" change={{ name: 'pages' }}></Menu.Item>
+					<Menu.Item title="Pages" change={{ name: 'pages' }}>
+						<Menu.Item title="All pages" change={{ name: 'pageList' }}></Menu.Item>
+						<Menu.Item title="Add new pub" change={{ name: 'pageCreate' }}></Menu.Item>
+					</Menu.Item>
 					<Menu.Item title="Pour" change={{ name: 'pour' }}></Menu.Item>
 				</Menu.Item>
 				<Menu.Item title="Settings">

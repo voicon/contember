@@ -1,22 +1,10 @@
-import { FieldText, GenericPage, Literal, TextField, ToOne } from 'cms-admin'
+import { FieldText, GenericPage, Literal } from 'cms-admin'
 import * as React from 'react'
-import { Grid, ImageField, StandaloneEdit } from '../components'
-import { LinkForm, SeoForm } from '../forms'
+import { Grid } from '../components'
 
-export const PubPage = (
-	<GenericPage pageName={'pubs'}>
-		<div>
-			<h1>Pubs Page</h1>
-			<StandaloneEdit entityName={'Site'} where="(slug = $site)">
-				<ToOne field={'pubsPage'}>
-					<TextField name={'title'} large={true} />
-					<LinkForm />
-					<ImageField name={'headerImage'} label={'Header image'} />
-					<SeoForm />
-				</ToOne>
-			</StandaloneEdit>
-		</div>
-		<h2>Pubs</h2>
+export const PubListPage = (
+	<GenericPage pageName={'pubList'}>
+		<h1>Pubs</h1>
 		<Grid
 			entityName="Pub"
 			orderBy={[{ publishedAt: new Literal('desc') }]}
