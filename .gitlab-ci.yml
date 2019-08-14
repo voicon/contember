@@ -21,6 +21,7 @@ build:
     - npm ci
     - npm run bootstrap
     - rm -rf {instances,projects}/*/{admin,api}/node_modules/typescript packages/*/node_modules/typescript
+    - rm -rf {instances,projects}/*/{admin,api}/node_modules/.bin/{tsc,tsserver} packages/*/node_modules/.bin/{tsc,tsserver}
     - npm run build
 
   artifacts:
