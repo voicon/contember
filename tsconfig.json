@@ -11,6 +11,7 @@
 		{ "path": "./packages/cms-admin-server" },
 		{ "path": "./packages/cms-server-common" },
 		{ "path": "./packages/database" },
+		{ "path": "./packages/database-tester" },
 		{ "path": "./packages/engine-common" },
 		{ "path": "./packages/engine-tenant-api" },
 		{ "path": "./packages/queryable" },
