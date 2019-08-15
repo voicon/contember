@@ -7,39 +7,39 @@ export class SideMenu extends React.Component {
 		return (
 			<Menu>
 				<Menu.Item>
-					<Menu.Item title="Front page" change={{ name: 'frontPage' }}></Menu.Item>
+					<Menu.Item title="Front page" target={{ pageName: 'frontPage' }}></Menu.Item>
 					<Menu.Item title="Stories" active>
-						<Menu.Item title="Edit page" change={{ name: 'blogPage' }}></Menu.Item>
-						<Menu.Item title="All stories" change={{ name: 'blogList' }}></Menu.Item>
-						<Menu.Item title="Add new story" change={{ name: 'blogCreate' }}></Menu.Item>
+						<Menu.Item title="Edit page" target={{ pageName: 'blogPage' }}></Menu.Item>
+						<Menu.Item title="All stories" target={{ pageName: 'blogList' }}></Menu.Item>
+						<Menu.Item title="Add new story" target={{ pageName: 'blogCreate' }}></Menu.Item>
 					</Menu.Item>
 					<Menu.Item title="Pubs">
-						<Menu.Item title="Edit page" change={{ name: 'pubsPage' }}></Menu.Item>
-						<Menu.Item title="All pubs" change={{ name: 'pubList' }}></Menu.Item>
-						<Menu.Item title="Add new pub" change={{ name: 'pubCreate' }}></Menu.Item>
+						<Menu.Item title="Edit page" target={{ pageName: 'pubsPage' }}></Menu.Item>
+						<Menu.Item title="All pubs" target={{ pageName: 'pubList' }}></Menu.Item>
+						<Menu.Item title="Add new pub" target={{ pageName: 'pubCreate' }}></Menu.Item>
 					</Menu.Item>
 					<Menu.Item title="Tapsters">
-						<Menu.Item title="Edit page" change={{ name: 'tapstersPage' }}></Menu.Item>
-						<Menu.Item title="All pubs" change={{ name: 'tapsterList' }}></Menu.Item>
-						<Menu.Item title="Add new pub" change={{ name: 'tapsterCreate' }}></Menu.Item>
+						<Menu.Item title="Edit page" target={{ pageName: 'tapstersPage' }}></Menu.Item>
+						<Menu.Item title="All tapsters" target={{ pageName: 'tapsterList' }}></Menu.Item>
+						<Menu.Item title="Add new tapster" target={{ pageName: 'tapsterCreate' }}></Menu.Item>
 					</Menu.Item>
-					<Menu.Item title="Pages" change={{ name: 'pages' }}>
-						<Menu.Item title="All pages" change={{ name: 'pageList' }}></Menu.Item>
-						<Menu.Item title="Add new pub" change={{ name: 'pageCreate' }}></Menu.Item>
+					<Menu.Item title="Pages">
+						<Menu.Item title="All pages" target={{ pageName: 'pageList' }}></Menu.Item>
+						<Menu.Item title="Add new page" target={{ pageName: 'pageCreate' }}></Menu.Item>
 					</Menu.Item>
-					<Menu.Item title="Pour" change={{ name: 'pour' }}></Menu.Item>
+					<Menu.Item title="Pour" target={{ pageName: 'pour' }}></Menu.Item>
 				</Menu.Item>
 				<Menu.Item title="Settings">
-					<Menu.Item title="Footer" change={{ name: 'footer' }}></Menu.Item>
-					<Menu.Item title="Menu" change={{ name: 'menu' }}></Menu.Item>
-					<Menu.Item title="Categories" change={{ name: 'categories' }}></Menu.Item>
-					<Menu.Item title="Tags" change={{ name: 'tags' }}></Menu.Item>
-					<Menu.Item title="Locations" change={{ name: 'locations' }}></Menu.Item>
-					<Menu.Item title="Social networks" change={{ name: 'social' }}></Menu.Item>
+					<Menu.Item title="Footer" target={{ pageName: 'footer' }}></Menu.Item>
+					<Menu.Item title="Menu" target={{ pageName: 'menu' }}></Menu.Item>
+					<Menu.Item title="Categories" target={{ pageName: 'categories' }}></Menu.Item>
+					<Menu.Item title="Tags" target={{ pageName: 'tags' }}></Menu.Item>
+					<Menu.Item title="Locations" target={{ pageName: 'locations' }}></Menu.Item>
+					<Menu.Item title="Social networks" target={{ pageName: 'social' }}></Menu.Item>
 				</Menu.Item>
 				<Menu.Item title="System">
-					<Menu.Item title="Translations" change={{ name: 'translations' }}></Menu.Item>
-					<Menu.Item title="Sites" change={{ name: 'sites' }}></Menu.Item>
+					<Menu.Item title="Translations" target={{ pageName: 'translations' }}></Menu.Item>
+					<Menu.Item title="Sites" target={{ pageName: 'sites' }}></Menu.Item>
 				</Menu.Item>
 				<Menu.Item title="Deployment">
 					<Menu.Item title={<DeployButton />}></Menu.Item>
