@@ -5,6 +5,8 @@ import {
 	DataRendererProps,
 	DefaultRenderer,
 	EntityAccessor,
+	Menu,
+	Tile,
 } from 'cms-admin'
 import * as React from 'react'
 
@@ -24,16 +26,15 @@ const renderTree = (childAccessor: ChildAccessor, parent: string | null, childre
 		return null
 	}
 	return (
-		<ul className={'tree-list'}>
+		<>
 			{entities.map(it => (
 				<DataContext.Provider value={it} key={it.getKey()}>
-					<li key={it.getKey()} className={'tree-item'}>
-						{children}
+					<Menu.Item key={it.getKey()} title={children}>
 						{renderTree(childAccessor, it.getPersistedKey() || null, children)}
-					</li>
+					</Menu.Item>
 				</DataContext.Provider>
 			))}
-		</ul>
+		</>
 	)
 }
 
@@ -47,7 +48,11 @@ export class LocationTreeRenderer extends React.PureComponent<DataRendererProps 
 						{this.props.beforeContent}
 
 						{entities.length > 0 && (
-							<div className={'tree'}>{renderTree(childAccessorFactory(entities), null, this.props.children)}</div>
+							<Tile>
+								<Menu>
+									<Menu.Item>{renderTree(childAccessorFactory(entities), null, this.props.children)}</Menu.Item>
+								</Menu>
+							</Tile>
 						)}
 						{!!entities.length || <div>There are no items to display.</div>}
 					</>
