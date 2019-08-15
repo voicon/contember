@@ -8,7 +8,7 @@ export class SideMenu extends React.Component {
 			<Menu>
 				<Menu.Item>
 					<Menu.Item title="Front page" target={{ pageName: 'frontPage' }} />
-					<Menu.Item title="Stories" active>
+					<Menu.Item title="Stories">
 						<Menu.Item title="Edit page" target={{ pageName: 'blogPage' }} />
 						<Menu.Item title="All stories" target={{ pageName: 'blogList' }} />
 						<Menu.Item title="Add new story" target={{ pageName: 'blogCreate' }} />
