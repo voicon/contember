@@ -1,0 +1,19 @@
+%buttonSizes
+	@each $name, $height in $cui-button-sizes
+		$view: toView($name)
+		&#{$view}
+			$visualLineHeight: $height - 2 * $cui-control-border-width
+			$edgeOffset: ($visualLineHeight - 1em) / 2
+			min-height: $height
+			line-height: 1.25
+			padding: ($edgeOffset / 2) $edgeOffset
+
+			&.view-squarish
+				+size($height)
+				overflow: hidden
+			&.view-generous
+				padding-left: 1.5 * $height
+				padding-right: 1.5 * $height
+			&.view-block
+				display: flex
+				width: 100%

@@ -1,0 +1,10 @@
+@import '../common'
+
+.#{$cui-conf-globalPrefix}button
+	@extend %buttonEssentials
+	@extend %buttonSizes
+	@extend %buttonStates
+	+buttonVariants()
+
+	&-spinner
+		@extend %buttonStates-spinner
