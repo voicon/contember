@@ -33,7 +33,8 @@ export const GenericContentForm = Component(
 								lineBreakBehavior={LineBreakBehavior.SMART}
 								blocks={[
 									{ block: Block.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK, Mark.ITALIC] },
-									{ block: Block.HEADING, marks: [] },
+									{ block: Block.HEADING_H2, marks: [] },
+									{ block: Block.HEADING_H3, marks: [] },
 								]}
 							/>
 						</>,
