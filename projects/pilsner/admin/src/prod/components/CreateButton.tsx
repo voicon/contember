@@ -9,7 +9,7 @@ export interface CreateButtonProps {
 export const CreateButton: React.ComponentType<CreateButtonProps> = props => (
 	<PageLink
 		change={() => ({ name: props.pageName })}
-		Component={buttonProps => (
+		Component={({ isActive, ...buttonProps }) => (
 			<Button {...buttonProps} Component="a">
 				{props.label || 'Create'}
 			</Button>
