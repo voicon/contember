@@ -2,8 +2,8 @@ import { FieldText, GenericPage, Literal } from 'cms-admin'
 import * as React from 'react'
 import { Grid } from '../components'
 
-export const GenericPagesPage = (
-	<GenericPage pageName={'pages'}>
+export const GenericPageListPage = (
+	<GenericPage pageName={'pageList'}>
 		<h1>Pages</h1>
 		<Grid
 			entityName="GenericPage"

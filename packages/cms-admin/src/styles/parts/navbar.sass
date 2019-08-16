@@ -7,21 +7,25 @@
 		flex-basis: 0
 		flex-grow: 1
 		white-space: nowrap
+		display: flex
+		align-items: center
+		justify-content: flex-start
 
 	&-center
 		text-align: center
+		justify-content: center
 
 	&-right
 		text-align: right
 		display: flex
 		justify-content: flex-end
-		align-items: center
 
 	&-title
 		font-size: $fs-normal
 		font-weight: $fw-medium
 		text-decoration: none
 		margin-right: $spacing-normal
+		color: inherit
 
 		+media($break768M)
 			display: none

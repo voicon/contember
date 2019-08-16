@@ -30,7 +30,7 @@ export const DashboardPage = (
 				<br />
 				<PageLink
 					change={() => ({ name: 'frontPage' })}
-					Component={buttonProps => (
+					Component={({ isActive, ...buttonProps }) => (
 						<Button {...buttonProps} Component="a">
 							Edit Front page
 						</Button>

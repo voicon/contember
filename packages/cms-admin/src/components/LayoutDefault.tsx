@@ -7,6 +7,7 @@ import { Icon } from '@blueprintjs/core'
 import { default as PageLink } from './pageRouting/PageLink'
 import { connect } from 'react-redux'
 import State from '../state'
+import { Button } from '@contember/ui'
 
 export interface LayoutOwnProps {
 	header: {
@@ -68,14 +69,9 @@ class LayoutDefault extends React.PureComponent<LayoutOwnProps & LayoutStateProp
 							</button>
 						)}
 						{this.props.header.title && (
-							<PageLink
-								change={() => ({ name: 'dashboard' })}
-								Component={props => (
-									<a {...props} className="navbar-title">
-										{this.props.header.title}
-									</a>
-								)}
-							/>
+							<PageLink change={() => ({ name: 'dashboard' })} className="navbar-title">
+								{this.props.header.title}
+							</PageLink>
 						)}
 						{this.props.header.left}
 						{<TokenExposer />}
@@ -85,9 +81,9 @@ class LayoutDefault extends React.PureComponent<LayoutOwnProps & LayoutStateProp
 						{this.props.header.right}
 						<Dropdown.Revealer
 							opener={
-								<button type="button">
+								<Button distinction="seamless">
 									<Avatar size={AvatarSize.Size2} email={this.props.identity} />
-								</button>
+								</Button>
 							}
 						>
 							<Dropdown>

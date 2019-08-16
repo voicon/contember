@@ -1,36 +1,49 @@
-import { Menu, MenuList, MenuPageLink } from 'cms-admin'
 import * as React from 'react'
 import { DeployButton } from './components'
+import { Menu } from 'cms-admin'
 
 export class SideMenu extends React.Component {
 	render() {
 		return (
 			<Menu>
-				<MenuList>
-					<MenuPageLink change={() => ({ name: 'frontPage' })}>Front page</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'blog' })}>Stories</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'pubs' })}>Pubs</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'tapsters' })}>Tapsters</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'pages' })}>Pages</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'pour' })}>Pour</MenuPageLink>
-				</MenuList>
-				<MenuList title="Settings">
-					<MenuPageLink change={() => ({ name: 'footer' })}>Footer</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'menu' })}>Menu</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'categories' })}>Categories</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'tags' })}>Tags</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'locations' })}>Locations</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'social' })}>Social networks</MenuPageLink>
-				</MenuList>
-				<MenuList title="System">
-					<MenuPageLink change={() => ({ name: 'translations' })}>Translations</MenuPageLink>
-					<MenuPageLink change={() => ({ name: 'sites' })}>Sites</MenuPageLink>
-				</MenuList>
-				<MenuList title="Deployment">
-					<li className="menuSecondaryItem" style={{ paddingLeft: '1.75em' }}>
-						<DeployButton />
-					</li>
-				</MenuList>
+				<Menu.Item>
+					<Menu.Item title="Front page" to={{ pageName: 'frontPage' }} />
+					<Menu.Item title="Stories">
+						<Menu.Item title="Edit page" to={{ pageName: 'blogPage' }} />
+						<Menu.Item title="All stories" to={{ pageName: 'blogList' }} />
+						<Menu.Item title="Add new story" to={{ pageName: 'blogCreate' }} />
+					</Menu.Item>
+					<Menu.Item title="Pubs">
+						<Menu.Item title="Edit page" to={{ pageName: 'pubsPage' }} />
+						<Menu.Item title="All pubs" to={{ pageName: 'pubList' }} />
+						<Menu.Item title="Add new pub" to={{ pageName: 'pubCreate' }} />
+					</Menu.Item>
+					<Menu.Item title="Tapsters">
+						<Menu.Item title="Edit page" to={{ pageName: 'tapstersPage' }} />
+						<Menu.Item title="All tapsters" to={{ pageName: 'tapsterList' }} />
+						<Menu.Item title="Add new tapster" to={{ pageName: 'tapsterCreate' }} />
+					</Menu.Item>
+					<Menu.Item title="Pages">
+						<Menu.Item title="All pages" to={{ pageName: 'pageList' }} />
+						<Menu.Item title="Add new page" to={{ pageName: 'pageCreate' }} />
+					</Menu.Item>
+					<Menu.Item title="Pour" to={{ pageName: 'pour' }} />
+				</Menu.Item>
+				<Menu.Item title="Settings">
+					<Menu.Item title="Footer" to={{ pageName: 'footer' }} />
+					<Menu.Item title="Menu" to={{ pageName: 'menu' }} />
+					<Menu.Item title="Categories" to={{ pageName: 'categories' }} />
+					<Menu.Item title="Tags" to={{ pageName: 'tags' }} />
+					<Menu.Item title="Locations" to={{ pageName: 'locations' }} />
+					<Menu.Item title="Social networks" to={{ pageName: 'social' }} />
+				</Menu.Item>
+				<Menu.Item title="System">
+					<Menu.Item title="Translations" to={{ pageName: 'translations' }} />
+					<Menu.Item title="Sites" to={{ pageName: 'sites' }} />
+				</Menu.Item>
+				<Menu.Item title="Deployment">
+					<Menu.Item title={<DeployButton />} />
+				</Menu.Item>
 			</Menu>
 		)
 	}

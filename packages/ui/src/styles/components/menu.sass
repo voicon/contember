@@ -1,0 +1,139 @@
+@import '../common'
+
+.menu
+	padding: $cui-menu-vertical-padding 0 0
+	line-height: 1.5
+	text-align: left
+
+	&-group,
+	&-subgroup,
+	&-action,
+	&-tooDeep
+		padding: 0
+
+	&,
+	&-group,
+	&-subgroup,
+	&-action,
+	&-tooDeep
+		&,
+		&-list
+			margin: 0
+
+		&-list
+			padding: 0
+			list-style-type: none
+
+	&-group,
+	&-subgroup,
+	&-action,
+	&-tooDeep
+		&-title
+			display: flex
+			align-items: center
+			width: 100%
+
+	&-titleContent
+		flex-grow: 1
+
+	&-group
+		&-title
+			color: $cui-menu-group-color
+			font-size: $cui-menu-group-title-font-size
+			margin: (2 * $cui-menu-vertical-padding) 0 $cui-menu-vertical-padding
+			padding: 0 $cui-menu-horizontal-padding
+			font-weight: $fw-medium
+			text-transform: uppercase
+
+		&-list
+			//
+
+	&-subgroup
+		&-title
+			margin: 0
+			color: $cui-menu-subgroup-color
+			font-size: $cui-menu-subgroup-title-font-size
+			padding: $cui-menu-vertical-padding $cui-menu-horizontal-padding
+			text-align: inherit
+			text-decoration: none
+			border: none
+			background: transparent
+			text-transform: inherit
+			font-weight: $fw-medium
+			font-family: inherit
+
+		&-list
+			padding: ($cui-menu-vertical-padding / 2) 0 $cui-menu-vertical-padding
+
+		&.is-expanded &,
+		&.is-collapsed &
+			&-title::after
+				content: ''
+				display: inline-block
+				margin-top: -0.2em
+				width: .5em
+				height: .5em
+				margin-left: 1em
+				border-bottom: rem(2px) solid
+				border-right: rem(2px) solid
+				opacity: .5
+				transition: transform var(--cui-menu-caret-transition-duration)
+				transform-origin: 70% 70%
+				transform: rotate(45deg)
+
+		&.is-collapsed &
+			&-title::after
+				transform: rotate(135deg)
+
+	&-action
+		font-size: $cui-menu-action-title-font-size
+
+		&-title
+			margin: 0
+			color: $cui-menu-action-inactive-color
+			padding: rem(2px) $cui-menu-horizontal-padding rem(2px) (1.5 * $cui-menu-horizontal-padding)
+			text-decoration: none
+			font-weight: $fw-medium
+
+		&-list
+			padding: 0 0 ($cui-menu-vertical-padding / 2) ($cui-menu-horizontal-padding * 2)
+
+	&-tooDeep
+		font-size: .9em
+		list-style-type: none
+
+		&-title,
+		&-list
+			padding-left: 1em
+
+		&-title
+			margin: 0
+			color: $cui-menu-action-inactive-color
+			text-decoration: none
+			padding: rem(1px) $cui-menu-horizontal-padding rem(1px) 0
+			font-weight: $fw-medium
+
+		&-list
+			//
+
+	&-subgroup
+		&.is-active > &-title
+			background-color: $cui-menu-subgroup-active-background
+
+	&-action,
+	&-tooDeep
+		&.is-active > &-title
+			color: $cui-menu-action-active-color
+
+	a#{&},
+	button#{&}
+		&-subgroup-title
+			cursor: pointer
+
+			&:hover
+				background-color: $cui-menu-subgroup-active-background
+
+		&-action,
+		&-tooDeep
+			&-title:hover
+				color: $cui-menu-action-active-color
