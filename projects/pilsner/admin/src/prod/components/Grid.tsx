@@ -28,8 +28,12 @@ export const Grid: React.ComponentType<GridProps> = props => (
 			<Table.Cell key={i}>{it}</Table.Cell>
 		))}
 
+		{props.editButton && (
+			<Table.Cell>
+				<EditButton {...props.editButton} />
+			</Table.Cell>
+		)}
 		<Table.Cell>
-			{props.editButton && <EditButton {...props.editButton} />}
 			<RemoveButton removeType={'delete'} immediatePersist={true} />
 		</Table.Cell>
 	</EntityListDataProvider>
