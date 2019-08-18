@@ -9,7 +9,7 @@ export interface EditButtonProps {
 export const EditButton: React.ComponentType<EditButtonProps> = props => (
 	<PageLinkById
 		change={id => ({ name: props.pageName, params: { id } })}
-		Component={buttonProps => (
+		Component={({ isActive, ...buttonProps }) => (
 			<div style={{ marginLeft: '.75em', display: 'inline-block' }}>
 				<Button {...buttonProps} Component="a">
 					{props.label || 'Edit'}
