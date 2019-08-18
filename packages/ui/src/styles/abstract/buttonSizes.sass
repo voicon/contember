@@ -4,22 +4,27 @@
 		$fontSize: map_get($settings, fontSize)
 
 		$view: toView($name)
-		&#{$view}
-			$visualLineHeight: $height - 2 * $cui-control-border-width
-			$edgeOffset: ($visualLineHeight - 1em) / 2
-			min-height: $height
-			line-height: 1.25
-			padding: ($edgeOffset / 2) $edgeOffset
+		&#{$view},
+		&-group#{$view}
+			$c: $fontSize / 1em
+			$normalizedHeight: $height / $c
+			$visualLineHeight: $normalizedHeight - 2 * ($cui-control-border-width / $c)
+			$actualLineHeight: 1.25em
+			$edgeOffset: ($visualLineHeight - $actualLineHeight) / 2
+			min-height: $normalizedHeight
+			line-height: $actualLineHeight
+			padding: $edgeOffset .5em
+			font-size: $fontSize
 
-			> *
-				font-size: $fontSize
 
 			&.view-squarish
-				+size($height)
+				+size($normalizedHeight)
 				overflow: hidden
 			&.view-generous
-				padding-left: 1.5 * $height
-				padding-right: 1.5 * $height
-			&.view-block
-				display: flex
-				width: 100%
+				padding-left: 1.5 * $normalizedHeight
+				padding-right: 1.5 * $normalizedHeight
+
+
+	&.view-block
+		display: flex
+		width: 100%

@@ -6,7 +6,7 @@ export const LinkForm = Component(() => {
 		<div className={'inputBox'}>
 			<div className={'inputBox-header'}>URL</div>
 			<div className={'inputBox-row'}>
-				<TextField name="link.url" horizontal={true} />
+				<TextField name="link.url" label={undefined} />
 			</div>
 		</div>
 	)

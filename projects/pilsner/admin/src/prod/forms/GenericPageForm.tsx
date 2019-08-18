@@ -7,7 +7,7 @@ export const GenericPageForm = Component(
 	() => (
 		<>
 			<TextField name="title" label="Title" />
-			<SlugField field="link.url" drivenBy="title" format={getUrlFormatter('/')} label="URL" />
+			<SlugField name="link.url" drivenBy="title" format={getUrlFormatter('/')} label="URL" />
 			<GenericContentForm />
 			<SeoForm />
 		</>

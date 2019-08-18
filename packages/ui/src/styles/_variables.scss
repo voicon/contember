@@ -10,12 +10,12 @@ $cui-conf-rootSelector: ':root'; // Override this if you need to scope CUI custo
 $cui-conf-defaultView: default !default;
 
 // Global values
-$cui-color-blue: #0094FF !default;
-$cui-color-pink: #FF00B8 !default;
+$cui-color-blue: #309BFF !default;
+$cui-color-pink: #FF25C3 !default;
 $cui-color-purple: #9013FE !default;
 $cui-color-green: #7ED321 !default;
-$cui-color-yellow: #FFBE00 !default;
-$cui-color-red: #FF0000 !default;
+$cui-color-yellow: #FFC416 !default;
+$cui-color-red: #FF312E !default;
 
 $cui-color-white: #FFFFFF !default;
 $cui-color-gray-1: #FAFAFA !default;
@@ -46,6 +46,43 @@ $cui-effect-transition-duration: .3s !default;
 $cui-control-border-width: em(1px) !default;
 $cui-control-border-radius: em(3px) !default;
 
+$cui-control-view-default-color: $cui-color-gray-7 !default;
+$cui-control-view-default-background: $cui-color-white !default;
+$cui-control-view-default-border-color: $cui-color-gray-2 !default;
+$cui-control-view-default-distinction-color: $cui-color-primary !default;
+$cui-control-view-default: (
+	'color': $cui-control-view-default-color,
+	'background': $cui-control-view-default-background,
+	'borderColor': $cui-control-view-default-border-color,
+	'distinctionColor': $cui-control-view-default-distinction-color,
+) !default;
+
+$cui-control-variants: () !default;
+$cui-control-variants: map_merge((
+	$cui-conf-defaultView: $cui-control-view-default,
+), $cui-control-variants);
+
+
+$cui-control-validation-valid-color: $cui-color-success !default;
+$cui-control-validation-valid-border-color: darken($cui-color-success, 5) !default;
+$cui-control-validation-valid: (
+	'color': $cui-control-validation-valid-color,
+	'borderColor': $cui-control-validation-valid-border-color,
+);
+$cui-control-validation-invalid-color: $cui-color-danger !default;
+$cui-control-validation-invalid-border-color: darken($cui-color-danger, 5) !default;
+$cui-control-validation-invalid: (
+	'color': $cui-control-validation-invalid-color,
+	'borderColor': $cui-control-validation-invalid-border-color,
+);
+
+$cui-control-validation: () !default;
+$cui-control-validation: map_merge((
+	'valid': $cui-control-validation-valid,
+	'invalid': $cui-control-validation-invalid,
+), $cui-control-validation);
+
+
 $cui-control-small-height: 1.5em !default;
 $cui-control-default-height: 2em !default;
 $cui-control-large-height: 2.5em !default;
@@ -53,6 +90,29 @@ $cui-control-large-height: 2.5em !default;
 $cui-control-small-font-size: .9em !default;
 $cui-control-default-font-size: 1em !default;
 $cui-control-large-font-size: 1.3em !default;
+
+$cui-control-size-small: (
+	'height': $cui-control-small-height,
+	'fontSize': $cui-control-small-font-size,
+) !default;
+
+$cui-control-size-default: (
+	'height': $cui-control-default-height,
+	'fontSize': $cui-control-default-font-size,
+) !default;
+
+$cui-control-size-large: (
+	'height': $cui-control-large-height,
+	'fontSize': $cui-control-large-font-size,
+) !default;
+
+$cui-control-sizes: () !default;
+$cui-control-sizes: map_merge((
+	$cui-conf-defaultView: $cui-control-size-default,
+	'small': $cui-control-size-small,
+	'large': $cui-control-size-large,
+), $cui-control-sizes);
+
 
 $cui-control-inactive-opacity: .6 !default;
 
@@ -191,9 +251,43 @@ $cui-button-sizes: map_merge((
 	'large': $cui-button-size-large,
 ), $cui-button-sizes);
 
+// ValidationMessage
+$cui-validationMessage-size-small: .8em !default;
+$cui-validationMessage-size-default: .9em !default;
+$cui-validationMessage-size-large: 1.1em !default;
+
+$cui-validationMessage-sizes: () !default;
+$cui-validationMessage-sizes: map_merge((
+	$cui-conf-defaultView: $cui-validationMessage-size-default,
+	'small': $cui-validationMessage-size-small,
+	'large': $cui-validationMessage-size-large,
+), $cui-validationMessage-sizes);
+
+$cui-validationMessage-valid-color: $cui-color-success !default;
+$cui-validationMessage-invalid-color: $cui-color-danger !default;
+
+$cui-validationMessage-variants: () !default;
+$cui-validationMessage-variants: map_merge((
+	'valid': $cui-validationMessage-valid-color,
+	'invalid': $cui-validationMessage-invalid-color,
+), $cui-validationMessage-variants);
 
 // FormGroup
 $cui-formGroup-separation: 1.25em !default;
+$cui-formGroup-label-color: $cui-color-gray-5 !default;
+$cui-formGroup-labelDescription-color: $cui-color-gray-4 !default;
+$cui-formGroup-description-color: $cui-color-gray-4 !default;
+
+$cui-formGroup-size-small: .7em !default;
+$cui-formGroup-size-default: .8em !default;
+$cui-formGroup-size-large: 1.2em !default;
+
+$cui-formGroup-sizes: () !default;
+$cui-formGroup-sizes: map_merge((
+	$cui-conf-defaultView: $cui-formGroup-size-default,
+	'small': $cui-formGroup-size-small,
+	'large': $cui-formGroup-size-large,
+), $cui-formGroup-sizes);
 
 
 // Collapsible

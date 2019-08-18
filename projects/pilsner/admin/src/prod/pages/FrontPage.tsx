@@ -9,7 +9,7 @@ export const FrontPage = (
 			<h1>Front page</h1>
 			<LinkForm />
 			<ImageField name={'headerImage'} label={'Header image'} />
-			<TextField name={'title'} label={'Title'} large={true} />
+			<TextField name={'title'} label={'Title'} size="large" />
 			<TextField name={'scrollString'} label={'Scroll string'} />
 			<FrontPageContentForm />
 			<SeoForm />

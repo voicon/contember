@@ -9,7 +9,7 @@ export const PubForm = Component(
 		<>
 			<IsPublishedField />
 			<TextField name="name" label="Name" />
-			<SlugField field="link.url" drivenBy="name" format={getUrlFormatter('/pubs/')} label="URL" />
+			<SlugField name="link.url" drivenBy="name" format={getUrlFormatter('/pubs/')} label="URL" />
 			<TextField name="subtitle" label="Subtitle" />
 
 			<ImageField name={'headerImage'} label={'Header image'} />

@@ -7,7 +7,7 @@ export const CategoryForm = Component(
 	() => (
 		<>
 			<TextField name="name" label="Name" />
-			<SlugField field="link.url" drivenBy="name" format={getUrlFormatter('/category/')} label="URL" />
+			<SlugField name="link.url" drivenBy="name" format={getUrlFormatter('/category/')} label="URL" />
 			<SeoForm />
 		</>
 	),

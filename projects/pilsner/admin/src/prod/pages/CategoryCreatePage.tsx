@@ -11,7 +11,7 @@ export const CategoryCreatePage = (
 			title: 'Create new category',
 		}}
 	>
-		<HiddenField name={'order'} defaultValue={99} />
+		<HiddenField name={'order'} defaultValue={99} label={undefined} />
 		<SiteField />
 		<CategoryForm />
 	</CreatePage>

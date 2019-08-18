@@ -9,7 +9,7 @@ export const TapstersPage = (
 			<h1>Tapsters Page</h1>
 			<StandaloneEdit entityName={'Site'} where="(slug = $site)">
 				<ToOne field={'tapstersPage'}>
-					<TextField name={'title'} large={true} />
+					<TextField name={'title'} size="large" label="Title" />
 					<LinkForm />
 					<ImageField name={'headerImage'} label={'Header image'} />
 					<SeoForm />

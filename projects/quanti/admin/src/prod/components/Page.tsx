@@ -29,7 +29,7 @@ export const Page = Component(
 	() => (
 		<>
 			<LocaleSideDimension>
-				<TextField large={true} label="Header" name="header" />
+				<TextField size="large" label="Header" name="header" />
 			</LocaleSideDimension>
 			<Image label="Image" name="image" />
 			<SelectField
