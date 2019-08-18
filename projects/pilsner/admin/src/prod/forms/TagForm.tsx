@@ -7,7 +7,7 @@ export const TagForm = Component(
 	() => (
 		<>
 			<TextField name="name" label="Name" />
-			<SlugField field="link.url" drivenBy="name" format={getUrlFormatter('/tag/')} label="URL" />
+			<SlugField name="link.url" drivenBy="name" format={getUrlFormatter('/tag/')} label="URL" />
 			<SeoForm />
 		</>
 	),

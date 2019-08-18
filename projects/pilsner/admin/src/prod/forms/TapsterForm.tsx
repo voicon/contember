@@ -9,7 +9,7 @@ export const TapsterForm = Component(
 		<>
 			<IsPublishedField />
 			<TextField name="name" label="Name" />
-			<SlugField field="link.url" drivenBy="name" format={getUrlFormatter('/tapsters/')} label="URL" />
+			<SlugField name="link.url" drivenBy="name" format={getUrlFormatter('/tapsters/')} label="URL" />
 			<TextField name="subtitle" label="Subtitle" />
 
 			<ImageField name={'headerImage'} label={'Header image'} />

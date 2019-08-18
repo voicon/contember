@@ -28,8 +28,8 @@ export default () => (
 			)}
 		</Page>
 		<EditPage entity="Page" layout={Layout}>
-			<TextField name="title" label="Title" large={true} />
-			<TextField name="urlSlug" label="URL" inlineLabel={true} />
+			<TextField name="title" label="Title" size="large" />
+			<TextField name="urlSlug" label="URL" />
 			<RichTextField
 				name="perex"
 				label="Perex"

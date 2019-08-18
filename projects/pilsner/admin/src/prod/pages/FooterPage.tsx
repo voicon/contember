@@ -19,7 +19,7 @@ export const FooterPage = (
 				<div className={'inputBox-header'}>
 					<h2>Copyright</h2>
 				</div>
-				<TextField name={'copyright'} />
+				<TextField name={'copyright'} label={undefined} />
 				<TextField name={'copyrightJap'} label={'JAP version only'} />
 			</div>
 
@@ -36,9 +36,10 @@ export const FooterPage = (
 					<h2>Links</h2>
 				</div>
 				<SortableRepeater sortBy={'order'} field={'links'} removeType={'delete'}>
-					<TextField name={'caption'} />
+					<TextField name={'caption'} label="Caption" />
 					<AlternativeFields
 						name="linkType"
+						label={undefined}
 						alternatives={[
 							[
 								new Literal('external'),

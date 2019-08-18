@@ -18,12 +18,17 @@ export const Block = Component(
 		<>
 			<AlternativeFields
 				name="type"
+				label={undefined}
 				alternatives={[
-					[new Literal('Heading'), 'Heading', <TextField name="text" />],
+					[new Literal('Heading'), 'Heading', <TextField name="text" label="Heading" />],
 					[
 						new Literal('Text'),
 						'Text',
-						<RichTextField name="text" blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]} />,
+						<RichTextField
+							name="text"
+							blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]}
+							label="Text"
+						/>,
 					],
 					[new Literal('Image'), 'Image', <Image name="image" />],
 					[new Literal('ImageGrid'), 'ImageGrid', <ImageGrid name="imageGrid" />],
@@ -59,10 +64,14 @@ export const Block = Component(
 						new Literal('Collapse'),
 						'Collapse',
 						<>
-							<TextField name="collapse.title" />
+							<TextField name="collapse.title" label={undefined} />
 							<SortableRepeater field="collapse.items" sortBy="order">
 								<TextField label="heading" name="heading" />
-								<RichTextField name="text" blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]} />
+								<RichTextField
+									name="text"
+									blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]}
+									label={undefined}
+								/>
 								<Image name="image" />
 								<TextField label="link URL" name="linkTarget" />
 								<TextField label="link caption" name="linkCaption" />

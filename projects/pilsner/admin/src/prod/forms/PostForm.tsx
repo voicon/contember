@@ -8,8 +8,8 @@ export const PostForm = Component(
 	() => (
 		<>
 			<IsPublishedField />
-			<TextField name="title" large={true} label={'Title'} />
-			<SlugField field="link.url" drivenBy="title" format={getUrlFormatter('/stories/')} label="URL" />
+			<TextField name="title" size="large" label={'Title'} />
+			<SlugField name="link.url" drivenBy="title" format={getUrlFormatter('/stories/')} label="URL" />
 			<ImageField name={'headerImage'} label={'Header image'} />
 			<ImageField name={'listingImage'} label={'Listing image'} />
 			<TextField name="imageDescription" label="Image description" />
