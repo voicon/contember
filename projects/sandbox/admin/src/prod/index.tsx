@@ -19,15 +19,9 @@ import * as React from 'react'
 import { Layout } from './adminLayout'
 
 export default () => (
-	<Pages project="blog" stage="prod">
-		<Page name="dashboard">
-			{() => (
-				<Layout>
-					<p />
-				</Layout>
-			)}
-		</Page>
-		<EditPage entity="Page" layout={Layout}>
+	<Pages project="blog" stage="prod" layout={Layout}>
+		<Page name="dashboard">{() => <p />}</Page>
+		<EditPage entity="Page">
 			<TextField name="title" label="Title" size="large" />
 			<TextField name="urlSlug" label="URL" />
 			<RichTextField
@@ -67,23 +61,11 @@ export default () => (
 
 		<Page<{ edit_post2: { id: string } }> name="edit_post2">
 			{({ id }) => (
-				<Layout>
-					<SingleEntityDataProvider entityName="Post" where={{ id }}>
-						<TextField name="publishedAt" label="Time" />
-						<SelectField name="author" options="Author.name" label="Author" />
+				<SingleEntityDataProvider entityName="Post" where={{ id }}>
+					<TextField name="publishedAt" label="Time" />
+					<SelectField name="author" options="Author.name" label="Author" />
 
-						<Repeater field="categories">
-							<SideDimensions
-								dimension="lang"
-								variableName="currentLang"
-								variables={{
-									locale: env => `locales(locale=${env.getValue('currentLang')})`,
-								}}
-							>
-								<TextField name="$locale.name" label="Name" />
-							</SideDimensions>
-						</Repeater>
-
+					<Repeater field="categories">
 						<SideDimensions
 							dimension="lang"
 							variableName="currentLang"
@@ -91,23 +73,33 @@ export default () => (
 								locale: env => `locales(locale=${env.getValue('currentLang')})`,
 							}}
 						>
-							<TextField name="$locale.title" label="Title" />
+							<TextField name="$locale.name" label="Name" />
 						</SideDimensions>
-					</SingleEntityDataProvider>
-				</Layout>
+					</Repeater>
+
+					<SideDimensions
+						dimension="lang"
+						variableName="currentLang"
+						variables={{
+							locale: env => `locales(locale=${env.getValue('currentLang')})`,
+						}}
+					>
+						<TextField name="$locale.title" label="Title" />
+					</SideDimensions>
+				</SingleEntityDataProvider>
 			)}
 		</Page>
 
 		<Page<{ postList: {} }> name="postList">
 			{() => (
-				<Layout>
+				<>
 					<h1>All posts</h1>
 					<EntityListDataProvider entityName="Post">
 						<ToMany field="locales[locale = cs]">
 							<TextField name="title" label="Title" />
 						</ToMany>
 					</EntityListDataProvider>
-				</Layout>
+				</>
 			)}
 		</Page>
 	</Pages>
