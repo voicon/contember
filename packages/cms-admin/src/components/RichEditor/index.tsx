@@ -1,19 +1,18 @@
-import { IconName, Divider } from '@blueprintjs/core'
-import { FormGroup, TextInputProps } from '@contember/ui'
-import { toEnumStateClass, toViewClass } from '@contember/ui/dist/src/utils'
+import { IconName } from '@blueprintjs/core'
+import { IconNames } from '@blueprintjs/icons'
+import { ButtonGroup, TextInputProps, toEnumStateClass, toEnumViewClass, toViewClass } from '@contember/ui'
 import cn from 'classnames'
+import { assertNever } from 'cms-common'
 import { isKeyHotkey } from 'is-hotkey'
 import * as React from 'react'
 import { Editor as CoreEditor, Value } from 'slate'
 import HtmlSerializer from 'slate-html-serializer'
-import { Editor, Plugin, EventHook } from 'slate-react'
+import { Editor, EventHook, Plugin } from 'slate-react'
 import { SimpleRelativeSingleFieldProps } from '../../binding/facade/auxiliary'
-import { BOLD, ITALIC, LINK, UNDERLINED, PARAGRAPH, HEADING, RichEditorPluginConfig } from './configs'
-import { ActionButton, Toolbar, getSlateController } from './utils'
-import { assertNever } from 'cms-common'
-import JsonSerializer from './JsonSerializer'
-import { IconNames } from '@blueprintjs/icons'
+import { BOLD, HEADING, ITALIC, LINK, PARAGRAPH, RichEditorPluginConfig, UNDERLINED } from './configs'
 import { HEADING_H2, HEADING_H3 } from './configs/heading'
+import JsonSerializer from './JsonSerializer'
+import { ActionButton, getSlateController, Toolbar } from './utils'
 
 const isBoldHotkey = isKeyHotkey('mod+b')
 const isItalicHotkey = isKeyHotkey('mod+i')
@@ -148,35 +147,41 @@ export default class RichEditor extends React.Component<RichEditorProps, RichTex
 		return (
 			<div className="editor">
 				<Toolbar>
-					{blocks.length > 1 &&
-						blocks.map(block => (
-							<ActionButton
-								key={block.block}
-								icon={this.getIcon(block.block)}
-								isActive={this.isBlockActive(block.block)}
-								onClick={this.changeBlockMarkingTo(block.block)}
-							/>
-						))}
+					{blocks.length > 1 && (
+						<ButtonGroup>
+							{blocks.map(block => (
+								<ActionButton
+									key={block.block}
+									icon={this.getIcon(block.block)}
+									isActive={this.isBlockActive(block.block)}
+									onClick={this.changeBlockMarkingTo(block.block)}
+								/>
+							))}
+						</ButtonGroup>
+					)}
 					&nbsp;
 					{/*{blocks.length > 1 && marksToShow.length > 0 && <Divider />}*/}
-					{allMarksNames.map(mark => (
-						<ActionButton
-							key={mark}
-							icon={this.getIcon(mark)}
-							isActive={this.isMarkActive(mark)}
-							onClick={this.changeMarkMarkingTo(mark)}
-							disabled={!this.isMarkAvailable(mark)}
-						/>
-					))}
+					<ButtonGroup>
+						{allMarksNames.map(mark => (
+							<ActionButton
+								key={mark}
+								icon={this.getIcon(mark)}
+								isActive={this.isMarkActive(mark)}
+								onClick={this.changeMarkMarkingTo(mark)}
+								disabled={!this.isMarkAvailable(mark)}
+							/>
+						))}
+					</ButtonGroup>
 				</Toolbar>
 				<div className="inputGroup view-topFluent">
 					<Editor
 						ref={this.ref}
 						className={cn(
 							'input',
-							toViewClass(this.props.size),
-							toViewClass(this.props.distinction),
+							toEnumViewClass(this.props.size),
+							toEnumViewClass(this.props.distinction),
 							toEnumStateClass(this.props.validationState),
+							toViewClass('withTopToolbar', true),
 						)}
 						spellCheck
 						plugins={this.plugins}

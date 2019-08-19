@@ -5,6 +5,7 @@ import {
 	DataRendererProps,
 	DefaultRenderer,
 	EntityAccessor,
+	LayoutInner,
 	Menu,
 	Tile,
 } from 'cms-admin'
@@ -43,7 +44,7 @@ export class LocationTreeRenderer extends React.PureComponent<DataRendererProps 
 		return (
 			<CollectionRenderer data={this.props.data}>
 				{(rawData, entities) => (
-					<>
+					<LayoutInner>
 						{DefaultRenderer.renderTitle(this.props.title)}
 						{this.props.beforeContent}
 
@@ -55,7 +56,7 @@ export class LocationTreeRenderer extends React.PureComponent<DataRendererProps 
 							</Tile>
 						)}
 						{!!entities.length || <div>There are no items to display.</div>}
-					</>
+					</LayoutInner>
 				)}
 			</CollectionRenderer>
 		)

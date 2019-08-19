@@ -1,7 +1,7 @@
 import { CreatePage } from 'cms-admin'
 import * as React from 'react'
 import { SiteField } from '../components'
-import { TapsterForm } from '../forms'
+import { TapsterForm, TapsterFormSide } from '../forms'
 
 export const TapsterCreatePage = (
 	<CreatePage
@@ -9,6 +9,8 @@ export const TapsterCreatePage = (
 		pageName={'tapsterCreate'}
 		rendererProps={{
 			title: 'Add a new tapster',
+			side: <TapsterFormSide />,
+			onlyOneInCollection: true,
 		}}
 	>
 		<SiteField />

@@ -7,7 +7,6 @@ import { AttributesForm, GenericContentForm, SeoForm } from './'
 export const PubForm = Component(
 	() => (
 		<>
-			<IsPublishedField />
 			<TextField name="name" label="Name" />
 			<SlugField name="link.url" drivenBy="name" format={getUrlFormatter('/pubs/')} label="URL" />
 			<TextField name="subtitle" label="Subtitle" />
@@ -28,3 +27,5 @@ export const PubForm = Component(
 	),
 	'PubForm',
 )
+
+export const PubFormSide = Component(() => <IsPublishedField />, 'PubFormSide')

@@ -1,7 +1,7 @@
 import { CreatePage } from 'cms-admin'
 import * as React from 'react'
 import { SiteField } from '../components'
-import { PostForm } from '../forms'
+import { PostForm, PostFormSide } from '../forms'
 
 export const BlogCreatePage = (
 	<CreatePage
@@ -9,6 +9,8 @@ export const BlogCreatePage = (
 		pageName={'blogCreate'}
 		rendererProps={{
 			title: 'Create new post',
+			side: <PostFormSide />,
+			onlyOneInCollection: true,
 		}}
 	>
 		<SiteField />
