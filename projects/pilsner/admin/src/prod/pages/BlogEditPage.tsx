@@ -1,6 +1,6 @@
 import { EditPage } from 'cms-admin'
 import * as React from 'react'
-import { PostForm } from '../forms'
+import { PostForm, PostFormSide } from '../forms'
 
 export const BlogEditPage = (
 	<EditPage
@@ -8,6 +8,8 @@ export const BlogEditPage = (
 		pageName={'blogEdit'}
 		rendererProps={{
 			title: 'Edit blog post',
+			side: <PostFormSide />,
+			onlyOneInCollection: true,
 		}}
 	>
 		<PostForm />

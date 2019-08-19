@@ -7,7 +7,6 @@ import { AttributesForm, GenericContentForm, LinkForm, SeoForm } from './'
 export const TapsterForm = Component(
 	() => (
 		<>
-			<IsPublishedField />
 			<TextField name="name" label="Name" />
 			<SlugField name="link.url" drivenBy="name" format={getUrlFormatter('/tapsters/')} label="URL" />
 			<TextField name="subtitle" label="Subtitle" />
@@ -27,4 +26,13 @@ export const TapsterForm = Component(
 		</>
 	),
 	'TapsterForm',
+)
+
+export const TapsterFormSide = Component(
+	() => (
+		<>
+			<IsPublishedField />
+		</>
+	),
+	'TapsterFormSide',
 )

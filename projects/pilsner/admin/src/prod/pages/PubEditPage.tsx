@@ -1,6 +1,6 @@
 import { EditPage } from 'cms-admin'
 import * as React from 'react'
-import { PubForm } from '../forms'
+import { PubForm, PubFormSide } from '../forms'
 
 export const PubEditPage = (
 	<EditPage
@@ -8,6 +8,8 @@ export const PubEditPage = (
 		pageName={'pubEdit'}
 		rendererProps={{
 			title: 'Edit pub',
+			side: <PubFormSide />,
+			onlyOneInCollection: true,
 		}}
 	>
 		<PubForm />

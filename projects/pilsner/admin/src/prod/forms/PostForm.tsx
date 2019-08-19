@@ -7,7 +7,6 @@ import { GenericContentForm, SeoForm } from './'
 export const PostForm = Component(
 	() => (
 		<>
-			<IsPublishedField />
 			<TextField name="title" size="large" label={'Title'} />
 			<SlugField name="link.url" drivenBy="title" format={getUrlFormatter('/stories/')} label="URL" />
 			<ImageField name={'headerImage'} label={'Header image'} />
@@ -22,4 +21,13 @@ export const PostForm = Component(
 		</>
 	),
 	'PostForm',
+)
+
+export const PostFormSide = Component(
+	() => (
+		<>
+			<IsPublishedField />
+		</>
+	),
+	'PostFormSide',
 )
