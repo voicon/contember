@@ -28,11 +28,4 @@ export const PubForm = Component(
 	'PubForm',
 )
 
-export const PubFormSide = Component(
-	() => (
-		<>
-			<IsPublishedField />
-		</>
-	),
-	'PubFormSide',
-)
+export const PubFormSide = Component(() => <IsPublishedField />, 'PubFormSide')

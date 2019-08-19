@@ -23,11 +23,4 @@ export const PostForm = Component(
 	'PostForm',
 )
 
-export const PostFormSide = Component(
-	() => (
-		<>
-			<IsPublishedField />
-		</>
-	),
-	'PostFormSide',
-)
+export const PostFormSide = Component(() => <IsPublishedField />, 'PostFormSide')

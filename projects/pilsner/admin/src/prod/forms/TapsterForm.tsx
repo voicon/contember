@@ -28,11 +28,4 @@ export const TapsterForm = Component(
 	'TapsterForm',
 )
 
-export const TapsterFormSide = Component(
-	() => (
-		<>
-			<IsPublishedField />
-		</>
-	),
-	'TapsterFormSide',
-)
+export const TapsterFormSide = Component(() => <IsPublishedField />, 'TapsterFormSide')
