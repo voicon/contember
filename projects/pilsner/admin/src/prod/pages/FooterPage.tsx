@@ -20,7 +20,7 @@ export const FooterPage = (
 					<h2>Copyright</h2>
 				</div>
 				<TextField name={'copyright'} label={undefined} />
-				<TextField name={'copyrightJap'} label={'JAP version only'} />
+				<TextField name={'copyrightJap'} label={'JAP version only'} allowNewlines={true} />
 			</div>
 
 			<div className={'inputBox'}>

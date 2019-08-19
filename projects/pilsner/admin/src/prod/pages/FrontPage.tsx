@@ -9,8 +9,8 @@ export const FrontPage = (
 			<h1>Front page</h1>
 			<LinkForm />
 			<ImageField name={'headerImage'} label={'Header image'} />
-			<TextField name={'title'} label={'Title'} size="large" />
-			<TextField name={'scrollString'} label={'Scroll string'} />
+			<TextField name={'title'} label={'Title'} size="large" allowNewlines={true} />
+			<TextField name={'scrollString'} label={'Scroll string'} allowNewlines={true} />
 			<FrontPageContentForm />
 			<SeoForm />
 		</ToOne>
