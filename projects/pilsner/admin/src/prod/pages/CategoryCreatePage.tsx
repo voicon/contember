@@ -10,6 +10,7 @@ export const CategoryCreatePage = (
 		rendererProps={{
 			title: 'Create new category',
 		}}
+		redirectOnSuccess={request => ({ ...request, pageName: 'categories' })}
 	>
 		<HiddenField name={'order'} defaultValue={99} label={undefined} />
 		<SiteField />

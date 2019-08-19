@@ -10,6 +10,7 @@ export const GenericPageCreatePage = (
 		rendererProps={{
 			title: 'Create new page',
 		}}
+		redirectOnSuccess={request => ({ ...request, pageName: 'pageList' })}
 	>
 		<SiteField />
 		<GenericPageForm />

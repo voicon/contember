@@ -10,6 +10,7 @@ export const TagCreatePage = (
 		rendererProps={{
 			title: 'Create new tag',
 		}}
+		redirectOnSuccess={request => ({ ...request, pageName: 'tags' })}
 	>
 		<SiteField />
 		<TagForm />

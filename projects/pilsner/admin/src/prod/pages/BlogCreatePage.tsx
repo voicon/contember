@@ -12,6 +12,7 @@ export const BlogCreatePage = (
 			side: <PostFormSide />,
 			onlyOneInCollection: true,
 		}}
+		redirectOnSuccess={request => ({ ...request, pageName: 'blogList' })}
 	>
 		<SiteField />
 		<PostForm />
