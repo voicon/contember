@@ -11,21 +11,21 @@ export class SideMenu extends React.Component {
 					<Menu.Item title="Stories">
 						<Menu.Item title="Edit page" to={{ pageName: 'blogPage' }} />
 						<Menu.Item title="All stories" to={{ pageName: 'blogList' }} />
-						<Menu.Item title="Add new story" to={{ pageName: 'blogCreate' }} />
+						<Menu.Item title="Add a new story" to={{ pageName: 'blogCreate' }} />
 					</Menu.Item>
 					<Menu.Item title="Pubs">
 						<Menu.Item title="Edit page" to={{ pageName: 'pubsPage' }} />
 						<Menu.Item title="All pubs" to={{ pageName: 'pubList' }} />
-						<Menu.Item title="Add new pub" to={{ pageName: 'pubCreate' }} />
+						<Menu.Item title="Add a new pub" to={{ pageName: 'pubCreate' }} />
 					</Menu.Item>
 					<Menu.Item title="Tapsters">
 						<Menu.Item title="Edit page" to={{ pageName: 'tapstersPage' }} />
 						<Menu.Item title="All tapsters" to={{ pageName: 'tapsterList' }} />
-						<Menu.Item title="Add new tapster" to={{ pageName: 'tapsterCreate' }} />
+						<Menu.Item title="Add a new tapster" to={{ pageName: 'tapsterCreate' }} />
 					</Menu.Item>
 					<Menu.Item title="Pages">
 						<Menu.Item title="All pages" to={{ pageName: 'pageList' }} />
-						<Menu.Item title="Add new page" to={{ pageName: 'pageCreate' }} />
+						<Menu.Item title="Add a new page" to={{ pageName: 'pageCreate' }} />
 					</Menu.Item>
 					<Menu.Item title="Pour" to={{ pageName: 'pour' }} />
 				</Menu.Item>

@@ -8,9 +8,9 @@ export const PubForm = Component(
 	() => (
 		<>
 			<IsPublishedField />
-			<TextField name="name" label="Name" />
+			<TextField name="name" label="Name" allowNewlines={true} />
 			<SlugField name="link.url" drivenBy="name" format={getUrlFormatter('/pubs/')} label="URL" />
-			<TextField name="subtitle" label="Subtitle" />
+			<TextField name="subtitle" label="Subtitle" allowNewlines={true} />
 
 			<ImageField name={'headerImage'} label={'Header image'} />
 			<ImageField name={'listingImage'} label={'Listing image'} />

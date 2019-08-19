@@ -96,6 +96,11 @@ class ErrorsPreprocessor {
 
 						const numericAlias = parseInt(alias, 10)
 
+						if (isNaN(numericAlias)) {
+							// See this.getRootNode
+							throw new ErrorsPreprocessor.ErrorsPreprocessorError(`Not implemented! Encountered a non-numeric alias.`)
+						}
+
 						if (!(numericAlias in currentNode.children)) {
 							currentNode.children[numericAlias] = this.getRootNode(mutationError, i + 1)
 							if (i + 1 <= mutationError.path.length) {
@@ -140,6 +145,37 @@ class ErrorsPreprocessor {
 						`Corrupt data: undefined alias for node with index ${pathNode.index}.`,
 					)
 				}
+
+				const numericAlias = parseInt(alias, 10)
+
+				if (isNaN(numericAlias)) {
+					// Failed to parse the alias
+					if (i - 1 < startIndex) {
+						throw new ErrorsPreprocessor.ErrorsPreprocessorError(
+							`Corrupt data: non-numeric alias without a corresponding associated path.`,
+						)
+					}
+					const previousPath = error.path[i - 1]
+
+					if (previousPath.__typename === '_FieldPathFragment') {
+						const field = previousPath.field
+						if (alias.startsWith(field)) {
+							rootNode = {
+								errors: [],
+								nodeType: ErrorsPreprocessor.ErrorNodeType.FieldIndexed,
+								children: {
+									[alias]: rootNode,
+								},
+							}
+							i--
+							continue
+						}
+					}
+					throw new ErrorsPreprocessor.ErrorsPreprocessorError(
+						`Corrupt data: non-numeric alias with an invalid corresponding associated path.`,
+					)
+				}
+
 				rootNode = {
 					errors: [],
 					nodeType: ErrorsPreprocessor.ErrorNodeType.NumberIndexed,

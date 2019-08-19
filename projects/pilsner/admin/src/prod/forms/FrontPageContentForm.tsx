@@ -13,8 +13,8 @@ export const FrontPageContentForm = Component(
 					new Literal('frontTextBox'),
 					'Text box',
 					<>
-						<TextField name="title" label={'Title'} />
-						<TextField name="subtitle" label={'Subtitle'} />
+						<TextField name="title" label={'Title'} allowNewlines={true} />
+						<TextField name="subtitle" label={'Subtitle'} allowNewlines={true} />
 						<TextAreaField name="text" label={'Text'} />
 					</>,
 				],
@@ -22,10 +22,10 @@ export const FrontPageContentForm = Component(
 					new Literal('frontHalfImageLight'),
 					'"Light" image with text half split',
 					<>
-						<TextField name="title" label={'Title'} />
+						<TextField name="title" label={'Title'} allowNewlines={true} />
 						<TextAreaField name="text" label={'Text'} />
 						<ImageField name={'image'} label={'Image'} />
-						<TextField name="buttonCaption" label={'Button caption'} />
+						<TextField name="buttonCaption" label={'Button caption'} allowNewlines={true} />
 						<TextField name="url" label={'Button url'} />
 					</>,
 				],
@@ -33,7 +33,7 @@ export const FrontPageContentForm = Component(
 					new Literal('frontHalfImageLeft'),
 					'Image with text half split left',
 					<>
-						<TextField name="title" label={'Title'} />
+						<TextField name="title" label={'Title'} allowNewlines={true} />
 						<TextAreaField name="text" label={'Text'} />
 						<ImageField name={'image'} label={'Image'} />
 					</>,
@@ -42,7 +42,7 @@ export const FrontPageContentForm = Component(
 					new Literal('frontHalfImageRight'),
 					'Image with text half split right',
 					<>
-						<TextField name="title" label={'Title'} />
+						<TextField name="title" label={'Title'} allowNewlines={true} />
 						<TextAreaField name="text" label={'Text'} />
 						<ImageField name={'image'} label={'Image'} />
 					</>,
@@ -51,7 +51,7 @@ export const FrontPageContentForm = Component(
 					new Literal('frontPhotoBoxLeft'),
 					'Photo box left',
 					<>
-						<TextField name="title" label={'Title'} />
+						<TextField name="title" label={'Title'} allowNewlines={true} />
 						<TextAreaField name="text" label={'Text'} />
 						<ImageField name={'image'} label={'Image'} />
 					</>,
@@ -60,7 +60,7 @@ export const FrontPageContentForm = Component(
 					new Literal('frontPhotoBoxRight'),
 					'Photo box right',
 					<>
-						<TextField name="title" label={'Title'} />
+						<TextField name="title" label={'Title'} allowNewlines={true} />
 						<TextAreaField name="text" label={'Text'} />
 						<ImageField name={'image'} label={'Image'} />
 					</>,
@@ -76,8 +76,8 @@ export const FrontPageContentForm = Component(
 					new Literal('frontLargeImageWithTextBox'),
 					'Text and large photo',
 					<>
-						<TextField name="title" label={'Title'} />
-						<TextField name="subtitle" label={'Subtitle'} />
+						<TextField name="title" label={'Title'} allowNewlines={true} />
+						<TextField name="subtitle" label={'Subtitle'} allowNewlines={true} />
 						<TextAreaField name="text" label={'Text'} />
 						<ImageField name={'image'} label={'Image'} />
 					</>,
@@ -108,7 +108,7 @@ export const FrontPageContentForm = Component(
 					new Literal('frontCarousel'),
 					'Carousel',
 					<>
-						<TextField name="title" label={'Title'} />
+						<TextField name="title" label={'Title'} allowNewlines={true} />
 						<TextAreaField name="text" label={'Text'} />
 						<ToOne field={'gallery'}>
 							<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
