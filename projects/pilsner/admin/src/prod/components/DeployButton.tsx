@@ -9,6 +9,7 @@ import {
 	readLines,
 	RendererProps,
 	SingleEntityDataProvider,
+	Spinner,
 } from 'cms-admin'
 import * as React from 'react'
 
@@ -21,7 +22,7 @@ interface State {
 class DeployRenderer extends React.PureComponent<RendererProps> {
 	render() {
 		if (!this.props.data) {
-			return <>Loading...</>
+			return <Spinner />
 		}
 		const accessor = this.props.data.root
 		if (!(accessor instanceof EntityAccessor)) {
