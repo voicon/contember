@@ -12,6 +12,7 @@ export const PubCreatePage = (
 			side: <PubFormSide />,
 			onlyOneInCollection: true,
 		}}
+		redirectOnSuccess={request => ({ ...request, pageName: 'pubList' })}
 	>
 		<SiteField />
 		<PubForm />

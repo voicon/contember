@@ -10,6 +10,7 @@ export const LocationCreatePage = (
 		rendererProps={{
 			title: 'Create new location',
 		}}
+		redirectOnSuccess={request => ({ ...request, pageName: 'locations' })}
 	>
 		<SiteField />
 		<LocationForm />

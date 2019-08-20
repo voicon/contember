@@ -12,6 +12,7 @@ export const TapsterCreatePage = (
 			side: <TapsterFormSide />,
 			onlyOneInCollection: true,
 		}}
+		redirectOnSuccess={request => ({ ...request, pageName: 'tapsterList' })}
 	>
 		<SiteField />
 		<TapsterForm />
