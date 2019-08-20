@@ -9,13 +9,9 @@ export default class HeaderLeft extends React.PureComponent {
 				<DimensionsSwitcher
 					optionEntities="Language"
 					dimension="lang"
-					defaultValue={[{ slug: 'cz', label: 'Czech' }]}
 					maxItems={2}
 					labelField="name"
 					slugField="slug"
-					buttonProps={{
-						icon: IconNames.GLOBE,
-					}}
 				/>
 			</>
 		)

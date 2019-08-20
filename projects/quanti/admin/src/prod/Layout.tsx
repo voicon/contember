@@ -6,18 +6,7 @@ import { SideMenu } from './SideMenu'
 const layout = {
 	header: {
 		title: 'Quanti',
-		left: (
-			<DimensionsSwitcher
-				optionEntities="Locale"
-				dimension="locale"
-				defaultValue={[{ slug: 'cs', label: 'cs' }]}
-				labelField="slug"
-				slugField="slug"
-				buttonProps={{
-					icon: IconNames.GLOBE,
-				}}
-			/>
-		),
+		left: <DimensionsSwitcher optionEntities="Locale" dimension="locale" labelField="slug" slugField="slug" />,
 		right: false,
 	},
 	side: <SideMenu />,
