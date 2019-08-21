@@ -41,7 +41,6 @@ projects:
       - id: 9ae8872a-2052-41e5-82ae-8af85b6f4f63
         slug: beta
         name: Beta
-        base: prod
     dbCredentials:
       host: '%env.DB_HOST%'
       port: '%env.DB_PORT::number%'
