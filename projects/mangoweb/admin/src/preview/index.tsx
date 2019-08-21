@@ -21,7 +21,7 @@ import { referencesPageForm } from './forms/referencesPageForm'
 import { teamPageForm } from './forms/teamPageForm'
 
 export default () => (
-	<Pages project="mangoweb" stage="prod" layout={Layout}>
+	<Pages layout={Layout}>
 		<GenericPage pageName="dashboard">
 			<H1>manGoweb admin</H1>
 		</GenericPage>

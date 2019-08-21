@@ -19,7 +19,7 @@ import * as React from 'react'
 import { Layout } from './adminLayout'
 
 export default () => (
-	<Pages project="blog" stage="prod" layout={Layout}>
+	<Pages layout={Layout}>
 		<Page name="dashboard">{() => <p />}</Page>
 		<EditPage entity="Page">
 			<TextField name="title" label="Title" size="large" />

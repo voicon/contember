@@ -5,4 +5,4 @@ import * as pageList from '../base/pages'
 import '../../../src/base/_theme.sass'
 import '../../../src/prod/_theme.sass'
 
-export default () => <Pages project={'pilsner'} stage={'prod'} layout={() => <Layout deployButton={true}/>} children={Object.values(pageList)} />
+export default () => <Pages layout={() => <Layout deployButton={true}/>} children={Object.values(pageList)} />
