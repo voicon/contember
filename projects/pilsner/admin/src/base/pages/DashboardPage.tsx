@@ -5,19 +5,29 @@ import { CreateButton } from '../components'
 export const DashboardPage = (
 	<GenericPage pageName="dashboard">
 		<h1>PilsnerUrquell admin</h1>
+		<div style={{ marginBottom: '20px' }}>
+			<TileList>
+				<Tile>
+					<h1>Production</h1>
+					<a href="https://www.pilsnerurquell.com/" target="_blank" rel="noopener">
+						pilsnerurquell.com
+					</a>
+				</Tile>
+				<Tile>
+					<h1>Live preview</h1>
+					<a href="https://live.pilsnerurquell.com/" target="_blank" rel="noopener">
+						live.pilsnerurquell.com
+					</a>
+				</Tile>
+				<Tile>
+					<h1>Beta</h1>
+					<a href="https://beta.pilsner.mgw.cz/" target="_blank" rel="noopener">
+						beta.pilsner.mgw.cz
+					</a>
+				</Tile>
+			</TileList>
+		</div>
 		<TileList>
-			<Tile>
-				<h1>Production</h1>
-				<a href="https://www.pilsnerurquell.com/" target="_blank" rel="noopener">
-					pilsnerurquell.com
-				</a>
-			</Tile>
-			<Tile>
-				<h1>Preview</h1>
-				<a href="https://pilsner.mgw.cz/" target="_blank" rel="noopener">
-					pilsner.mgw.cz
-				</a>
-			</Tile>
 			<Tile>
 				<img
 					src="https://cdns.iconmonstr.com/wp-content/assets/preview/2012/240/iconmonstr-eye-4.png"

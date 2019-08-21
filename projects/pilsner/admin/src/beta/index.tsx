@@ -5,4 +5,10 @@ import * as pageList from '../base/pages'
 import '../../../src/base/_theme.sass'
 import '../../../src/beta/_theme.sass'
 
-export default () => <Pages layout={() => <Layout deployButton={false}/>} children={Object.values(pageList)} />
+class BetaLayout extends React.PureComponent {
+	render() {
+		return <Layout deployButton={false} children={this.props.children} />
+	}
+}
+
+export default () => <Pages layout={BetaLayout} children={Object.values(pageList)} />
