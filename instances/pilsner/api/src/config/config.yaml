@@ -15,10 +15,6 @@ projects:
       - id: e7e502d4-e997-49c1-990a-60337c4ed6ce
         slug: prod
         name: Production
-      - id: 9ae8872a-2052-41e5-82ae-8af85b6f4f63
-        slug: beta
-        name: Beta
-        base: prod
 #      - id: 5070720f-6851-4af7-9aec-c5faf45c1e4f
 #        slug: preview
 #        name: Preview
@@ -37,28 +33,28 @@ projects:
       credentials:
         key: '%env.S3_KEY%'
         secret: '%env.S3_SECRET%'
-#  - id: a9ebe6d1-47eb-4c96-9d45-d72b4071ab7a
-#    slug: pilsner-beta
-#    directory: "@mangoweb/contember-project-pilsner-api"
-#    name: Pilsner beta
-#    stages:
-#    #      - id: 5070720f-6851-4af7-9aec-c5faf45c1e4f
-#    #        slug: preview
-#    #        name: Preview
-#    #        base: prod
-#    dbCredentials:
-#      host: '%env.DB_HOST%'
-#      port: '%env.DB_PORT::number%'
-#      user: '%env.DB_USER%'
-#      password: '%env.DB_PASSWORD%'
-#      database: '%env.DB_NAME%'
-#    s3:
-#      bucket: '%env.S3_BUCKET%'
-#      prefix: ''
-#      region: ''
-#      endpoint: '%env.S3_ENDPOINT%'
-#      credentials:
-#        key: '%env.S3_KEY%'
-#        secret: '%env.S3_SECRET%'
+  - id: a9ebe6d1-47eb-4c96-9d45-d72b4071ab7a
+    slug: pilsner-beta
+    directory: "@mangoweb/contember-project-pilsner-api"
+    name: Pilsner beta
+    stages:
+      - id: 9ae8872a-2052-41e5-82ae-8af85b6f4f63
+        slug: beta
+        name: Beta
+        base: prod
+    dbCredentials:
+      host: '%env.DB_HOST%'
+      port: '%env.DB_PORT::number%'
+      user: '%env.DB_USER%'
+      password: '%env.DB_PASSWORD%'
+      database: '%env.DB_NAME%'
+    s3:
+      bucket: '%env.S3_BUCKET%'
+      prefix: ''
+      region: ''
+      endpoint: '%env.S3_ENDPOINT%'
+      credentials:
+        key: '%env.S3_KEY%'
+        secret: '%env.S3_SECRET%'
 server:
   port: '%env.SERVER_PORT::number%'
