@@ -5,6 +5,7 @@ import {
 	Footer,
 	FrontPage,
 	GenericPage,
+	HopsPage,
 	Location,
 	Menu,
 	Post,
@@ -31,6 +32,7 @@ export class Site {
 	tapstersPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(TapstersPage, 'site')
 	blogPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(BlogPage, 'site')
 	pourPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(PourPage, 'site')
+	hopsPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(HopsPage, 'site')
 	genericPages: d.OneHasManyDefinition = d.oneHasMany(GenericPage, 'site')
 	socialLinks: d.OneHasManyDefinition = d.oneHasMany(SocialLink, 'site')
 	footer: d.OneHasOneInversedDefinition = d.oneHasOneInversed(Footer, 'site')

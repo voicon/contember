@@ -1,0 +1,208 @@
+{
+	"modifications": [
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "HopsPage",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "hops_page",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Linkable",
+			"owningSide": {
+				"name": "hopsPage",
+				"inversedBy": "link",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "HopsPage",
+				"joiningColumn": {
+					"columnName": "hops_page_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "link",
+				"ownedBy": "hopsPage",
+				"target": "Linkable",
+				"type": "OneHasOne",
+				"nullable": false
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "HopsPage",
+			"owningSide": {
+				"name": "site",
+				"inversedBy": "hopsPage",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Site",
+				"joiningColumn": {
+					"columnName": "site_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "hopsPage",
+				"ownedBy": "site",
+				"target": "HopsPage",
+				"type": "OneHasOne",
+				"nullable": true
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "HopsPage",
+			"owningSide": {
+				"name": "seo",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Seo",
+				"joiningColumn": {
+					"columnName": "seo_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/HopsPage",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"site": true,
+								"link": true,
+								"seo": true
+							},
+							"read": {
+								"id": true,
+								"site": true,
+								"link": true,
+								"seo": true
+							},
+							"update": {
+								"id": true,
+								"site": true,
+								"link": true,
+								"seo": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Linkable/operations/read/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Linkable/operations/update/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Linkable/operations/create/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/read/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/update/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/create/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/HopsPage",
+					"value": {
+						"predicates": {
+							"site": {
+								"site": {
+									"slug": "site"
+								}
+							}
+						},
+						"operations": {
+							"create": {
+								"id": "site",
+								"site": "site",
+								"link": "site",
+								"seo": "site"
+							},
+							"read": {
+								"id": "site",
+								"site": "site",
+								"link": "site",
+								"seo": "site"
+							},
+							"update": {
+								"id": "site",
+								"site": "site",
+								"link": "site",
+								"seo": "site"
+							},
+							"delete": "site"
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Site/operations/create/hopsPage",
+					"value": false
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Site/operations/read/hopsPage",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Site/operations/update/hopsPage",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Linkable/operations/create/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Linkable/operations/read/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Linkable/operations/update/hopsPage",
+					"value": true
+				}
+			]
+		}
+	]
+}
