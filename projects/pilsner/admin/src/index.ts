@@ -54,8 +54,8 @@ const config: ProjectConfig[] = [
 	},
 	{
 		project: 'pilsner-beta',
-		stage: 'prod',
-		component: () => import('./prod'),
+		stage: 'beta',
+		component: () => import('./beta'),
 		defaultDimensions: {
 			site: ['en'],
 		},

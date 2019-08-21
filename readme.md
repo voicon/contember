@@ -12,7 +12,7 @@
 ### Initial setup
 
 - create `docker-compose.override.yaml` using `docker-compose.override.dist.yaml`
-- create `mangoweb/cms-api/src/config/config.yaml`  using `mangoweb/cms-api/src/config/config.sample.yaml`
+- create `instances/mangoweb/api/src/config/config.yaml`  using `instances/mangoweb/api/src/config/config.sample.yaml`
 - run `./docker/bootstrap.sh` 
 - follow instructions
 
@@ -26,7 +26,7 @@
 
 ### Generating project migrations
 
-- run `./docker/console project migration-name` (e.g. `./docker/console mangoweb gallery`)
+- run `./docker/console diff project migration-name` (e.g. `./docker/console diff mangoweb gallery`)
 - review generated file
 - run `./docker/console update`
 - currently it is also required to restart api container using `docker-compose up --force-recreate -d api`

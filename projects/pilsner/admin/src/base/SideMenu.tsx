@@ -2,7 +2,11 @@ import * as React from 'react'
 import { DeployButton } from './components'
 import { Menu } from 'cms-admin'
 
-export class SideMenu extends React.Component {
+interface LayoutProps {
+	deployButton: boolean
+}
+
+export class SideMenu extends React.Component<LayoutProps> {
 	render() {
 		return (
 			<Menu>
@@ -41,9 +45,11 @@ export class SideMenu extends React.Component {
 					<Menu.Item title="Translations" to={{ pageName: 'translations' }} />
 					<Menu.Item title="Sites" to={{ pageName: 'sites' }} />
 				</Menu.Item>
-				<Menu.Item title="Deployment">
-					<Menu.Item title={<DeployButton />} />
-				</Menu.Item>
+				{this.props.deployButton && (
+					<Menu.Item title="Deployment">
+						<Menu.Item title={<DeployButton />} />
+					</Menu.Item>
+				)}
 			</Menu>
 		)
 	}

@@ -34,7 +34,7 @@ import { LocaleSideDimension } from './LocaleSideDimension'
 import '../../../src/prod/_theme.sass'
 
 export default () => (
-	<Pages project="quanti" stage="prod" layout={Layout}>
+	<Pages layout={Layout}>
 		<GenericPage pageName="dashboard">
 			<H1>Quanti admin</H1>
 		</GenericPage>
