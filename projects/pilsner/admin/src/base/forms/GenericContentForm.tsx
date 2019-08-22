@@ -65,6 +65,26 @@ export const GenericContentForm = Component(
 							</ToOne>
 						</>,
 					],
+					[
+						new Literal('frontTextBox'),
+						'Text box',
+						<>
+							<TextField name="title" label={'Title'} allowNewlines />
+							<TextField name="subtitle" label={'Subtitle'} allowNewlines />
+							<TextAreaField name="text" label={'Text'} />
+						</>,
+					],
+					[
+						new Literal('hero'),
+						'Hero',
+						<>
+							<TextField name="title" label={'Title'} allowNewlines />
+							<ImageField name={'image'} label={'Image'} />
+						</>,
+					],
+					[new Literal('relatedTapsters'), 'Related tapsters', <>Related tapsters</>],
+					[new Literal('relatedPosts'), 'Related posts', <>Related posts</>],
+					[new Literal('videos'), 'Videos', <>Videos</>],
 				]}
 			/>
 		</>

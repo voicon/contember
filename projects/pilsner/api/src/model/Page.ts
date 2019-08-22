@@ -81,4 +81,5 @@ export class HopsPage {
 
 	link = d.oneHasOneInversed(Linkable, 'hopsPage').notNull()
 	seo = d.oneHasOne(Seo).notNull()
+	content = d.oneHasOne(Content, 'hopsPage').notNull()
 }

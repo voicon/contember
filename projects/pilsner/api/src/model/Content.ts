@@ -1,4 +1,4 @@
-import { FrontPage, GenericPage, Image, Post, Pub, Tapster } from './'
+import { FrontPage, GenericPage, HopsPage, Image, Post, Pub, Tapster } from './'
 import { SchemaDefinition as d } from '@contember/schema-definition'
 
 export class Content {
@@ -9,6 +9,7 @@ export class Content {
 	genericPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(GenericPage, 'content')
 	frontPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(FrontPage, 'content')
 	post: d.OneHasOneInversedDefinition = d.oneHasOneInversed(Post, 'content')
+	hopsPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(HopsPage, 'content')
 }
 
 export const ContentBlockType = d.createEnum(
@@ -27,6 +28,10 @@ export const ContentBlockType = d.createEnum(
 	'contentImage',
 	'contentGallery',
 	'contentHtml',
+	'hero',
+	'relatedTapsters',
+	'relatedPosts',
+	'videos',
 )
 
 export class ContentBlock {

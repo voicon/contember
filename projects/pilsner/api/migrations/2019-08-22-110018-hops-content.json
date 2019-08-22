@@ -1,0 +1,29 @@
+{
+	"modifications": [
+		{
+			"modification": "updateEnum",
+			"enumName": "ContentBlockType",
+			"values": [
+				"frontTextBox",
+				"frontHalfImageLight",
+				"frontHalfImageLeft",
+				"frontHalfImageRight",
+				"frontCarousel",
+				"frontDesktopGallery",
+				"frontPhoneGallery",
+				"frontPhotoBoxLeft",
+				"frontPhotoBoxRight",
+				"frontLargeImage",
+				"frontLargeImageWithTextBox",
+				"contentTextSection",
+				"contentImage",
+				"contentGallery",
+				"contentHtml",
+				"hero",
+				"relatedTapsters",
+				"relatedPosts",
+				"videos"
+			]
+		}
+	]
+}
