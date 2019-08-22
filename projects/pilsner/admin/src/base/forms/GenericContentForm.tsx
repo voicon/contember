@@ -85,6 +85,28 @@ export const GenericContentForm = Component(
 					[new Literal('relatedTapsters'), 'Related tapsters', <>Related tapsters</>],
 					[new Literal('relatedPosts'), 'Related posts', <>Related posts</>],
 					[new Literal('videos'), 'Videos', <>Videos</>],
+					[
+						new Literal('frontPhoneGallery'),
+						'Front phone gallery',
+						<>
+							<ToOne field={'gallery'}>
+								<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+									<ImageField name={'image'} label={'Image'} single={true} />
+								</SortableRepeater>
+							</ToOne>
+						</>,
+					],
+					[
+						new Literal('frontDesktopGallery'),
+						'Front desktop gallery',
+						<>
+							<ToOne field={'gallery'}>
+								<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+									<ImageField name={'image'} label={'Image'} single={true} />
+								</SortableRepeater>
+							</ToOne>
+						</>,
+					],
 				]}
 			/>
 		</>
