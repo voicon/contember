@@ -21,6 +21,7 @@ export const GenericContentForm = Component(
 			<SortableBlockRepeater
 				sortBy="order"
 				field="content.blocks"
+				removeType={'delete'}
 				discriminationField="type"
 				alternatives={[
 					[
@@ -84,7 +85,22 @@ export const GenericContentForm = Component(
 					],
 					[new Literal('relatedTapsters'), 'Related tapsters', <>Related tapsters</>],
 					[new Literal('relatedPosts'), 'Related posts', <>Related posts</>],
-					[new Literal('videos'), 'Videos', <>Videos</>],
+					[
+						new Literal('videos'),
+						'Videos',
+						<>
+							<>
+								<ToOne field={'gallery'}>
+									<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+										<TextField name={'video.url'} label={'Video URL'} />
+										<ImageField name={'image'} label={'Image'} />
+										<TextField name={'caption'} label={'Caption'} allowNewlines={true} />
+										<TextField name={'subtitle'} label={'Subtitle'} />
+									</SortableRepeater>
+								</ToOne>
+							</>
+						</>,
+					],
 					[
 						new Literal('frontPhoneGallery'),
 						'Front phone gallery',
