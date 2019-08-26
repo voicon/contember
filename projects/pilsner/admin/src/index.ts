@@ -27,6 +27,8 @@ const routes = {
 
 	pour: { path: '/pour' },
 
+	hops: { path: '/hops' },
+
 	menu: { path: '/menu' },
 	categories: { path: '/categories' },
 	categoryCreate: { path: '/categories/new' },

@@ -3,6 +3,7 @@ import {
 	Category,
 	FrontPage,
 	GenericPage,
+	HopsPage,
 	Post,
 	PourPage,
 	Pub,
@@ -32,6 +33,7 @@ export class Linkable {
 	pubsPage: d.OneHasOneDefinition = d.oneHasOne(PubsPage, 'link').cascadeOnDelete()
 	tapstersPage: d.OneHasOneDefinition = d.oneHasOne(TapstersPage, 'link').cascadeOnDelete()
 	pourPage: d.OneHasOneDefinition = d.oneHasOne(PourPage, 'link').cascadeOnDelete()
+	hopsPage: d.OneHasOneDefinition = d.oneHasOne(HopsPage, 'link').cascadeOnDelete()
 	genericPage: d.OneHasOneDefinition = d.oneHasOne(GenericPage, 'link').cascadeOnDelete()
 }
 

@@ -72,3 +72,14 @@ export class PourPage {
 	link = d.oneHasOneInversed(Linkable, 'pourPage').notNull()
 	seo = d.oneHasOne(Seo).notNull()
 }
+
+export class HopsPage {
+	site = d
+		.oneHasOne(Site, 'hopsPage')
+		.cascadeOnDelete()
+		.notNull()
+
+	link = d.oneHasOneInversed(Linkable, 'hopsPage').notNull()
+	seo = d.oneHasOne(Seo).notNull()
+	content = d.oneHasOne(Content, 'hopsPage').notNull()
+}

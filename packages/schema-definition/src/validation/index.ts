@@ -61,7 +61,10 @@ class RuleBranch {
 			return this.branchRules
 		}
 		return this.branchRules.map(rule => ({
-			validator: rules.conditional(rule.validator, rules.and(...this.conditions)),
+			validator: rules.conditional(
+				this.conditions.length === 1 ? this.conditions[0] : rules.and(...this.conditions),
+				rule.validator,
+			),
 			message: rule.message,
 		}))
 	}
@@ -180,6 +183,10 @@ export function optional(): PropertyDecorator {
 
 export function required(message: MessageOrString): PropertyDecorator {
 	return combine(requiredOrOptional(true), assert(rules.notEmpty(), message))
+}
+
+export function requiredWhen(condition: Validation.Validator, message: MessageOrString) {
+	return combine(requiredOrOptional(true), when(condition).assert(rules.notEmpty(), message))
 }
 
 export const assertPattern = (pattern: RegExp, message: MessageOrString) => fluent().assertPattern(pattern, message)

@@ -1,0 +1,91 @@
+{
+	"modifications": [
+		{
+			"modification": "createRelation",
+			"entityName": "HopsPage",
+			"owningSide": {
+				"name": "content",
+				"inversedBy": "hopsPage",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Content",
+				"joiningColumn": {
+					"columnName": "content_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "hopsPage",
+				"ownedBy": "content",
+				"target": "HopsPage",
+				"type": "OneHasOne",
+				"nullable": true
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Content/operations/read/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Content/operations/update/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Content/operations/create/hopsPage",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/HopsPage/operations/create/content",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/HopsPage/operations/read/content",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/HopsPage/operations/update/content",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Content/operations/create/hopsPage",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Content/operations/read/hopsPage",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/Content/operations/update/hopsPage",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/HopsPage/operations/create/content",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/HopsPage/operations/read/content",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/HopsPage/operations/update/content",
+					"value": "site"
+				}
+			]
+		}
+	]
+}
