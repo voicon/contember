@@ -76,7 +76,7 @@ export const GenericContentForm = Component(
 							<SortableRepeater sortBy="order" field="images" removeType="delete">
 								<TextField name="video.url" label="Video URL" />
 								<ImageField name="image" label="Image" />
-								<TextField name="caption" label="Caption" allowNewlines={true} />
+								<TextField name="caption" label="Caption" allowNewlines />
 								<TextField name="subtitle" label="Subtitle" />
 							</SortableRepeater>
 						</ToOne>,
@@ -86,7 +86,7 @@ export const GenericContentForm = Component(
 						'Front phone gallery',
 						<ToOne field="gallery">
 							<SortableRepeater sortBy="order" field="images" removeType="delete">
-								<ImageField name="image" label="Image" single={true} />
+								<ImageField name="image" label="Image" single />
 							</SortableRepeater>
 						</ToOne>,
 					],
@@ -95,7 +95,7 @@ export const GenericContentForm = Component(
 						'Front desktop gallery',
 						<ToOne field="gallery">
 							<SortableRepeater sortBy="order" field="images" removeType="delete">
-								<ImageField name="image" label="Image" single={true} />
+								<ImageField name="image" label="Image" single />
 							</SortableRepeater>
 						</ToOne>,
 					],
