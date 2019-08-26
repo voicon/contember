@@ -10,6 +10,7 @@ import {
 	TextAreaField,
 	TextField,
 	ToOne,
+	VideoUploadField,
 } from 'cms-admin'
 import * as React from 'react'
 import { ImageField } from '../components'
@@ -74,7 +75,7 @@ export const GenericContentForm = Component(
 						'Videos',
 						<ToOne field="gallery">
 							<SortableRepeater sortBy="order" field="images" removeType="delete">
-								<TextField name="video.url" label="Video URL" />
+								<VideoUploadField name="video.url" label="Video URL" />
 								<ImageField name="image" label="Image" />
 								<TextField name="caption" label="Caption" allowNewlines />
 								<TextField name="subtitle" label="Subtitle" />
