@@ -27,44 +27,28 @@ export const GenericContentForm = Component(
 					[
 						new Literal('contentTextSection'),
 						'Text section',
-						<>
-							<RichTextField
-								label="Text"
-								name="text"
-								lineBreakBehavior={LineBreakBehavior.SMART}
-								blocks={[
-									{ block: Block.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK, Mark.ITALIC] },
-									{ block: Block.HEADING_H2, marks: [] },
-									{ block: Block.HEADING_H3, marks: [] },
-								]}
-							/>
-						</>,
+						<RichTextField
+							label="Text"
+							name="text"
+							lineBreakBehavior={LineBreakBehavior.SMART}
+							blocks={[
+								{ block: Block.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK, Mark.ITALIC] },
+								{ block: Block.HEADING_H2, marks: [] },
+								{ block: Block.HEADING_H3, marks: [] },
+							]}
+						/>,
 					],
-					[
-						new Literal('contentImage'),
-						'Image',
-						<>
-							<ImageField name={'image'} label={'Image'} />
-						</>,
-					],
-					[
-						new Literal('contentHtml'),
-						'HTML',
-						<>
-							<TextAreaField name="text" label={'Text'} />
-						</>,
-					],
+					[new Literal('contentImage'), 'Image', <ImageField name={'image'} label={'Image'} />],
+					[new Literal('contentHtml'), 'HTML', <TextAreaField name="text" label={'Text'} />],
 					[
 						new Literal('contentGallery'),
 						'Desktop gallery',
-						<>
-							<ToOne field={'gallery'}>
-								<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
-									<ImageField name={'image'} label={'Image'} />
-									<TextField name={'caption'} label={'Caption'} />
-								</SortableRepeater>
-							</ToOne>
-						</>,
+						<ToOne field={'gallery'}>
+							<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+								<ImageField name={'image'} label={'Image'} />
+								<TextField name={'caption'} label={'Caption'} />
+							</SortableRepeater>
+						</ToOne>,
 					],
 					[
 						new Literal('frontTextBox'),
@@ -88,40 +72,32 @@ export const GenericContentForm = Component(
 					[
 						new Literal('videos'),
 						'Videos',
-						<>
-							<>
-								<ToOne field={'gallery'}>
-									<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
-										<TextField name={'video.url'} label={'Video URL'} />
-										<ImageField name={'image'} label={'Image'} />
-										<TextField name={'caption'} label={'Caption'} allowNewlines={true} />
-										<TextField name={'subtitle'} label={'Subtitle'} />
-									</SortableRepeater>
-								</ToOne>
-							</>
-						</>,
+						<ToOne field={'gallery'}>
+							<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+								<TextField name={'video.url'} label={'Video URL'} />
+								<ImageField name={'image'} label={'Image'} />
+								<TextField name={'caption'} label={'Caption'} allowNewlines={true} />
+								<TextField name={'subtitle'} label={'Subtitle'} />
+							</SortableRepeater>
+						</ToOne>,
 					],
 					[
 						new Literal('frontPhoneGallery'),
 						'Front phone gallery',
-						<>
-							<ToOne field={'gallery'}>
-								<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
-									<ImageField name={'image'} label={'Image'} single={true} />
-								</SortableRepeater>
-							</ToOne>
-						</>,
+						<ToOne field={'gallery'}>
+							<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+								<ImageField name={'image'} label={'Image'} single={true} />
+							</SortableRepeater>
+						</ToOne>,
 					],
 					[
 						new Literal('frontDesktopGallery'),
 						'Front desktop gallery',
-						<>
-							<ToOne field={'gallery'}>
-								<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
-									<ImageField name={'image'} label={'Image'} single={true} />
-								</SortableRepeater>
-							</ToOne>
-						</>,
+						<ToOne field={'gallery'}>
+							<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+								<ImageField name={'image'} label={'Image'} single={true} />
+							</SortableRepeater>
+						</ToOne>,
 					],
 				]}
 			/>
