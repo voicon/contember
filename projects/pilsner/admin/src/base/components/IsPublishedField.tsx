@@ -23,7 +23,7 @@ export const IsPublishedField = Component(
 
 		return (
 			<FormGroup label="Publish date">
-				<ConcealableField renderConcealedValue={renderConcealedValue}>
+				<ConcealableField renderConcealedValue={renderConcealedValue} isExtended>
 					{({ onFocus, onBlur }) => (
 						<Field<string> name={fieldName} defaultValue={now}>
 							{fieldMetadata => (
