@@ -21,13 +21,14 @@ export const IsPublishedField = Component(
 		return (
 			<FormGroup label="Publish date" labelDescription="You still have to run deploy.">
 				<ConcealableField renderConcealedValue={renderConcealedValue} isExtended>
-					{({ onFocus, onBlur }) => (
+					{({ inputRef, onFocus, onBlur }) => (
 						<Field<string> name={fieldName}>
 							{fieldMetadata => (
 								<DateFieldInner
 									fieldMetadata={fieldMetadata}
 									onFocus={onFocus}
 									onBlur={onBlur}
+									ref={inputRef}
 									dateFormat="dd MMM yyyy"
 								/>
 							)}
