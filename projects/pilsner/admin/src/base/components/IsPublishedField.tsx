@@ -2,17 +2,14 @@ import { Component, ConcealableField, DateFieldInner, Field, FormGroup, useRelat
 import * as React from 'react'
 
 const fieldName = 'publishedAt'
-const now = new Date().toISOString()
+const now = new Date()
 
 export const IsPublishedField = Component(
 	() => {
 		const dateField = useRelativeSingleField<string>(fieldName)
 
 		const renderConcealedValue = React.useCallback(() => {
-			if (dateField.currentValue === now || dateField.currentValue === null) {
-				return <i>now</i>
-			}
-			const date = new Date(dateField.currentValue)
+			const date = dateField.currentValue ? new Date(dateField.currentValue) : now
 
 			return new Intl.DateTimeFormat('en-GB', {
 				day: '2-digit',
@@ -25,7 +22,7 @@ export const IsPublishedField = Component(
 			<FormGroup label="Publish date" labelDescription="You still have to run deploy.">
 				<ConcealableField renderConcealedValue={renderConcealedValue} isExtended>
 					{({ onFocus, onBlur }) => (
-						<Field<string> name={fieldName} defaultValue={now}>
+						<Field<string> name={fieldName}>
 							{fieldMetadata => (
 								<DateFieldInner
 									fieldMetadata={fieldMetadata}
@@ -40,6 +37,6 @@ export const IsPublishedField = Component(
 			</FormGroup>
 		)
 	},
-	() => <Field name={fieldName} defaultValue={now} />,
+	() => <Field name={fieldName} defaultValue={now.toISOString()} />,
 	'IsPublishedField',
 )
