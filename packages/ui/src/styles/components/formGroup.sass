@@ -3,6 +3,8 @@
 .#{$cui-conf-globalPrefix}formGroup
 	@extend %formGroup
 
+	$label-lineHeight: 1.2
+
 	display: flex
 	flex-direction: column
 	width: 100%
@@ -12,24 +14,32 @@
 		flex-direction: column
 		cursor: text
 
+		&-wrap
+			display: flex
+			flex-direction: column
+
 		&-text
 			color: $cui-formGroup-label-color
 			font-weight: $fw-medium
 			text-transform: uppercase
-			line-height: 1.2
+			line-height: $label-lineHeight
 
 	&-labelDescription
 		font-weight: $fw-normal
-		line-height: 1.2
+		line-height: $label-lineHeight
 		color: $cui-formGroup-labelDescription-color
 		display: inline-block
 		margin: em(4px) 0 em(2px)
 
 	&-field
+		&-wrap
+			display: block
+		&-description
+			font-weight: $fw-light
+			color: $cui-formGroup-description-color
+			display: block
+	&-label-wrap ~ &-field-wrap
 		margin-top: em(8px)
-	&-description
-		font-weight: $fw-light
-		color: $cui-formGroup-description-color
 
 	@each $name, $fontSize in $cui-formGroup-sizes
 		$view: toView($name)
@@ -40,9 +50,56 @@
 					font-size: $fontSize
 			&-labelDescription
 				font-size: $fontSize * .9
+			&-field
+				&-description
+					font-size: $fontSize * .85
+
+		@if map_has_key($cui-control-sizes, $name)
+			$controlSettings: map_get($cui-control-sizes, $name)
+			$controlHeight: map_get($controlSettings, height)
+			&#{$view}.view-labelLeft &,
+			&#{$view}.view-labelInlineLeft &
+				&-label
+					&-wrap
+						// TODO somehow disable this for controls with unknown height
+						padding-top: ($controlHeight - $fontSize * $label-lineHeight) / 2
+
+
+	$inlineLabel-maxWidth: (2 / 7) * 100%
+	&.view-labelLeft &,
+	&.view-labelInlineLeft &
+		&-label
+			display: grid
+			grid-template-rows: auto auto 1fr
+			&-wrap
+				padding-right: .5em
+				grid-row: 1 / 4
+				grid-column: 1
+		&-field
+			&-wrap
+				margin-top: 0
+				grid-area: 1 / 2
 			&-description
-				font-size: $fontSize * .85
+				grid-area: 2 / 2
+	&.view-labelLeft &
+		&-label
+			grid-template-columns: 2fr 5fr
+	&.view-labelInlineLeft &
+		&-label
+			grid-template-columns: fit-content($inlineLabel-maxWidth) 1fr
 
-
-	&.view-labelLeft
-		//
+	@supports (display: contents)
+		&.view-labelLeft,
+		&.view-labelInlineLeft
+			display: grid
+			grid-template-rows: auto auto 1fr
+		&.view-labelLeft
+			grid-template-columns: 2fr 5fr
+		&.view-labelInlineLeft
+			grid-template-columns: fit-content($inlineLabel-maxWidth) 1fr
+		&.view-labelLeft &,
+		&.view-labelInlineLeft &
+			&-label
+				display: contents
+			&-errors
+				grid-area: 3 / 2

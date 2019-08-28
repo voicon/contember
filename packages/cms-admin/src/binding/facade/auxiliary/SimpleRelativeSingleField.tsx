@@ -21,13 +21,9 @@ export const SimpleRelativeSingleField = function<
 		props => <RelativeSingleField<P, Persisted, Produced> {...props} render={render} />,
 		(props: P, environment: Environment) => (
 			<>
-				{QueryLanguage.wrapRelativeSingleField(
-					props.name,
-					fieldName => (
-						<Field defaultValue={props.defaultValue} name={fieldName} />
-					),
-					environment,
-				)}
+				{QueryLanguage.wrapRelativeSingleField(props.name, environment, fieldName => (
+					<Field defaultValue={props.defaultValue} name={fieldName} />
+				))}
 				{props.label}
 				{props.labelDescription}
 				{props.description}
@@ -64,13 +60,21 @@ const RelativeSingleField = <
 			{fieldMetadata => (
 				<FormGroup
 					label={
-						<DataContext.Provider value={dataContext}>
-							{fieldMetadata.environment.applySystemMiddleware('labelMiddleware', props.label)}
-						</DataContext.Provider>
+						props.label && (
+							<DataContext.Provider value={dataContext}>
+								{fieldMetadata.environment.applySystemMiddleware('labelMiddleware', props.label)}
+							</DataContext.Provider>
+						)
 					}
-					labelDescription={<DataContext.Provider value={dataContext}>{props.labelDescription}</DataContext.Provider>}
+					labelDescription={
+						props.labelDescription && (
+							<DataContext.Provider value={dataContext}>{props.labelDescription}</DataContext.Provider>
+						)
+					}
 					labelPosition={props.labelPosition}
-					description={<DataContext.Provider value={dataContext}>{props.description}</DataContext.Provider>}
+					description={
+						props.description && <DataContext.Provider value={dataContext}>{props.description}</DataContext.Provider>
+					}
 					errors={fieldMetadata.errors}
 				>
 					{render(fieldMetadata, (props as any) as P)}

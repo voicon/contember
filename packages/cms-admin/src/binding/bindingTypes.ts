@@ -4,9 +4,12 @@ import { Literal, VariableLiteral, VariableScalar } from './dao'
 // TODO These shouldn't just be strings
 
 export type QualifiedFieldList = string
+export type QualifiedEntityList = string
 export type RelativeSingleField = string
 export type RelativeSingleEntity = string
 export type RelativeEntityList = string
+
+export type UniqueWhere = string
 
 export type FieldName = string
 export type EntityName = string

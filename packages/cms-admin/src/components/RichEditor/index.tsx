@@ -1,6 +1,6 @@
 import { IconName } from '@blueprintjs/core'
 import { IconNames } from '@blueprintjs/icons'
-import { ButtonGroup, TextInputProps, toEnumStateClass, toEnumViewClass, toViewClass } from '@contember/ui'
+import { ButtonGroup, TextInputOwnProps, toEnumStateClass, toEnumViewClass, toViewClass } from '@contember/ui'
 import cn from 'classnames'
 import { assertNever } from 'cms-common'
 import { isKeyHotkey } from 'is-hotkey'
@@ -36,7 +36,7 @@ export enum LineBreakBehavior {
 }
 
 export type RichEditorProps = SimpleRelativeSingleFieldProps &
-	TextInputProps & {
+	Omit<TextInputOwnProps, 'onChange'> & {
 		value: string
 		onChange: (value: string) => void
 		serializer: RichEditorSerializer
@@ -148,7 +148,7 @@ export default class RichEditor extends React.Component<RichEditorProps, RichTex
 			<div className="editor">
 				<Toolbar>
 					{blocks.length > 1 && (
-						<ButtonGroup>
+						<ButtonGroup isTopToolbar>
 							{blocks.map(block => (
 								<ActionButton
 									key={block.block}
@@ -161,7 +161,7 @@ export default class RichEditor extends React.Component<RichEditorProps, RichTex
 					)}
 					&nbsp;
 					{/*{blocks.length > 1 && marksToShow.length > 0 && <Divider />}*/}
-					<ButtonGroup>
+					<ButtonGroup isTopToolbar>
 						{allMarksNames.map(mark => (
 							<ActionButton
 								key={mark}

@@ -1,10 +1,15 @@
 import { boolean, radios, text } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import * as React from 'react'
-import { TextInput } from '../../src/components'
+import { TextInput, TextInputOwnProps } from '../../src/components'
 import { sizeKnob } from '../utils/knobs'
 
-const SimpleTextInputStory = () => {
+export interface SimpleTextInputStoryProps {
+	size?: TextInputOwnProps['size']
+	validationState?: TextInputOwnProps['validationState']
+}
+
+export const SimpleTextInputStory = ({ size, validationState }: SimpleTextInputStoryProps) => {
 	const [value, setValue] = React.useState('')
 
 	// The cast is frankly just TS inference being insufficient but in practice that won't matter as the value of
@@ -12,9 +17,9 @@ const SimpleTextInputStory = () => {
 	return (
 		<TextInput
 			value={value}
-			onChange={newValue => setValue(newValue)}
+			onChange={e => setValue(e.target.value)}
 			allowNewlines={boolean('Allow newlines', false) as true}
-			size={sizeKnob()}
+			size={size || sizeKnob()}
 			placeholder={text('Placeholder', 'Placeholder text')}
 			readOnly={boolean('Read only', false)}
 			distinction={radios(
@@ -25,15 +30,18 @@ const SimpleTextInputStory = () => {
 				},
 				'default',
 			)}
-			validationState={radios(
-				'Validation state',
-				{
-					Default: 'default',
-					Valid: 'valid',
-					Invalid: 'invalid',
-				},
-				'default',
-			)}
+			validationState={
+				validationState ||
+				radios(
+					'Validation state',
+					{
+						Default: 'default',
+						Valid: 'valid',
+						Invalid: 'invalid',
+					},
+					'default',
+				)
+			}
 			withTopToolbar={boolean('With top toolbar', false)}
 		/>
 	)

@@ -137,21 +137,18 @@ namespace Field {
 		const propsChildren = props.children
 
 		return React.useMemo(() => {
-			return QueryLanguage.wrapRelativeSingleField(
-				propsName,
-				fieldName => (
-					<DataContext.Consumer>
-						{(data: DataContextValue) => (
-							<RawMetadataGenerator fieldName={fieldName} data={data} isMutating={isMutating} environment={environment}>
-								{propsChildren}
-							</RawMetadataGenerator>
-						)}
-					</DataContext.Consumer>
-				),
-				environment,
-			)
+			return QueryLanguage.wrapRelativeSingleField(propsName, environment, fieldName => (
+				<DataContext.Consumer>
+					{(data: DataContextValue) => (
+						<RawMetadataGenerator fieldName={fieldName} data={data} isMutating={isMutating} environment={environment}>
+							{propsChildren}
+						</RawMetadataGenerator>
+					)}
+				</DataContext.Consumer>
+			))
 		}, [environment, isMutating, propsName, propsChildren])
 	})
+	DataRetriever.displayName = 'Field.DataRetriever'
 
 	export interface RawMetadataGeneratorProps extends RawMetadata {
 		children: DataRetrieverProps['children']
@@ -168,6 +165,7 @@ namespace Field {
 		}, [props.fieldName, props.data, props.isMutating, props.environment])
 		return <>{props.children(rawMetadata)}</>
 	})
+	RawMetadataGenerator.displayName = 'Field.RawMetadataGenerator'
 }
 
 export { Field }

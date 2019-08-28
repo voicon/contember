@@ -43,11 +43,11 @@ export type ChoiceFieldBaseProps = ChoiceFieldPublicProps & {
 } & (
 		| {
 				arity: ChoiceArity.Single
-				children: (metadata: SingleChoiceFieldMetadata) => React.ReactNode
+				children: (metadata: SingleChoiceFieldMetadata) => React.ReactElement | null
 		  }
 		| {
 				arity: ChoiceArity.Multiple
-				children: (metadata: MultipleChoiceFieldMetadata) => React.ReactNode
+				children: (metadata: MultipleChoiceFieldMetadata) => React.ReactElement | null
 		  })
 
 export type ChoiceFieldProps = ChoiceFieldBaseProps & {
@@ -63,7 +63,7 @@ class ChoiceField extends React.PureComponent<ChoiceFieldProps> {
 				{rawMetadata => {
 					// Unfortunately, the "any" type is necessary because the TS inference otherwise fails here for some reason.
 					const commonProps: any = {
-						rawMetadata,
+						...rawMetadata,
 						name: this.props.name,
 						options: this.props.options,
 						arity: this.props.arity,
@@ -85,7 +85,7 @@ class ChoiceField extends React.PureComponent<ChoiceFieldProps> {
 		environment: Environment,
 	): React.ReactNode {
 		if (Array.isArray(props.options)) {
-			return QueryLanguage.wrapRelativeSingleField(props.name, fieldName => <Field name={fieldName} />, environment)
+			return QueryLanguage.wrapRelativeSingleField(props.name, environment)
 		}
 
 		const metadata:
@@ -94,31 +94,23 @@ class ChoiceField extends React.PureComponent<ChoiceFieldProps> {
 			? QueryLanguage.wrapQualifiedEntityList(props.options, props.optionFieldFactory, environment)
 			: QueryLanguage.wrapQualifiedFieldList(props.options, fieldName => <Field name={fieldName} />, environment)
 
-		return QueryLanguage.wrapRelativeSingleField(
-			props.name,
-			fieldName => (
-				<>
-					<EntityListDataProvider
-						entityName={metadata.entityName}
-						filter={metadata.filter}
-						associatedField={props.name}
-					>
-						{metadata.children}
-					</EntityListDataProvider>
-					{props.arity === ChoiceArity.Single && (
-						<ToOne field={fieldName}>
-							<Field name={PRIMARY_KEY_NAME} />
-						</ToOne>
-					)}
-					{props.arity === ChoiceArity.Multiple && (
-						<ToMany field={fieldName}>
-							<Field name={PRIMARY_KEY_NAME} />
-						</ToMany>
-					)}
-				</>
-			),
-			environment,
-		)
+		return QueryLanguage.wrapRelativeSingleField(props.name, environment, fieldName => (
+			<>
+				<EntityListDataProvider entityName={metadata.entityName} filter={metadata.filter} associatedField={props.name}>
+					{metadata.children}
+				</EntityListDataProvider>
+				{props.arity === ChoiceArity.Single && (
+					<ToOne field={fieldName}>
+						<Field name={PRIMARY_KEY_NAME} />
+					</ToOne>
+				)}
+				{props.arity === ChoiceArity.Multiple && (
+					<ToMany field={fieldName}>
+						<Field name={PRIMARY_KEY_NAME} />
+					</ToMany>
+				)}
+			</>
+		))
 	}
 }
 
@@ -144,9 +136,7 @@ namespace ChoiceField {
 
 	export type Data<ActualValue extends Environment.Value = string> = SingleDatum<ActualValue>[]
 
-	export type InnerBaseProps = ChoiceFieldBaseProps & {
-		rawMetadata: Field.RawMetadata
-	}
+	export type InnerBaseProps = Field.RawMetadata & ChoiceFieldBaseProps
 }
 
 type EnforceDataBindingCompatibility = EnforceSubtypeRelation<
