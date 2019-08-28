@@ -40,3 +40,19 @@ export class Category {
 	posts = d.manyHasManyInversed(Post, 'categories')
 	name = d.stringColumn().notNull()
 }
+
+export class PostSet {
+	posts = d.oneHasMany(PostSetEntry, 'set')
+}
+
+export class PostSetEntry {
+	set: d.ManyHasOneDefinition = d
+		.manyHasOne(PostSet)
+		.notNull()
+		.cascadeOnDelete()
+	post = d
+		.manyHasOne(Post)
+		.notNull()
+		.cascadeOnDelete()
+	order = d.intColumn().notNull()
+}

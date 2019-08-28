@@ -1,4 +1,4 @@
-import { FrontPage, GenericPage, HopsPage, Image, Post, Pub, Tapster, Video } from './'
+import { FrontPage, GenericPage, HopsPage, Image, Post, PostSet, Pub, Tapster, TapsterSet, Video } from './'
 import { InputValidation as v, SchemaDefinition as d } from '@contember/schema-definition'
 
 export class Content {
@@ -50,6 +50,8 @@ export class ContentBlock {
 
 	image = d.manyHasOne(Image).setNullOnDelete()
 	gallery = d.oneHasOne(ContentGallery, 'block').setNullOnDelete()
+	postSet = d.oneHasOne(PostSet).cascadeOnDelete()
+	tapsterSet = d.oneHasOne(TapsterSet).cascadeOnDelete()
 }
 
 export class ContentGallery {

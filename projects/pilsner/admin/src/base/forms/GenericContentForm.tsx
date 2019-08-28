@@ -5,6 +5,7 @@ import {
 	Literal,
 	Mark,
 	RichTextField,
+	SelectField,
 	SortableBlockRepeater,
 	SortableRepeater,
 	TextAreaField,
@@ -68,8 +69,24 @@ export const GenericContentForm = Component(
 							<ImageField name="image" label="Image" />
 						</>,
 					],
-					[new Literal('relatedTapsters'), 'Related tapsters', <>Related tapsters</>],
-					[new Literal('relatedPosts'), 'Related posts', <>Related posts</>],
+					[
+						new Literal('relatedTapsters'),
+						'Related tapsters',
+						<ToOne field="tapsterSet">
+							<SortableRepeater sortBy="order" field="tapsters" removeType="delete">
+								<SelectField name={'tapster'} label={'Tapster'} options={'Tapster[site.slug=$site].name'} />
+							</SortableRepeater>
+						</ToOne>,
+					],
+					[
+						new Literal('relatedPosts'),
+						'Related posts',
+						<ToOne field="postSet">
+							<SortableRepeater sortBy="order" field="posts" removeType="delete">
+								<SelectField name={'post'} label={'Post'} options={'Post[site.slug=$site].title'} />
+							</SortableRepeater>
+						</ToOne>,
+					],
 					[
 						new Literal('videos'),
 						'Videos',

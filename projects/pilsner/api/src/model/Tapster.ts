@@ -1,4 +1,4 @@
-import { AttributeSet, Content, Image, Linkable, Location, Seo, Site, Tag } from '../model'
+import { AttributeSet, Content, Image, Linkable, Location, Post, Seo, Site, Tag } from '../model'
 import { SchemaDefinition as d } from '@contember/schema-definition'
 
 export class Tapster {
@@ -25,4 +25,20 @@ export class Tapster {
 	attributeSet = d.oneHasOne(AttributeSet, 'tapster').notNull()
 	location = d.manyHasOne(Location, 'tapsters')
 	tags = d.manyHasMany(Tag)
+}
+
+export class TapsterSet {
+	tapsters = d.oneHasMany(TapsterSetEntry, 'set')
+}
+
+export class TapsterSetEntry {
+	set: d.ManyHasOneDefinition = d
+		.manyHasOne(TapsterSet)
+		.notNull()
+		.cascadeOnDelete()
+	tapster = d
+		.manyHasOne(Tapster)
+		.notNull()
+		.cascadeOnDelete()
+	order = d.intColumn().notNull()
 }

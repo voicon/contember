@@ -1,0 +1,537 @@
+{
+	"modifications": [
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "PostSet",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "post_set",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "PostSetEntry",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "post_set_entry",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "TapsterSet",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "tapster_set",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "TapsterSetEntry",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "tapster_set_entry",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "TapsterSetEntry",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "PostSetEntry",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "PostSet",
+			"relation": {
+				"name": "posts",
+				"ownedBy": "set",
+				"type": "OneHasMany",
+				"target": "PostSetEntry"
+			}
+		},
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "TapsterSet",
+			"relation": {
+				"name": "tapsters",
+				"ownedBy": "set",
+				"type": "OneHasMany",
+				"target": "TapsterSetEntry"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "TapsterSetEntry",
+			"owningSide": {
+				"name": "tapster",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Tapster",
+				"joiningColumn": {
+					"columnName": "tapster_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContentBlock",
+			"owningSide": {
+				"name": "tapsterSet",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "TapsterSet",
+				"joiningColumn": {
+					"columnName": "tapster_set_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "PostSetEntry",
+			"owningSide": {
+				"name": "set",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "PostSet",
+				"joiningColumn": {
+					"columnName": "set_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "PostSetEntry",
+			"owningSide": {
+				"name": "post",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Post",
+				"joiningColumn": {
+					"columnName": "post_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContentBlock",
+			"owningSide": {
+				"name": "postSet",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "PostSet",
+				"joiningColumn": {
+					"columnName": "post_set_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "TapsterSetEntry",
+			"owningSide": {
+				"name": "set",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "TapsterSet",
+				"joiningColumn": {
+					"columnName": "set_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/PostSet",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"posts": true
+							},
+							"read": {
+								"id": true,
+								"posts": true
+							},
+							"update": {
+								"id": true,
+								"posts": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/PostSetEntry",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"set": true,
+								"post": true,
+								"order": true
+							},
+							"read": {
+								"id": true,
+								"set": true,
+								"post": true,
+								"order": true
+							},
+							"update": {
+								"id": true,
+								"set": true,
+								"post": true,
+								"order": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/TapsterSet",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"tapsters": true
+							},
+							"read": {
+								"id": true,
+								"tapsters": true
+							},
+							"update": {
+								"id": true,
+								"tapsters": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/TapsterSetEntry",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"set": true,
+								"tapster": true,
+								"order": true
+							},
+							"read": {
+								"id": true,
+								"set": true,
+								"tapster": true,
+								"order": true
+							},
+							"update": {
+								"id": true,
+								"set": true,
+								"tapster": true,
+								"order": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlock/operations/read/postSet",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlock/operations/read/tapsterSet",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlock/operations/update/postSet",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlock/operations/update/tapsterSet",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlock/operations/create/postSet",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlock/operations/create/tapsterSet",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/PostSet",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"posts": true
+							},
+							"read": {
+								"id": true,
+								"posts": true
+							},
+							"update": {
+								"id": true,
+								"posts": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/PostSetEntry",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"set": true,
+								"post": true,
+								"order": true
+							},
+							"read": {
+								"id": true,
+								"set": true,
+								"post": true,
+								"order": true
+							},
+							"update": {
+								"id": true,
+								"set": true,
+								"post": true,
+								"order": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/TapsterSet",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"tapsters": true
+							},
+							"read": {
+								"id": true,
+								"tapsters": true
+							},
+							"update": {
+								"id": true,
+								"tapsters": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/TapsterSetEntry",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"set": true,
+								"tapster": true,
+								"order": true
+							},
+							"read": {
+								"id": true,
+								"set": true,
+								"tapster": true,
+								"order": true
+							},
+							"update": {
+								"id": true,
+								"set": true,
+								"tapster": true,
+								"order": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/ContentBlock/operations/create/postSet",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/ContentBlock/operations/create/tapsterSet",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/ContentBlock/operations/read/postSet",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/ContentBlock/operations/read/tapsterSet",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/ContentBlock/operations/update/postSet",
+					"value": "site"
+				},
+				{
+					"op": "add",
+					"path": "/roles/regionManager/entities/ContentBlock/operations/update/tapsterSet",
+					"value": "site"
+				}
+			]
+		},
+		{
+			"modification": "patchValidationSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/ContentImage",
+					"value": {
+						"video": [
+							{
+								"validator": {
+									"operation": "conditional",
+									"args": [
+										{
+											"type": "validator",
+											"validator": {
+												"operation": "inContext",
+												"args": [
+													{
+														"type": "path",
+														"path": [
+															"gallery",
+															"block",
+															"type"
+														]
+													},
+													{
+														"type": "validator",
+														"validator": {
+															"operation": "equals",
+															"args": [
+																{
+																	"type": "literal",
+																	"value": "videos"
+																}
+															]
+														}
+													}
+												]
+											}
+										},
+										{
+											"type": "validator",
+											"validator": {
+												"operation": "not",
+												"args": [
+													{
+														"type": "validator",
+														"validator": {
+															"operation": "empty",
+															"args": []
+														}
+													}
+												]
+											}
+										}
+									]
+								},
+								"message": {
+									"text": "Please select a video"
+								}
+							}
+						]
+					}
+				}
+			]
+		}
+	]
+}
