@@ -14,9 +14,9 @@ export const IsPublishedField = Component(
 			}
 			const date = new Date(dateField.currentValue)
 
-			return new Intl.DateTimeFormat('en-US', {
+			return new Intl.DateTimeFormat('en-GB', {
 				day: '2-digit',
-				month: '2-digit',
+				month: 'short',
 				year: 'numeric',
 			}).format(date)
 		}, [dateField.currentValue])
@@ -26,7 +26,14 @@ export const IsPublishedField = Component(
 				<ConcealableField renderConcealedValue={renderConcealedValue}>
 					{({ onFocus, onBlur }) => (
 						<Field<string> name={fieldName} defaultValue={now}>
-							{fieldMetadata => <DateFieldInner fieldMetadata={fieldMetadata} onFocus={onFocus} onBlur={onBlur} />}
+							{fieldMetadata => (
+								<DateFieldInner
+									fieldMetadata={fieldMetadata}
+									onFocus={onFocus}
+									onBlur={onBlur}
+									dateFormat="dd MMM yyyy"
+								/>
+							)}
 						</Field>
 					)}
 				</ConcealableField>
