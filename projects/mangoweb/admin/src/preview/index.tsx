@@ -73,7 +73,7 @@ export default () => (
 			entity="Person"
 			rendererProps={{
 				title: 'Team members',
-				beforeContent: <PageLink change={() => ({ name: 'create_person' })}>Create new</PageLink>,
+				beforeContent: <PageLink to="create_person">Create new</PageLink>,
 				sortable: {
 					sortBy: 'order',
 				},

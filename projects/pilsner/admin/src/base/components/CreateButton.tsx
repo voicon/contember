@@ -1,4 +1,4 @@
-import { Button, PageLink } from 'cms-admin'
+import { PageLinkButton } from 'cms-admin'
 import * as React from 'react'
 
 export interface CreateButtonProps {
@@ -7,12 +7,5 @@ export interface CreateButtonProps {
 }
 
 export const CreateButton: React.ComponentType<CreateButtonProps> = props => (
-	<PageLink
-		change={() => ({ name: props.pageName })}
-		Component={({ isActive, ...buttonProps }) => (
-			<Button {...buttonProps} Component="a">
-				{props.label || 'Create'}
-			</Button>
-		)}
-	/>
+	<PageLinkButton to={props.pageName}>{props.label || 'Create'}</PageLinkButton>
 )

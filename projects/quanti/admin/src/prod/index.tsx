@@ -83,7 +83,7 @@ export default () => (
 				tableHeader: <PageListHeader />,
 				beforeContent: (
 					<PageLink
-						change={() => ({ name: 'create_page' })}
+						to="create_page"
 						Component={props => (
 							<Button {...props} Component="a">
 								Create
