@@ -45,7 +45,7 @@ export class LocationTreeRenderer extends React.PureComponent<DataRendererProps 
 			<CollectionRenderer data={this.props.data}>
 				{(rawData, entities) => (
 					<LayoutInner>
-						{DefaultRenderer.renderTitle(this.props.title)}
+						{DefaultRenderer.renderTitleBar(this.props)}
 						{this.props.beforeContent}
 
 						{entities.length > 0 && (
