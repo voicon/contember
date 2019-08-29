@@ -1,11 +1,18 @@
-import { EditPage, GenericPage, ToOne } from 'cms-admin'
+import { EditPage, ToOne } from 'cms-admin'
 import * as React from 'react'
-import { StandaloneEdit } from '../components'
+import { NavigateBackButton } from '../components'
 import { LinkForm, SeoForm } from '../forms'
 
 export const BlogPage = (
-	<EditPage pageName={'blogPage'} entity={'Site'} where="(slug = $site)">
-		<h1>Stories Page</h1>
+	<EditPage
+		pageName={'blogPage'}
+		entity={'Site'}
+		where="(slug = $site)"
+		rendererProps={{
+			title: 'Stories page',
+			navigation: <NavigateBackButton to="blogList">Stories</NavigateBackButton>,
+		}}
+	>
 		<ToOne field={'blogPage'}>
 			<LinkForm />
 			<SeoForm />

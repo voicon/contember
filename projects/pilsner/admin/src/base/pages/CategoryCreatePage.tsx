@@ -1,6 +1,6 @@
 import { CreatePage, HiddenField } from 'cms-admin'
 import * as React from 'react'
-import { SiteField } from '../components'
+import { NavigateBackButton, SiteField } from '../components'
 import { CategoryForm } from '../forms'
 
 export const CategoryCreatePage = (
@@ -8,7 +8,8 @@ export const CategoryCreatePage = (
 		entity="Category"
 		pageName={'categoryCreate'}
 		rendererProps={{
-			title: 'Create new category',
+			title: 'Add a new category',
+			navigation: <NavigateBackButton to="categories">Categories</NavigateBackButton>,
 		}}
 		redirectOnSuccess={request => ({ ...request, pageName: 'categories' })}
 	>

@@ -1,5 +1,6 @@
 import { EditPage } from 'cms-admin'
 import * as React from 'react'
+import { NavigateBackButton } from '../components'
 import { LocationForm } from '../forms'
 
 export const LocationEditPage = (
@@ -8,6 +9,7 @@ export const LocationEditPage = (
 		pageName={'locationEdit'}
 		rendererProps={{
 			title: 'Edit location',
+			navigation: <NavigateBackButton to="locations">Locations</NavigateBackButton>,
 		}}
 	>
 		<LocationForm />

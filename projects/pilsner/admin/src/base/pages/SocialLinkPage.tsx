@@ -1,4 +1,4 @@
-import { EditPage, Literal, MultiEditPage, Repeater, SelectField, SortableRepeater, TextField } from 'cms-admin'
+import { EditPage, Literal, Repeater, SelectField, TextField } from 'cms-admin'
 import * as React from 'react'
 
 export const SocialLinkPage = (

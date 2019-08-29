@@ -1,10 +1,9 @@
-import { Button, GenericPage, PageLink, Tile, TileList } from 'cms-admin'
+import { Button, GenericPage, PageLink, PageLinkButton, Tile, TileList, TitleBar } from 'cms-admin'
 import * as React from 'react'
-import { CreateButton } from '../components'
 
 export const DashboardPage = (
 	<GenericPage pageName="dashboard">
-		<h1>PilsnerUrquell admin</h1>
+		<TitleBar>PilsnerUrquell admin</TitleBar>
 		<div style={{ marginBottom: '20px' }}>
 			<TileList>
 				<Tile>
@@ -39,7 +38,7 @@ export const DashboardPage = (
 				<br />
 				<br />
 				<PageLink
-					change={() => ({ name: 'frontPage' })}
+					to="frontPage"
 					Component={({ isActive, ...buttonProps }) => (
 						<Button {...buttonProps} Component="a">
 							Edit Front page
@@ -57,7 +56,7 @@ export const DashboardPage = (
 				/>
 				<br />
 				<br />
-				<CreateButton pageName="blogCreate" label="Compose new blog post" />
+				<PageLinkButton to="blogCreate">Compose a new blog post</PageLinkButton>
 			</Tile>
 			<Tile>
 				<img
@@ -69,7 +68,7 @@ export const DashboardPage = (
 				/>
 				<br />
 				<br />
-				<CreateButton pageName="pubCreate" label="Add a new pub" />
+				<PageLinkButton to="pubCreate">Add a new pub</PageLinkButton>
 			</Tile>
 			<Tile>
 				<img
@@ -81,7 +80,7 @@ export const DashboardPage = (
 				/>
 				<br />
 				<br />
-				<CreateButton pageName="tapsterCreate" label="Add a new tapster" />
+				<PageLinkButton to="tapsterCreate">Add a new tapster</PageLinkButton>
 			</Tile>
 		</TileList>
 	</GenericPage>

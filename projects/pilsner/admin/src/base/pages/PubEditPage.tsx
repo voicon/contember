@@ -1,5 +1,6 @@
 import { EditPage } from 'cms-admin'
 import * as React from 'react'
+import { NavigateBackButton } from '../components'
 import { PubForm, PubFormSide } from '../forms'
 
 export const PubEditPage = (
@@ -10,6 +11,7 @@ export const PubEditPage = (
 			title: 'Edit pub',
 			side: <PubFormSide />,
 			onlyOneInCollection: true,
+			navigation: <NavigateBackButton to="pubList">Pubs</NavigateBackButton>,
 		}}
 	>
 		<PubForm />

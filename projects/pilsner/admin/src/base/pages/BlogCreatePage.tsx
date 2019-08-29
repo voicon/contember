@@ -1,6 +1,6 @@
 import { CreatePage } from 'cms-admin'
 import * as React from 'react'
-import { SiteField } from '../components'
+import { NavigateBackButton, SiteField } from '../components'
 import { PostForm, PostFormSide } from '../forms'
 
 export const BlogCreatePage = (
@@ -8,7 +8,8 @@ export const BlogCreatePage = (
 		entity="Post"
 		pageName={'blogCreate'}
 		rendererProps={{
-			title: 'Create new post',
+			title: 'Add a new story',
+			navigation: <NavigateBackButton to="blogList">Stories</NavigateBackButton>,
 			side: <PostFormSide />,
 			onlyOneInCollection: true,
 		}}

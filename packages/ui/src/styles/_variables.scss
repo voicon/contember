@@ -251,6 +251,10 @@ $cui-button-sizes: map_merge((
 	'large': $cui-button-size-large,
 ), $cui-button-sizes);
 
+
+$cui-button-list-separation-x: .5em !default;
+$cui-button-list-separation-y: .5em !default;
+
 // ValidationMessage
 $cui-validationMessage-size-small: .8em !default;
 $cui-validationMessage-size-default: .9em !default;
@@ -292,6 +296,17 @@ $cui-formGroup-sizes: map_merge((
 
 // Collapsible
 $cui-collapsible-transition-duration: .2s !default;
+
+
+// Heading
+$cui-heading-color: $cui-color-gray-9 !default;
+
+$cui-heading-1-fontSize: 2em !default;
+$cui-heading-2-fontSize: 1.75em !default;
+$cui-heading-3-fontSize: 1.5em !default;
+$cui-heading-4-fontSize: 1.3em !default;
+$cui-heading-5-fontSize: 1.15em !default;
+$cui-heading-6-fontSize: 1em !default
 
 
 // Menu

@@ -69,7 +69,7 @@ export const PageListHeader = Component(
 				<Table.Cell />
 				<Table.Cell>
 					<PageLink
-						change={() => ({ name: 'contact' })}
+						to="contact"
 						Component={props => (
 							<Button {...props} Component="a">
 								Edit
