@@ -2,9 +2,15 @@ import { AlternativeFields, EditPage, Literal, SelectField, SortableRepeater, Te
 import * as React from 'react'
 
 export const FooterPage = (
-	<EditPage pageName={'footer'} entity={'Site'} where="(slug = $site)">
+	<EditPage
+		pageName={'footer'}
+		entity={'Site'}
+		where="(slug = $site)"
+		rendererProps={{
+			title: 'Footer',
+		}}
+	>
 		<ToOne field={'footer'}>
-			<h1 style={{ color: '#777' }}>Footer</h1>
 			<div className={'inputBox'}>
 				<div className={'inputBox-header'}>
 					<h2>Contact us</h2>

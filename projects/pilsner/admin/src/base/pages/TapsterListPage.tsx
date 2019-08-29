@@ -1,20 +1,24 @@
-import { FieldText, GenericPage, Literal, TextField, ToOne } from 'cms-admin'
+import { FieldText, GenericPage, Literal, PageLinkButton } from 'cms-admin'
 import * as React from 'react'
 import { Grid } from '../components'
 
 export const TapsterListPage = (
 	<GenericPage pageName={'tapsterList'}>
-		<h1>Tapsters</h1>
 		<Grid
 			entityName="Tapster"
 			orderBy={[{ publishedAt: new Literal('desc') }]}
 			filter="[site.slug = $site]"
-			createButton={{
-				pageName: 'tapsterCreate',
-				label: 'Add tapster',
-			}}
 			editButton={{
 				pageName: 'tapsterEdit',
+			}}
+			rendererProps={{
+				title: 'Tapsters',
+				actions: (
+					<>
+						<PageLinkButton to="tapstersPage">Edit the Tapsters page</PageLinkButton>
+						<PageLinkButton to="tapsterCreate">Add a new tapster</PageLinkButton>
+					</>
+				),
 			}}
 		>
 			<FieldText name="name" />

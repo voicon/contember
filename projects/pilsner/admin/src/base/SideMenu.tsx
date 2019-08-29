@@ -13,19 +13,19 @@ export class SideMenu extends React.Component<LayoutProps> {
 				<Menu.Item>
 					<Menu.Item title="Front page" to={{ pageName: 'frontPage' }} />
 					<Menu.Item title="Stories">
-						<Menu.Item title="Edit page" to={{ pageName: 'blogPage' }} />
 						<Menu.Item title="All stories" to={{ pageName: 'blogList' }} />
 						<Menu.Item title="Add a new story" to={{ pageName: 'blogCreate' }} />
+						<Menu.Item title="Stories page" to={{ pageName: 'blogPage' }} />
 					</Menu.Item>
 					<Menu.Item title="Pubs">
-						<Menu.Item title="Edit page" to={{ pageName: 'pubsPage' }} />
 						<Menu.Item title="All pubs" to={{ pageName: 'pubList' }} />
 						<Menu.Item title="Add a new pub" to={{ pageName: 'pubCreate' }} />
+						<Menu.Item title="Pubs page" to={{ pageName: 'pubsPage' }} />
 					</Menu.Item>
 					<Menu.Item title="Tapsters">
-						<Menu.Item title="Edit page" to={{ pageName: 'tapstersPage' }} />
 						<Menu.Item title="All tapsters" to={{ pageName: 'tapsterList' }} />
 						<Menu.Item title="Add a new tapster" to={{ pageName: 'tapsterCreate' }} />
+						<Menu.Item title="Tapsters page" to={{ pageName: 'tapstersPage' }} />
 					</Menu.Item>
 					<Menu.Item title="Pages">
 						<Menu.Item title="All pages" to={{ pageName: 'pageList' }} />

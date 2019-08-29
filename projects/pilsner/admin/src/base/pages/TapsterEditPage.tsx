@@ -1,5 +1,6 @@
 import { EditPage } from 'cms-admin'
 import * as React from 'react'
+import { NavigateBackButton } from '../components'
 import { TapsterForm, TapsterFormSide } from '../forms'
 
 export const TapsterEditPage = (
@@ -10,6 +11,7 @@ export const TapsterEditPage = (
 			title: 'Edit tapster',
 			side: <TapsterFormSide />,
 			onlyOneInCollection: true,
+			navigation: <NavigateBackButton to="tapsterList">Tapsters</NavigateBackButton>,
 		}}
 	>
 		<TapsterForm />

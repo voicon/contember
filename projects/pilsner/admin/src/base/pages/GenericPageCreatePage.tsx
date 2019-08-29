@@ -1,6 +1,6 @@
 import { CreatePage } from 'cms-admin'
 import * as React from 'react'
-import { SiteField } from '../components'
+import { NavigateBackButton, SiteField } from '../components'
 import { GenericPageForm } from '../forms'
 
 export const GenericPageCreatePage = (
@@ -8,7 +8,8 @@ export const GenericPageCreatePage = (
 		entity="GenericPage"
 		pageName={'pageCreate'}
 		rendererProps={{
-			title: 'Create new page',
+			title: 'Add a new page',
+			navigation: <NavigateBackButton to="pageList">Pages</NavigateBackButton>,
 		}}
 		redirectOnSuccess={request => ({ ...request, pageName: 'pageList' })}
 	>

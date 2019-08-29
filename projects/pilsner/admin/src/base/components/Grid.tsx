@@ -7,34 +7,26 @@ import {
 	TableRendererProps,
 } from 'cms-admin'
 import * as React from 'react'
-import { CreateButton, CreateButtonProps } from './CreateButton'
 import { EditButton, EditButtonProps } from './EditButton'
 
-export interface GridProps extends Omit<EntityListDataProviderProps<TableRendererProps>, 'renderer' | 'rendererProps'> {
-	createButton?: CreateButtonProps
+export interface GridProps extends Omit<EntityListDataProviderProps<TableRendererProps>, 'renderer'> {
 	editButton?: EditButtonProps
 	children: React.ReactNode
 }
 
-export const Grid: React.ComponentType<GridProps> = props => (
-	<EntityListDataProvider
-		{...props}
-		renderer={TableRenderer}
-		rendererProps={{
-			beforeContent: props.createButton && <CreateButton {...props.createButton} />,
-		}}
-	>
+export const Grid = React.memo<GridProps>(({ editButton, ...props }) => (
+	<EntityListDataProvider {...props} renderer={TableRenderer}>
 		{React.Children.toArray(props.children).map((it, i) => (
 			<Table.Cell key={i}>{it}</Table.Cell>
 		))}
 
-		{props.editButton && (
+		{editButton && (
 			<Table.Cell>
-				<EditButton {...props.editButton} />
+				<EditButton {...editButton} />
 			</Table.Cell>
 		)}
 		<Table.Cell>
 			<RemoveButton removeType={'delete'} immediatePersist={true} />
 		</Table.Cell>
 	</EntityListDataProvider>
-)
+))

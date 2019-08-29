@@ -1,6 +1,6 @@
 import { CreatePage } from 'cms-admin'
 import * as React from 'react'
-import { SiteField } from '../components'
+import { NavigateBackButton, SiteField } from '../components'
 import { TagForm } from '../forms'
 
 export const TagCreatePage = (
@@ -8,7 +8,8 @@ export const TagCreatePage = (
 		entity="Tag"
 		pageName={'tagCreate'}
 		rendererProps={{
-			title: 'Create new tag',
+			title: 'Add a new tag',
+			navigation: <NavigateBackButton to="tags">Tags</NavigateBackButton>,
 		}}
 		redirectOnSuccess={request => ({ ...request, pageName: 'tags' })}
 	>

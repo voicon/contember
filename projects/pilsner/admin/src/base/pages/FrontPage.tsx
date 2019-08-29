@@ -4,9 +4,8 @@ import { ImageField } from '../components'
 import { FrontPageContentForm, LinkForm, SeoForm } from '../forms'
 
 export const FrontPage = (
-	<EditPage pageName={'frontPage'} entity={'Site'} where="(slug = $site)">
+	<EditPage pageName={'frontPage'} entity={'Site'} where="(slug = $site)" rendererProps={{ title: 'Front page' }}>
 		<ToOne field={'frontPage'}>
-			<h1>Front page</h1>
 			<LinkForm />
 			<ImageField name={'headerImage'} label={'Header image'} />
 			<TextField name={'title'} label={'Title'} size="large" allowNewlines={true} />

@@ -1,20 +1,24 @@
-import { FieldText, GenericPage, Literal, ToOne } from 'cms-admin'
+import { FieldText, GenericPage, Literal, PageLinkButton } from 'cms-admin'
 import * as React from 'react'
 import { Grid } from '../components'
 
 export const BlogListPage = (
 	<GenericPage pageName={'blogList'}>
-		<h1>Stories</h1>
 		<Grid
 			entityName="Post"
 			orderBy={[{ publishedAt: new Literal('desc') }]}
 			filter="[site.slug = $site]"
-			createButton={{
-				pageName: 'blogCreate',
-				label: 'Create post',
-			}}
 			editButton={{
 				pageName: 'blogEdit',
+			}}
+			rendererProps={{
+				title: 'Stories',
+				actions: (
+					<>
+						<PageLinkButton to="blogPage">Edit the Stories page</PageLinkButton>
+						<PageLinkButton to="blogCreate">Add a new story</PageLinkButton>
+					</>
+				),
 			}}
 		>
 			<FieldText name="title" />

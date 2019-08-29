@@ -2,8 +2,14 @@ import { CheckboxField, EditPage, SelectField, SortableRepeater, TextField, ToOn
 import * as React from 'react'
 
 export const MenuPage = (
-	<EditPage pageName={'menu'} entity={'Site'} where="(slug = $site)">
-		<h1>Menu</h1>
+	<EditPage
+		pageName={'menu'}
+		entity={'Site'}
+		where="(slug = $site)"
+		rendererProps={{
+			title: 'Menu',
+		}}
+	>
 		<ToOne field={'menu'}>
 			<SortableRepeater sortBy={'order'} field={'items'} removeType={'delete'}>
 				<TextField name={'caption'} label={'Caption'} />

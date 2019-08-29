@@ -1,6 +1,6 @@
-import { Field, FieldText, ListPage, ToOne } from 'cms-admin'
+import { Field, FieldText, ListPage, PageLinkButton, ToOne } from 'cms-admin'
 import * as React from 'react'
-import { CreateButton, EditButton, LocationTreeRenderer } from '../components'
+import { EditButton, LocationTreeRenderer } from '../components'
 
 export const LocationPage = (
 	<ListPage
@@ -10,7 +10,7 @@ export const LocationPage = (
 		renderer={LocationTreeRenderer}
 		rendererProps={{
 			title: 'Locations',
-			actions: <CreateButton pageName="locationCreate" label="Create location" />,
+			actions: <PageLinkButton to="locationCreate">Add a new location</PageLinkButton>,
 		}}
 	>
 		<FieldText name={'name'} />
