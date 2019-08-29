@@ -11,40 +11,40 @@ export class SideMenu extends React.Component<LayoutProps> {
 		return (
 			<Menu>
 				<Menu.Item>
-					<Menu.Item title="Front page" to={{ pageName: 'frontPage' }} />
+					<Menu.Item title="Front page" to="frontPage" />
 					<Menu.Item title="Stories">
-						<Menu.Item title="All stories" to={{ pageName: 'blogList' }} />
-						<Menu.Item title="Add a new story" to={{ pageName: 'blogCreate' }} />
-						<Menu.Item title="Stories page" to={{ pageName: 'blogPage' }} />
+						<Menu.Item title="All stories" to="blogList" />
+						<Menu.Item title="Add a new story" to="blogCreate" />
+						<Menu.Item title="Stories page" to="blogPage" />
 					</Menu.Item>
 					<Menu.Item title="Pubs">
-						<Menu.Item title="All pubs" to={{ pageName: 'pubList' }} />
-						<Menu.Item title="Add a new pub" to={{ pageName: 'pubCreate' }} />
-						<Menu.Item title="Pubs page" to={{ pageName: 'pubsPage' }} />
+						<Menu.Item title="All pubs" to="pubList" />
+						<Menu.Item title="Add a new pub" to="pubCreate" />
+						<Menu.Item title="Pubs page" to="pubsPage" />
 					</Menu.Item>
 					<Menu.Item title="Tapsters">
-						<Menu.Item title="All tapsters" to={{ pageName: 'tapsterList' }} />
-						<Menu.Item title="Add a new tapster" to={{ pageName: 'tapsterCreate' }} />
-						<Menu.Item title="Tapsters page" to={{ pageName: 'tapstersPage' }} />
+						<Menu.Item title="All tapsters" to="tapsterList" />
+						<Menu.Item title="Add a new tapster" to="tapsterCreate" />
+						<Menu.Item title="Tapsters page" to="tapstersPage" />
 					</Menu.Item>
 					<Menu.Item title="Pages">
-						<Menu.Item title="All pages" to={{ pageName: 'pageList' }} />
-						<Menu.Item title="Add a new page" to={{ pageName: 'pageCreate' }} />
+						<Menu.Item title="All pages" to="pageList" />
+						<Menu.Item title="Add a new page" to="pageCreate" />
 					</Menu.Item>
-					<Menu.Item title="Pour" to={{ pageName: 'pour' }} />
-					<Menu.Item title="Hops" to={{ pageName: 'hops' }} />
+					<Menu.Item title="Pour" to="pour" />
+					<Menu.Item title="Hops" to="hops" />
 				</Menu.Item>
 				<Menu.Item title="Settings">
-					<Menu.Item title="Footer" to={{ pageName: 'footer' }} />
-					<Menu.Item title="Menu" to={{ pageName: 'menu' }} />
-					<Menu.Item title="Categories" to={{ pageName: 'categories' }} />
-					<Menu.Item title="Tags" to={{ pageName: 'tags' }} />
-					<Menu.Item title="Locations" to={{ pageName: 'locations' }} />
-					<Menu.Item title="Social networks" to={{ pageName: 'social' }} />
+					<Menu.Item title="Footer" to="footer" />
+					<Menu.Item title="Menu" to="menu" />
+					<Menu.Item title="Categories" to="categories" />
+					<Menu.Item title="Tags" to="tags" />
+					<Menu.Item title="Locations" to="locations" />
+					<Menu.Item title="Social networks" to="social" />
 				</Menu.Item>
 				<Menu.Item title="System">
-					<Menu.Item title="Translations" to={{ pageName: 'translations' }} />
-					<Menu.Item title="Sites" to={{ pageName: 'sites' }} />
+					<Menu.Item title="Translations" to="translations" />
+					<Menu.Item title="Sites" to="sites" />
 				</Menu.Item>
 				{this.props.deployButton && (
 					<Menu.Item title="Deployment">
