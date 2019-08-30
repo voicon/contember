@@ -75,10 +75,22 @@ export const GenericPageList = Component(
 							return (
 								<Table.Row key={customPage.field}>
 									<Table.Cell>{customPage.title}</Table.Cell>
+									{isAdmin && !currentEntity.isPersisted() && (
+										<Table.Cell>
+											<small>This page does not yet exist for this market.</small>
+										</Table.Cell>
+									)}
 									<Table.Cell>
 										<ButtonList>
-											<PageLinkButton to={customPage.editPageName}>Edit</PageLinkButton>
-											{isAdmin && <RemoveButton removeType="delete" immediatePersist={true} />}
+											<PageLinkButton to={customPage.editPageName}>
+												{currentEntity.isPersisted() && 'Edit'}
+												{!currentEntity.isPersisted() && 'Create'}
+											</PageLinkButton>
+											{isAdmin && currentEntity.isPersisted() && (
+												<ToOne field={customPage.field}>
+													<RemoveButton removeType="delete" immediatePersist={true} />
+												</ToOne>
+											)}
 										</ButtonList>
 									</Table.Cell>
 								</Table.Row>
