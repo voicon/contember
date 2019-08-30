@@ -31,8 +31,6 @@ export class SideMenu extends React.Component<LayoutProps> {
 						<Menu.Item title="All pages" to="pageList" />
 						<Menu.Item title="Add a new page" to="pageCreate" />
 					</Menu.Item>
-					<Menu.Item title="Pour" to="pour" />
-					<Menu.Item title="Hops" to="hops" />
 				</Menu.Item>
 				<Menu.Item title="Settings">
 					<Menu.Item title="Footer" to="footer" />
