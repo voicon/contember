@@ -73,7 +73,7 @@ export const GenericPageList = Component(
 								return <React.Fragment key={customPage.field}>{null}</React.Fragment>
 							}
 							return (
-								<React.Fragment key={customPage.field}>
+								<Table.Row key={customPage.field}>
 									<Table.Cell>{customPage.title}</Table.Cell>
 									<Table.Cell>
 										<ButtonList>
@@ -81,7 +81,7 @@ export const GenericPageList = Component(
 											{isAdmin && <RemoveButton removeType="delete" immediatePersist={true} />}
 										</ButtonList>
 									</Table.Cell>
-								</React.Fragment>
+								</Table.Row>
 							)
 						})}
 					</Table>
@@ -94,7 +94,9 @@ export const GenericPageList = Component(
 				)}
 				{shouldDisplayGenericPages && genericPages && (
 					<Table>
-						<ToMany.AccessorRenderer accessor={genericPages}>{genericPageTableBody}</ToMany.AccessorRenderer>
+						<ToMany.AccessorRenderer accessor={genericPages}>
+							<Table.Row>{genericPageTableBody}</Table.Row>
+						</ToMany.AccessorRenderer>
 					</Table>
 				)}
 			</>
