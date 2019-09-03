@@ -1,4 +1,4 @@
-import { EditPage, TextField, ToOne } from 'cms-admin'
+import { EditPage, TextField, ToOne, Box } from 'cms-admin'
 import * as React from 'react'
 import { ImageField } from '../components'
 import { FrontPageContentForm, LinkForm, SeoForm } from '../forms'
@@ -6,11 +6,15 @@ import { FrontPageContentForm, LinkForm, SeoForm } from '../forms'
 export const FrontPage = (
 	<EditPage pageName={'frontPage'} entity={'Site'} where="(slug = $site)" rendererProps={{ title: 'Front page' }}>
 		<ToOne field={'frontPage'}>
-			<LinkForm />
+			<Box>
+				<TextField name={'title'} label={'Title'} size="large" allowNewlines={true} />
+			</Box>
 			<ImageField name={'headerImage'} label={'Header image'} />
-			<TextField name={'title'} label={'Title'} size="large" allowNewlines={true} />
-			<TextField name={'scrollString'} label={'Scroll string'} allowNewlines={true} />
+
 			<FrontPageContentForm />
+			<TextField name={'scrollString'} label={'Scroll string'} allowNewlines={true} />
+
+			<LinkForm />
 			<SeoForm />
 		</ToOne>
 	</EditPage>
