@@ -1,7 +1,6 @@
-import { Button, ButtonProps, Spinner } from '@contember/ui'
+import { Button, ButtonGroup, Spinner, Dropdown, ButtonBasedButtonProps } from '@contember/ui'
 import * as React from 'react'
 import { Checkbox, Link, useRedirect } from '../../../../components'
-import { Dropdown } from '../../../../components/ui'
 import { RequestChange } from '../../../../state/request'
 import { isSpecialLinkClick } from '../../../../utils/isSpecialLinkClick'
 import { EnvironmentContext, ToOne } from '../../../coreComponents'
@@ -11,7 +10,7 @@ import { renderByJoining } from './renderByJoining'
 import { SelectedDimensionRenderer, StatefulDimensionDatum } from './types'
 
 export interface DimensionsRendererProps {
-	buttonProps?: ButtonProps
+	buttonProps?: ButtonBasedButtonProps
 	dimension: string
 	labelFactory: React.ReactNode
 	maxItems: number
@@ -69,42 +68,49 @@ export const DimensionsRenderer = React.memo((props: RendererProps & DimensionsR
 			}
 		}
 
-		return (
-			<Dropdown>
-				{dimensionData.map(dimension => (
-					<Dropdown.Item key={dimension.slug} active={dimension.isSelected}>
-						{canSelectJustOne && (
-							<Link
-								requestChange={getRequestChangeCallback(dimension)}
-								Component={({ href, onClick }) => (
-									<a
-										href={href}
-										onClick={e => {
-											if (isSpecialLinkClick(e)) {
-												return
-											}
-											onClick(e)
-										}}
-									>
-										{dimension.label}
-									</a>
-								)}
-							/>
-						)}
-						{!canSelectJustOne && (
-							<Checkbox
-								key={dimension.slug}
-								checked={dimension.isSelected}
-								readOnly={dimension.isSelected && !canSelectLess}
-								onChange={() => redirect(getRequestChangeCallback(dimension))}
+		const renderedDimensions = dimensionData.map(dimension => {
+			if (canSelectJustOne) {
+				return (
+					<Link
+						key={dimension.slug}
+						requestChange={getRequestChangeCallback(dimension)}
+						Component={({ href, onClick }) => (
+							<Button
+								Component="a"
+								href={href}
+								flow="block"
+								distinction="seamless"
+								isActive={dimension.isSelected}
+								onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+									if (isSpecialLinkClick(e.nativeEvent)) {
+										return
+									}
+									onClick(e)
+								}}
 							>
 								{dimension.label}
-							</Checkbox>
+							</Button>
 						)}
-					</Dropdown.Item>
-				))}
-			</Dropdown>
-		)
+					/>
+				)
+			} else {
+				return (
+					<Checkbox
+						key={dimension.slug}
+						checked={dimension.isSelected}
+						readOnly={dimension.isSelected && !canSelectLess}
+						onChange={() => redirect(getRequestChangeCallback(dimension))}
+					>
+						{dimension.label}
+					</Checkbox>
+				)
+			}
+		})
+
+		if (canSelectJustOne) {
+			return <ButtonGroup orientation="vertical">{renderedDimensions}</ButtonGroup>
+		}
+		return <React.Fragment key="multipleDimensions">{renderedDimensions}</React.Fragment>
 	}
 
 	const getNormalizedData = (
@@ -164,7 +170,7 @@ export const DimensionsRenderer = React.memo((props: RendererProps & DimensionsR
 	React.useEffect(() => {
 		const redirectTarget = selectedDimensions.length === 0 ? normalizedData || [] : selectedDimensions
 
-		if (normalizedData !== undefined) {
+		if (normalizedData !== undefined && selectedDimensions.length === 0) {
 			redirect(requestState => {
 				if (requestState.name !== 'project_page') {
 					return requestState
@@ -198,8 +204,13 @@ export const DimensionsRenderer = React.memo((props: RendererProps & DimensionsR
 	}
 
 	return (
-		<Dropdown.Revealer opener={<Button {...props.buttonProps}>{renderSelected(selectedDimensions)}</Button>}>
+		<Dropdown
+			buttonProps={{
+				...props.buttonProps,
+				children: renderSelected(selectedDimensions),
+			}}
+		>
 			{renderContent(normalizedData, selectedDimensions)}
-		</Dropdown.Revealer>
+		</Dropdown>
 	)
 })

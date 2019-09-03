@@ -342,3 +342,14 @@ $cui-containerSpinner-sizes: map_merge((
 	'small': $cui-containerSpinner-small-size,
 	'large': $cui-containerSpinner-large-size,
 ), $cui-containerSpinner-sizes);
+
+
+// Dropdown
+$cui-dropdown-zIndex: 100 !default;
+$cui-dropdown-content-color: $cui-color-black !default;
+$cui-dropdown-content-background: $cui-color-white !default;
+$cui-dropdown-content-border-color: $cui-button-view-default-border-color !default;
+$cui-dropdown-content-border-radius: $cui-control-border-radius + $cui-control-border-width !default;
+$cui-dropdown-content-border-width: $cui-control-border-width !default;
+$cui-dropdown-button-content-gap-size: .3em !default;
+$cui-dropdown-transition-duration: .1s !default;

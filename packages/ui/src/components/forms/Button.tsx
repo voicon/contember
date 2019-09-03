@@ -4,7 +4,7 @@ import { ButtonDistinction, ButtonFlow, Intent, Size } from '../../types'
 import { toStateClass, toEnumViewClass } from '../../utils'
 import { Spinner } from '../Spinner'
 
-type PropBlackList = 'onChange' | 'ref' | 'size'
+type PropBlackList = 'ref' | 'size'
 
 interface ButtonBasedProps extends Omit<JSX.IntrinsicElements['button'], PropBlackList> {
 	Component?: 'button' | undefined
@@ -24,6 +24,9 @@ export interface ButtonOwnProps {
 	disabled?: boolean
 	children?: React.ReactNode
 }
+
+export type ButtonBasedButtonProps = ButtonOwnProps & ButtonBasedProps
+export type AnchorBasedButtonProps = ButtonOwnProps & AnchorBasedProps
 
 export type ButtonProps = ButtonOwnProps & (ButtonBasedProps | AnchorBasedProps)
 

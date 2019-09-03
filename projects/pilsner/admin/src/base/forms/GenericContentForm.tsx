@@ -63,7 +63,11 @@ export const GenericContentForm = Component(
 					],
 					[
 						new Literal('hero'),
-						'Hero',
+						<span>
+							Hero
+							<br />
+							<small>Image covered by a text</small>
+						</span>,
 						<>
 							<TextField name="title" label="Title" allowNewlines />
 							<ImageField name="image" label="Image" />

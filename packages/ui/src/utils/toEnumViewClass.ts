@@ -1,3 +1,4 @@
 import { toEnumClass } from './toEnumClass'
 
-export const toEnumViewClass = (name: string | undefined) => toEnumClass('view-', name)
+export const toEnumViewClass = <N extends string>(name: N | undefined, namedDefault?: N) =>
+	toEnumClass<N>('view-', name, namedDefault)

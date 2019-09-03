@@ -1,8 +1,12 @@
 import * as React from 'react'
 import { RequestChange } from '../../state/request'
+import { isSpecialLinkClick } from '../../utils/isSpecialLinkClick'
 
 class LinkComponent extends React.PureComponent<LinkComponent.Props> {
 	onClick = (e?: React.SyntheticEvent<Element>) => {
+		if (e && e.nativeEvent instanceof MouseEvent && isSpecialLinkClick(e.nativeEvent)) {
+			return
+		}
 		e && e.preventDefault()
 		this.props.goTo()
 	}

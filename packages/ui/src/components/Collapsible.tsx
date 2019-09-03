@@ -1,8 +1,11 @@
 import * as React from 'react'
 import cn from 'classnames'
+import { CollapsibleTransition } from '../types'
+import { forceReflow, toEnumViewClass, toStateClass } from '../utils'
 
 export interface CollapsibleProps {
 	expanded: boolean
+	transition?: CollapsibleTransition
 	children?: React.ReactNode
 }
 
@@ -27,7 +30,7 @@ export const Collapsible = React.memo((props: CollapsibleProps) => {
 			setIsTransitioning(true)
 			updateContentHeight()
 			requestAnimationFrame(() => {
-				contentRef.current!.clientHeight // Force reflow
+				forceReflow(contentRef.current!)
 				setDelayedExpanded(props.expanded)
 			})
 		}
@@ -35,10 +38,15 @@ export const Collapsible = React.memo((props: CollapsibleProps) => {
 
 	return (
 		<div
-			className={cn('collapsible', delayedExpanded && 'is-expanded', isTransitioning && 'is-transitioning')}
+			className={cn(
+				'collapsible',
+				toEnumViewClass(props.transition, 'topInsert'),
+				toStateClass('expanded', delayedExpanded),
+				toStateClass('transitioning', isTransitioning),
+			)}
 			style={
 				{
-					'--content-height': contentHeight,
+					'--cui-collapsible-content-height': contentHeight,
 				} as React.CSSProperties // Custom properties not supported workaround
 			}
 			aria-hidden={!props.expanded}
