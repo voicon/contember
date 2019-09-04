@@ -16,22 +16,22 @@ export const SideMenu = React.memo<LayoutProps>(props => {
 		<Menu>
 			<Menu.Item>
 				<Menu.Item title="Front page" to="frontPage" />
-				<Menu.Item title="Stories">
+				<Menu.Item title="Stories" to="blogList">
 					<Menu.Item title="All stories" to="blogList" />
 					<Menu.Item title="Add a new story" to="blogCreate" />
 					<Menu.Item title="Stories page" to="blogPage" />
 				</Menu.Item>
-				<Menu.Item title="Pubs">
+				<Menu.Item title="Pubs" to="pubList">
 					<Menu.Item title="All pubs" to="pubList" />
 					<Menu.Item title="Add a new pub" to="pubCreate" />
 					<Menu.Item title="Pubs page" to="pubsPage" />
 				</Menu.Item>
-				<Menu.Item title="Tapsters">
+				<Menu.Item title="Tapsters" to="tapsterList">
 					<Menu.Item title="All tapsters" to="tapsterList" />
 					<Menu.Item title="Add a new tapster" to="tapsterCreate" />
 					<Menu.Item title="Tapsters page" to="tapstersPage" />
 				</Menu.Item>
-				<Menu.Item title="Pages">
+				<Menu.Item title="Pages" to="pageList">
 					<Menu.Item title="All pages" to="pageList" />
 					<Menu.Item title="Add a new page" to="pageCreate" />
 				</Menu.Item>
