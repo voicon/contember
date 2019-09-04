@@ -1,0 +1,23 @@
+{
+	"name": "@contember/database",
+	"version": "0.0.0",
+	"private": true,
+	"main": "dist/src/index.js",
+	"typings": "dist/src/index.d.ts",
+	"scripts": {
+		"test": "jasmine --config=jasmine.json"
+	},
+	"dependencies": {
+		"pg": "^7.12.1",
+		"@contember/queryable": "^0.0.0",
+		"@contember/utils": "^0.0.0"
+	},
+	"devDependencies": {
+		"@contember/database-tester": "^0.0.0",
+		"@types/jasmine": "^3.4.0",
+		"@types/node": "^10.12.10",
+		"@types/pg": "^7.11.0",
+		"jasmine": "^3.4.0",
+		"typescript": "^3.5.3"
+	}
+}

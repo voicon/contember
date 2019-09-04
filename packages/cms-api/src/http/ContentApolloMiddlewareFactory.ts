@@ -1,5 +1,5 @@
 import { KoaMiddleware } from '../core/koa/types'
-import SchemaVersionBuilder from '../content-schema/SchemaVersionBuilder'
+import { SchemaVersionBuilder } from '@contember/engine-system-api'
 import Project from '../config/Project'
 import GraphQlSchemaFactory from './GraphQlSchemaFactory'
 import AuthMiddlewareFactory from './AuthMiddlewareFactory'
@@ -29,12 +29,12 @@ class ContentApolloMiddlewareFactory {
 			ContentApolloMiddlewareFactory.KoaState
 	> {
 		return async (ctx, next) => {
-			if (!this.schemaCache[stage.id]) {
-				this.schemaCache[stage.id] = this.project.ignoreMigrations
+			if (!this.schemaCache[stage.slug]) {
+				this.schemaCache[stage.slug] = this.project.ignoreMigrations
 					? this.currentSchema
-					: await this.schemaVersionBuilder.buildSchemaForStage(stage.id)
+					: await this.schemaVersionBuilder.buildSchemaForStage(stage.slug)
 			}
-			const schema = this.schemaCache[stage.id]
+			const schema = this.schemaCache[stage.slug]
 
 			const [dataSchema, permissions] = await this.graphqlSchemaFactory.create(stage.slug, schema, {
 				projectRoles: ctx.state.projectRoles,

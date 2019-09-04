@@ -1,22 +1,19 @@
+import { Authorizator } from '@contember/authorization'
 import { Config } from 'apollo-server-core'
 import { ApolloServer, AuthenticationError } from 'apollo-server-koa'
-import typeDefs from '../system-api/schema/system.graphql'
-import ResolverContext from '../system-api/resolvers/ResolverContext'
+import { typeDefs, ResolverContext, SystemExecutionContainer, Schema } from '@contember/engine-system-api'
 import AuthMiddlewareFactory from './AuthMiddlewareFactory'
-import Authorizator from '../core/authorization/Authorizator'
-import Identity from '../common/auth/Identity'
+import { Identity } from '@contember/engine-common'
 import { ApolloError } from 'apollo-server-errors'
-import SystemExecutionContainer from '../system-api/SystemExecutionContainer'
 import ErrorHandlerExtension from '../core/graphql/ErrorHandlerExtension'
 import { KoaContext } from '../core/koa/types'
 import DatabaseTransactionMiddlewareFactory from './DatabaseTransactionMiddlewareFactory'
 import ProjectMemberMiddlewareFactory from './ProjectMemberMiddlewareFactory'
 import ProjectResolveMiddlewareFactory from './ProjectResolveMiddlewareFactory'
-import { Resolvers } from '../system-api/schema/types'
 
 class SystemApolloServerFactory {
 	constructor(
-		private readonly resolvers: Resolvers,
+		private readonly resolvers: Schema.Resolvers,
 		private readonly authorizator: Authorizator<Identity>,
 		private readonly executionContainerFactory: SystemExecutionContainer.Factory,
 	) {}
@@ -48,7 +45,7 @@ class SystemApolloServerFactory {
 			}): ResolverContext => {
 				return new ResolverContext(
 					new Identity.StaticIdentity(ctx.state.authResult.identityId, ctx.state.authResult.roles, {
-						[ctx.state.projectContainer.project.id]: ctx.state.projectRoles,
+						[ctx.state.projectContainer.project.slug]: ctx.state.projectRoles,
 					}),
 					ctx.state.projectVariables,
 					this.authorizator,

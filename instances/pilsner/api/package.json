@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"console": "dotenv -- node ./dist/src/index.js"
+		"console": "node ./dist/src/index.js"
 	},
 	"dependencies": {
 		"cms-api": "^0.0.0",
@@ -11,7 +11,6 @@
 		"@mangoweb/contember-project-pilsner-api": "0.0.0"
 	},
 	"devDependencies": {
-		"dotenv-cli": "^1.4.0",
-		"typescript": "^3.5.2"
+		"typescript": "^3.5.3"
 	}
 }

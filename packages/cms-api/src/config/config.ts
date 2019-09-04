@@ -1,14 +1,16 @@
 import Project from './Project'
 import { ConfigLoader, Merger } from 'cms-server-common'
 import { deprecated } from '../core/console/messages'
+import { DatabaseCredentials } from '@contember/engine-common'
+import { S3Config } from '@contember/engine-s3-plugin/dist/src/Config'
 
-export type DatabaseCredentials = Project.DatabaseCredentials
+export type ProjectWithS3 = Project & { s3: S3Config }
 
 export interface Config {
 	tenant: {
 		db: DatabaseCredentials
 	}
-	projects: Array<Project>
+	projects: Array<ProjectWithS3>
 	server: {
 		port: number
 	}
@@ -83,7 +85,7 @@ function checkDatabaseCredentials(json: unknown, path: string): DatabaseCredenti
 	return json
 }
 
-function checkS3Config(json: unknown, path: string): Project.S3Config {
+function checkS3Config(json: unknown, path: string): S3Config {
 	if (!isObject(json)) {
 		return error(`Property ${path} must be an object`)
 	}
@@ -100,7 +102,7 @@ function checkS3Config(json: unknown, path: string): Project.S3Config {
 	return { ...json, credentials: checkS3Credentials(json.credentials, `${path}.credentials`) }
 }
 
-function checkS3Credentials(json: unknown, path: string): Project.S3Config['credentials'] {
+function checkS3Credentials(json: unknown, path: string): S3Config['credentials'] {
 	if (!isObject(json)) {
 		return typeError(path, json, 'object')
 	}
@@ -120,17 +122,6 @@ function checkTenantStructure(json: unknown): Config['tenant'] {
 	return { db: checkDatabaseCredentials(json.db, 'tenant.db') }
 }
 
-function checkIdProperty<Input extends UnknownObject>(json: Input, path: string): string {
-	if (!hasStringProperty(json, 'id') && hasStringProperty(json, 'uuid')) {
-		console.warn(deprecated(`Property ${path}.id in config file is deprecated, use ${path}.id instead`))
-		return json.uuid
-	}
-	if (!hasStringProperty(json, 'id')) {
-		return typeError(path + '.uuid', json.uuid, 'string')
-	}
-	return json.id
-}
-
 function checkStageStructure(json: unknown, path: string): Project.Stage {
 	if (!isObject(json)) {
 		return typeError(path, json, 'object')
@@ -142,10 +133,10 @@ function checkStageStructure(json: unknown, path: string): Project.Stage {
 	if (!hasStringProperty(json, 'name')) {
 		return typeError(path + '.name', json.name, 'string')
 	}
-	return { ...json, id: checkIdProperty(json, path) }
+	return { ...json }
 }
 
-function checkProjectStructure(json: unknown, path: string): Project {
+function checkProjectStructure(json: unknown, path: string): ProjectWithS3 {
 	if (!isObject(json)) {
 		return typeError(path, json, 'object')
 	}
@@ -161,7 +152,6 @@ function checkProjectStructure(json: unknown, path: string): Project {
 	}
 	return {
 		...json,
-		id: checkIdProperty(json, path),
 		stages: json.stages.map((stage, i) => checkStageStructure(stage, `${path}.stages${i}`)),
 		dbCredentials: checkDatabaseCredentials(json.dbCredentials, `${path}.dbCredentials`),
 		s3: checkS3Config(json.s3, `${path}.s3`),
