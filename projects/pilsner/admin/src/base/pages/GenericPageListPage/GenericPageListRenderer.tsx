@@ -1,4 +1,11 @@
-import { AccessorContext, DefaultRenderer, EntityAccessor, FeedbackRenderer, LayoutInner, RendererProps } from 'cms-admin'
+import {
+	AccessorContext,
+	DefaultRenderer,
+	EntityAccessor,
+	FeedbackRenderer,
+	LayoutInner,
+	RendererProps,
+} from 'cms-admin'
 import * as React from 'react'
 
 export const GenericPageListRenderer = React.memo<RendererProps>(props => (
