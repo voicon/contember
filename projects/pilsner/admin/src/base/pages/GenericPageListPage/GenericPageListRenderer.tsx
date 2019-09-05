@@ -1,4 +1,4 @@
-import { DataContext, DefaultRenderer, EntityAccessor, FeedbackRenderer, LayoutInner, RendererProps } from 'cms-admin'
+import { AccessorContext, DefaultRenderer, EntityAccessor, FeedbackRenderer, LayoutInner, RendererProps } from 'cms-admin'
 import * as React from 'react'
 
 export const GenericPageListRenderer = React.memo<RendererProps>(props => (
@@ -8,12 +8,12 @@ export const GenericPageListRenderer = React.memo<RendererProps>(props => (
 				return null
 			}
 			return (
-				<DataContext.Provider value={data.root}>
+				<AccessorContext.Provider value={data.root}>
 					<LayoutInner>
 						{DefaultRenderer.renderTitleBar(props)}
 						{props.children}
 					</LayoutInner>
-				</DataContext.Provider>
+				</AccessorContext.Provider>
 			)
 		}}
 	</FeedbackRenderer>
