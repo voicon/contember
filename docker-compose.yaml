@@ -41,6 +41,16 @@ services:
         expose:
             - 4000
         command: npm run start
+
+    storybook:
+        image: node:10
+        volumes:
+          - ./:/src:cached
+        working_dir: /src/packages/ui
+        expose:
+          - 9001
+        command: npm run storybook
+
     db:
         image: postgres:10-alpine
         restart: unless-stopped
