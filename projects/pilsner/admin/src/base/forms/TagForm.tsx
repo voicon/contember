@@ -7,7 +7,7 @@ export const TagForm = Component(
 	() => (
 		<>
 			<TextField name="name" label="Name" />
-			<LinkUrlField drivenBy="title" softPrefix="tag/" />
+			<LinkUrlField drivenBy="name" softPrefix="tag/" />
 			<SeoForm />
 		</>
 	),

@@ -7,7 +7,7 @@ export const TapsterForm = Component(
 	() => (
 		<>
 			<TextField name="name" label="Name" />
-			<LinkUrlField drivenBy="title" softPrefix="tapsters/" />
+			<LinkUrlField drivenBy="name" softPrefix="tapsters/" />
 			<TextField name="subtitle" label="Subtitle" />
 
 			<ImageField name={'headerImage'} label={'Header image'} />

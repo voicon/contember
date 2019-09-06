@@ -7,7 +7,7 @@ export const GenericPageForm = Component(
 	() => (
 		<>
 			<TextField name="title" label="Title" />
-			<LinkUrlField drivenBy="name" />
+			<LinkUrlField drivenBy="title" />
 			<GenericContentForm />
 			<SeoForm />
 		</>
