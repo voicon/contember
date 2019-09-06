@@ -1,13 +1,13 @@
-import { Component, SlugField, TextField } from 'cms-admin'
+import { Component, TextField } from 'cms-admin'
 import * as React from 'react'
-import { getUrlFormatter } from '../utils/getUrlFormatter'
+import { LinkUrlField } from '../components'
 import { GenericContentForm, SeoForm } from './'
 
 export const GenericPageForm = Component(
 	() => (
 		<>
 			<TextField name="title" label="Title" />
-			<SlugField name="link.url" drivenBy="title" format={getUrlFormatter('/')} label="URL" />
+			<LinkUrlField drivenBy="name" />
 			<GenericContentForm />
 			<SeoForm />
 		</>
