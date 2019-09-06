@@ -74,17 +74,17 @@ builder.entity('Page', entity =>
 
 const model = builder.buildSchema()
 const acl: Acl.Schema = {
-	variables: {
-		locale: { type: Acl.VariableType.enum, enumName: 'locale' },
-		site: { type: Acl.VariableType.entity, entityName: 'Site' },
-	},
 	roles: {
 		admin: {
 			stages: '*',
+			variables: {},
 			entities: new AllowAllPermissionFactory().create(model),
 		},
 		editor: {
 			stages: '*',
+			variables: {
+				site: { type: Acl.VariableType.entity, entityName: 'Site' },
+			},
 			entities: {
 				Post: {
 					predicates: {},
@@ -101,7 +101,10 @@ const acl: Acl.Schema = {
 				PostLocale: {
 					predicates: {
 						locale_site: {
-							and: [{ locale: 'locale' }, { post: { site: 'site' } }],
+							and: [
+								//{ locale: 'locale' },
+								{ post: { site: 'site' } },
+							],
 						},
 					},
 					operations: {
@@ -120,6 +123,7 @@ const acl: Acl.Schema = {
 		},
 		deleter: {
 			stages: '*',
+			variables: {},
 			entities: {
 				Post: {
 					predicates: {},
