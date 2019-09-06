@@ -85,24 +85,20 @@ export const FrontPageContentForm = Component(
 				[
 					new Literal('frontPhoneGallery'),
 					'Phone gallery',
-					<>
-						<ToOne field={'gallery'}>
-							<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
-								<ImageField name={'image'} label={'Image'} single={true} />
-							</SortableRepeater>
-						</ToOne>
-					</>,
+					<ToOne field={'gallery'}>
+						<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+							<ImageField name={'image'} label={undefined} single={true} />
+						</SortableRepeater>
+					</ToOne>,
 				],
 				[
 					new Literal('frontDesktopGallery'),
 					'Desktop gallery',
-					<>
-						<ToOne field={'gallery'}>
-							<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
-								<ImageField name={'image'} label={'Image'} single={true} />
-							</SortableRepeater>
-						</ToOne>
-					</>,
+					<ToOne field={'gallery'}>
+						<SortableRepeater sortBy={'order'} field={'images'} removeType={'delete'}>
+							<ImageField name={'image'} label={undefined} single={true} />
+						</SortableRepeater>
+					</ToOne>,
 				],
 				[
 					new Literal('frontCarousel'),

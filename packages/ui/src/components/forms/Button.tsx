@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import * as React from 'react'
-import { ButtonDistinction, ButtonFlow, Intent, Size } from '../../types'
-import { toStateClass, toEnumViewClass } from '../../utils'
+import { ButtonDistinction, ButtonFlow, Intent, Justification, Size } from '../../types'
+import { toStateClass, toEnumViewClass, toViewClass } from '../../utils'
 import { Spinner } from '../Spinner'
 
 type PropBlackList = 'ref' | 'size'
@@ -19,9 +19,11 @@ export interface ButtonOwnProps {
 	size?: Size
 	flow?: ButtonFlow
 	distinction?: ButtonDistinction
+	justification?: Justification
 	isLoading?: boolean
 	isActive?: boolean
 	disabled?: boolean
+	bland?: boolean
 	children?: React.ReactNode
 }
 
@@ -32,7 +34,19 @@ export type ButtonProps = ButtonOwnProps & (ButtonBasedProps | AnchorBasedProps)
 
 export const Button = React.memo(
 	React.forwardRef<any, ButtonProps>((props, ref) => {
-		const { Component, intent, size, flow, distinction, isLoading, isActive, children, ...rest } = props
+		const {
+			Component,
+			intent,
+			size,
+			flow,
+			distinction,
+			justification,
+			isLoading,
+			isActive,
+			bland,
+			children,
+			...rest
+		} = props
 
 		if (props.disabled === true) {
 			rest['aria-disabled'] = true
@@ -50,8 +64,10 @@ export const Button = React.memo(
 				toEnumViewClass(size),
 				toEnumViewClass(distinction),
 				toEnumViewClass(flow),
+				toEnumViewClass(justification, 'justifyCenter'),
 				toStateClass('loading', isLoading),
 				toStateClass('active', isActive),
+				toViewClass('bland', bland),
 			),
 			ref: ref,
 		}

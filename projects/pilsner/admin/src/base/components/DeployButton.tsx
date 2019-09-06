@@ -1,7 +1,7 @@
 import {
 	Button,
 	Component,
-	DataContext,
+	AccessorContext,
 	EntityAccessor,
 	Field,
 	FieldAccessor,
@@ -28,7 +28,7 @@ class DeployRenderer extends React.PureComponent<RendererProps> {
 		if (!(accessor instanceof EntityAccessor)) {
 			throw new Error()
 		}
-		return <DataContext.Provider value={accessor}>{this.props.children}</DataContext.Provider>
+		return <AccessorContext.Provider value={accessor}>{this.props.children}</AccessorContext.Provider>
 	}
 }
 
@@ -36,7 +36,7 @@ const DeployButtonInner = Component<{
 	renderButton: (apiConfig: { apiKey: string; apiEndpoint: string }) => React.ReactNode
 }>(
 	props => (
-		<DataContext.Consumer>
+		<AccessorContext.Consumer>
 			{data => {
 				if (!(data instanceof EntityAccessor)) {
 					throw new Error()
@@ -46,7 +46,7 @@ const DeployButtonInner = Component<{
 
 				return props.renderButton({ apiKey, apiEndpoint })
 			}}
-		</DataContext.Consumer>
+		</AccessorContext.Consumer>
 	),
 	() => (
 		<>

@@ -1,4 +1,4 @@
-import { Component, FieldName, FormGroupProps, ImageUploadField } from 'cms-admin'
+import { Box, Component, FieldName, FormGroupProps, ImageUploadField } from 'cms-admin'
 import * as React from 'react'
 
 export interface ImageFieldProps {
@@ -12,12 +12,9 @@ export const ImageField = Component<ImageFieldProps>((props: ImageFieldProps) =>
 		return <ImageUploadField label={props.label} name={`${props.name}.url`} />
 	}
 	return (
-		<div className={'inputBox'}>
-			<div className={'inputBox-header'}>{props.label}</div>
-			<div className={'inputBox-row'}>
-				<ImageUploadField label={'Desktop'} name={`${props.name}.url`} />
-				<ImageUploadField label={'Phone'} name={`${props.name}.phoneUrl`} />
-			</div>
-		</div>
+		<Box heading={props.label}>
+			<ImageUploadField label={'Desktop'} name={`${props.name}.url`} />
+			<ImageUploadField label={'Phone'} name={`${props.name}.phoneUrl`} />
+		</Box>
 	)
 })

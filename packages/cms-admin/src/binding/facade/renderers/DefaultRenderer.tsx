@@ -1,8 +1,8 @@
-import { H1 } from '@blueprintjs/core'
 import { TitleBar } from '@contember/ui'
+import { IncreaseHeadingDepth } from '@contember/ui/dist/src/auxiliary'
 import * as React from 'react'
 import { LayoutInner, LayoutSide } from '../../../components'
-import { DataContext } from '../../coreComponents'
+import { AccessorContext } from '../../coreComponents'
 import { EntityAccessor, EntityCollectionAccessor, EntityForRemovalAccessor, Environment } from '../../dao'
 import { PersistButton } from '../buttons'
 import { RendererProps, TitleBarRendererProps } from './CommonRendererProps'
@@ -10,6 +10,13 @@ import { FeedbackRenderer } from './FeedbackRenderer'
 
 export class DefaultRenderer extends React.PureComponent<RendererProps> {
 	public render() {
+		const content = (
+			<>
+				{DefaultRenderer.renderTitleBar(this.props)}
+				<IncreaseHeadingDepth currentDepth={1}>{this.props.children}</IncreaseHeadingDepth>
+			</>
+		)
+
 		return (
 			<FeedbackRenderer data={this.props.data}>
 				{data => {
@@ -20,10 +27,9 @@ export class DefaultRenderer extends React.PureComponent<RendererProps> {
 									{data.root.entities.map(
 										value =>
 											value && (
-												<DataContext.Provider value={value} key={value.getKey()}>
-													{DefaultRenderer.renderTitleBar(this.props)}
-													{this.props.children}
-												</DataContext.Provider>
+												<AccessorContext.Provider value={value} key={value.getKey()}>
+													{content}
+												</AccessorContext.Provider>
 											),
 									)}
 									<PersistButton />
@@ -40,10 +46,9 @@ export class DefaultRenderer extends React.PureComponent<RendererProps> {
 								: (data.root as EntityAccessor | EntityForRemovalAccessor | undefined)
 						return (
 							value && (
-								<DataContext.Provider value={value}>
+								<AccessorContext.Provider value={value}>
 									<LayoutInner>
-										{DefaultRenderer.renderTitleBar(this.props)}
-										{this.props.children}
+										{content}
 										<PersistButton />
 									</LayoutInner>
 									<LayoutSide showBox={!!this.props.side}>
@@ -52,7 +57,7 @@ export class DefaultRenderer extends React.PureComponent<RendererProps> {
 											<PersistButton />
 										</>
 									</LayoutSide>
-								</DataContext.Provider>
+								</AccessorContext.Provider>
 							)
 						)
 					}

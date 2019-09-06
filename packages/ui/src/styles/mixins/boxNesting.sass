@@ -1,0 +1,14 @@
+=boxNesting($maxdepth: 6)
+	@for $depth from 1 through $maxdepth
+		$depthConfig: nth($cui-box-depths, $depth)
+
+		$separation: map_get($depthConfig, separation)
+		$paddingY: map_get($depthConfig, paddingY)
+
+		&.view-depth-#{$depth}
+			+box($depth)
+
+			& + &
+				margin-top: $separation
+		&.view-depth-#{$depth} &-heading + &-content
+			margin-top: $paddingY

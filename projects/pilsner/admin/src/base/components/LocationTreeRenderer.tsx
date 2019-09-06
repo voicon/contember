@@ -1,7 +1,7 @@
 import {
 	CollectionRenderer,
 	CommonRendererProps,
-	DataContext,
+	AccessorContext,
 	DataRendererProps,
 	DefaultRenderer,
 	EntityAccessor,
@@ -29,11 +29,11 @@ const renderTree = (childAccessor: ChildAccessor, parent: string | null, childre
 	return (
 		<>
 			{entities.map(it => (
-				<DataContext.Provider value={it} key={it.getKey()}>
+				<AccessorContext.Provider value={it} key={it.getKey()}>
 					<Menu.Item key={it.getKey()} title={children}>
 						{renderTree(childAccessor, it.getPersistedKey() || null, children)}
 					</Menu.Item>
-				</DataContext.Provider>
+				</AccessorContext.Provider>
 			))}
 		</>
 	)

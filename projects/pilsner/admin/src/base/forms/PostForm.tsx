@@ -1,14 +1,13 @@
-import { CheckboxList, Component, SlugField, TextAreaField, TextField } from 'cms-admin'
+import { CheckboxList, Component, TextAreaField, TextField } from 'cms-admin'
 import * as React from 'react'
-import { ImageField, IsPublishedField } from '../components'
-import { getUrlFormatter } from '../utils/getUrlFormatter'
+import { ImageField, IsPublishedField, LinkUrlField } from '../components'
 import { GenericContentForm, SeoForm } from './'
 
 export const PostForm = Component(
 	() => (
 		<>
 			<TextField name="title" size="large" label={'Title'} />
-			<SlugField name="link.url" drivenBy="title" format={getUrlFormatter('/stories/')} label="URL" />
+			<LinkUrlField drivenBy="title" softPrefix="stories/" />
 			<ImageField name={'headerImage'} label={'Header image'} />
 			<ImageField name={'listingImage'} label={'Listing image'} />
 			<TextField name="imageDescription" label="Image description" />

@@ -12,6 +12,7 @@ export const simpleButtonStory = (size?: Size) => {
 		disabled: boolean('Disabled', false),
 		isLoading: boolean('Is loading', false),
 		isActive: boolean('Is active', false),
+		bland: boolean('Is bland', false),
 		distinction: radios(
 			'Distinction',
 			{
@@ -29,6 +30,16 @@ export const simpleButtonStory = (size?: Size) => {
 				Circular: 'circular',
 				Generous: 'generous',
 				Block: 'block',
+			},
+			'default',
+		),
+		justification: radios(
+			'Justification',
+			{
+				Default: 'default',
+				Start: 'justifyStart',
+				Center: 'justifyCenter',
+				End: 'justifyEnd',
 			},
 			'default',
 		),

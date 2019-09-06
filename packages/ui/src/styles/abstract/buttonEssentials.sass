@@ -16,6 +16,7 @@
 	border-radius: $cui-control-border-radius
 	text-shadow: 0 .5em .625em rgba(0, 0, 0, .075)
 	vertical-align: middle
+	perspective: 1em
 
 	&-content
 		display: inline-flex
@@ -24,3 +25,12 @@
 		flex-wrap: wrap
 		max-width: 100%
 		max-height: 100%
+
+	&.view-bland &
+		&-content
+			opacity: $cui-button-bland-opacity
+
+	&.view-justifyStart
+		justify-content: start
+	&.view-justifyEnd
+		justify-content: end
