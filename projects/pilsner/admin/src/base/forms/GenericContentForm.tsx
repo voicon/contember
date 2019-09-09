@@ -19,12 +19,12 @@ import { ImageField } from '../components'
 export const GenericContentForm = Component(
 	() => (
 		<>
-			<h2>Content</h2>
 			<SortableBlockRepeater
 				sortBy="order"
 				field="content.blocks"
 				removeType="delete"
 				discriminationField="type"
+				label="Content"
 				alternatives={[
 					[
 						new Literal('contentTextSection'),
