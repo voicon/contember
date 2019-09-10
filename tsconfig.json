@@ -20,6 +20,7 @@
 		{ "path": "./packages/engine-s3-plugin" },
 		{ "path": "./packages/engine-system-api" },
 		{ "path": "./packages/queryable" },
+		{ "path": "./packages/react-multipass-rendering"},
 		{ "path": "./packages/schema" },
 		{ "path": "./packages/schema-definition" },
 		{ "path": "./packages/schema-utils" },
