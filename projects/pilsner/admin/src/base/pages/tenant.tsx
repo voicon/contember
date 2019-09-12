@@ -63,6 +63,10 @@ const rolesConfig: RolesConfig = {
 			},
 		},
 	},
+	admin: {
+		name: 'Administrator',
+		variables: {},
+	},
 }
 
 const joinWithAnd = (items: string[]) => {
