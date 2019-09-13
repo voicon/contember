@@ -1,21 +1,15 @@
-import { Authorizator } from '@contember/authorization'
 import { Config } from 'apollo-server-core'
 import { ApolloServer } from 'apollo-server-koa'
-import {
-	ProjectAwareIdentity,
-	ProjectMemberManager,
-	ResolverContext,
-	Schema,
-	typeDefs,
-} from '@contember/engine-tenant-api'
+import { ResolverContext, ResolverContextFactory, Schema, typeDefs } from '@contember/engine-tenant-api'
 import AuthMiddlewareFactory from './AuthMiddlewareFactory'
-import { Identity } from '@contember/engine-common'
+import { GraphQLError, GraphQLFormattedError } from 'graphql'
+import { ApolloError } from 'apollo-server-errors'
 
 class TenantApolloServerFactory {
 	constructor(
 		private readonly resolvers: Schema.Resolvers,
-		private readonly projectMemberManager: ProjectMemberManager,
-		private readonly authorizator: Authorizator<Identity>,
+		private readonly resolverContextFactory: ResolverContextFactory,
+		private readonly errorFormatter: (error: GraphQLError) => GraphQLFormattedError,
 	) {}
 
 	create(): ApolloServer {
@@ -24,13 +18,14 @@ class TenantApolloServerFactory {
 			introspection: true,
 			tracing: true,
 			resolvers: this.resolvers as Config['resolvers'],
+			formatError: err => {
+				if (err instanceof ApolloError) {
+					return err
+				}
+				return this.errorFormatter(err)
+			},
 			context: ({ ctx }: { ctx: AuthMiddlewareFactory.ContextWithAuth }): ResolverContext => {
-				const { identityId, apiKeyId, roles } = ctx.state.authResult
-				return new ResolverContext(
-					apiKeyId,
-					new ProjectAwareIdentity(identityId, roles, this.projectMemberManager),
-					this.authorizator,
-				)
+				return this.resolverContextFactory.create(ctx.state.authResult)
 			},
 		})
 	}

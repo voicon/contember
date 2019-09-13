@@ -49,6 +49,7 @@ import TenantApolloServerFactory from './http/TenantApolloServerFactory'
 import { providers } from './utils/providers'
 import { graphqlObjectFactories } from './utils/graphqlObjectFactories'
 import { getArgumentValues } from 'graphql/execution/values'
+import { projectVariablesResolver } from './utils/projectVariablesProvider'
 export type ProjectContainer = Container<{
 	project: ProjectWithS3
 	systemDbClient: Client
@@ -57,6 +58,7 @@ export type ProjectContainer = Container<{
 	systemExecutionContainerFactory: SystemExecutionContainer.Factory
 	connection: Connection
 	systemDbMigrationsRunner: MigrationsRunner
+	schemaVersionBuilder: SchemaVersionBuilder
 }>
 
 export interface MasterContainer {
@@ -71,18 +73,17 @@ class CompositionRoot {
 		projectsDirectory: string,
 		projectSchemas: { [name: string]: Schema },
 	): MasterContainer {
-		const tenantContainer = this.createTenantContainer(config.tenant.db, providers)
 		const projectContainers = this.createProjectContainers(config.projects, projectsDirectory, projectSchemas)
+
+		const projectContainerResolver: ProjectContainerResolver = slug =>
+			projectContainers.find(it => it.project.slug === slug)
+
+		const tenantContainer = this.createTenantContainer(config.tenant.db, providers, projectContainerResolver)
 
 		const masterContainer = new Builder({})
 			.addService('providers', () => providers)
 			.addService('tenantContainer', () => tenantContainer)
-			.addService('projectContainers', () => projectContainers)
-			.addService(
-				'projectContainerResolver',
-				({ projectContainers }): ProjectContainerResolver => slug =>
-					projectContainers.find(it => it.project.slug === slug),
-			)
+			.addService('projectContainerResolver', () => projectContainerResolver)
 
 			.addService('homepageMiddlewareFactory', () => new HomepageMiddlewareFactory())
 
@@ -96,7 +97,7 @@ class CompositionRoot {
 			)
 			.addService(
 				'projectResolveMiddlewareFactory',
-				({ projectContainers }) => new ProjectResolveMiddlewareFactory(projectContainers),
+				({ projectContainerResolver }) => new ProjectResolveMiddlewareFactory(projectContainerResolver),
 			)
 			.addService('stageResolveMiddlewareFactory', () => new StageResolveMiddlewareFactory())
 			.addService('databaseTransactionMiddlewareFactory', () => {
@@ -105,8 +106,8 @@ class CompositionRoot {
 			.addService('tenantApolloServer', ({ tenantContainer }) =>
 				new TenantApolloServerFactory(
 					tenantContainer.resolvers,
-					tenantContainer.projectMemberManager,
-					tenantContainer.authorizator,
+					tenantContainer.resolverContextFactory,
+					tenantContainer.errorFormatter,
 				).create(),
 			)
 			.addService(
@@ -312,14 +313,29 @@ class CompositionRoot {
 				.build()
 
 			return projectContainer
-				.pick('project', 'contentApolloMiddlewareFactory', 'systemDbClient', 'connection', 'systemDbMigrationsRunner')
+				.pick(
+					'project',
+					'contentApolloMiddlewareFactory',
+					'systemDbClient',
+					'connection',
+					'systemDbMigrationsRunner',
+					'schemaVersionBuilder',
+				)
 				.merge(systemIntermediateContainer)
 				.merge(systemContainer.pick('systemExecutionContainerFactory'))
 		})
 	}
 
-	createTenantContainer(tenantDbCredentials: DatabaseCredentials, providers: TenantProviders) {
-		return new TenantContainer.Factory().create(tenantDbCredentials, providers)
+	createTenantContainer(
+		tenantDbCredentials: DatabaseCredentials,
+		providers: TenantProviders,
+		projectContainerResolver: ProjectContainerResolver,
+	) {
+		return new TenantContainer.Factory().create(
+			tenantDbCredentials,
+			providers,
+			projectVariablesResolver(projectContainerResolver),
+		)
 	}
 }
 

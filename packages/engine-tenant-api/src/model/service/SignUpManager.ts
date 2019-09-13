@@ -1,9 +1,9 @@
 import { QueryHandler } from '@contember/queryable'
-import { Client, DatabaseQueryable } from '@contember/database'
-import { Identity } from '@contember/engine-common'
+import { DatabaseQueryable } from '@contember/database'
 import { CreateIdentityCommand, CreatePersonCommand, PersonQuery, PersonRow } from '../'
 import { SignUpErrorCode } from '../../schema'
 import { CommandBus } from '../commands/CommandBus'
+import { TenantRole } from '../authorization/Roles'
 
 class SignUpManager {
 	constructor(
@@ -19,7 +19,7 @@ class SignUpManager {
 			return new SignUpManager.SignUpResultError([SignUpErrorCode.TooWeak])
 		}
 		const person = await this.commandBus.transaction(async bus => {
-			const identityId = await bus.execute(new CreateIdentityCommand([...roles, Identity.SystemRole.PERSON]))
+			const identityId = await bus.execute(new CreateIdentityCommand([...roles, TenantRole.PERSON]))
 			return await bus.execute(new CreatePersonCommand(identityId, email, password))
 		})
 
@@ -38,7 +38,7 @@ namespace SignUpManager {
 	export class SignUpResultOk {
 		readonly ok = true
 
-		constructor(public readonly person: PersonRow) {}
+		constructor(public readonly person: Omit<PersonRow, 'roles'>) {}
 	}
 
 	export class SignUpResultError {

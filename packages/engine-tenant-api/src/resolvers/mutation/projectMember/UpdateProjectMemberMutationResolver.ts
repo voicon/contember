@@ -1,7 +1,6 @@
 import {
 	MutationResolvers,
 	MutationUpdateProjectMemberArgs,
-	RemoveProjectMemberErrorCode,
 	UpdateProjectMemberErrorCode,
 	UpdateProjectMemberResponse,
 } from '../../../schema'
@@ -16,13 +15,13 @@ export class UpdateProjectMemberMutationResolver implements MutationResolvers {
 
 	async updateProjectMember(
 		parent: any,
-		{ projectSlug, identityId, variables, roles }: MutationUpdateProjectMemberArgs,
+		{ projectSlug, identityId, memberships }: MutationUpdateProjectMemberArgs,
 		context: ResolverContext,
 	): Promise<UpdateProjectMemberResponse> {
 		const project = await this.projectManager.getProjectBySlug(projectSlug)
 		await context.requireAccess({
 			scope: new ProjectScope(project),
-			action: PermissionActions.PROJECT_UPDATE_MEMBER_VARIABLES,
+			action: PermissionActions.PROJECT_UPDATE_MEMBER,
 			message: 'You are not allowed to update project member variables',
 		})
 		if (!project) {
@@ -31,12 +30,7 @@ export class UpdateProjectMemberMutationResolver implements MutationResolvers {
 				errors: [{ code: UpdateProjectMemberErrorCode.ProjectNotFound }],
 			}
 		}
-		const result = await this.projectMemberManager.updateProjectMember(
-			project.id,
-			identityId,
-			roles || undefined,
-			variables || undefined,
-		)
+		const result = await this.projectMemberManager.updateProjectMember(project.id, identityId, memberships)
 
 		if (!result.ok) {
 			return {

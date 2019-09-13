@@ -14,11 +14,17 @@ import {
 } from './'
 
 import { Resolvers } from '../schema'
+import { ProjectQueryResolver } from './query/ProjectQueryResolver'
+import { ProjectTypeResolver } from './types/ProjectTypeResolver'
+import { InviteMutationResolver } from './mutation/person/InviteMutationResolver'
+import { ProjectMembersQueryResolver } from './query/ProjectMembersQueryResolver'
 
 class ResolverFactory {
 	public constructor(
 		private readonly resolvers: {
 			meQueryResolver: MeQueryResolver
+			projectQueryResolver: ProjectQueryResolver
+			projectMembersQueryResolver: ProjectMembersQueryResolver
 
 			setupMutationResolver: SetupMutationResolver
 
@@ -27,6 +33,7 @@ class ResolverFactory {
 			signOutMutationResolver: SignOutMutationResolver
 			changePasswordMutationResolver: ChangePasswordMutationResolver
 
+			inviteMutationResolver: InviteMutationResolver
 			addProjectMemberMutationResolver: AddProjectMemberMutationResolver
 			updateProjectMemberMutationResolver: UpdateProjectMemberMutationResolver
 			removeProjectMemberMutationResolver: RemoveProjectMemberMutationResolver
@@ -35,20 +42,27 @@ class ResolverFactory {
 			disableApiKeyMutationResolver: DisableApiKeyMutationResolver
 
 			identityTypeResolver: IdentityTypeResolver
+			projectTypeResolver: ProjectTypeResolver
 		},
 	) {}
 
 	create(): Resolvers {
 		return {
-			IdentityWithoutPerson: {
-				projects: this.resolvers.identityTypeResolver.projects.bind(this.resolvers.identityTypeResolver),
-			},
 			Identity: {
 				projects: this.resolvers.identityTypeResolver.projects.bind(this.resolvers.identityTypeResolver),
 				person: this.resolvers.identityTypeResolver.person.bind(this.resolvers.identityTypeResolver),
 			},
+			Project: {
+				members: this.resolvers.projectTypeResolver.members.bind(this.resolvers.projectTypeResolver),
+				roles: this.resolvers.projectTypeResolver.roles.bind(this.resolvers.projectTypeResolver),
+			},
 			Query: {
 				me: this.resolvers.meQueryResolver.me.bind(this.resolvers.meQueryResolver),
+				projectBySlug: this.resolvers.projectQueryResolver.projectBySlug.bind(this.resolvers.projectQueryResolver),
+				projects: this.resolvers.projectQueryResolver.projects.bind(this.resolvers.projectQueryResolver),
+				projectMemberships: this.resolvers.projectMembersQueryResolver.projectMemberships.bind(
+					this.resolvers.projectMembersQueryResolver,
+				),
 			},
 			Mutation: {
 				setup: this.resolvers.setupMutationResolver.setup.bind(this.resolvers.setupMutationResolver),
@@ -59,7 +73,7 @@ class ResolverFactory {
 				changePassword: this.resolvers.changePasswordMutationResolver.changePassword.bind(
 					this.resolvers.changePasswordMutationResolver,
 				),
-
+				invite: this.resolvers.inviteMutationResolver.invite.bind(this.resolvers.inviteMutationResolver),
 				addProjectMember: this.resolvers.addProjectMemberMutationResolver.addProjectMember.bind(
 					this.resolvers.addProjectMemberMutationResolver,
 				),

@@ -5,9 +5,9 @@ import * as modelDefinition from './model'
 const model = SchemaDefinition.createModel(modelDefinition)
 
 const acl: Acl.Schema = {
-	variables: {},
 	roles: {
 		admin: {
+			variables: {},
 			stages: '*',
 			entities: new AllowAllPermissionFactory().create(model),
 		},

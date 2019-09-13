@@ -9,6 +9,9 @@ const schema: DocumentNode = gql`
 
 	type Query {
 		me: Identity!
+		projects: [Project!]!
+		projectBySlug(slug: String!): Project
+		projectMemberships(projectSlug: String!, identityId: String!): [Membership!]!
 	}
 
 	type Mutation {
@@ -19,21 +22,21 @@ const schema: DocumentNode = gql`
 		signOut(all: Boolean): SignOutResponse
 		changePassword(personId: String!, password: String!): ChangePasswordResponse
 
+		invite(email: String!, projectSlug: String!, memberships: [MembershipInput!]!): InviteResponse
+
 		addProjectMember(
 			projectSlug: String!
 			identityId: String!
-			roles: [String!]!
-			variables: [VariableUpdate!]
+			memberships: [MembershipInput!]!
 		): AddProjectMemberResponse
+		removeProjectMember(projectSlug: String!, identityId: String!): RemoveProjectMemberResponse
 		updateProjectMember(
 			projectSlug: String!
 			identityId: String!
-			roles: [String!]
-			variables: [VariableUpdate!]
+			memberships: [MembershipInput!]!
 		): UpdateProjectMemberResponse
-		removeProjectMember(projectSlug: String!, identityId: String!): RemoveProjectMemberResponse
 
-		createApiKey(roles: [String!], projects: [ApiKeyProjectInput!]): CreateApiKeyResponse
+		createApiKey(projectSlug: String!, memberships: [MembershipInput!]!): CreateApiKeyResponse
 		disableApiKey(id: String!): DisableApiKeyResponse
 	}
 
@@ -62,7 +65,7 @@ const schema: DocumentNode = gql`
 
 	type SetupResult {
 		superadmin: Person!
-		loginKey: ApiKey!
+		loginKey: ApiKeyWithToken!
 	}
 
 	# === signUp ===
@@ -144,6 +147,36 @@ const schema: DocumentNode = gql`
 		PERSON_NOT_FOUND
 		TOO_WEAK
 	}
+	# === invite ===
+
+	type InviteResponse {
+		ok: Boolean!
+		errors: [InviteError!]!
+		result: InviteResult
+	}
+
+	type InviteError {
+		code: InviteErrorCode!
+		endUserMessage: String
+		developerMessage: String
+	}
+
+	enum InviteErrorCode {
+		PROJECT_NOT_FOUND
+		VARIABLE_NOT_FOUND
+		ALREADY_MEMBER
+	}
+
+	union InviteResult = InviteExistingResult | InviteNewResult
+
+	type InviteExistingResult {
+		person: Person!
+	}
+
+	type InviteNewResult {
+		generatedPassword: String!
+		person: Person!
+	}
 
 	# === addProjectMember ===
 
@@ -204,12 +237,6 @@ const schema: DocumentNode = gql`
 
 	# === createApiKey ===
 
-	input ApiKeyProjectInput {
-		projectSlug: String!
-		roles: [String!]
-		variables: [VariableUpdate!]
-	}
-
 	type CreateApiKeyResponse {
 		ok: Boolean!
 		errors: [CreateApiKeyError!]!
@@ -228,9 +255,7 @@ const schema: DocumentNode = gql`
 	}
 
 	type CreateApiKeyResult {
-		id: String!
-		token: String!
-		identity: IdentityWithoutPerson!
+		apiKey: ApiKeyWithToken!
 	}
 
 	# === disableApiKey ===
@@ -251,44 +276,98 @@ const schema: DocumentNode = gql`
 	}
 
 	# === common ===
-	input VariableUpdate {
+
+	# === variables ===
+
+	input VariableEntryInput {
 		name: String!
 		values: [String!]!
 	}
 
+	type VariableEntry {
+		name: String!
+		values: [String!]!
+	}
+
+	# === membership ===
+
+	input MembershipInput {
+		role: String!
+		variables: [VariableEntryInput!]!
+	}
+
+	type Membership {
+		role: String!
+		variables: [VariableEntry!]!
+	}
+
+	# === person ====
+
 	type Person {
 		id: String!
 		email: String!
-		identity: IdentityWithoutPerson!
+		identity: Identity!
 	}
 
-	type PersonWithoutIdentity {
+	# === api key ===
+
+	type ApiKey {
 		id: String!
-		email: String!
+		identity: Identity!
 	}
+
+	type ApiKeyWithToken {
+		id: String!
+		token: String!
+		identity: Identity!
+	}
+
+	# === identity ===
 
 	type Identity {
 		id: String!
-		projects: [Project!]!
-		person: PersonWithoutIdentity
+		person: Person
+		apiKey: ApiKey
+		projects: [IdentityProjectRelation!]!
 	}
 
-	type IdentityWithoutPerson {
-		id: String!
-		projects: [Project!]!
+	type IdentityProjectRelation {
+		project: Project!
+		memberships: [Membership!]!
 	}
+
+	# === project ===
 
 	type Project {
 		id: String!
 		name: String!
 		slug: String!
-		roles: [String!]!
+		roles: [RoleDefinition!]!
+		members(memberType: MEMBER_TYPE): [ProjectIdentityRelation!]!
 	}
 
-	type ApiKey {
-		id: String!
-		token: String!
+	enum MEMBER_TYPE {
+		API_KEY
+		PERSON
+	}
+
+	type ProjectIdentityRelation {
 		identity: Identity!
+		memberships: [Membership!]!
+	}
+
+	type RoleDefinition {
+		name: String!
+		variables: [RoleVariableDefinition!]!
+	}
+
+	interface RoleVariableDefinition {
+		name: String!
+	}
+
+	type RoleEntityVariableDefinition implements RoleVariableDefinition {
+		name: String!
+		entityName: String!
 	}
 `
 

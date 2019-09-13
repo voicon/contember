@@ -17,6 +17,7 @@ import {
 	ProjectManager,
 	ProjectMemberManager,
 	RemoveProjectMemberMutationResolver,
+	ResolverContextFactory,
 	ResolverFactory,
 	Schema,
 	SetupMutationResolver,
@@ -29,6 +30,16 @@ import {
 } from './'
 import { CommandBus } from './model/commands/CommandBus'
 import { Providers } from './model/providers'
+import { ProjectTypeResolver } from './resolvers/types/ProjectTypeResolver'
+import { ProjectQueryResolver } from './resolvers/query/ProjectQueryResolver'
+import { ProjectVariablesResolver } from './model/type/Variables'
+import { InviteMutationResolver } from './resolvers/mutation/person/InviteMutationResolver'
+import { InviteManager } from './model/service/InviteManager'
+import { GraphQLError, GraphQLFormattedError } from 'graphql'
+import { formatError } from './resolvers/ErrorFormatter'
+import { ProjectMembersQueryResolver } from './resolvers/query/ProjectMembersQueryResolver'
+import { PermissionContextFactory } from './model/authorization/PermissionContextFactory'
+import { IdentityFactory } from './model/authorization/IdentityFactory'
 
 interface TenantContainer {
 	projectMemberManager: ProjectMemberManager
@@ -37,13 +48,19 @@ interface TenantContainer {
 	projectManager: ProjectManager
 	dbMigrationsRunner: MigrationsRunner
 	resolvers: Schema.Resolvers
+	resolverContextFactory: ResolverContextFactory
 	authorizator: Authorizator<Identity>
+	errorFormatter: (error: GraphQLError) => GraphQLFormattedError
 }
 
 namespace TenantContainer {
 	export class Factory {
-		create(tenantDbCredentials: DatabaseCredentials, providers: Providers): TenantContainer {
-			return this.createBuilder(tenantDbCredentials, providers)
+		create(
+			tenantDbCredentials: DatabaseCredentials,
+			providers: Providers,
+			projectVariablesResolver: ProjectVariablesResolver,
+		): TenantContainer {
+			return this.createBuilder(tenantDbCredentials, providers, projectVariablesResolver)
 				.build()
 				.pick(
 					'apiKeyManager',
@@ -53,10 +70,16 @@ namespace TenantContainer {
 					'signUpManager',
 					'resolvers',
 					'authorizator',
+					'resolverContextFactory',
+					'errorFormatter',
 				)
 		}
 
-		createBuilder(tenantDbCredentials: DatabaseCredentials, providers: Providers) {
+		createBuilder(
+			tenantDbCredentials: DatabaseCredentials,
+			providers: Providers,
+			projectVariablesResolver: ProjectVariablesResolver,
+		) {
 			return new Builder({})
 				.addService('connection', (): Connection.ConnectionLike & Connection.ClientFactory => {
 					return new Connection(tenantDbCredentials, {})
@@ -96,14 +119,38 @@ namespace TenantContainer {
 					'projectMemberManager',
 					({ queryHandler, commandBus }) => new ProjectMemberManager(queryHandler, commandBus),
 				)
+				.addService('identityFactory', ({ projectMemberManager }) => new IdentityFactory(projectMemberManager))
+				.addService(
+					'permissionContextFactory',
+					({ authorizator, identityFactory }) => new PermissionContextFactory(authorizator, identityFactory),
+				)
 				.addService('projectManager', ({ queryHandler, commandBus }) => new ProjectManager(queryHandler, commandBus))
-
+				.addService('inviteManager', ({ db, providers }) => new InviteManager(db, providers))
+				.addService(
+					'identityTypeResolver',
+					({ queryHandler, projectMemberManager, projectManager }) =>
+						new IdentityTypeResolver(queryHandler, projectMemberManager, projectManager),
+				)
+				.addService(
+					'projectTypeResolver',
+					({ projectMemberManager }) => new ProjectTypeResolver(projectMemberManager, projectVariablesResolver),
+				)
 				.addService('meQueryResolver', () => new MeQueryResolver())
+				.addService('projectQueryResolver', ({ projectManager }) => new ProjectQueryResolver(projectManager))
+				.addService(
+					'projectMembersQueryResolver',
+					({ projectManager, projectMemberManager }) =>
+						new ProjectMembersQueryResolver(projectManager, projectMemberManager),
+				)
 				.addService(
 					'signUpMutationResolver',
 					({ signUpManager, apiKeyManager }) => new SignUpMutationResolver(signUpManager, apiKeyManager),
 				)
-				.addService('signInMutationResolver', ({ signInManager }) => new SignInMutationResolver(signInManager))
+				.addService(
+					'signInMutationResolver',
+					({ signInManager, permissionContextFactory, identityTypeResolver }) =>
+						new SignInMutationResolver(signInManager, identityTypeResolver, permissionContextFactory),
+				)
 				.addService(
 					'signOutMutationResolver',
 					({ apiKeyManager, queryHandler }) => new SignOutMutationResolver(apiKeyManager, queryHandler),
@@ -112,6 +159,10 @@ namespace TenantContainer {
 					'changePasswordMutationResolver',
 					({ passwordChangeManager, queryHandler }) =>
 						new ChangePasswordMutationResolver(passwordChangeManager, queryHandler),
+				)
+				.addService(
+					'inviteMutationResolver',
+					({ inviteManager, projectManager }) => new InviteMutationResolver(inviteManager, projectManager),
 				)
 				.addService(
 					'addProjectMemberMutationResolver',
@@ -140,12 +191,13 @@ namespace TenantContainer {
 					'disableApiKeyMutationResolver',
 					({ apiKeyManager }) => new DisableApiKeyMutationResolver(apiKeyManager),
 				)
-				.addService(
-					'identityTypeResolver',
-					({ queryHandler, projectMemberManager }) => new IdentityTypeResolver(queryHandler, projectMemberManager),
-				)
 
+				.addService(
+					'resolverContextFactory',
+					({ permissionContextFactory }) => new ResolverContextFactory(permissionContextFactory),
+				)
 				.addService('resolvers', container => new ResolverFactory(container).create())
+				.addService('errorFormatter', () => formatError)
 		}
 	}
 }

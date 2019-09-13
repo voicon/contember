@@ -1,21 +1,27 @@
 import { PermissionsBuilder } from '@contember/schema-definition'
-import { Acl, Schema, Model } from '@contember/schema'
+import { Acl, Model } from '@contember/schema'
 
 const aclFactory = (model: Model.Schema): Acl.Schema => ({
-	variables: {},
 	roles: {
 		admin: {
+			variables: {},
 			stages: '*',
 			entities: PermissionsBuilder.create(model).allowAll().permissions,
 		},
 		regionManager: {
+			variables: {
+				site_id: {
+					type: Acl.VariableType.entity,
+					entityName: 'Site',
+				},
+			},
 			stages: '*',
 			entities: PermissionsBuilder.create(model)
 
 				.allowAll()
 
 				.onEntity('Site')
-				.addPredicate('site', { slug: 'site' })
+				.addPredicate('site', { id: 'site_id' })
 				.allowOnlyRead('site')
 				.onField(PermissionsBuilder.everyField().except('name', 'slug', 'order'))
 				.allowUpdate('site')

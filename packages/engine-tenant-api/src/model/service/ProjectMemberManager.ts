@@ -1,14 +1,18 @@
 import { QueryHandler } from '@contember/queryable'
-import { Client, DatabaseQueryable } from '@contember/database'
+import { DatabaseQueryable } from '@contember/database'
 import {
 	AddProjectMemberCommand,
+	AddProjectMemberCommandError,
 	ProjectBySlugVariablesByIdentityQuery,
 	ProjectRolesByIdentityQuery,
 	RemoveProjectMemberCommand,
 	UpdateProjectMemberCommand,
-	UpdateProjectMemberVariablesCommand,
 } from '../'
 import { CommandBus } from '../commands/CommandBus'
+import { ProjectMembershipByIdentityQuery } from '../queries/ProjectMembershipByIdentityQuery'
+import { Membership } from '../type/Membership'
+import { ProjectMembersQuery } from '../queries/ProjectMembersQuery'
+import { AddProjectMemberErrorCode } from '../../schema'
 
 class ProjectMemberManager {
 	constructor(
@@ -32,22 +36,31 @@ class ProjectMemberManager {
 	async addProjectMember(
 		projectId: string,
 		identityId: string,
-		roles: readonly string[],
-		variables: readonly UpdateProjectMemberVariablesCommand.VariableUpdate[],
-	): Promise<AddProjectMemberCommand.AddProjectMemberResponse> {
-		return await this.commandBus.transaction(
-			async bus => await bus.execute(new AddProjectMemberCommand(projectId, identityId, roles, variables)),
-		)
+		memberships: readonly Membership[],
+	): Promise<AddProjectMemberResponse> {
+		return await this.commandBus.transaction(async bus => {
+			const result = await bus.execute(new AddProjectMemberCommand(projectId, identityId, memberships))
+			if (result.ok) {
+				return new AddProjectMemberResponseOk()
+			}
+			switch (result.error) {
+				case AddProjectMemberCommandError.alreadyMember:
+					return new AddProjectMemberResponseError([AddProjectMemberErrorCode.AlreadyMember])
+				case AddProjectMemberCommandError.projectNotFound:
+					return new AddProjectMemberResponseError([AddProjectMemberErrorCode.ProjectNotFound])
+				case AddProjectMemberCommandError.identityNotfound:
+					return new AddProjectMemberResponseError([AddProjectMemberErrorCode.IdentityNotFound])
+			}
+		})
 	}
 
 	async updateProjectMember(
 		projectId: string,
 		identityId: string,
-		roles?: readonly string[],
-		variables?: readonly UpdateProjectMemberVariablesCommand.VariableUpdate[],
+		memberships: readonly Membership[],
 	): Promise<UpdateProjectMemberCommand.UpdateProjectMemberResponse> {
 		return await this.commandBus.transaction(
-			async bus => await bus.execute(new UpdateProjectMemberCommand(projectId, identityId, roles, variables)),
+			async bus => await bus.execute(new UpdateProjectMemberCommand(projectId, identityId, memberships)),
 		)
 	}
 
@@ -66,12 +79,53 @@ class ProjectMemberManager {
 	): Promise<ProjectBySlugVariablesByIdentityQuery.Result> {
 		return this.queryHandler.fetch(new ProjectBySlugVariablesByIdentityQuery(projectSlug, identityId))
 	}
+
+	async getProjectMemberships(projectId: string, identityId: string): Promise<ProjectMembershipByIdentityQuery.Result> {
+		return this.queryHandler.fetch(new ProjectMembershipByIdentityQuery({ id: projectId }, identityId))
+	}
+
+	async getProjectBySlugMemberships(
+		projectSlug: string,
+		identityId: string,
+	): Promise<ProjectMembershipByIdentityQuery.Result> {
+		return this.queryHandler.fetch(new ProjectMembershipByIdentityQuery({ slug: projectSlug }, identityId))
+	}
+
+	async getProjectMembers(projectId: string): Promise<ProjectMemberManager.GetProjectMembersResponse> {
+		const members = await this.queryHandler.fetch(new ProjectMembersQuery(projectId))
+
+		return await Promise.all(
+			members.map(async it => ({
+				identity: it,
+				memberships: await this.getProjectMemberships(projectId, it.id),
+			})),
+		)
+	}
+}
+
+export type AddProjectMemberResponse = AddProjectMemberResponseOk | AddProjectMemberResponseError
+
+export class AddProjectMemberResponseOk {
+	readonly ok = true
+
+	constructor() {}
+}
+
+export class AddProjectMemberResponseError {
+	readonly ok = false
+
+	constructor(public readonly errors: Array<AddProjectMemberErrorCode>) {}
 }
 
 namespace ProjectMemberManager {
 	export class GetProjectRolesResponse {
 		constructor(public readonly roles: string[]) {}
 	}
+
+	export type GetProjectMembersResponse = {
+		identity: { id: string }
+		memberships: readonly Membership[]
+	}[]
 }
 
 export { ProjectMemberManager }
