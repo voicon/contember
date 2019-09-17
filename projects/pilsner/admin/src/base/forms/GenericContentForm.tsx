@@ -1,5 +1,5 @@
 import {
-	EditorBlock,
+	BlockType,
 	Component,
 	LineBreakBehavior,
 	Literal,
@@ -34,9 +34,9 @@ export const GenericContentForm = Component(
 							name="text"
 							lineBreakBehavior={LineBreakBehavior.SMART}
 							blocks={[
-								{ block: EditorBlock.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK, Mark.ITALIC] },
-								{ block: EditorBlock.HEADING_H2, marks: [] },
-								{ block: EditorBlock.HEADING_H3, marks: [] },
+								{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK, Mark.ITALIC] },
+								{ block: BlockType.HEADING_H2, marks: [] },
+								{ block: BlockType.HEADING_H3, marks: [] },
 							]}
 						/>,
 					],

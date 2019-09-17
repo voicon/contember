@@ -3,7 +3,7 @@ import {
 	Avatar,
 	AvatarField,
 	AvatarSize,
-	Block as BlockType,
+	BlockType,
 	Button,
 	Component,
 	FieldText,
@@ -22,7 +22,7 @@ import { Image } from './Image'
 import { LocaleSideDimension } from '../LocaleSideDimension'
 import { Seo } from './Seo'
 import { State } from './State'
-import { Block } from './Block'
+import { ContentBlock } from './ContentBlock'
 import { Link } from './Link'
 
 export const Page = Component(
@@ -43,7 +43,7 @@ export const Page = Component(
 				<State name="state" />
 				<TextAreaField label="Perex" name="perex" />
 				<SortableRepeater field="content" label="Content" sortBy="order">
-					<Block />
+					<ContentBlock />
 				</SortableRepeater>
 				<RichTextField
 					label="Contact us"

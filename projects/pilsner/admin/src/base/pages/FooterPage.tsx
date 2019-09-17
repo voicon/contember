@@ -1,4 +1,15 @@
-import { AlternativeFields, EditPage, Literal, SelectField, SortableRepeater, TextField, ToOne, Box } from 'cms-admin'
+import {
+	AlternativeFields,
+	EditPage,
+	Literal,
+	SelectField,
+	SortableRepeater,
+	TextField,
+	ToOne,
+	Box,
+	DiscriminatedBlocks,
+	Block,
+} from 'cms-admin'
 import * as React from 'react'
 
 export const FooterPage = (
@@ -30,26 +41,14 @@ export const FooterPage = (
 			<Box heading="Links">
 				<SortableRepeater sortBy={'order'} field={'links'} removeType={'delete'}>
 					<TextField name={'caption'} label="Caption" />
-					<AlternativeFields
-						name="linkType"
-						label={undefined}
-						alternatives={[
-							[
-								new Literal('external'),
-								'External',
-								<>
-									<TextField name={'linkUrl'} label={'URL'} />
-								</>,
-							],
-							[
-								new Literal('internal'),
-								'Internal',
-								<>
-									<SelectField name={'link'} label={'link'} options={'Linkable.url'} />
-								</>,
-							],
-						]}
-					/>
+					<DiscriminatedBlocks name="linkType" label={undefined}>
+						<Block discriminateBy="external" label="External">
+							<TextField name="linkUrl" label="URL" />
+						</Block>
+						<Block discriminateBy="internal" label="Internal">
+							<SelectField name="link" label="Link" options="Linkable.url" />
+						</Block>
+					</DiscriminatedBlocks>
 				</SortableRepeater>
 			</Box>
 		</ToOne>
