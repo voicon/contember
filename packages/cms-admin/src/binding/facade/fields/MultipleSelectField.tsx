@@ -22,13 +22,14 @@ export const MultipleSelectField = Component<MultipleSelectFieldProps>(props => 
 	return (
 		<ChoiceField name={props.name} options={props.options} arity={ChoiceArity.Multiple}>
 			{({ data, currentValues, onChange, environment, isMutating, errors }: MultipleChoiceFieldMetadata) => {
+				const e: ErrorAccessor[] = errors
 				return (
 					<MultipleSelectFieldInner
 						data={data}
 						currentValues={currentValues}
 						onChange={onChange}
 						environment={environment}
-						errors={errors}
+						errors={e}
 						isMutating={isMutating}
 						{...props}
 					/>

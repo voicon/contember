@@ -43,6 +43,12 @@ const routes = {
 
 	sites: { path: '/sites' },
 	translations: { path: '/translations' },
+
+	// tenant
+	tenantChangePassword: { path: '/change-password' },
+	tenantUsers: { path: '/users' },
+	tenantInviteUser: { path: '/invite-user' },
+	tenantEditUser: { path: '/edit-user/:id' },
 }
 const config: ProjectConfig[] = [
 	{

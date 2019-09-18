@@ -1,4 +1,4 @@
-import { DimensionsSwitcher, LayoutDefault, Literal } from 'cms-admin'
+import { Button, DimensionsSwitcher, LayoutDefault, Literal, PageLinkButton } from 'cms-admin'
 import * as React from 'react'
 import logo from './logo.svg'
 import { SideMenu } from './SideMenu'
@@ -28,6 +28,13 @@ export class Layout extends React.PureComponent<LayoutProps> {
 				}}
 				side={<SideMenu deployButton={this.props.deployButton} />}
 				content={this.props.children}
+				userMenu={
+					<>
+						<PageLinkButton distinction="seamless" flow="block" to="tenantChangePassword">
+							Change password
+						</PageLinkButton>
+					</>
+				}
 			/>
 		)
 	}

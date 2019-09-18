@@ -45,6 +45,7 @@ export const SideMenu = React.memo<LayoutProps>(props => {
 				<Menu.Item title="Social networks" to="social" />
 				<Menu.Item title="Translations" to="translations" />
 				{isAdmin && <Menu.Item title="Sites" to="sites" />}
+				{isAdmin && <Menu.Item title="Users" to="tenantUsers" />}
 			</Menu.Item>
 			{props.deployButton && (
 				<Menu.Item title="Deployment">
