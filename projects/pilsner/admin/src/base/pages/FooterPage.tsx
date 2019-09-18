@@ -1,5 +1,4 @@
 import {
-	AlternativeFields,
 	EditPage,
 	Literal,
 	SelectField,
