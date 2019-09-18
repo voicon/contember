@@ -2,8 +2,7 @@
 	"name": "@mangoweb/contember-project-pilsner-api",
 	"private": true,
 	"version": "0.0.0",
-	"scripts": {
-	},
+	"scripts": {},
 	"main": "dist/src/index.js",
 	"typings": "dist/src/index.d.ts",
 	"dependencies": {
@@ -11,6 +10,6 @@
 		"@contember/schema-definition": "^0.0.0"
 	},
 	"devDependencies": {
-		"typescript": "^3.5.3"
+		"typescript": "^3.6.3"
 	}
 }
