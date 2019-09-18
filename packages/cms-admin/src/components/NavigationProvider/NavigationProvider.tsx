@@ -1,7 +1,40 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 import { PageLink } from '../pageRouting'
 import { DynamicLink } from '../DynamicLink'
 import { Navigation } from '@contember/ui'
+import State from '../../state'
+import { requestStateToPath } from '../../utils/url'
+import routes from '../../routes'
+import { pageRequest } from '../../state/request'
+import { isUrlActive } from '../../utils/isUrlActive'
+
+export interface NavigationIsActiveProviderProps {
+	children?: React.ReactNode
+}
+
+export function NavigationIsActiveProvider(props: NavigationIsActiveProviderProps) {
+	const isActive = useSelector<State, (to: string | Navigation.CustomTo) => boolean>(state => {
+		return (to: string | Navigation.CustomTo) => {
+			if (state.view.route && state.view.route.name === 'project_page') {
+				const url = requestStateToPath(
+					routes(state.projectsConfigs.configs),
+					pageRequest(
+						state.view.route.project,
+						state.view.route.stage,
+						typeof to === 'string' ? to : to.pageName,
+						typeof to === 'string' ? {} : to.parameters,
+					)(state.request),
+				)
+				return isUrlActive(url)
+			} else {
+				return false
+			}
+		}
+	})
+
+	return <Navigation.IsActiveContext.Provider value={isActive}>{props.children}</Navigation.IsActiveContext.Provider>
+}
 
 export interface NavigationProviderProps {
 	children?: React.ReactNode
@@ -9,46 +42,48 @@ export interface NavigationProviderProps {
 
 export function NavigationProvider(props: NavigationProviderProps) {
 	return (
-		<Navigation.MiddlewareContext.Provider
-			value={({ to, children, ...props }: Navigation.MiddlewareProps) => {
-				if ('Component' in props) {
-					const Component = props.Component
+		<NavigationIsActiveProvider>
+			<Navigation.MiddlewareContext.Provider
+				value={({ to, children, ...props }: Navigation.MiddlewareProps) => {
+					if ('Component' in props) {
+						const Component = props.Component
+						return (
+							<DynamicLink
+								requestChange={requestState => {
+									if (typeof to === 'string') {
+										return { ...requestState, pageName: to }
+									}
+									return { ...requestState, ...to }
+								}}
+								Component={innerProps => (
+									<Component navigate={() => innerProps.onClick()} isActive={innerProps.isActive}>
+										{innerProps.children}
+									</Component>
+								)}
+							>
+								<>{children}</>
+							</DynamicLink>
+						)
+					}
 					return (
-						<DynamicLink
-							requestChange={requestState => {
-								if (typeof to === 'string') {
-									return { ...requestState, pageName: to }
-								}
-								return { ...requestState, ...to }
-							}}
-							Component={innerProps => (
-								<Component navigate={() => innerProps.onClick()} isActive={innerProps.isActive}>
-									{innerProps.children}
-								</Component>
-							)}
+						<PageLink
+							to={
+								typeof to === 'string'
+									? to
+									: () => ({
+											name: to.pageName,
+											params: to.parameters,
+									  })
+							}
+							{...props}
 						>
-							<>{children}</>
-						</DynamicLink>
+							{children}
+						</PageLink>
 					)
-				}
-				return (
-					<PageLink
-						to={
-							typeof to === 'string'
-								? to
-								: () => ({
-										name: to.pageName,
-										params: to.parameters,
-								  })
-						}
-						{...props}
-					>
-						{children}
-					</PageLink>
-				)
-			}}
-		>
-			{props.children}
-		</Navigation.MiddlewareContext.Provider>
+				}}
+			>
+				{props.children}
+			</Navigation.MiddlewareContext.Provider>
+		</NavigationIsActiveProvider>
 	)
 }

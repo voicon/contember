@@ -2,7 +2,6 @@ import { Button, ButtonGroup, Spinner, Dropdown, ButtonBasedButtonProps } from '
 import * as React from 'react'
 import { Checkbox, Link, useRedirect } from '../../../../components'
 import { RequestChange } from '../../../../state/request'
-import { isSpecialLinkClick } from '../../../../utils/isSpecialLinkClick'
 import { EnvironmentContext, ToOne } from '../../../coreComponents'
 import { AccessorTreeRoot, EntityAccessor, EntityCollectionAccessor, FieldAccessor } from '../../../dao'
 import { RendererProps } from '../../renderers'
@@ -81,12 +80,7 @@ export const DimensionsRenderer = React.memo((props: RendererProps & DimensionsR
 								flow="block"
 								distinction="seamless"
 								isActive={dimension.isSelected}
-								onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-									if (isSpecialLinkClick(e.nativeEvent)) {
-										return
-									}
-									onClick(e)
-								}}
+								onClick={onClick}
 							>
 								{dimension.label}
 							</Button>

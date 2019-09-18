@@ -45,6 +45,18 @@ namespace Navigation {
 			</a>
 		)
 	})
+
+	export type IsActive = (to: string | CustomTo) => boolean
+
+	export const IsActiveContext = React.createContext<IsActive>(to => false)
+
+	export const useIsActive = (to: string | CustomTo | undefined) => {
+		const isActiveContext = React.useContext(IsActiveContext)
+		if (to === undefined) {
+			return false
+		}
+		return isActiveContext(to)
+	}
 }
 
 export { Navigation }

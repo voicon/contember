@@ -51,7 +51,7 @@
 	&-subgroup
 		&-title
 			margin: 0
-			color: $cui-menu-subgroup-color
+			color: $cui-menu-subgroup-inactive-color
 			font-size: $cui-menu-subgroup-title-font-size
 			padding: $cui-menu-vertical-padding $cui-menu-horizontal-padding
 			text-align: inherit
@@ -116,9 +116,21 @@
 		&-list
 			//
 
-	&-subgroup
+	&-subgroup,
+	&-action,
+	&-tooDeep
 		&.is-active > &-title
-			background-color: $cui-menu-subgroup-active-background
+			background-color: $cui-menu-active-background
+
+	&-subgroup,
+	&-action,
+	&-tooDeep
+		&:not(.is-active) > &-title:hover
+			background-color: $cui-menu-hover-background
+
+	&subgroup
+		&.is-active > &-title
+			color: $cui-menu-subgroup-active-color
 
 	&-action,
 	&-tooDeep
@@ -131,7 +143,7 @@
 			cursor: pointer
 
 			&:hover
-				background-color: $cui-menu-subgroup-active-background
+				color: $cui-menu-subgroup-active-color
 
 		&-action,
 		&-tooDeep
