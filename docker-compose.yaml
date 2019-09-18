@@ -1,14 +1,14 @@
 version: '3.7'
 services:
     ts_watch:
-        image: node:10
+        image: node:12
         volumes:
             - ./:/src:cached
         working_dir: /src
         command: npm run ts:watch
 
     api:
-        image: node:10
+        image: node:12
         volumes:
             - ./:/src:cached
         working_dir: /src/instances/mangoweb/api
@@ -31,7 +31,7 @@ services:
           - db
 
     admin:
-        image: node:10
+        image: node:12
         volumes:
             - ./:/src:cached
         working_dir: /src/instances/mangoweb/admin
@@ -43,7 +43,7 @@ services:
         command: npm run start
 
     storybook:
-        image: node:10
+        image: node:12
         volumes:
           - ./:/src:cached
         working_dir: /src/packages/ui
