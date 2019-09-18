@@ -164,10 +164,10 @@ export default () => (
 					label="String"
 					//inline={true}
 					options={[
-						[new Literal('emailContent'), 'emailContent'],
-						[new Literal('emailContact'), 'emailContact'],
-						[new Literal('emailSend'), 'emailSend'],
-						[new Literal('emailSentMessage'), 'emailSentMessage'],
+						{ value: new Literal('emailContent'), label: 'emailContent' },
+						{ value: new Literal('emailContact'), label: 'emailContact' },
+						{ value: new Literal('emailSend'), label: 'emailSend' },
+						{ value: new Literal('emailSentMessage'), label: 'emailSentMessage' },
 					]}
 				/>
 				<TextField label="Translated" name="translated" />

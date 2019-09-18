@@ -1,6 +1,6 @@
 import { H2 } from '@blueprintjs/core'
 import {
-	Block,
+	BlockType,
 	Component,
 	LineBreakBehavior,
 	Mark,
@@ -31,7 +31,7 @@ export const FrontPage = Component(
 					label="Content"
 					name="partnersContent"
 					lineBreakBehavior={LineBreakBehavior.DISABLE}
-					blocks={[{ block: Block.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]}
+					blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]}
 				/>
 			</LocaleSideDimension>
 			<H2>People</H2>
@@ -52,7 +52,7 @@ export const FrontPage = Component(
 				<RichTextField
 					label="Contact us"
 					name="contactUs"
-					blocks={[{ block: Block.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]}
+					blocks={[{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK] }]}
 				/>
 				<TextField label="Find us header" name="findUsHeader" />
 				<TextField label="Find us subheader" name="findUsSubheader" />

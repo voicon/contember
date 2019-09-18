@@ -7,18 +7,15 @@ interface StateProps {
 
 export const State = Component<StateProps>(
 	props => (
-		<>
-			<SelectField
-				name={props.name}
-				label="State"
-				//inline={true}
-				options={[
-					[new Literal('Draft'), 'Draft'],
-					[new Literal('ToBePublished'), 'To be published'],
-					[new Literal('Published'), 'Published'],
-				]}
-			/>
-		</>
+		<SelectField
+			name={props.name}
+			label="State"
+			options={[
+				{ value: new Literal('Draft'), label: 'Draft' },
+				{ value: new Literal('ToBePublished'), label: 'To be published' },
+				{ value: new Literal('Published'), label: 'Published' },
+			]}
+		/>
 	),
 	'State',
 )

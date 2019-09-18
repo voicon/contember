@@ -12,10 +12,10 @@ export const SocialNetwork = Component<SocialNetworkProps>(
 			label="Social network"
 			//inline={true}
 			options={[
-				[new Literal('Facebook'), 'Facebook'],
-				[new Literal('Twitter'), 'Twitter'],
-				[new Literal('LinkedIn'), 'LinkedIn'],
-				[new Literal('Instagram'), 'Instagram'],
+				{ value: new Literal('Facebook'), label: 'Facebook' },
+				{ value: new Literal('Twitter'), label: 'Twitter' },
+				{ value: new Literal('LinkedIn'), label: 'LinkedIn' },
+				{ value: new Literal('Instagram'), label: 'Instagram' },
 			]}
 		/>
 	),

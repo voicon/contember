@@ -11,7 +11,7 @@ import {
 	TextField,
 	ToMany,
 	LineBreakBehavior,
-	Block,
+	BlockType,
 	Mark,
 } from 'cms-admin'
 import * as React from 'react'
@@ -30,7 +30,7 @@ export default () => (
 				lineBreakBehavior={LineBreakBehavior.DISABLE}
 				blocks={[
 					{
-						block: Block.PARAGRAPH,
+						block: BlockType.PARAGRAPH,
 						marks: [Mark.BOLD],
 					},
 				]}
@@ -41,11 +41,11 @@ export default () => (
 				lineBreakBehavior={LineBreakBehavior.NEWBLOCK}
 				blocks={[
 					{
-						block: Block.HEADING,
+						block: BlockType.HEADING,
 						marks: [Mark.UNDERLINED],
 					},
 					{
-						block: Block.PARAGRAPH,
+						block: BlockType.PARAGRAPH,
 						marks: [Mark.BOLD, Mark.ITALIC, Mark.LINK, Mark.UNDERLINED],
 					},
 				]}

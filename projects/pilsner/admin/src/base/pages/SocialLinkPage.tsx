@@ -16,10 +16,10 @@ export const SocialLinkPage = (
 				label="Social network"
 				//inline={true}
 				options={[
-					[new Literal('facebook'), 'Facebook'],
-					[new Literal('twitter'), 'Twitter'],
-					[new Literal('youtube'), 'YouTube'],
-					[new Literal('instagram'), 'Instagram'],
+					{ value: new Literal('facebook'), label: 'Facebook' },
+					{ value: new Literal('twitter'), label: 'Twitter' },
+					{ value: new Literal('youtube'), label: 'YouTube' },
+					{ value: new Literal('instagram'), label: 'Instagram' },
 				]}
 			/>
 			<TextField label="Url" name="url" />
