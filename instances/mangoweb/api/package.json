@@ -5,6 +5,7 @@
 	"scripts": {
 		"start": "nodemon --watch dist --watch node_modules --ext js --delay 500ms --inspect=0.0.0.0 ./dist/src/index.js start",
 		"console": "node ./dist/src/index.js",
+		"console-debug": "node --trace-warnings --inspect-brk=0.0.0.0 ./dist/src/index.js",
 		"reset": "node ./dist/src/index.js drop && dotenv --  node ./dist/src/index.js update",
 		"sync": "node ./dist/src/index.js update"
 	},
