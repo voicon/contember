@@ -11,6 +11,7 @@
 	"references": [
 		{ "path": "../../../packages/cms-api/src" },
 		{ "path": "../../../packages/schema/src" },
+		{ "path": "../../../projects/hranipex/api" },
 		{ "path": "../../../projects/mangoweb/api" },
 		{ "path": "../../../projects/pilsner/api" },
 		{ "path": "../../../projects/quanti/api" },

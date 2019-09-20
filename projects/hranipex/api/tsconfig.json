@@ -1,0 +1,19 @@
+{
+	"extends": "../../../tsconfig.settings.json",
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"outDir": "./dist",
+		"lib": [
+			"esnext"
+		]
+	},
+	"references": [
+		{
+			"path": "../../../packages/schema-definition/src"
+		},
+		{
+			"path": "../../../packages/schema/src"
+		}
+	]
+}

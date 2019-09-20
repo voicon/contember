@@ -12,6 +12,7 @@
 	"references": [
 		{"path": "../../../packages/cms-admin/src"},
 		{"path": "../../../packages/cms-admin-server/src"},
+		{"path": "../../../projects/hranipex/admin"},
 		{"path": "../../../projects/mangoweb/admin"},
 		{"path": "../../../projects/pilsner/admin"},
 		{"path": "../../../projects/quanti/admin"},

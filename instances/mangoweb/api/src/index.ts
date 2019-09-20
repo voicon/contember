@@ -7,6 +7,7 @@ import Quanti from '@mangoweb/contember-project-quanti-api'
 import Mangoweb from '@mangoweb/contember-project-mangoweb-api'
 import Blog from '@mangoweb/contember-project-sandbox-api'
 import Pilsner from '@mangoweb/contember-project-pilsner-api'
+import Hranipex from '@mangoweb/contember-project-hranipex-api'
 import { Schema } from '@contember/schema'
 ;(async () => {
 	const projects: { [name: string]: Schema } = {
@@ -14,6 +15,7 @@ import { Schema } from '@contember/schema'
 		mangoweb: Mangoweb,
 		blog: Blog,
 		pilsner: Pilsner,
+		hranipex: Hranipex,
 	}
 
 	const configFile = path.join(__dirname, '../../src/config/config.yaml')
