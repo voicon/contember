@@ -8,9 +8,9 @@
 	"dependencies": {
 		"cms-api": "^0.0.0",
 		"@contember/schema": "^0.0.0",
-		"@mangoweb/contember-project-pilsner-api": "0.0.0"
+		"@mangoweb/contember-project-pilsner-api": "^0.0.0"
 	},
 	"devDependencies": {
-		"typescript": "^3.5.3"
+		"typescript": "^3.6.3"
 	}
 }

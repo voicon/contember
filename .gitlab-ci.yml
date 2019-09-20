@@ -7,7 +7,7 @@ variables:
   DOCKER_HOST: tcp://gitlab-prod-dind-svc:2375
 build:
   stage: test:build
-  image: node:10
+  image: node:12
 
   script:
     - npm ci
@@ -30,7 +30,7 @@ build:
 
 test:
   stage: test:run
-  image: node:10
+  image: node:12
   services:
     - postgres:10
   variables:
@@ -48,7 +48,7 @@ test:
 
 eslint:
   stage: test:run
-  image: node:10
+  image: node:12
   script:
     - npm run eslint:lint
 

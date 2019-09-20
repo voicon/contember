@@ -9,13 +9,13 @@
 		"run-admin": "dist/src/run-admin.js"
 	},
 	"dependencies": {
-		"cms-server-common": "0.0.0",
+		"cms-server-common": "^0.0.0",
 		"koa": "^2.8.1",
 		"koa-static": "^5.0.0"
 	},
 	"devDependencies": {
 		"@types/koa": "^2.0.48",
 		"@types/koa-static": "^4.0.0",
-		"typescript": "^3.5.3"
+		"typescript": "^3.6.3"
 	}
 }
