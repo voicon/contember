@@ -2,11 +2,12 @@ import { ErrorList } from '@contember/ui'
 import { GraphQlBuilder } from 'cms-client'
 import { Input } from '@contember/schema'
 import * as React from 'react'
-import { FieldName, Filter, RelativeEntityList } from '../bindingTypes'
+import { useEntityAccessor } from '../accessorRetrievers'
+import { ExpectedCount, FieldName, Filter, RelativeEntityList } from '../bindingTypes'
 import { EntityAccessor, EntityFields, Environment, ReferenceMarker } from '../dao'
 import { Component } from '../facade/auxiliary'
 import { QueryLanguage } from '../queryLanguage'
-import { AccessorContext, useEntityAccessor } from './AccessorContext'
+import { AccessorContext } from './AccessorContext'
 import { EnforceSubtypeRelation } from './EnforceSubtypeRelation'
 import { EnvironmentContext } from './EnvironmentContext'
 import { SyntheticChildrenProvider } from './MarkerProvider'
@@ -51,13 +52,7 @@ namespace ToOne {
 		},
 		{
 			generateReferenceMarker(props: AtomicPrimitiveProps, fields: EntityFields): ReferenceMarker {
-				return new ReferenceMarker(
-					props.field,
-					ReferenceMarker.ExpectedCount.UpToOne,
-					fields,
-					props.filter,
-					props.reducedBy,
-				)
+				return new ReferenceMarker(props.field, ExpectedCount.UpToOne, fields, props.filter, props.reducedBy)
 			},
 		},
 		'ToOne.AtomicPrimitive',

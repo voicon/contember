@@ -11,6 +11,5 @@ cd "$PROJECT_ROOT"
 
 docker-compose run --rm \
 	--workdir=$RELATIVE_DIR \
-	-p 9001:9001 \
 	--entrypoint=npm \
     api "$@"

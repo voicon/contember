@@ -1,16 +1,18 @@
 import { ErrorList } from '@contember/ui'
 import * as React from 'react'
-import { FieldName, Filter, RelativeEntityList } from '../bindingTypes'
+import { useEntityCollectionAccessor } from '../accessorRetrievers'
+import { ExpectedCount, FieldName, Filter, RelativeEntityList } from '../bindingTypes'
 import { EntityAccessor, EntityCollectionAccessor, EntityFields, Environment, ReferenceMarker } from '../dao'
 import { Component } from '../facade/auxiliary'
 import { QueryLanguage } from '../queryLanguage'
-import { AccessorContext, useEntityCollectionAccessor } from './AccessorContext'
+import { AccessorContext } from './AccessorContext'
 import { EnforceSubtypeRelation } from './EnforceSubtypeRelation'
 import { EnvironmentContext } from './EnvironmentContext'
 import { SyntheticChildrenProvider } from './MarkerProvider'
 
 export interface ToManyProps {
 	field: RelativeEntityList
+	preferences?: ReferenceMarker.ReferencePreferences
 	children?: React.ReactNode
 }
 
@@ -28,20 +30,27 @@ class ToMany extends React.PureComponent<ToManyProps> {
 	public static generateSyntheticChildren(props: ToManyProps, environment: Environment): React.ReactNode {
 		return QueryLanguage.wrapRelativeEntityList(
 			props.field,
-			ToMany.getAtomicPrimitiveFactory(props.children),
+			ToMany.getAtomicPrimitiveFactory(props.children, props.preferences),
 			environment,
 		)
 	}
 }
 
 namespace ToMany {
-	export const getAtomicPrimitiveFactory = (children: React.ReactNode) => (
-		atomicPrimitiveProps: AtomicPrimitiveProps,
-	) => <ToMany.AtomicPrimitive {...atomicPrimitiveProps}>{children}</ToMany.AtomicPrimitive>
+	export const getAtomicPrimitiveFactory = (
+		children: React.ReactNode,
+		preferences?: ReferenceMarker.ReferencePreferences,
+	) => (atomicPrimitiveProps: AtomicPrimitiveProps) => (
+		<AtomicPrimitive {...atomicPrimitiveProps} preferences={preferences}>
+			{children}
+		</AtomicPrimitive>
+	)
 
 	export interface AtomicPrimitiveProps {
 		field: FieldName
 		filter?: Filter
+		preferences?: ReferenceMarker.ReferencePreferences
+		children?: React.ReactNode
 	}
 
 	export const AtomicPrimitive = Component<AtomicPrimitiveProps>(
@@ -54,7 +63,14 @@ namespace ToMany {
 		},
 		{
 			generateReferenceMarker(props: AtomicPrimitiveProps, fields: EntityFields): ReferenceMarker {
-				return new ReferenceMarker(props.field, ReferenceMarker.ExpectedCount.PossiblyMany, fields, props.filter)
+				return new ReferenceMarker(
+					props.field,
+					ExpectedCount.PossiblyMany,
+					fields,
+					props.filter,
+					undefined,
+					props.preferences,
+				)
 			},
 		},
 		'ToMany.AtomicPrimitive',

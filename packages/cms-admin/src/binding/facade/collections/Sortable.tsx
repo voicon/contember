@@ -12,13 +12,12 @@ import { DragHandle as DragHandleIcon } from '../../../components/ui'
 import { FieldName } from '../../bindingTypes'
 import {
 	AccessorContext,
-	AccessorContextValue,
 	EnforceSubtypeRelation,
 	EnvironmentContext,
 	Field,
+	MutationStateContext,
 	SyntheticChildrenProvider,
 } from '../../coreComponents'
-import { MutationStateContext } from '../../coreComponents/PersistState'
 import { EntityAccessor, EntityCollectionAccessor, Environment, FieldAccessor } from '../../dao'
 import { Repeater } from './Repeater'
 import EntityCollectionPublicProps = Repeater.EntityCollectionPublicProps
@@ -51,6 +50,7 @@ class Sortable extends React.PureComponent<SortableProps> {
 								sortBy={this.props.sortBy}
 								entities={this.props.entities}
 								removeType={this.props.removeType}
+								emptyMessage={this.props.emptyMessage}
 								environment={environment}
 							>
 								{this.props.children}
@@ -85,6 +85,7 @@ namespace Sortable {
 			</div>
 		)),
 	)
+	DragHandle.displayName = 'Sortable.DragHandle'
 
 	export interface SortableItemProps extends Repeater.ItemProps, DragHandleProps {}
 
@@ -98,6 +99,7 @@ namespace Sortable {
 			</li>
 		)),
 	)
+	SortableItem.displayName = 'Sortable.SortableItem'
 
 	export interface SortableListProps extends EntityCollectionPublicProps {
 		entities: EntityAccessor[]
@@ -135,6 +137,7 @@ namespace Sortable {
 			)
 		}),
 	)
+	SortableList.displayName = 'Sortable.SortableList'
 
 	export interface EntityOrder {
 		[primaryKey: string]: number
@@ -146,6 +149,8 @@ namespace Sortable {
 	}
 
 	export class SortableInner extends React.PureComponent<SortableInnerProps> {
+		public static displayName = 'Sortable.SortableInner'
+
 		private entities: EntityAccessor[] = []
 
 		private getOnSortEnd = (accessor: EntityCollectionAccessor): SortEndHandler => ({ oldIndex, newIndex }) => {
@@ -251,6 +256,15 @@ namespace Sortable {
 
 		public render() {
 			this.entities = this.prepareEntities(this.props.entities)
+
+			if (!this.props.entities.entities.length || !this.entities.length) {
+				return (
+					// TODO use a dedicated message component
+					<div className="cloneable-emptyMessage">
+						{this.props.emptyMessage || 'There is no content yet. Try adding a new item.'}
+					</div>
+				)
+			}
 
 			return (
 				<SortableList

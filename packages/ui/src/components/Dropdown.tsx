@@ -7,7 +7,7 @@ import { assertNever } from '../utils'
 import { Collapsible } from './Collapsible'
 import { Button, ButtonBasedButtonProps } from './forms'
 
-interface DropdownRenderProps {
+export interface DropdownRenderProps {
 	requestClose: () => void
 }
 
@@ -114,6 +114,7 @@ export const Dropdown = React.memo((props: DropdownProps) => {
 		</Manager>
 	)
 })
+Dropdown.displayName = 'Dropdown'
 
 export interface DropdownContainerProviderProps {
 	children?: React.ReactNode
@@ -135,3 +136,4 @@ export const DropdownContentContainerProvider = React.memo((props: DropdownConta
 		</div>
 	)
 })
+DropdownContentContainerProvider.displayName = 'DropdownContentContainerProvider'

@@ -1,6 +1,7 @@
 import { GraphQlBuilder } from 'cms-client'
 import { assertNever } from '@contember/utils'
 import {
+	ExpectedCount,
 	FieldName,
 	MutationRequestResult,
 	PRIMARY_KEY_NAME,
@@ -152,7 +153,7 @@ class AccessorTreeGenerator {
 							? errors.children[field.fieldName] || errors.children[referencePlaceholder] || undefined
 							: undefined
 
-					if (reference.expectedCount === ReferenceMarker.ExpectedCount.UpToOne) {
+					if (reference.expectedCount === ExpectedCount.UpToOne) {
 						if (Array.isArray(fieldData) || fieldData instanceof EntityCollectionAccessor) {
 							throw new DataBindingError(
 								`Received a collection of entities for field '${field.fieldName}' where a single entity was expected. ` +
@@ -176,22 +177,15 @@ class AccessorTreeGenerator {
 									`Perhaps you meant to use a variant of <Field />?`,
 							)
 						}
-					} else if (reference.expectedCount === ReferenceMarker.ExpectedCount.PossiblyMany) {
-						if (fieldData === undefined) {
-							entityData[referencePlaceholder] = this.generateEntityCollectionAccessor(
-								referencePlaceholder,
-								reference.fields,
-								undefined,
-								referenceError,
-								onUpdate,
-							)
-						} else if (Array.isArray(fieldData) || fieldData instanceof EntityCollectionAccessor) {
+					} else if (reference.expectedCount === ExpectedCount.PossiblyMany) {
+						if (fieldData === undefined || Array.isArray(fieldData) || fieldData instanceof EntityCollectionAccessor) {
 							entityData[referencePlaceholder] = this.generateEntityCollectionAccessor(
 								referencePlaceholder,
 								reference.fields,
 								fieldData,
 								referenceError,
 								onUpdate,
+								reference.preferences,
 							)
 						} else if (typeof fieldData === 'object') {
 							// Intentionally allowing `fieldData === null` here as well since this should only happen when a *hasOne
@@ -337,6 +331,9 @@ class AccessorTreeGenerator {
 		fieldData: Array<ReceivedEntityData<undefined>> | EntityCollectionAccessor | undefined,
 		errors: ErrorsPreprocessor.ErrorNode | undefined,
 		parentOnUpdate: OnUpdate,
+		preferences: ReferenceMarker.ReferencePreferences = ReferenceMarker.defaultReferencePreferences[
+			ExpectedCount.PossiblyMany
+		],
 	): EntityCollectionAccessor {
 		if (errors && errors.nodeType !== ErrorsPreprocessor.ErrorNodeType.NumberIndexed) {
 			throw new DataBindingError(
@@ -435,8 +432,14 @@ class AccessorTreeGenerator {
 		})
 
 		let sourceData = fieldData instanceof EntityCollectionAccessor ? fieldData.entities : fieldData || [undefined]
-		if (sourceData.length === 0) {
-			sourceData = [undefined]
+		if (
+			sourceData.length === 0 ||
+			sourceData.every(
+				(datum: ReceivedEntityData<undefined> | EntityAccessor | EntityForRemovalAccessor | undefined) =>
+					datum === undefined,
+			)
+		) {
+			sourceData = Array(preferences.initialEntityCount).map(() => undefined)
 		}
 		const childInBatchUpdateMode: boolean[] = []
 
