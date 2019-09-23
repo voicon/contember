@@ -20,6 +20,15 @@ const config: ProjectConfig[] = [
 		},
 		routes: routes,
 	},
+	{
+		project: 'hranipex-beta',
+		stage: 'prod',
+		component: () => import('./prod'),
+		defaultDimensions: {
+			site: ['en'],
+		},
+		routes: routes,
+	},
 ]
 
 export default config
