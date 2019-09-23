@@ -1,0 +1,92 @@
+query {
+	getFrontPageLocale(by: {locale: {code: "cz", site: {code: "cz"}}}) {
+		newsletterTitle
+		seo {
+			title
+			description
+			ogTitle
+			ogDescription
+			ogImage {
+				url
+			}
+		}
+		introBlock {
+			title
+			text
+			image {
+				url
+			}
+			buttonCaption
+		}
+		productPromoItems(orderBy: {order: asc}) {
+			title
+			image {
+				url
+			}
+			link {
+				type
+				url
+			}
+		}
+
+		contentPromoBlock {
+			title
+			buttonCaption
+			buttonLink {
+				type
+				url
+			}
+		}
+		contentPromoItems(orderBy: {order: asc}) {
+			title
+			subtitle
+			buttonCaption
+			image {
+				url
+			}
+			link {
+				type
+				url
+			}
+		}
+		aboutCompanyBlock {
+			title
+			subtitle
+			image {
+				url
+			}
+			buttonCaption
+			buttonLink {
+				type
+				url
+			}
+		}
+		aboutCompanyColumns(orderBy: {order: asc}) {
+			title
+			text
+		}
+
+		references(orderBy: {order: asc}) {
+			name
+			company
+			quote
+			image {
+				url
+			}
+		}
+
+		joinUsBlock {
+			title
+			subtitle
+			image {
+				url
+			}
+			buttonCaption
+			buttonLink {
+				type
+				url
+			}
+		}
+		newsletterTitle
+	}
+}
