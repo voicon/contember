@@ -1,3 +1,5 @@
+export * from './MultiButton'
+
 export * from './Button'
 export * from './ButtonGroup'
 export * from './ButtonList'
