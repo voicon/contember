@@ -164,3 +164,15 @@ build:pilsner:
   script:
     - sh deploy/resolve-nodemodules.sh
     - ./deploy/build.sh pilsner
+
+build:mgw:
+  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/docker-ecr:1.1
+  stage: deploy:build
+  only:
+    refs:
+      - build/mgw
+  variables:
+    VERSION: "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
+  script:
+    - sh deploy/resolve-nodemodules.sh
+    - ./deploy/build.sh
