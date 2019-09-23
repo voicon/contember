@@ -30,6 +30,8 @@
 		{ "path": "./instances/mangoweb/admin" },
 		{ "path": "./instances/pilsner/api" },
 		{ "path": "./instances/pilsner/admin" },
+		{ "path": "./projects/hranipex/admin"},
+		{ "path": "./projects/hranipex/api"},
 		{ "path": "./projects/mangoweb/admin"},
 		{ "path": "./projects/mangoweb/api"},
 		{ "path": "./projects/pilsner/admin"},

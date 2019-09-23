@@ -7,13 +7,11 @@ tenant:
         database: 'tenant'
 
 projects:
-    - id: 2b71cf74-5271-4142-b258-b2ce14722187
-      slug: mangoweb
+    - slug: mangoweb
       name: manGoweb
       directory: "@mangoweb/contember-project-mangoweb-api"
       stages:
-          - id: 7c78c41a-6a71-4adc-ae9a-0b8592480619
-            slug: preview
+          - slug: preview
             name: Preview
       dbCredentials:
         host: '%env.DB_HOST%'
@@ -28,13 +26,11 @@ projects:
         credentials:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
-    - id: 9b5f50a8-c35b-46fc-abf6-090c7a68edd5
-      slug: quanti
+    - slug: quanti
       name: Quanti
       directory: "@mangoweb/contember-project-quanti-api"
       stages:
-        - id: bac2b042-6b65-47fd-9cb6-ba04a589c241
-          slug: prod
+        - slug: prod
           name: Production
       dbCredentials:
         host: '%env.DB_HOST%'
@@ -50,13 +46,11 @@ projects:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
 
-    - id: cffeb246-4f04-41e7-8f00-f2e8b933f651
-      slug: pilsner
+    - slug: pilsner
       name: Pilsner
       directory: "@mangoweb/contember-project-pilsner-api"
       stages:
-        - id: e7e502d4-e997-49c1-990a-60337c4ed6ce
-          slug: prod
+        - slug: prod
           name: Production
       dbCredentials:
         host: '%env.DB_HOST%'
