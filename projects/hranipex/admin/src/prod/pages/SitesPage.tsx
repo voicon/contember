@@ -1,5 +1,6 @@
 import { Field, MultiEditPage, SelectField, SortableRepeater, TextField } from 'cms-admin'
 import * as React from 'react'
+import { getCountryFlag, getLocaleFlag } from '../utils'
 
 export const SitesPage = (
 	<MultiEditPage
@@ -14,27 +15,13 @@ export const SitesPage = (
 	>
 		<TextField label="Code" name="code" />
 		<Field<string | null> name={'code'}>
-			{({ data }) =>
-				data.currentValue ? (
-					<img
-						src={'https://cz-hranipex.mgw.cz/assets/images/flags-country/' + data.currentValue + '.svg'}
-						style={{ width: '20px' }}
-					/>
-				) : null
-			}
+			{({ data }) => (data.currentValue ? getCountryFlag(data.currentValue) : null)}
 		</Field>
 		<h3>Locales</h3>
 		<SortableRepeater field="locales" sortBy={'order'}>
 			<TextField label="Code" name="code" />
 			<Field<string | null> name={'code'}>
-				{({ data }) =>
-					data.currentValue ? (
-						<img
-							src={'https://cz-hranipex.mgw.cz/assets/images/flags-locale/' + data.currentValue + '.svg'}
-							style={{ width: '20px' }}
-						/>
-					) : null
-				}
+				{({ data }) => (data.currentValue ? getLocaleFlag(data.currentValue) : null)}
 			</Field>
 			<SelectField label="Translation set" name="translationSet" options="TranslationSet.name" />
 		</SortableRepeater>

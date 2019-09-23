@@ -1,5 +1,6 @@
 import { Component, SideDimensions, ToOne, Variable } from 'cms-admin'
 import * as React from 'react'
+import { getLocaleFlag } from '../utils'
 
 interface LangSideDimensionProps {}
 
@@ -8,12 +9,7 @@ export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 		dimension="siteLocale"
 		variableName="currentLocaleCode"
 		variables={currentLocaleCode => ({
-			flag: (
-				<img
-					src={'https://cz-hranipex.mgw.cz/assets/images/flags-locale/' + currentLocaleCode + '.svg'}
-					style={{ width: '20px' }}
-				/>
-			),
+			flag: getLocaleFlag(currentLocaleCode as string),
 			labelMiddleware: label => (
 				<>
 					<Variable name="flag" /> {label}
