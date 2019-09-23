@@ -65,24 +65,24 @@ projects:
         credentials:
           key: 'AKIAIO53JZYNOKXXYMDA'
           secret: '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'
-#    - slug: hranipex-beta
-#      directory: "@mangoweb/contember-project-hranipex-api"
-#      name: Hranipex Beta
-#      stages:
-#        - slug: prod
-#          name: Production
-#      dbCredentials:
-#        host: '%env.HRANIPEX_BETA_DB_HOST%'
-#        port: 5432
-#        user: '%env.HRANIPEX_BETA_DB_USER%'
-#        password: '%env.HRANIPEX_BETA_DB_PASSWORD%'
-#        database: '%env.HRANIPEX_BETA_DB_NAME%'
-#      s3:
-#        bucket: 'cms-api.mgw.cz'
-#        prefix: 'beta/hranipex'
-#        region: 'eu-central-1'
-#        credentials:
-#          key: 'AKIAIO53JZYNOKXXYMDA'
-#          secret: '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'
+    - slug: hranipex-beta
+      directory: "@mangoweb/contember-project-hranipex-api"
+      name: Hranipex Beta
+      stages:
+        - slug: prod
+          name: Production
+      dbCredentials:
+        host: '%env.HRANIPEX_BETA_DB_HOST%'
+        port: 5432
+        user: '%env.HRANIPEX_BETA_DB_USER%'
+        password: '%env.HRANIPEX_BETA_DB_PASSWORD%'
+        database: '%env.HRANIPEX_BETA_DB_NAME%'
+      s3:
+        bucket: 'cms-api.mgw.cz'
+        prefix: 'beta/hranipex'
+        region: 'eu-central-1'
+        credentials:
+          key: 'AKIAIO53JZYNOKXXYMDA'
+          secret: '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'
 server:
     port: '%env.SERVER_PORT::number%'
