@@ -1,6 +1,7 @@
 stages:
   - test:build
   - test:run
+  - deploy:pre-build
   - deploy:build
   - deploy:helm
 variables:
@@ -52,16 +53,34 @@ eslint:
   script:
     - npm run eslint:lint
 
-build:docker:
-  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/docker-ecr:1.1
-  stage: deploy:build
+build:prod:
+  image: node:12
+  stage: deploy:pre-build
   only:
     refs:
       - /^deploy\/.*$/
+      - /^build\/.*$/
+  script:
+    - sh deploy/resolve-nodemodules.sh
+  artifacts:
+    paths:
+      - "instances/*/admin/public"
+      - "instances/*/admin/webpack-assets.json"
+      - "instances/*/*/node_modules"
+      - "instances/*/*/dist"
+
+build:docker:
+  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/docker-ecr:1.1
+  stage: deploy:build
+  dependencies:
+    - build:prod
+  only:
+    refs:
+      - /^deploy\/.*$/
+      - /^build\/.*$/
   variables:
     VERSION: "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
   script:
-    - sh deploy/resolve-nodemodules.sh
     - sh deploy/build.sh
 
 deploy:beta:api:
@@ -152,27 +171,3 @@ deploy:prod:admin:
 
   script:
     - /usr/bin/deploy
-
-build:pilsner:
-  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/docker-ecr:1.1
-  stage: deploy:build
-  only:
-    refs:
-      - build/pilsner
-  variables:
-    VERSION: "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
-  script:
-    - sh deploy/resolve-nodemodules.sh
-    - ./deploy/build.sh pilsner
-
-build:mgw:
-  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/docker-ecr:1.1
-  stage: deploy:build
-  only:
-    refs:
-      - build/mgw
-  variables:
-    VERSION: "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
-  script:
-    - sh deploy/resolve-nodemodules.sh
-    - ./deploy/build.sh
