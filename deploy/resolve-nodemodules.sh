@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
+
+lerna exec -- npm prune --production
+
 set -e
+
+rm -rf packages/database-tester/node_modules
+rm -rf packages/engine-api-tester/node_modules
 
 SYMLINKS=$(find ./instances/*/*/node_modules -maxdepth 2 -type l)
 
