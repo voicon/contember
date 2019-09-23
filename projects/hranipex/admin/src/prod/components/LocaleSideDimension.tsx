@@ -4,7 +4,7 @@ import { getLocaleFlag } from '../utils'
 
 interface LangSideDimensionProps {}
 
-export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
+export const LocaleSideDimensionBase = Component<LangSideDimensionProps>(props => (
 	<SideDimensions
 		dimension="siteLocale"
 		variableName="currentLocaleCode"
@@ -17,6 +17,12 @@ export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
 			),
 		})}
 	>
-		<ToOne field="locales(locale.code=$currentLocaleCode, locale.site.code=$site)">{props.children}</ToOne>
+		{props.children}
 	</SideDimensions>
+))
+
+export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
+	<LocaleSideDimensionBase {...props}>
+		<ToOne field="locales(locale.code=$currentLocaleCode, locale.site.code=$site)">{props.children}</ToOne>
+	</LocaleSideDimensionBase>
 ))

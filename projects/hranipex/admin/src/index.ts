@@ -6,6 +6,8 @@ const routes = {
 	frontPage: { path: '/front-page' },
 
 	sites: { path: '/sites' },
+	translations: { path: '/translations' },
+	translationSetEdit: { path: '/translations/:id' },
 	translationSets: { path: '/translation-sets' },
 }
 const config: ProjectConfig[] = [
