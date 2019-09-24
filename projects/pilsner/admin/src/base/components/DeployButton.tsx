@@ -10,6 +10,7 @@ import {
 	RendererProps,
 	SingleEntityDataProvider,
 	Spinner,
+	FormGroup,
 } from 'cms-admin'
 import * as React from 'react'
 
@@ -100,22 +101,21 @@ export class DeployButton extends React.Component<Props, State> {
 
 	renderProgress() {
 		if (!this.state.deploymentStatus) {
-			return null
+			return undefined
 		}
 		return (
 			<>
 				{Math.round(this.state.deploymentStatus.progress * 100)}% - {this.state.deploymentStatus.state}
-				{this.state.deploymentStatus.failureReason && <>({this.state.deploymentStatus.failureReason})</>}
+				{this.state.deploymentStatus.failureReason && this.state.deploymentStatus.failureReason}
 			</>
 		)
 	}
 
 	render() {
 		return (
-			<>
-				{this.renderProgress()}
+			<FormGroup label={undefined} description={this.renderProgress()}>
 				{this.renderButton()}
-			</>
+			</FormGroup>
 		)
 	}
 }
