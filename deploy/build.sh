@@ -8,9 +8,9 @@ ecr-login
 INSTANCE=$1
 ECR_PATH=""
 
-if [ "${CI_COMMIT_REF_NAME}" == "build-mgw" ]; then
+if [ "${CI_COMMIT_REF_NAME}" == "build/mgw" ]; then
   INSTANCE="mangoweb"
-elif [ "${CI_COMMIT_REF_NAME}" == "build-pilsner" ]; then
+elif [ "${CI_COMMIT_REF_NAME}" == "build/pilsner" ]; then
   INSTANCE="pilsner"
 elif [ "${INSTANCE}" == "" ]; then
   INSTANCE="mangoweb"
