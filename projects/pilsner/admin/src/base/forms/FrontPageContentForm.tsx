@@ -13,7 +13,7 @@ import { ImageField } from '../components'
 
 export const FrontPageContentForm = Component(
 	() => (
-		<SortableBlockRepeater sortBy={'order'} field={'content.blocks'} discriminationField="type">
+		<SortableBlockRepeater sortBy={'order'} field={'content.blocks'} discriminationField="type" removeType="delete">
 			<Block discriminateBy="frontTextBox" label="Text box">
 				<TextField name="title" label={'Title'} allowNewlines={true} />
 				<TextField name="subtitle" label={'Subtitle'} allowNewlines={true} />
