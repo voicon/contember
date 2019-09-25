@@ -2,9 +2,11 @@ import { Component, SideDimensions, ToOne, Variable } from 'cms-admin'
 import * as React from 'react'
 import { getLocaleFlag } from '../utils'
 
-interface LangSideDimensionProps {}
+interface BaseLocaleSideDimensionProps {
+	children: React.ReactNode
+}
 
-export const LocaleSideDimensionBase = Component<LangSideDimensionProps>(props => (
+export const LocaleSideDimensionBase = Component<BaseLocaleSideDimensionProps>(props => (
 	<SideDimensions
 		dimension="siteLocale"
 		variableName="currentLocaleCode"
@@ -21,8 +23,12 @@ export const LocaleSideDimensionBase = Component<LangSideDimensionProps>(props =
 	</SideDimensions>
 ))
 
-export const LocaleSideDimension = Component<LangSideDimensionProps>(props => (
-	<LocaleSideDimensionBase {...props}>
+interface LocaleSideDimensionProps {
+	children: React.ReactNode
+}
+
+export const LocaleSideDimension = Component<LocaleSideDimensionProps>(props => (
+	<LocaleSideDimensionBase>
 		<ToOne field="locales(locale.code=$currentLocaleCode, locale.site.code=$site)">{props.children}</ToOne>
 	</LocaleSideDimensionBase>
 ))

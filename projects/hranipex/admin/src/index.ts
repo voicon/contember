@@ -4,6 +4,9 @@ const routes = {
 	dashboard: { path: '/' },
 
 	frontPage: { path: '/front-page' },
+	postList: { path: '/posts' },
+	postCreate: { path: '/posts/new' },
+	postEdit: { path: '/posts/:id' },
 
 	sites: { path: '/sites' },
 	translations: { path: '/translations' },
