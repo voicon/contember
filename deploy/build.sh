@@ -12,6 +12,7 @@ if [ "${CI_COMMIT_REF_NAME}" == "build/mgw" ]; then
   INSTANCE="mangoweb"
 elif [ "${CI_COMMIT_REF_NAME}" == "build/pilsner" ]; then
   INSTANCE="pilsner"
+  ECR_PATH="pilsner/"
 elif [ "${INSTANCE}" == "" ]; then
   INSTANCE="mangoweb"
 else
