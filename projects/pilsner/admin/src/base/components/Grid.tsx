@@ -17,17 +17,17 @@ export interface GridProps extends Omit<EntityListDataProviderProps<TableRendere
 export const Grid = React.memo<GridProps>(({ editButton, ...props }) => (
 	<EntityListDataProvider {...props} renderer={TableRenderer}>
 		{React.Children.toArray(props.children).map((it, i) => (
-			<TableCell key={i} shrink={i === 2}>
+			<TableCell key={i} shrunk={i === 2}>
 				{it}
 			</TableCell>
 		))}
 
 		{editButton && (
-			<TableCell shrink>
+			<TableCell shrunk>
 				<EditButton {...editButton} />
 			</TableCell>
 		)}
-		<TableCell shrink>
+		<TableCell shrunk>
 			<RemoveButton removeType={'delete'} immediatePersist={true} />
 		</TableCell>
 	</EntityListDataProvider>

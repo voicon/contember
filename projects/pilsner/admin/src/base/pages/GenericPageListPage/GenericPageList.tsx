@@ -82,7 +82,7 @@ export const GenericPageList = Component(
 											<small>This page does not yet exist for this market.</small>
 										</TableCell>
 									)}
-									<TableCell shrink>
+									<TableCell shrunk>
 										<ButtonList>
 											<PageLinkButton to={customPage.editPageName}>
 												{currentEntity.isPersisted() && 'Edit'}
