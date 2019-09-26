@@ -8,6 +8,8 @@ import {
 	RelativeSingleEntity,
 	RemoveButton,
 	Table,
+	TableRow,
+	TableCell,
 	ToMany,
 	ToOne,
 	useEntityCollectionAccessor,
@@ -73,14 +75,14 @@ export const GenericPageList = Component(
 								return <React.Fragment key={customPage.field}>{null}</React.Fragment>
 							}
 							return (
-								<Table.Row key={customPage.field}>
-									<Table.Cell>{customPage.title}</Table.Cell>
+								<TableRow key={customPage.field}>
+									<TableCell>{customPage.title}</TableCell>
 									{isAdmin && !currentEntity.isPersisted() && (
-										<Table.Cell>
+										<TableCell>
 											<small>This page does not yet exist for this market.</small>
-										</Table.Cell>
+										</TableCell>
 									)}
-									<Table.Cell>
+									<TableCell shrunk>
 										<ButtonList>
 											<PageLinkButton to={customPage.editPageName}>
 												{currentEntity.isPersisted() && 'Edit'}
@@ -92,8 +94,8 @@ export const GenericPageList = Component(
 												</ToOne>
 											)}
 										</ButtonList>
-									</Table.Cell>
-								</Table.Row>
+									</TableCell>
+								</TableRow>
 							)
 						})}
 					</Table>
@@ -107,7 +109,7 @@ export const GenericPageList = Component(
 				{shouldDisplayGenericPages && genericPages && (
 					<Table>
 						<ToMany.AccessorRenderer accessor={genericPages}>
-							<Table.Row>{genericPageTableBody}</Table.Row>
+							<TableRow>{genericPageTableBody}</TableRow>
 						</ToMany.AccessorRenderer>
 					</Table>
 				)}

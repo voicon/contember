@@ -1,17 +1,17 @@
-import { FieldText, RemoveButton, Table } from 'cms-admin'
+import { FieldText, RemoveButton, TableCell } from 'cms-admin'
 import * as React from 'react'
 import { EditButton } from '../../components'
 
 export const genericPageTableBody = (
 	<>
-		<Table.Cell>
+		<TableCell>
 			<FieldText name="title" />
-		</Table.Cell>
-		<Table.Cell>
+		</TableCell>
+		<TableCell shrunk>
 			<EditButton pageName="pageList" />
-		</Table.Cell>
-		<Table.Cell>
+		</TableCell>
+		<TableCell shrunk>
 			<RemoveButton removeType={'delete'} immediatePersist={true} />
-		</Table.Cell>
+		</TableCell>
 	</>
 )

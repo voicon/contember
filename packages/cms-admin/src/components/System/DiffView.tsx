@@ -1,4 +1,4 @@
-import { Button } from '@contember/ui'
+import { Button, TableRow, Table, TableCell } from '@contember/ui'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import cn from 'classnames'
@@ -9,7 +9,6 @@ import State from '../../state'
 import { executeRelease, fetchDiff } from '../../actions/system'
 import { Dispatch } from '../../actions/types'
 import { LoadingSpinner } from '../../binding/facade/renderers/userFeedback'
-import { Table } from '../ui'
 import { assertNever } from '@contember/utils'
 
 enum SelectionType {
@@ -95,22 +94,28 @@ class DiffViewInner extends React.PureComponent<DiffView.StateProps & DiffView.D
 			<>
 				<Table>
 					{diff.events.map(it => (
-						<Table.Row
-							className={cn(
-								'diffView-row',
-								selected[it.id] === SelectionType.explicit && 'is-explicit',
-								selected[it.id] === SelectionType.dependency && 'is-dependency',
-							)}
-							onClick={e => {
-								this.setState(prev => ({
-									selected: [
-										...prev.selected.filter(id => id !== it.id),
-										...(prev.selected.includes(it.id) ? [] : [it.id]),
-									],
-								}))
-							}}
-						>
-							<Table.Cell>
+						<TableRow>
+							<TableCell shrunk>
+								<button
+									role="button"
+									onClick={e => {
+										this.setState(prev => ({
+											selected: [
+												...prev.selected.filter(id => id !== it.id),
+												...(prev.selected.includes(it.id) ? [] : [it.id]),
+											],
+										}))
+									}}
+									className={cn(
+										'diffView',
+										selected[it.id] === SelectionType.explicit && 'is-explicit',
+										selected[it.id] === SelectionType.dependency && 'is-dependency',
+									)}
+								>
+									Click
+								</button>
+							</TableCell>
+							<TableCell>
 								<input
 									type="checkbox"
 									checked={selected[it.id] ? true : false}
@@ -122,10 +127,10 @@ class DiffViewInner extends React.PureComponent<DiffView.StateProps & DiffView.D
 										}))
 									}}
 								/>
-							</Table.Cell>
-							<Table.Cell>{this.renderIcon(it.type)}</Table.Cell>
-							<Table.Cell>{it.description}</Table.Cell>
-						</Table.Row>
+							</TableCell>
+							<TableCell>{this.renderIcon(it.type)}</TableCell>
+							<TableCell>{it.description}</TableCell>
+						</TableRow>
 					))}
 				</Table>
 				<Button onClick={this.execRelease}>Release</Button>
