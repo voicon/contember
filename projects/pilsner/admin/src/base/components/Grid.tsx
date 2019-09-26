@@ -4,7 +4,7 @@ import {
 	RemoveButton,
 	TableRenderer,
 	TableRendererProps,
-	Table2Cell,
+	TableCell,
 } from 'cms-admin'
 import * as React from 'react'
 import { EditButton, EditButtonProps } from './EditButton'
@@ -17,18 +17,18 @@ export interface GridProps extends Omit<EntityListDataProviderProps<TableRendere
 export const Grid = React.memo<GridProps>(({ editButton, ...props }) => (
 	<EntityListDataProvider {...props} renderer={TableRenderer}>
 		{React.Children.toArray(props.children).map((it, i) => (
-			<Table2Cell key={i} shrink={i === 2}>
+			<TableCell key={i} shrink={i === 2}>
 				{it}
-			</Table2Cell>
+			</TableCell>
 		))}
 
 		{editButton && (
-			<Table2Cell shrink>
+			<TableCell shrink>
 				<EditButton {...editButton} />
-			</Table2Cell>
+			</TableCell>
 		)}
-		<Table2Cell shrink>
+		<TableCell shrink>
 			<RemoveButton removeType={'delete'} immediatePersist={true} />
-		</Table2Cell>
+		</TableCell>
 	</EntityListDataProvider>
 ))

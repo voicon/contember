@@ -14,7 +14,7 @@ import {
 	Repeater,
 	SelectField,
 	TableRenderer,
-	Table2Cell,
+	TableCell,
 	TextField,
 	DiffView,
 	DiffDialog,
@@ -182,15 +182,15 @@ export default () => (
 				title: 'Contact messages',
 			}}
 		>
-			<Table2Cell>
+			<TableCell>
 				<FieldText<string | number> name="sentAt" format={val => val && new Date(val).toLocaleString()} />
-			</Table2Cell>
-			<Table2Cell>
+			</TableCell>
+			<TableCell>
 				<FieldText name="contact" />
-			</Table2Cell>
-			<Table2Cell>
+			</TableCell>
+			<TableCell>
 				<FieldText name="message" />
-			</Table2Cell>
+			</TableCell>
 		</ListPage>
 	</Pages>
 )
