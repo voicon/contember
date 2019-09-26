@@ -14,7 +14,8 @@ import {
 	RichTextField,
 	SelectField,
 	SortableRepeater,
-	Table,
+	Table2Cell,
+	Table2Row,
 	TextAreaField,
 	TextField,
 } from 'cms-admin'
@@ -61,13 +62,13 @@ export const Page = Component(
 export const PageListHeader = Component(
 	() => (
 		<>
-			<Table.Row>
-				<Table.Cell>
+			<Table2Row>
+				<Table2Cell>
 					<Avatar size={AvatarSize.Size2}>CO</Avatar>
-				</Table.Cell>
-				<Table.Cell>Contact</Table.Cell>
-				<Table.Cell />
-				<Table.Cell>
+				</Table2Cell>
+				<Table2Cell>Contact</Table2Cell>
+				<Table2Cell />
+				<Table2Cell>
 					<PageLink
 						to="contact"
 						Component={props => (
@@ -76,8 +77,8 @@ export const PageListHeader = Component(
 							</Button>
 						)}
 					/>
-				</Table.Cell>
-			</Table.Row>
+				</Table2Cell>
+			</Table2Row>
 		</>
 	),
 	'PageListHeader',
@@ -86,18 +87,18 @@ export const PageListHeader = Component(
 export const PageListCells = Component(
 	() => (
 		<>
-			<Table.Cell>
+			<Table2Cell>
 				<AvatarField name="locales(locale.slug='en').header" size={AvatarSize.Size2} />
-			</Table.Cell>
-			<Table.Cell>
+			</Table2Cell>
+			<Table2Cell>
 				<LocaleSideDimension>
 					<FieldText name="header" />
 				</LocaleSideDimension>
-			</Table.Cell>
-			<Table.Cell>
+			</Table2Cell>
+			<Table2Cell>
 				<FieldText name="category.locales(locale.slug='en').name" />
-			</Table.Cell>
-			<Table.Cell>
+			</Table2Cell>
+			<Table2Cell>
 				<PageLinkById
 					change={id => ({ name: 'edit_page', params: { id } })}
 					Component={props => (
@@ -107,7 +108,7 @@ export const PageListCells = Component(
 					)}
 				/>
 				<RemoveButton removeType={'delete'} immediatePersist={true} />
-			</Table.Cell>
+			</Table2Cell>
 		</>
 	),
 	'PageListCells',
