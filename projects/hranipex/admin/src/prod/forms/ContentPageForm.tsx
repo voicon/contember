@@ -1,6 +1,6 @@
-import { Box, Component, RichEditorNG, SlugField, TextAreaField, TextField, ToOne } from 'cms-admin'
+import { Box, Component, HiddenField, Literal, RichEditorNG, SortableRepeater, TextField, ToOne } from 'cms-admin'
 import * as React from 'react'
-import { ImageField, IsPublishedField, LocaleSideDimension, SiteField } from '../components'
+import { ImageField, LinkField, LocaleSideDimension, SiteField } from '../components'
 import { SeoForm } from './'
 
 export const ContentPageContentForm = Component(
@@ -49,9 +49,126 @@ export const ContentPageContentForm = Component(
 						marks: ['bold'],
 						inlines: ['link'],
 					},
-					image: {
+					textbox: {
 						label: 'Image',
 						render: <ImageField name={'image'} label={'Image'} />,
+					},
+					textBox: {
+						label: <>Text box</>,
+						render: (
+							<>
+								<TextField name={'title'} size={'large'} label={'Title'} allowNewlines={true} />
+								<TextField name={'text'} label={'Text'} allowNewlines={true} />
+							</>
+						),
+					},
+					imageBoxLeft: {
+						label: <>Image box left</>,
+						render: (
+							<>
+								<TextField name={'title'} size={'large'} label={'Title'} allowNewlines={true} />
+								<TextField name={'text'} label={'Text'} allowNewlines={true} />
+								<ImageField name={'image'} label={'Image'} />
+							</>
+						),
+					},
+					imageBoxRight: {
+						label: <>Image box right</>,
+						render: (
+							<>
+								<TextField name={'title'} size={'large'} label={'Title'} allowNewlines={true} />
+								<TextField name={'text'} label={'Text'} allowNewlines={true} />
+								<ImageField name={'image'} label={'Image'} />
+							</>
+						),
+					},
+					imageBoxCircleLeft: {
+						label: <>Image box circle</>,
+						render: (
+							<>
+								<>
+									<TextField name={'title'} label={'Title'} allowNewlines={true} />
+									<TextField name={'text'} label={'Text'} allowNewlines={true} />
+									<ImageField name={'image'} label={'Image'} />
+								</>
+							</>
+						),
+					},
+					grid: {
+						label: <>Grid</>,
+						render: (
+							<>
+								<TextField name={'title'} label={'Title'} allowNewlines={true} />
+								<TextField name={'buttonCaption'} label={'Button caption'} />
+								<LinkField name={'buttonLink'} />
+								<ToOne field={'childContent'}>
+									<SiteField />
+									<SortableRepeater field={'blocks'} sortBy={'order'}>
+										<HiddenField name={'type'} defaultValue={new Literal('gridItem')} label={undefined} />
+										<TextField name={'title'} label={'Title'} allowNewlines={true} />
+										<TextField name={'text'} label={'Text'} allowNewlines={true} />
+										<ImageField name={'image'} label={'Image'} />
+									</SortableRepeater>
+								</ToOne>
+							</>
+						),
+					},
+					circleList: {
+						label: <>Circle list</>,
+						render: (
+							<>
+								<TextField name={'title'} label={'Title'} allowNewlines={true} />
+								<TextField name={'subtitle'} label={'Subtitle'} allowNewlines={true} />
+								<TextField name={'text'} label={'Text'} allowNewlines={true} />
+								<ToOne field={'childContent'}>
+									<SiteField />
+									<SortableRepeater field={'blocks'} sortBy={'order'}>
+										<HiddenField name={'type'} defaultValue={new Literal('circleListItem')} label={undefined} />
+										<TextField name={'title'} label={'Title'} allowNewlines={true} />
+										<TextField name={'text'} label={'Text'} allowNewlines={true} />
+										<ImageField name={'image'} label={'Image'} />,
+										<TextField name={'buttonCaption'} label={'Button caption'} />
+										<LinkField name={'buttonLink'} />
+									</SortableRepeater>
+								</ToOne>
+							</>
+						),
+					},
+					squareList: {
+						label: <>Square list</>,
+						render: (
+							<>
+								<TextField name={'title'} label={'Title'} allowNewlines={true} />
+								<TextField name={'subtitle'} label={'Subtitle'} allowNewlines={true} />
+								<TextField name={'text'} label={'Text'} allowNewlines={true} />
+								<ToOne field={'childContent'}>
+									<SiteField />
+									<SortableRepeater field={'blocks'} sortBy={'order'}>
+										<HiddenField name={'type'} defaultValue={new Literal('squareListItem')} label={undefined} />
+										<TextField name={'title'} label={'Title'} allowNewlines={true} />
+										<TextField name={'text'} label={'Text'} allowNewlines={true} />
+										<ImageField name={'image'} label={'Image'} />,
+									</SortableRepeater>
+								</ToOne>
+							</>
+						),
+					},
+					timeline: {
+						label: <>Timeline</>,
+						render: (
+							<>
+								<TextField name={'title'} label={'Title'} allowNewlines={true} />
+								<TextField name={'text'} label={'Text'} allowNewlines={true} />
+								<ToOne field={'childContent'}>
+									<SiteField />
+									<SortableRepeater field={'blocks'} sortBy={'order'}>
+										<HiddenField name={'type'} defaultValue={new Literal('timelineItem')} label={undefined} />
+										<TextField name={'title'} label={'Title'} allowNewlines={true} />
+										<TextField name={'text'} label={'Text'} allowNewlines={true} />
+									</SortableRepeater>
+								</ToOne>
+							</>
+						),
 					},
 				}}
 			/>
