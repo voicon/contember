@@ -18,7 +18,7 @@ export class Site {
 export class SiteLocale {
 	code = d.stringColumn().notNull()
 	order = d.intColumn().notNull()
-	site = d.manyHasOne(Site, 'locales')
+	site = d.manyHasOne(Site, 'locales').notNull()
 
 	translationSet = d.oneHasOne(TranslationSet, 'locale').notNull()
 

@@ -1,0 +1,9 @@
+{
+	"modifications": [
+		{
+			"modification": "makeRelationNotNull",
+			"entityName": "SiteLocale",
+			"fieldName": "site"
+		}
+	]
+}
