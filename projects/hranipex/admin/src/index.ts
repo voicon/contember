@@ -7,6 +7,8 @@ const routes = {
 	postList: { path: '/posts' },
 	postCreate: { path: '/posts/new' },
 	postEdit: { path: '/posts/:id' },
+	footer: { path: '/footer' },
+	header: { path: '/header' },
 
 	sites: { path: '/sites' },
 	translations: { path: '/translations' },

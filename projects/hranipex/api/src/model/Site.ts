@@ -2,6 +2,8 @@ import { SchemaDefinition as d } from '@contember/schema-definition'
 import { TranslationSet } from './Translations'
 import { FrontPage, FrontPageLocale } from './FrontPage'
 import { Post, PostLocale } from './Post'
+import { FooterLocale } from './Footer'
+import { HeaderLocale } from './Header'
 
 export class Site {
 	code = d
@@ -24,4 +26,6 @@ export class SiteLocale {
 
 	frontPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(FrontPageLocale, 'locale')
 	posts: d.OneHasManyDefinition = d.oneHasMany(PostLocale, 'locale')
+	footer: d.OneHasOneInversedDefinition = d.oneHasOneInversed(FooterLocale, 'locale')
+	header: d.OneHasOneInversedDefinition = d.oneHasOneInversed(HeaderLocale, 'locale')
 }
