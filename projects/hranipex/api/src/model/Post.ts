@@ -2,6 +2,7 @@ import { SchemaDefinition as d } from '@contember/schema-definition'
 import { Site, SiteLocale } from './Site'
 import { Seo } from './Seo'
 import { Image } from './Media'
+import { Content } from './Content'
 
 export class Post {
 	site = d
@@ -29,4 +30,5 @@ export class PostLocale {
 	title = d.stringColumn().notNull()
 	perex = d.stringColumn().notNull()
 	image = d.manyHasOne(Image).notNull()
+	content = d.oneHasOne(Content).notNull()
 }
