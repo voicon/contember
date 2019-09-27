@@ -7,7 +7,7 @@ export const GenericContentForm = Component(
 	() => (
 		<ToOne field={'content'}>
 			<h2>Content</h2>
-			<SiteField />
+			<SiteField/>
 			<RichEditorNG
 				name="type"
 				sortBy={'order'}
@@ -51,7 +51,7 @@ export const GenericContentForm = Component(
 					},
 					image: {
 						label: 'Image',
-						render: <ImageField name={'image'} label={'Image'} />,
+						render: <ImageField name={'image'} label={'Image'}/>,
 					},
 				}}
 			/>
@@ -62,18 +62,22 @@ export const GenericContentForm = Component(
 
 export const PostForm = Component(
 	() => (
-		<LocaleSideDimension>
-			<Box>
-				<TextField name="title" size="large" label={'Title'} />
-				<SlugField drivenBy="title" label={'Slug'} name={'slug'} />
-				<ImageField name={'image'} label={'Image'} />
-				<TextAreaField name="perex" label="Perex" />
-				<GenericContentForm />
-			</Box>
-			<SeoForm />
-		</LocaleSideDimension>
+		<>
+			<LocaleSideDimension>
+				<Box>
+					<TextField name="title" size="large" label={'Title'}/>
+					<SlugField drivenBy="title" label={'Slug'} name={'slug'}/>
+					<ImageField name={'image'} label={'Image'}/>
+					<TextAreaField name="perex" label="Perex"/>
+					<GenericContentForm/>
+				</Box>
+			</LocaleSideDimension>
+			<LocaleSideDimension>
+				<SeoForm/>
+			</LocaleSideDimension>
+		</>
 	),
 	'PostForm',
 )
 
-export const PostFormSide = Component(() => <IsPublishedField />, 'PostFormSide')
+export const PostFormSide = Component(() => <IsPublishedField/>, 'PostFormSide')

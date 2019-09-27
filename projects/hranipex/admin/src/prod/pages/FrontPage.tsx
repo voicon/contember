@@ -15,7 +15,9 @@ export const FrontPage = (
 						<TextField name="buttonCaption" label="Button caption" />
 					</ToOne>
 				</Box>
+			</LocaleSideDimension>
 
+			<LocaleSideDimension>
 				<Box heading={'Product promo items'}>
 					<SortableRepeater sortBy={'order'} field={'productPromoItems'}>
 						<TextField name="title" label="Title" />
@@ -23,7 +25,9 @@ export const FrontPage = (
 						<LinkField name={'link'} label={'Link'} />
 					</SortableRepeater>
 				</Box>
+			</LocaleSideDimension>
 
+			<LocaleSideDimension>
 				<Box heading={'Content promo'}>
 					<ToOne field={'contentPromoBlock'}>
 						<TextField name="title" label="Title" />
@@ -40,6 +44,8 @@ export const FrontPage = (
 						<TextField name="buttonCaption" label="Button caption" />
 					</SortableRepeater>
 				</Box>
+			</LocaleSideDimension>
+			<LocaleSideDimension>
 				<Box heading={'About company'}>
 					<ToOne field={'aboutCompanyBlock'}>
 						<TextField name="title" label="Title" />
@@ -55,7 +61,9 @@ export const FrontPage = (
 						<TextField name="text" label="Lines" allowNewlines={true} />
 					</SortableRepeater>
 				</Box>
+			</LocaleSideDimension>
 
+			<LocaleSideDimension>
 				<Box heading={'References'}>
 					<SortableRepeater sortBy={'order'} field={'references'}>
 						<TextField name="name" label="Name" />
@@ -64,7 +72,9 @@ export const FrontPage = (
 						<ImageField name={'image'} label={'Image'} />
 					</SortableRepeater>
 				</Box>
+			</LocaleSideDimension>
 
+			<LocaleSideDimension>
 				<Box heading={'Join us block'}>
 					<ToOne field={'joinUsBlock'}>
 						<TextField name="title" label="Top text" />
@@ -74,8 +84,12 @@ export const FrontPage = (
 						<LinkField name="buttonLink" label="Button link" />
 					</ToOne>
 				</Box>
-				<SeoForm />
+			</LocaleSideDimension>
+			<LocaleSideDimension>
 				<TextField name="newsletterTitle" label="Newsletter title" />
+			</LocaleSideDimension>
+			<LocaleSideDimension>
+				<SeoForm />
 			</LocaleSideDimension>
 		</ToOne>
 	</EditPage>

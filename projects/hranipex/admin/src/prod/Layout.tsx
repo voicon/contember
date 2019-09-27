@@ -24,6 +24,7 @@ const localeSwitcher = (
 		dimension="siteLocale"
 		labelField="code"
 		slugField="code"
+		maxItems={10}
 	/>
 )
 
