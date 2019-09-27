@@ -13,6 +13,7 @@ export const TranslationsPage = (
 			beforeContent: (
 				<>
 					<PageLinkButton to="translationSets">Edit translation sets</PageLinkButton>
+					<PageLinkButton to="translationStrings">Edit strings</PageLinkButton>
 				</>
 			),
 		}}
