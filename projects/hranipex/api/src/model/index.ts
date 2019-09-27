@@ -1,4 +1,5 @@
 export * from './Content'
+export * from './ContentPage'
 export * from './FrontPage'
 export * from './Links'
 export * from './Media'

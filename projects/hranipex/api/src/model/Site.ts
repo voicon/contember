@@ -4,6 +4,7 @@ import { FrontPage, FrontPageLocale } from './FrontPage'
 import { Post, PostLocale } from './Post'
 import { FooterLocale } from './Footer'
 import { HeaderLocale } from './Header'
+import { ContentPage, ContentPageLocale } from './ContentPage'
 
 export class Site {
 	code = d
@@ -14,6 +15,7 @@ export class Site {
 	locales: d.OneHasManyDefinition = d.oneHasMany(SiteLocale, 'site')
 	frontPage: d.OneHasOneInversedDefinition = d.oneHasOneInversed(FrontPage, 'site')
 	posts: d.OneHasManyDefinition = d.oneHasMany(Post, 'site')
+	pages: d.OneHasManyDefinition = d.oneHasMany(ContentPage, 'site')
 }
 
 @d.Unique('site', 'code')
@@ -28,4 +30,5 @@ export class SiteLocale {
 	posts: d.OneHasManyDefinition = d.oneHasMany(PostLocale, 'locale')
 	footer: d.OneHasOneInversedDefinition = d.oneHasOneInversed(FooterLocale, 'locale')
 	header: d.OneHasOneInversedDefinition = d.oneHasOneInversed(HeaderLocale, 'locale')
+	pages: d.OneHasManyDefinition = d.oneHasMany(ContentPageLocale, 'locale')
 }

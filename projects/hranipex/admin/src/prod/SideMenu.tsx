@@ -7,6 +7,7 @@ export const SideMenu = React.memo(props => {
 			<Menu.Item>
 				<Menu.Item title="Front page" to="frontPage" />
 				<Menu.Item title="Posts" to="postList" />
+				<Menu.Item title="Pages" to="contentPageList" />
 				<Menu.Item title="Footer" to="footer" />
 				<Menu.Item title="Header" to="header" />
 			</Menu.Item>

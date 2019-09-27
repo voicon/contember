@@ -1,3 +1,6 @@
+export * from './ContentPageCreatePage'
+export * from './ContentPageEditPage'
+export * from './ContentPageListPage'
 export * from './DashboardPage'
 export * from './FooterPage'
 export * from './FrontPage'
