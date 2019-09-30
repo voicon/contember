@@ -52,6 +52,7 @@ export const FrontPage = (
 						<TextField name="title" label="Title" />
 						<TextField name="subtitle" label="Subtitle" />
 						<ImageField name={'image'} label={'Image'} />
+						<LinkField name="link" label="Main link" />
 						<TextField name="buttonCaption" label="Button caption" />
 						<LinkField name="buttonLink" label="Button link" />
 					</ToOne>

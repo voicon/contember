@@ -41,6 +41,7 @@ export class FrontPageContentBlock {
 	subtitle = d.stringColumn()
 	text = d.stringColumn()
 	image = d.manyHasOne(Image)
+	link = d.manyHasOne(Link).setNullOnDelete()
 	buttonCaption = d.stringColumn()
 	buttonLink = d.manyHasOne(Link).setNullOnDelete()
 }

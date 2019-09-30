@@ -10,7 +10,7 @@ export const LinkField = Component<LinkFieldProps>((props: LinkFieldProps) => {
 	return (
 		<ToOne field={props.name}>
 			<HiddenField defaultValue={new Literal('external')} label={undefined} name="type" />
-			<TextField name="url" label="URL" />
+			<TextField name="url" label={props.label} />
 		</ToOne>
 	)
 })
