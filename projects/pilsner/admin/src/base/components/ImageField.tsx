@@ -12,7 +12,7 @@ export const ImageField = Component<ImageFieldProps>((props: ImageFieldProps) =>
 		return <ImageUploadField label={props.label} name={`${props.name}.url`} />
 	}
 	return (
-		<Box heading={props.label}>
+		<Box heading={props.label} distinction="seamlessIfNested">
 			<ImageUploadField label={'Desktop'} name={`${props.name}.url`} />
 			<ImageUploadField label={'Phone'} name={`${props.name}.phoneUrl`} />
 		</Box>
