@@ -19,19 +19,19 @@ export class FrontPageLocale {
 
 	seo = d.oneHasOne(Seo).notNull()
 
-	introBlock = d.oneHasOne(FrontPageContentBlock)
+	introBlock = d.oneHasOne(FrontPageContentBlock).notNull()
 
 	productPromoItems = d.oneHasMany(FrontPageProductPromoItem, 'frontPage')
 
-	contentPromoBlock = d.oneHasOne(FrontPageContentBlock)
+	contentPromoBlock = d.oneHasOne(FrontPageContentBlock).notNull()
 	contentPromoItems = d.oneHasMany(FrontPageContentPromoItem, 'frontPage')
 
-	aboutCompanyBlock = d.oneHasOne(FrontPageContentBlock)
+	aboutCompanyBlock = d.oneHasOne(FrontPageContentBlock).notNull()
 	aboutCompanyColumns = d.oneHasMany(FrontPageAboutCompanyColumn, 'frontPage')
 
 	references = d.oneHasMany(FrontPageReference, 'frontPage')
 
-	joinUsBlock = d.oneHasOne(FrontPageContentBlock)
+	joinUsBlock = d.oneHasOne(FrontPageContentBlock).notNull()
 
 	newsletterTitle = d.stringColumn()
 }
