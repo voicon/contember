@@ -1,4 +1,14 @@
-import { Box, Component, HiddenField, Literal, RichEditorNG, SortableRepeater, TextField, ToOne } from 'cms-admin'
+import {
+	Box,
+	Component,
+	HiddenField,
+	Literal,
+	RichEditorNG,
+	SlugField,
+	SortableRepeater,
+	TextField,
+	ToOne,
+} from 'cms-admin'
 import * as React from 'react'
 import { ImageField, LinkField, LocaleSideDimension, SiteField } from '../components'
 import { SeoForm } from './'
@@ -183,6 +193,7 @@ export const ContentPageForm = Component(
 			<LocaleSideDimension>
 				<Box>
 					<TextField name="title" size="large" label={'Title'} />
+					<SlugField drivenBy="title" label={'Slug'} name={'slug'} />
 					<ContentPageContentForm />
 				</Box>
 			</LocaleSideDimension>

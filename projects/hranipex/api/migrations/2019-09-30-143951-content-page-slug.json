@@ -1,0 +1,36 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "ContentPageLocale",
+			"field": {
+				"name": "slug",
+				"columnName": "slug",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			},
+			"copyValue": "title"
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentPageLocale/operations/create/slug",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentPageLocale/operations/read/slug",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentPageLocale/operations/update/slug",
+					"value": true
+				}
+			]
+		}
+	]
+}
