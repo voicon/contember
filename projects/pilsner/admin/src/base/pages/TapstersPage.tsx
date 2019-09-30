@@ -14,7 +14,6 @@ export const TapstersPage = (
 		}}
 	>
 		<ToOne field={'tapstersPage'}>
-			<TextField name={'title'} size="large" label="Title" />
 			<TextField name={'title'} size="large" label="Title" allowNewlines={true} />
 			<LinkForm />
 			<ImageField name={'headerImage'} label={'Header image'} />
