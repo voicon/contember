@@ -1,4 +1,4 @@
-import { FieldText, MultiEditPage, PageLinkButton, TextField, ToOne } from 'cms-admin'
+import { FieldText, Literal, MultiEditPage, PageLinkButton, TextField, ToOne } from 'cms-admin'
 import * as React from 'react'
 import { LocaleSideDimensionBase } from '../components'
 
@@ -6,6 +6,7 @@ export const TranslationsPage = (
 	<MultiEditPage
 		pageName={'translations'}
 		entity={'Translatable'}
+		orderBy={[{ identifier: new Literal('asc') }]}
 		rendererProps={{
 			title: 'String translations',
 			enableAddingNew: false,

@@ -24,6 +24,7 @@ export const translationStringsPage = (
 		<EntityListDataProvider
 			entityName={'Translatable'}
 			renderer={MultiEditRenderer}
+			orderBy={[{ identifier: new Literal('asc') }]}
 			rendererProps={{
 				title: 'String translations',
 				enableAddingNew: true,
