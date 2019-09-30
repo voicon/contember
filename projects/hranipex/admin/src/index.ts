@@ -5,10 +5,21 @@ const routes = {
 
 	frontPage: { path: '/front-page' },
 
+	postList: { path: '/posts' },
+	postCreate: { path: '/posts/new' },
+	postEdit: { path: '/posts/:id' },
+
+	contentPageList: { path: '/pages' },
+	contentPageCreate: { path: '/pages/new' },
+	contentPageEdit: { path: '/pages/:id' },
+
+	footer: { path: '/footer' },
+	header: { path: '/header' },
+
 	sites: { path: '/sites' },
 	translations: { path: '/translations' },
-	translationSetEdit: { path: '/translations/:id' },
-	translationSets: { path: '/translation-sets' },
+	translationStrings: { path: '/translations/strings' },
+	translationSets: { path: '/translations/sets' },
 }
 const config: ProjectConfig[] = [
 	{

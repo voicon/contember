@@ -1,0 +1,474 @@
+{
+	"modifications": [
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "FooterLocale",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "footer_locale",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "FooterColumn",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "footer_column",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "HeaderLocale",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "header_locale",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "Menu",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "menu",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "MenuItem",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "menu_item",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FooterColumn",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "FooterColumn",
+			"field": {
+				"name": "title",
+				"columnName": "title",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "MenuItem",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "MenuItem",
+			"field": {
+				"name": "title",
+				"columnName": "title",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FooterLocale",
+			"owningSide": {
+				"name": "locale",
+				"inversedBy": "footer",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "SiteLocale",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "footer",
+				"ownedBy": "locale",
+				"target": "FooterLocale",
+				"type": "OneHasOne",
+				"nullable": true
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FooterColumn",
+			"owningSide": {
+				"name": "footer",
+				"inversedBy": "columns",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "FooterLocale",
+				"joiningColumn": {
+					"columnName": "footer_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "columns",
+				"ownedBy": "footer",
+				"type": "OneHasMany",
+				"target": "FooterColumn"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FooterColumn",
+			"owningSide": {
+				"name": "menu",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Menu",
+				"joiningColumn": {
+					"columnName": "menu_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "HeaderLocale",
+			"owningSide": {
+				"name": "locale",
+				"inversedBy": "header",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "SiteLocale",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "header",
+				"ownedBy": "locale",
+				"target": "HeaderLocale",
+				"type": "OneHasOne",
+				"nullable": true
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "HeaderLocale",
+			"owningSide": {
+				"name": "leftMenu",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Menu",
+				"joiningColumn": {
+					"columnName": "left_menu_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "HeaderLocale",
+			"owningSide": {
+				"name": "rightMenu",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Menu",
+				"joiningColumn": {
+					"columnName": "right_menu_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Menu",
+			"owningSide": {
+				"name": "site",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Site",
+				"joiningColumn": {
+					"columnName": "site_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "MenuItem",
+			"owningSide": {
+				"name": "menu",
+				"inversedBy": "items",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Menu",
+				"joiningColumn": {
+					"columnName": "menu_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "items",
+				"ownedBy": "menu",
+				"type": "OneHasMany",
+				"target": "MenuItem"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "MenuItem",
+			"owningSide": {
+				"name": "link",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Link",
+				"joiningColumn": {
+					"columnName": "link_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FooterLocale",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"locale": true,
+								"columns": true
+							},
+							"read": {
+								"id": true,
+								"locale": true,
+								"columns": true
+							},
+							"update": {
+								"id": true,
+								"locale": true,
+								"columns": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FooterColumn",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"footer": true,
+								"order": true,
+								"title": true,
+								"menu": true
+							},
+							"read": {
+								"id": true,
+								"footer": true,
+								"order": true,
+								"title": true,
+								"menu": true
+							},
+							"update": {
+								"id": true,
+								"footer": true,
+								"order": true,
+								"title": true,
+								"menu": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/HeaderLocale",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"locale": true,
+								"leftMenu": true,
+								"rightMenu": true
+							},
+							"read": {
+								"id": true,
+								"locale": true,
+								"leftMenu": true,
+								"rightMenu": true
+							},
+							"update": {
+								"id": true,
+								"locale": true,
+								"leftMenu": true,
+								"rightMenu": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Menu",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"site": true,
+								"items": true
+							},
+							"read": {
+								"id": true,
+								"site": true,
+								"items": true
+							},
+							"update": {
+								"id": true,
+								"site": true,
+								"items": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/MenuItem",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"menu": true,
+								"order": true,
+								"title": true,
+								"link": true
+							},
+							"read": {
+								"id": true,
+								"menu": true,
+								"order": true,
+								"title": true,
+								"link": true
+							},
+							"update": {
+								"id": true,
+								"menu": true,
+								"order": true,
+								"title": true,
+								"link": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/SiteLocale/operations/create/footer",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/SiteLocale/operations/create/header",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/SiteLocale/operations/read/footer",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/SiteLocale/operations/read/header",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/SiteLocale/operations/update/footer",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/SiteLocale/operations/update/header",
+					"value": true
+				}
+			]
+		}
+	]
+}

@@ -1,6 +1,20 @@
 mutation {
 	createSite(data: {
-
+		code: "cz",
+		order: 1,
+		locales: [
+			{
+				create: {
+					code: "cz",
+					order: 1,
+					translationSet: {
+						create: {
+							name: "cz-cz locale"
+						}
+					}
+				}
+			}
+		]
 	}) {
 		ok
 	}

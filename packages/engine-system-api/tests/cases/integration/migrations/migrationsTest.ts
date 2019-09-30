@@ -815,6 +815,39 @@ describe('Diff schemas', () => {
 		})
 	})
 
+	describe('change column type - make not null', () => {
+		const originalSchema = new SchemaBuilder()
+			.entity('Author', e => e.column('name', c => c.type(Model.ColumnType.String)))
+			.buildSchema()
+		const updatedSchema = new SchemaBuilder()
+			.entity('Author', e => e.column('name', c => c.type(Model.ColumnType.String).notNull()))
+			.buildSchema()
+		const diff: Migration.Modification[] = [
+			{
+				modification: 'updateColumnDefinition',
+				entityName: 'Author',
+				fieldName: 'name',
+				definition: {
+					type: Model.ColumnType.String,
+					columnType: 'text',
+					nullable: false,
+				},
+			},
+		]
+		const sql = SQL`ALTER TABLE "author"
+						ALTER "name" SET DATA TYPE text,
+						ALTER "name" SET NOT NULL;`
+		it('diff schemas', () => {
+			testDiffSchemas(originalSchema, updatedSchema, diff)
+		})
+		it('apply diff', () => {
+			testApplyDiff(originalSchema, diff, updatedSchema)
+		})
+		it('generate sql', () => {
+			testGenerateSql(originalSchema, diff, sql)
+		})
+	})
+
 	describe('rename entity', () => {
 		const originalSchema = new SchemaBuilder()
 			.entity('Author', e => e.tableName('user').column('name', c => c.type(Model.ColumnType.String)))
@@ -1038,6 +1071,75 @@ describe('Diff schemas', () => {
 			},
 		]
 		const sql = SQL``
+		it('diff schemas', () => {
+			testDiffSchemas(originalSchema, updatedSchema, diff)
+		})
+		it('apply diff', () => {
+			testApplyDiff(originalSchema, diff, updatedSchema)
+		})
+		it('generate sql', () => {
+			testGenerateSql(originalSchema, diff, sql)
+		})
+	})
+
+	describe('update relation onDelete', () => {
+		const originalSchema = new SchemaBuilder()
+			.entity('Post', entity =>
+				entity.column('name', c => c.type(Model.ColumnType.String)).manyHasOne('category', r => r.target('Category')),
+			)
+			.entity('Category', e => e.column('name', c => c.type(Model.ColumnType.String)))
+			.buildSchema()
+		const updatedSchema = new SchemaBuilder()
+			.entity('Post', entity =>
+				entity
+					.column('name', c => c.type(Model.ColumnType.String))
+					.manyHasOne('category', r => r.target('Category').onDelete(Model.OnDelete.cascade)),
+			)
+			.entity('Category', e => e.column('name', c => c.type(Model.ColumnType.String)))
+			.buildSchema()
+		const diff: Migration.Modification[] = [
+			{
+				modification: 'updateRelationOnDelete',
+				entityName: 'Post',
+				fieldName: 'category',
+				onDelete: Model.OnDelete.cascade,
+			},
+		]
+		const sql = SQL``
+		it('diff schemas', () => {
+			testDiffSchemas(originalSchema, updatedSchema, diff)
+		})
+		it('apply diff', () => {
+			testApplyDiff(originalSchema, diff, updatedSchema)
+		})
+		it('generate sql', () => {
+			testGenerateSql(originalSchema, diff, sql)
+		})
+	})
+
+	describe('make relation not null', () => {
+		const originalSchema = new SchemaBuilder()
+			.entity('Post', entity =>
+				entity.column('name', c => c.type(Model.ColumnType.String)).manyHasOne('category', r => r.target('Category')),
+			)
+			.entity('Category', e => e.column('name', c => c.type(Model.ColumnType.String)))
+			.buildSchema()
+		const updatedSchema = new SchemaBuilder()
+			.entity('Post', entity =>
+				entity
+					.column('name', c => c.type(Model.ColumnType.String))
+					.manyHasOne('category', r => r.target('Category').notNull()),
+			)
+			.entity('Category', e => e.column('name', c => c.type(Model.ColumnType.String)))
+			.buildSchema()
+		const diff: Migration.Modification[] = [
+			{
+				modification: 'makeRelationNotNull',
+				entityName: 'Post',
+				fieldName: 'category',
+			},
+		]
+		const sql = SQL`ALTER TABLE "post" ALTER "category_id" SET NOT NULL;`
 		it('diff schemas', () => {
 			testDiffSchemas(originalSchema, updatedSchema, diff)
 		})
