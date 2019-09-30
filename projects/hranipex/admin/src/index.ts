@@ -20,6 +20,8 @@ const routes = {
 	translations: { path: '/translations' },
 	translationStrings: { path: '/translations/strings' },
 	translationSets: { path: '/translations/sets' },
+
+	icons: { path: '/icons' },
 }
 const config: ProjectConfig[] = [
 	{

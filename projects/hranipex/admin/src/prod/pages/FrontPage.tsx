@@ -1,4 +1,4 @@
-import { Box, EditPage, SortableRepeater, TextField, ToOne } from 'cms-admin'
+import { Box, EditPage, SelectField, SortableRepeater, TextField, ToOne } from 'cms-admin'
 import * as React from 'react'
 import { SeoForm } from '../forms'
 import { ImageField, LinkField, LocaleSideDimension } from '../components'
@@ -23,6 +23,7 @@ export const FrontPage = (
 						<TextField name="title" label="Title" />
 						<ImageField name={'image'} label={'Image'} />
 						<LinkField name={'link'} label={'Link'} />
+						<SelectField name="shape" options="IconShape.identifier" label="Icon" />
 					</SortableRepeater>
 				</Box>
 			</LocaleSideDimension>
