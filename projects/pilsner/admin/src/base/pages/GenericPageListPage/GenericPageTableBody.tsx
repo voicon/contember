@@ -8,7 +8,7 @@ export const genericPageTableBody = (
 			<FieldText name="title" />
 		</TableCell>
 		<TableCell shrunk>
-			<EditButton pageName="pageList" /> {/* TODO: link to actual page */}
+			<EditButton pageName="pageEdit" />
 		</TableCell>
 		<TableCell shrunk>
 			<RemoveButton removeType={'delete'} immediatePersist={true} />
