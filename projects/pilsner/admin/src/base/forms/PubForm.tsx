@@ -7,7 +7,7 @@ export const PubForm = Component(
 	() => (
 		<>
 			<Box>
-				<TextField name="name" label="Name" />
+				<TextField name="name" label="Name" size="large" />
 				<LinkUrlField drivenBy="name" softPrefix="pubs/" />
 				<TextField name="subtitle" label="Subtitle" />
 			</Box>
