@@ -8,10 +8,10 @@ export const HeaderPage = (
 			<ToOne field="locales(code=$currentLocaleCode).header">
 				<Box heading={'Left menu'}>
 					<ToOne field={'leftMenu'}>
-						<SiteField/>
+						<SiteField />
 						<SortableRepeater sortBy={'order'} field={'items'}>
-							<TextField name="title" label="Title"/>
-							<LinkField name={'link'}/>
+							<TextField name="title" label="Title" />
+							<LinkField name={'link'} />
 						</SortableRepeater>
 					</ToOne>
 				</Box>
@@ -22,10 +22,10 @@ export const HeaderPage = (
 			<ToOne field="locales(code=$currentLocaleCode).header">
 				<Box heading={'Right menu'}>
 					<ToOne field={'rightMenu'}>
-						<SiteField/>
+						<SiteField />
 						<SortableRepeater sortBy={'order'} field={'items'}>
-							<TextField name="title" label="Title"/>
-							<LinkField name={'link'}/>
+							<TextField name="title" label="Title" />
+							<LinkField name={'link'} />
 						</SortableRepeater>
 					</ToOne>
 				</Box>

@@ -28,7 +28,7 @@ export const Grid = React.memo<GridProps>(({ editButton, ...props }) => (
 			</TableCell>
 		)}
 		<TableCell shrunk>
-			<RemoveButton removeType={'delete'} immediatePersist={true}/>
+			<RemoveButton removeType={'delete'} immediatePersist={true} />
 		</TableCell>
 	</EntityListDataProvider>
 ))
