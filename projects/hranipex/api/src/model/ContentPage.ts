@@ -21,7 +21,7 @@ export class ContentPageLocale {
 		.notNull()
 
 	seo = d.oneHasOne(Seo).notNull()
-
+	slug = d.stringColumn().notNull()
 	title = d.stringColumn().notNull()
 	content = d.oneHasOne(Content).notNull()
 }

@@ -1,0 +1,38 @@
+{
+	"modifications": [
+		{
+			"modification": "createRelation",
+			"entityName": "FrontPageContentBlock",
+			"owningSide": {
+				"name": "link",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Link",
+				"joiningColumn": {
+					"columnName": "link_id",
+					"onDelete": "set null"
+				}
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FrontPageContentBlock/operations/create/link",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FrontPageContentBlock/operations/read/link",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FrontPageContentBlock/operations/update/link",
+					"value": true
+				}
+			]
+		}
+	]
+}
