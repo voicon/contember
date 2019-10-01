@@ -1,4 +1,4 @@
-import { Component, TextField } from 'cms-admin'
+import { Box, Component, TextField } from 'cms-admin'
 import * as React from 'react'
 import { LinkUrlField } from '../components'
 import { GenericContentForm, SeoForm } from './'
@@ -6,8 +6,10 @@ import { GenericContentForm, SeoForm } from './'
 export const GenericPageForm = Component(
 	() => (
 		<>
-			<TextField name="title" label="Title" />
-			<LinkUrlField drivenBy="title" />
+			<Box>
+				<TextField name="title" label="Title" size="large" />
+				<LinkUrlField drivenBy="title" />
+			</Box>
 			<GenericContentForm />
 			<SeoForm />
 		</>

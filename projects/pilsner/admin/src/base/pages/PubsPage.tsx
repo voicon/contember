@@ -1,4 +1,4 @@
-import { EditPage, TextField, ToOne } from 'cms-admin'
+import { Box, EditPage, TextField, ToOne } from 'cms-admin'
 import * as React from 'react'
 import { ImageField, NavigateBackButton } from '../components'
 import { LinkForm, SeoForm } from '../forms'
@@ -14,8 +14,10 @@ export const PubsPage = (
 		}}
 	>
 		<ToOne field={'pubsPage'}>
-			<TextField name={'title'} size="large" label="Title" allowNewlines={true} />
-			<LinkForm />
+			<Box>
+				<TextField name={'title'} size="large" label="Title" allowNewlines={true} />
+				<LinkForm />
+			</Box>
 			<ImageField name={'headerImage'} label={'Header image'} />
 			<SeoForm />
 		</ToOne>
