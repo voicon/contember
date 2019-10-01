@@ -30,7 +30,7 @@ export class Layout extends React.PureComponent<LayoutProps> {
 				content={this.props.children}
 				userMenu={
 					<>
-						<PageLinkButton distinction="seamless" flow="block" to="tenantChangePassword">
+						<PageLinkButton distinction="seamless" flow="generousBlock" to="tenantChangePassword">
 							Change password
 						</PageLinkButton>
 					</>

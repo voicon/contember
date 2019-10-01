@@ -37,6 +37,7 @@ $cui-color-tertiary: $cui-color-purple !default;
 $cui-color-success: $cui-color-green !default;
 $cui-color-warn: $cui-color-yellow !default;
 $cui-color-danger: $cui-color-red !default;
+$cui-color-info: $cui-color-blue !default;
 $cui-color-dark: $cui-color-gray-8 !default;
 $cui-color-inactive: $cui-color-gray-6 !default;
 
@@ -264,26 +265,82 @@ $cui-button-sizes: map_merge((
 $cui-button-list-separation-x: .5em !default;
 $cui-button-list-separation-y: .5em !default;
 
-// ValidationMessage
-$cui-validationMessage-size-small: .8em !default;
-$cui-validationMessage-size-default: .9em !default;
-$cui-validationMessage-size-large: 1.1em !default;
+// Message
+$cui-message-size-small: .8em !default;
+$cui-message-size-default: 1em !default;
+$cui-message-size-large: 1.2em !default;
 
-$cui-validationMessage-sizes: () !default;
-$cui-validationMessage-sizes: map_merge((
-	$cui-conf-defaultView: $cui-validationMessage-size-default,
-	'small': $cui-validationMessage-size-small,
-	'large': $cui-validationMessage-size-large,
-), $cui-validationMessage-sizes);
+$cui-message-sizes: () !default;
+$cui-message-sizes: map_merge((
+	$cui-conf-defaultView: $cui-message-size-default,
+	'small': $cui-message-size-small,
+	'large': $cui-message-size-large,
+), $cui-message-sizes);
 
-$cui-validationMessage-valid-color: $cui-color-success !default;
-$cui-validationMessage-invalid-color: $cui-color-danger !default;
 
-$cui-validationMessage-variants: () !default;
-$cui-validationMessage-variants: map_merge((
-	'valid': $cui-validationMessage-valid-color,
-	'invalid': $cui-validationMessage-invalid-color,
-), $cui-validationMessage-variants);
+$cui-message-common-boxShadow: 0 em(4px) em(6px) rgba($cui-color-black, .1), 0 em(8px) em(12px) rgba($cui-color-black, .1), 0 em(16px) em(24px) rgba($cui-color-black, .1) !default;
+
+$cui-message-default-defaultColor: $cui-color-gray-5 !default;
+$cui-message-default-strikingColor: $cui-color-white !default;
+$cui-message-default-background: $cui-color-gray-4 !default;
+$cui-message-default-boxShadow: $cui-message-common-boxShadow !default;
+
+$cui-message-success-defaultColor: $cui-color-success !default;
+$cui-message-success-strikingColor: $cui-color-white !default;
+$cui-message-success-background: $cui-color-success !default;
+$cui-message-success-boxShadow: $cui-message-default-boxShadow !default;
+
+$cui-message-info-defaultColor: $cui-color-info !default;
+$cui-message-info-strikingColor: $cui-color-white !default;
+$cui-message-info-background: $cui-color-info !default;
+$cui-message-info-boxShadow: $cui-message-default-boxShadow !default;
+
+$cui-message-warn-defaultColor: $cui-color-warn !default;
+$cui-message-warn-strikingColor: $cui-color-white !default;
+$cui-message-warn-background: $cui-color-warn !default;
+$cui-message-warn-boxShadow: $cui-message-default-boxShadow !default;
+
+$cui-message-danger-defaultColor: $cui-color-danger !default;
+$cui-message-danger-strikingColor: $cui-color-white !default;
+$cui-message-danger-background: $cui-color-danger !default;
+$cui-message-danger-boxShadow: $cui-message-default-boxShadow !default;
+
+
+$cui-message-border-radius: .3em !default;
+
+$cui-message-variants: () !default;
+$cui-message-variants: map_merge((
+	$cui-conf-defaultView: (
+		'defaultColor': $cui-message-default-defaultColor,
+		'strikingColor': $cui-message-default-strikingColor,
+		'background': $cui-message-default-background,
+		'boxShadow': $cui-message-default-boxShadow,
+	),
+	'success': (
+		'defaultColor': $cui-message-success-defaultColor,
+		'strikingColor': $cui-message-success-strikingColor,
+		'background': $cui-message-success-background,
+		'boxShadow': $cui-message-success-boxShadow,
+	),
+	'info': (
+		'defaultColor': $cui-message-info-defaultColor,
+		'strikingColor': $cui-message-info-strikingColor,
+		'background': $cui-message-info-background,
+		'boxShadow': $cui-message-info-boxShadow,
+	),
+	'warn': (
+		'defaultColor': $cui-message-warn-defaultColor,
+		'strikingColor': $cui-message-warn-strikingColor,
+		'background': $cui-message-warn-background,
+		'boxShadow': $cui-message-warn-boxShadow,
+	),
+	'danger': (
+		'defaultColor': $cui-message-danger-defaultColor,
+		'strikingColor': $cui-message-danger-strikingColor,
+		'background': $cui-message-danger-background,
+		'boxShadow': $cui-message-danger-boxShadow,
+	),
+), $cui-message-variants);
 
 // FormGroup
 $cui-formGroup-separation: 1em !default;

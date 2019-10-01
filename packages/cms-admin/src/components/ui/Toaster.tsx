@@ -1,35 +1,51 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import cn from 'classnames'
-import ToastsState, { Toast, ToastId, ToastType } from '../../state/toasts'
+import ToastsState, { ToastId, ToastType } from '../../state/toasts'
 import State from '../../state'
 import { Icon } from '@blueprintjs/core'
 import { Dispatch } from '../../actions/types'
 import { dismissToast } from '../../actions/toasts'
+import { Button, Intent, Message, MessageProps } from '@contember/ui'
 
-const typeClassName: { [K in ToastType]: string } = {
-	[ToastType.Success]: 'view-success',
-	[ToastType.Warning]: 'view-warning',
-	[ToastType.Error]: 'view-error',
-	[ToastType.Info]: 'view-info',
+const toastTypeToMessageType: { [K in ToastType]: MessageProps['type'] } = {
+	[ToastType.Success]: 'success',
+	[ToastType.Warning]: 'warn',
+	[ToastType.Error]: 'danger',
+	[ToastType.Info]: 'info',
+}
+const toastTypeToIntent: { [K in ToastType]: Intent } = {
+	[ToastType.Success]: 'success',
+	[ToastType.Warning]: 'warn',
+	[ToastType.Error]: 'danger',
+	[ToastType.Info]: 'primary',
 }
 
 class ToasterConnected extends React.PureComponent<Toaster.ToasterStateProps & Toaster.ToasterDispatcherProps> {
 	render() {
 		return (
-			<div className="toast-wrap">
+			<div className="toaster">
 				{this.props.toasts.map(toast => (
-					<div key={toast.id} className={cn('toast', typeClassName[toast.type])}>
-						<p className="toast-message">{toast.message}</p>
-						<button
-							className="toast-button"
-							onClick={e => {
-								e.preventDefault()
-								this.props.dismissToast(toast.id)
-							}}
+					<div key={toast.id} className="toaster-item">
+						<Message
+							type={toastTypeToMessageType[toast.type]}
+							flow="block"
+							lifted
+							distinction="striking"
+							action={
+								<Button
+									intent={toastTypeToIntent[toast.type]}
+									distinction="seamless"
+									flow="squarish"
+									onClick={() => {
+										this.props.dismissToast(toast.id)
+									}}
+								>
+									<Icon icon="cross" color="white" />
+								</Button>
+							}
 						>
-							<Icon icon="cross" color="currentColor" />
-						</button>
+							{toast.message}
+						</Message>
 					</div>
 				))}
 			</div>
