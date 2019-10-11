@@ -19,7 +19,7 @@ export const FrontPage = (
 
 			<LocaleSideDimension>
 				<Box heading={'Product promo items'}>
-					<SortableRepeater sortBy={'order'} field={'productPromoItems'}>
+					<SortableRepeater sortBy={'order'} field={'productPromoItems'} removeType={'delete'}>
 						<TextField name="title" label="Title" />
 						<ImageField name={'image'} label={'Image'} />
 						<LinkField name={'link'} label={'Link'} />
@@ -37,7 +37,7 @@ export const FrontPage = (
 					</ToOne>
 
 					<h3>Items</h3>
-					<SortableRepeater sortBy={'order'} field={'contentPromoItems'}>
+					<SortableRepeater sortBy={'order'} field={'contentPromoItems'} removeType={'delete'}>
 						<TextField name="title" label="Title" />
 						<TextField name="subtitle" label="Subtitle" />
 						<LinkField name="link" label="Link" />
@@ -58,7 +58,7 @@ export const FrontPage = (
 					</ToOne>
 
 					<h3>Columns</h3>
-					<SortableRepeater sortBy={'order'} field={'aboutCompanyColumns'}>
+					<SortableRepeater sortBy={'order'} field={'aboutCompanyColumns'} removeType={'delete'}>
 						<TextField name="title" label="Title" />
 						<TextField name="text" label="Lines" allowNewlines={true} />
 					</SortableRepeater>
@@ -67,7 +67,7 @@ export const FrontPage = (
 
 			<LocaleSideDimension>
 				<Box heading={'References'}>
-					<SortableRepeater sortBy={'order'} field={'references'}>
+					<SortableRepeater sortBy={'order'} field={'references'} removeType={'delete'}>
 						<TextField name="name" label="Name" />
 						<TextField name="company" label="Company" />
 						<TextField name="quote" label="Quote" />
