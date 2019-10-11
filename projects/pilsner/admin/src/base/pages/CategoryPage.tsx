@@ -5,7 +5,7 @@ import { EditButton } from '../components'
 export const CategoryPage = (
 	<EditPage
 		pageName={'categories'}
-		entity={'Site'}
+		entityName={'Site'}
 		where="(slug = $site)"
 		rendererProps={{
 			title: 'Categories',

@@ -4,7 +4,7 @@ import * as React from 'react'
 export const MenuPage = (
 	<EditPage
 		pageName={'menu'}
-		entity={'Site'}
+		entityName={'Site'}
 		where="(slug = $site)"
 		rendererProps={{
 			title: 'Menu',

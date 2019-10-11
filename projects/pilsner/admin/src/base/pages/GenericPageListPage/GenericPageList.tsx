@@ -49,19 +49,16 @@ export const GenericPageList = Component(
 		const shouldDisplayCustomPages =
 			isAdmin ||
 			(isRegionManager &&
-				customPages.reduce(
-					(accumulator, customPage) => {
-						const currentEntity = siteEntity.data.getField(customPage.field)
-						return accumulator || (currentEntity instanceof EntityAccessor && currentEntity.isPersisted())
-					},
-					false as boolean,
-				))
+				customPages.reduce<boolean>((accumulator, customPage) => {
+					const currentEntity = siteEntity.data.getField(customPage.field)
+					return accumulator || (currentEntity instanceof EntityAccessor && currentEntity.isPersisted())
+				}, false))
 
 		const shouldDisplayGenericPages =
 			genericPages instanceof EntityCollectionAccessor &&
-			genericPages.entities.reduce(
+			genericPages.entities.reduce<boolean>(
 				(accumulator, datum) => accumulator || (datum instanceof EntityAccessor && datum.isPersisted()),
-				false as boolean,
+				false,
 			)
 
 		return (

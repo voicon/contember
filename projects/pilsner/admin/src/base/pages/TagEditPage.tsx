@@ -1,12 +1,12 @@
-import { EditPage } from 'cms-admin'
+import { EditPage, NavigateBackButton } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton } from '../components'
 import { TagForm } from '../forms'
 
 export const TagEditPage = (
 	<EditPage
-		entity="Tag"
+		entityName="Tag"
 		pageName={'tagEdit'}
+		where="(id = $id)"
 		rendererProps={{
 			title: 'Edit tag',
 			navigation: <NavigateBackButton to="tags">Tags</NavigateBackButton>,

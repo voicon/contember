@@ -1,12 +1,11 @@
-import { EditPage, ToOne } from 'cms-admin'
+import { EditPage, NavigateBackButton, ToOne } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton } from '../components'
 import { LinkForm, SeoForm } from '../forms'
 
 export const PourPage = (
 	<EditPage
 		pageName={'pour'}
-		entity={'Site'}
+		entityName={'Site'}
 		where="(slug = $site)"
 		rendererProps={{
 			title: 'Pour page',

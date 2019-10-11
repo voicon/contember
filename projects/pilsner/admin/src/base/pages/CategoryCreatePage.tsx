@@ -1,11 +1,11 @@
-import { CreatePage, HiddenField } from 'cms-admin'
+import { CreatePage, HiddenField, NavigateBackButton } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton, SiteField } from '../components'
+import { SiteField } from '../components'
 import { CategoryForm } from '../forms'
 
 export const CategoryCreatePage = (
 	<CreatePage
-		entity="Category"
+		entityName="Category"
 		pageName={'categoryCreate'}
 		rendererProps={{
 			title: 'Add a new category',

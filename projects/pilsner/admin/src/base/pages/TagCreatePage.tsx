@@ -1,11 +1,11 @@
-import { CreatePage } from 'cms-admin'
+import { CreatePage, NavigateBackButton } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton, SiteField } from '../components'
+import { SiteField } from '../components'
 import { TagForm } from '../forms'
 
 export const TagCreatePage = (
 	<CreatePage
-		entity="Tag"
+		entityName="Tag"
 		pageName={'tagCreate'}
 		rendererProps={{
 			title: 'Add a new tag',

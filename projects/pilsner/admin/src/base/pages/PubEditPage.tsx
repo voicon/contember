@@ -1,16 +1,15 @@
-import { EditPage } from 'cms-admin'
+import { EditPage, NavigateBackButton } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton } from '../components'
 import { PubForm, PubFormSide } from '../forms'
 
 export const PubEditPage = (
 	<EditPage
-		entity="Pub"
+		entityName="Pub"
 		pageName={'pubEdit'}
+		where="(id = $id)"
 		rendererProps={{
 			title: 'Edit pub',
 			side: <PubFormSide />,
-			onlyOneInCollection: true,
 			navigation: <NavigateBackButton to="pubList">Pubs</NavigateBackButton>,
 		}}
 	>

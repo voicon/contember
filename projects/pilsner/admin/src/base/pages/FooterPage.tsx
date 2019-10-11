@@ -14,7 +14,7 @@ import * as React from 'react'
 export const FooterPage = (
 	<EditPage
 		pageName={'footer'}
-		entity={'Site'}
+		entityName={'Site'}
 		where="(slug = $site)"
 		rendererProps={{
 			title: 'Footer',

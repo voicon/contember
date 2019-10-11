@@ -1,15 +1,14 @@
-import { EditPage, PageLinkButton, TableRenderer } from 'cms-admin'
+import { EditPage, PageLinkButton } from 'cms-admin'
 import * as React from 'react'
 import { GenericPageList } from './GenericPageList'
-import { GenericPageListRenderer } from './GenericPageListRenderer'
 
+// TODO GenericPageListRenderer
 export const GenericPageListPage = (
 	<EditPage
 		pageName="pageList"
-		entity="Site"
+		entityName="Site"
 		where="(slug = $site)"
 		rendererProps={{ title: 'Pages', actions: <PageLinkButton to="pageCreate">Add a new page</PageLinkButton> }}
-		renderer={GenericPageListRenderer}
 	>
 		<GenericPageList />
 	</EditPage>

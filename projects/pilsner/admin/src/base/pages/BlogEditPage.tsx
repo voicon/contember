@@ -1,12 +1,13 @@
 import { EditPage } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton } from '../components'
+import { NavigateBackButton } from 'cms-admin'
 import { PostForm, PostFormSide } from '../forms'
 
 export const BlogEditPage = (
 	<EditPage
-		entity="Post"
+		entityName="Post"
 		pageName={'blogEdit'}
+		where="(id = $id)"
 		rendererProps={{
 			title: 'Edit story',
 			/*actions: ( // This does not work yet.
@@ -16,7 +17,6 @@ export const BlogEditPage = (
 			),*/
 			navigation: <NavigateBackButton to="blogList">Stories</NavigateBackButton>,
 			side: <PostFormSide />,
-			onlyOneInCollection: true,
 		}}
 	>
 		<PostForm />

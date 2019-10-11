@@ -1,11 +1,12 @@
 import { EditPage } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton } from '../components'
+import { NavigateBackButton } from 'cms-admin'
 import { LocationForm } from '../forms'
 
 export const LocationEditPage = (
 	<EditPage
-		entity="Location"
+		entityName="Location"
+		where="(id = $id)"
 		pageName={'locationEdit'}
 		rendererProps={{
 			title: 'Edit location',
