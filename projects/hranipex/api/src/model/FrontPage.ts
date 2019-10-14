@@ -92,4 +92,5 @@ export class FrontPageReference {
 	name = d.stringColumn()
 	company = d.stringColumn()
 	image = d.manyHasOne(Image)
+	link = d.manyHasOne(Link).setNullOnDelete()
 }

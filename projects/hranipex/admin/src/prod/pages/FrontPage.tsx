@@ -18,14 +18,17 @@ export const FrontPage = (
 			</LocaleSideDimension>
 
 			<LocaleSideDimension>
-				<Box heading={'Product promo items'}>
-					<SortableRepeater sortBy={'order'} field={'productPromoItems'} removeType={'delete'}>
-						<TextField name="title" label="Title" />
-						<ImageField name={'image'} label={'Image'} />
-						<LinkField name={'link'} label={'Link'} />
-						<SelectField name="shape" options="IconShape.identifier" label="Icon" />
-					</SortableRepeater>
-				</Box>
+				<SortableRepeater
+					sortBy={'order'}
+					field={'productPromoItems'}
+					removeType={'delete'}
+					label={'Product promo items'}
+				>
+					<TextField name="title" label="Title" />
+					<ImageField name={'image'} label={'Image'} />
+					<LinkField name={'link'} label={'Link'} />
+					<SelectField name="shape" options="IconShape.identifier" label="Icon" />
+				</SortableRepeater>
 			</LocaleSideDimension>
 
 			<LocaleSideDimension>
@@ -66,14 +69,13 @@ export const FrontPage = (
 			</LocaleSideDimension>
 
 			<LocaleSideDimension>
-				<Box heading={'References'}>
-					<SortableRepeater sortBy={'order'} field={'references'} removeType={'delete'}>
-						<TextField name="name" label="Name" />
-						<TextField name="company" label="Company" />
-						<TextField name="quote" label="Quote" />
-						<ImageField name={'image'} label={'Image'} />
-					</SortableRepeater>
-				</Box>
+				<SortableRepeater sortBy={'order'} field={'references'} removeType={'delete'} label={'References'}>
+					<TextField name="name" label="Name" />
+					<TextField name="company" label="Company" />
+					<TextField name="quote" label="Quote" />
+					<ImageField name={'image'} label={'Image'} />
+					<LinkField name="link" label="Link" />
+				</SortableRepeater>
 			</LocaleSideDimension>
 
 			<LocaleSideDimension>

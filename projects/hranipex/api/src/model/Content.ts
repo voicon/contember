@@ -20,13 +20,9 @@ export const ContentBlockType = d.createEnum(
 	'imageBoxRight',
 	'imageBoxCircleLeft',
 	'grid',
-	'gridItem',
 	'circleList',
-	'circleListItem',
 	'squareList',
-	'squareListItem',
 	'timeline',
-	'timelineItem',
 )
 
 export class ContentBlock {
@@ -50,5 +46,23 @@ export class ContentBlock {
 	buttonCaption = d.stringColumn()
 	buttonLink = d.manyHasOne(Link).setNullOnDelete()
 
-	childContent = d.oneHasOne(Content)
+	children = d.oneHasOne(ContentBlockChildren, 'block')
+}
+
+export class ContentBlockChildren {
+	block: d.OneHasOneInversedDefinition = d.oneHasOneInversed(ContentBlock, 'children').notNull()
+	items: d.OneHasManyDefinition = d.oneHasMany(ContentBlockChildItem, 'parent')
+}
+
+export class ContentBlockChildItem {
+	parent = d
+		.manyHasOne(ContentBlockChildren, 'items')
+		.notNull()
+		.cascadeOnDelete()
+	order = d.intColumn().notNull()
+	title = d.stringColumn()
+	text = d.stringColumn()
+	image = d.manyHasOne(Image).setNullOnDelete()
+	buttonCaption = d.stringColumn()
+	buttonLink = d.manyHasOne(Link).setNullOnDelete()
 }
