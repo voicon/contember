@@ -1,37 +1,16 @@
 import * as React from 'react'
-import { LinkWithAlert } from 'cms-admin'
+import { Link } from 'cms-admin'
 
 export default class HeaderLeft extends React.Component {
 	render() {
-		const alert = <p>You are about to leave the form with potentially unsaved changes.</p>
-		const cancelText = 'Cancel'
-
 		return (
 			<>
 				{' Langs: '}
-				<LinkWithAlert
-					requestChange={r => ({ ...r, dimensions: { lang: ['cs'] } })}
-					alert={alert}
-					cancelButtonText={cancelText}
-				>
-					CS
-				</LinkWithAlert>
+				<Link requestChange={r => ({ ...r, dimensions: { lang: ['cs'] } })}>CS</Link>
 				{' | '}
-				<LinkWithAlert
-					requestChange={r => ({ ...r, dimensions: { lang: ['en'] } })}
-					alert={alert}
-					cancelButtonText={cancelText}
-				>
-					EN
-				</LinkWithAlert>
+				<Link requestChange={r => ({ ...r, dimensions: { lang: ['en'] } })}>EN</Link>
 				{' | '}
-				<LinkWithAlert
-					requestChange={r => ({ ...r, dimensions: { lang: ['cs', 'en'] } })}
-					alert={alert}
-					cancelButtonText={cancelText}
-				>
-					CS+EN
-				</LinkWithAlert>
+				<Link requestChange={r => ({ ...r, dimensions: { lang: ['cs', 'en'] } })}>CS+EN</Link>
 			</>
 		)
 	}
