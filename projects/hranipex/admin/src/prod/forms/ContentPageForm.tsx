@@ -59,7 +59,7 @@ export const ContentPageContentForm = Component(
 						marks: ['bold'],
 						inlines: ['link'],
 					},
-					textbox: {
+					image: {
 						label: 'Image',
 						render: <ImageField name={'image'} label={'Image'} />,
 					},
@@ -111,10 +111,8 @@ export const ContentPageContentForm = Component(
 								<TextField name={'title'} label={'Title'} allowNewlines={true} />
 								<TextField name={'buttonCaption'} label={'Button caption'} />
 								<LinkField name={'buttonLink'} />
-								<ToOne field={'childContent'}>
-									<SiteField />
-									<SortableRepeater field={'blocks'} sortBy={'order'}>
-										<HiddenField name={'type'} defaultValue={new Literal('gridItem')} label={undefined} />
+								<ToOne field={'children'}>
+									<SortableRepeater field={'items'} sortBy={'order'}>
 										<TextField name={'title'} label={'Title'} allowNewlines={true} />
 										<TextField name={'text'} label={'Text'} allowNewlines={true} />
 										<ImageField name={'image'} label={'Image'} />
@@ -130,15 +128,13 @@ export const ContentPageContentForm = Component(
 								<TextField name={'title'} label={'Title'} allowNewlines={true} />
 								<TextField name={'subtitle'} label={'Subtitle'} allowNewlines={true} />
 								<TextField name={'text'} label={'Text'} allowNewlines={true} />
-								<ToOne field={'childContent'}>
-									<SiteField />
-									<SortableRepeater field={'blocks'} sortBy={'order'}>
-										<HiddenField name={'type'} defaultValue={new Literal('circleListItem')} label={undefined} />
+								<ToOne field={'children'}>
+									<SortableRepeater field={'items'} sortBy={'order'}>
 										<TextField name={'title'} label={'Title'} allowNewlines={true} />
 										<TextField name={'text'} label={'Text'} allowNewlines={true} />
-										<ImageField name={'image'} label={'Image'} />,
+										<ImageField name={'image'} label={'Image'} />
 										<TextField name={'buttonCaption'} label={'Button caption'} />
-										<LinkField name={'buttonLink'} />
+										{/*<LinkField name={'buttonLink'} />*/}
 									</SortableRepeater>
 								</ToOne>
 							</>
@@ -151,13 +147,11 @@ export const ContentPageContentForm = Component(
 								<TextField name={'title'} label={'Title'} allowNewlines={true} />
 								<TextField name={'subtitle'} label={'Subtitle'} allowNewlines={true} />
 								<TextField name={'text'} label={'Text'} allowNewlines={true} />
-								<ToOne field={'childContent'}>
-									<SiteField />
-									<SortableRepeater field={'blocks'} sortBy={'order'}>
-										<HiddenField name={'type'} defaultValue={new Literal('squareListItem')} label={undefined} />
+								<ToOne field={'children'}>
+									<SortableRepeater field={'items'} sortBy={'order'}>
 										<TextField name={'title'} label={'Title'} allowNewlines={true} />
 										<TextField name={'text'} label={'Text'} allowNewlines={true} />
-										<ImageField name={'image'} label={'Image'} />,
+										<ImageField name={'image'} label={'Image'} />
 									</SortableRepeater>
 								</ToOne>
 							</>
@@ -169,10 +163,8 @@ export const ContentPageContentForm = Component(
 							<>
 								<TextField name={'title'} label={'Title'} allowNewlines={true} />
 								<TextField name={'text'} label={'Text'} allowNewlines={true} />
-								<ToOne field={'childContent'}>
-									<SiteField />
-									<SortableRepeater field={'blocks'} sortBy={'order'}>
-										<HiddenField name={'type'} defaultValue={new Literal('timelineItem')} label={undefined} />
+								<ToOne field={'children'}>
+									<SortableRepeater field={'items'} sortBy={'order'}>
 										<TextField name={'title'} label={'Title'} allowNewlines={true} />
 										<TextField name={'text'} label={'Text'} allowNewlines={true} />
 									</SortableRepeater>

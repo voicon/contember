@@ -1,0 +1,259 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "ContentBlock",
+			"fieldName": "childContent"
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContentBlockChildren",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "content_block_children",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContentBlockChildItem",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "content_block_child_item",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContentBlockChildItem",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContentBlockChildItem",
+			"field": {
+				"name": "title",
+				"columnName": "title",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContentBlockChildItem",
+			"field": {
+				"name": "text",
+				"columnName": "text",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContentBlockChildItem",
+			"field": {
+				"name": "buttonCaption",
+				"columnName": "button_caption",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContentBlock",
+			"owningSide": {
+				"name": "children",
+				"inversedBy": "block",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "ContentBlockChildren",
+				"joiningColumn": {
+					"columnName": "children_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "block",
+				"ownedBy": "children",
+				"target": "ContentBlock",
+				"type": "OneHasOne",
+				"nullable": false
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContentBlockChildItem",
+			"owningSide": {
+				"name": "parent",
+				"inversedBy": "items",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContentBlockChildren",
+				"joiningColumn": {
+					"columnName": "parent_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "items",
+				"ownedBy": "parent",
+				"type": "OneHasMany",
+				"target": "ContentBlockChildItem"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContentBlockChildItem",
+			"owningSide": {
+				"name": "image",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "image_id",
+					"onDelete": "set null"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContentBlockChildItem",
+			"owningSide": {
+				"name": "buttonLink",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Link",
+				"joiningColumn": {
+					"columnName": "button_link_id",
+					"onDelete": "set null"
+				}
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlockChildren",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"block": true,
+								"items": true
+							},
+							"read": {
+								"id": true,
+								"block": true,
+								"items": true
+							},
+							"update": {
+								"id": true,
+								"block": true,
+								"items": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlockChildItem",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"parent": true,
+								"order": true,
+								"title": true,
+								"text": true,
+								"image": true,
+								"buttonCaption": true,
+								"buttonLink": true
+							},
+							"read": {
+								"id": true,
+								"parent": true,
+								"order": true,
+								"title": true,
+								"text": true,
+								"image": true,
+								"buttonCaption": true,
+								"buttonLink": true
+							},
+							"update": {
+								"id": true,
+								"parent": true,
+								"order": true,
+								"title": true,
+								"text": true,
+								"image": true,
+								"buttonCaption": true,
+								"buttonLink": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/ContentBlock/operations/create/childContent"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlock/operations/create/children",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/ContentBlock/operations/read/childContent"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlock/operations/read/children",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/ContentBlock/operations/update/childContent"
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlock/operations/update/children",
+					"value": true
+				}
+			]
+		}
+	]
+}
