@@ -11,7 +11,7 @@ export const ContentPageListPage = (
 				pageName: 'contentPageEdit',
 			}}
 			rendererProps={{
-				title: 'ContentPages',
+				title: 'Pages',
 				actions: (
 					<>
 						<PageLinkButton to="contentPageCreate">Add a new page</PageLinkButton>

@@ -15,6 +15,7 @@ const routes = {
 
 	footer: { path: '/footer' },
 	header: { path: '/header' },
+	faq: { path: '/faq' },
 
 	sites: { path: '/sites' },
 	translations: { path: '/translations' },
