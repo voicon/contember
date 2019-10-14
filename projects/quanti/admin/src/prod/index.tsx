@@ -5,15 +5,12 @@ import {
 	EditPage,
 	FieldText,
 	GenericPage,
-	GraphQlBuilder,
-	ListPage,
 	Literal,
 	MultiEditPage,
 	PageLink,
 	Pages,
 	Repeater,
 	SelectField,
-	TableRenderer,
 	TableCell,
 	TextField,
 	DiffView,
@@ -46,21 +43,17 @@ export default () => (
 			<DiffView />
 		</GenericPage>
 
-		<MultiEditPage entity="Locale" pageName="locales" rendererProps={{ title: 'Locale' }}>
+		<MultiEditPage entityName="Locale" pageName="locales" rendererProps={{ title: 'Locale' }}>
 			<TextField label="Slug" name="slug" />
 			<TextField label="Label of switching link" name="switchToLabel" />
 		</MultiEditPage>
 
-		<EditPage
-			entity="FrontPage"
-			where={() => ({ unique: new GraphQlBuilder.Literal('One') })}
-			rendererProps={{ title: 'Front page' }}
-		>
+		<EditPage entityName="FrontPage" where="(unique = one)" rendererProps={{ title: 'Front page' }}>
 			<FrontPage />
 		</EditPage>
 
 		<MultiEditPage
-			entity="MenuItem"
+			entityName="MenuItem"
 			pageName="menuItems"
 			rendererProps={{
 				title: 'Menu',
@@ -72,15 +65,14 @@ export default () => (
 			<MenuItem />
 		</MultiEditPage>
 
-		<MultiEditPage entity="Category" pageName="categories" rendererProps={{ title: 'Categories' }}>
+		<MultiEditPage entityName="Category" pageName="categories" rendererProps={{ title: 'Categories' }}>
 			<Category />
 		</MultiEditPage>
-		<ListPage
-			entity="Page"
-			renderer={TableRenderer}
+		<MultiEditPage
+			entityName="Page"
 			rendererProps={{
 				title: 'Pages',
-				tableHeader: <PageListHeader />,
+				//tableHeader: <PageListHeader />,
 				beforeContent: (
 					<PageLink
 						to="create_page"
@@ -94,53 +86,46 @@ export default () => (
 			}}
 		>
 			<PageListCells />
-		</ListPage>
+		</MultiEditPage>
 
-		<CreatePage entity="Page" rendererProps={{ title: 'Create page' }}>
+		<CreatePage entityName="Page" rendererProps={{ title: 'Create page' }}>
 			<Page />
 		</CreatePage>
 
-		<EditPage entity="Page" rendererProps={{ title: 'Edit page' }}>
+		<EditPage entityName="Page" rendererProps={{ title: 'Edit page' }} where="(id = $id)">
 			<Page />
 		</EditPage>
 
-		<MultiEditPage entity="Place" pageName="places" rendererProps={{ sortable: { sortBy: 'order' }, title: 'Places' }}>
+		<MultiEditPage
+			entityName="Place"
+			pageName="places"
+			rendererProps={{ sortable: { sortBy: 'order' }, title: 'Places' }}
+		>
 			<Place />
 		</MultiEditPage>
 
-		<MultiEditPage entity="Person" pageName="people" rendererProps={{ sortable: { sortBy: 'order' }, title: 'People' }}>
+		<MultiEditPage
+			entityName="Person"
+			pageName="people"
+			rendererProps={{ sortable: { sortBy: 'order' }, title: 'People' }}
+		>
 			<Person />
 		</MultiEditPage>
 
-		<MultiEditPage entity="Social" pageName="social" rendererProps={{ title: 'Social' }}>
+		<MultiEditPage entityName="Social" pageName="social" rendererProps={{ title: 'Social' }}>
 			<SocialNetwork name="network" />
 			<TextField label="Url" name="url" />
 		</MultiEditPage>
 
-		<EditPage
-			entity="Footer"
-			pageName="footer"
-			where={() => ({ unique: new GraphQlBuilder.Literal('One') })}
-			rendererProps={{ title: 'Footer' }}
-		>
+		<EditPage entityName="Footer" pageName="footer" where="(unique = one)" rendererProps={{ title: 'Footer' }}>
 			<Footer />
 		</EditPage>
 
-		<EditPage
-			entity="Contact"
-			pageName="contact"
-			where={() => ({ unique: new GraphQlBuilder.Literal('One') })}
-			rendererProps={{ title: 'Contact' }}
-		>
+		<EditPage entityName="Contact" pageName="contact" where="(unique = one)" rendererProps={{ title: 'Contact' }}>
 			<Contact />
 		</EditPage>
 
-		<EditPage
-			entity="JoinUsRoot"
-			pageName="joinUs"
-			where={() => ({ unique: new GraphQlBuilder.Literal('One') })}
-			rendererProps={{ title: 'Join us' }}
-		>
+		<EditPage entityName="JoinUsRoot" pageName="joinUs" where="(unique = one)" rendererProps={{ title: 'Join us' }}>
 			<LocaleSideDimension>
 				<TextField label="Label" name="joinUs(locale.slug='$currentLocaleSlug').label" />
 				<SelectField
@@ -152,9 +137,9 @@ export default () => (
 		</EditPage>
 
 		<EditPage
-			entity="TranslationRoot"
+			entityName="TranslationRoot"
 			pageName="translations"
-			where={() => ({ unique: new GraphQlBuilder.Literal('One') })}
+			where="(unique = one)"
 			rendererProps={{ title: 'Translations' }}
 		>
 			<Repeater field="translated">
@@ -174,10 +159,9 @@ export default () => (
 			</Repeater>
 		</EditPage>
 
-		<ListPage
-			entity="ContactMessage"
+		<MultiEditPage
+			entityName="ContactMessage"
 			pageName="contactMessages"
-			renderer={TableRenderer}
 			rendererProps={{
 				title: 'Contact messages',
 			}}
@@ -191,6 +175,6 @@ export default () => (
 			<TableCell>
 				<FieldText name="message" />
 			</TableCell>
-		</ListPage>
+		</MultiEditPage>
 	</Pages>
 )
