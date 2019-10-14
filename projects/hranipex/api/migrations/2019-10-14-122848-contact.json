@@ -1,0 +1,1152 @@
+{
+	"modifications": [
+		{
+			"modification": "createEnum",
+			"enumName": "ContactDepartmentSpecialType",
+			"values": [
+				"sales",
+				"management"
+			]
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "Contact",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactLocale",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_locale",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactLocaleItem",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_locale_item",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactCountry",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_country",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactRegion",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_region",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactDepartment",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_department",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactDepartmentLocale",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_department_locale",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactPerson",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_person",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactPersonLocale",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_person_locale",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactCountryPerson",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_country_person",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "ContactRegionPerson",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "contact_region_person",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocale",
+			"field": {
+				"name": "info",
+				"columnName": "info",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocaleItem",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocaleItem",
+			"field": {
+				"name": "key",
+				"columnName": "key",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactLocaleItem",
+			"field": {
+				"name": "value",
+				"columnName": "value",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactCountry",
+			"field": {
+				"name": "code",
+				"columnName": "code",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactRegion",
+			"field": {
+				"name": "code",
+				"columnName": "code",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactRegion",
+			"field": {
+				"name": "name",
+				"columnName": "name",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactDepartment",
+			"field": {
+				"name": "type",
+				"columnName": "type",
+				"nullable": true,
+				"type": "Enum",
+				"columnType": "ContactDepartmentSpecialType",
+				"enumName": "ContactDepartmentSpecialType"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactDepartment",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactDepartmentLocale",
+			"field": {
+				"name": "name",
+				"columnName": "name",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPerson",
+			"field": {
+				"name": "name",
+				"columnName": "name",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPerson",
+			"field": {
+				"name": "phone",
+				"columnName": "phone",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPerson",
+			"field": {
+				"name": "email",
+				"columnName": "email",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPerson",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactPersonLocale",
+			"field": {
+				"name": "jobTitle",
+				"columnName": "job_title",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactCountryPerson",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "ContactRegionPerson",
+			"field": {
+				"name": "order",
+				"columnName": "order",
+				"nullable": false,
+				"type": "Integer",
+				"columnType": "integer"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Contact",
+			"owningSide": {
+				"name": "site",
+				"inversedBy": "contact",
+				"nullable": false,
+				"type": "OneHasOne",
+				"target": "Site",
+				"joiningColumn": {
+					"columnName": "site_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "contact",
+				"ownedBy": "site",
+				"target": "Contact",
+				"type": "OneHasOne",
+				"nullable": true
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactLocale",
+			"owningSide": {
+				"name": "root",
+				"inversedBy": "locales",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Contact",
+				"joiningColumn": {
+					"columnName": "root_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "locales",
+				"ownedBy": "root",
+				"type": "OneHasMany",
+				"target": "ContactLocale"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "SiteLocale",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactLocaleItem",
+			"owningSide": {
+				"name": "contactLocale",
+				"inversedBy": "items",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContactLocale",
+				"joiningColumn": {
+					"columnName": "contact_locale_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "items",
+				"ownedBy": "contactLocale",
+				"type": "OneHasMany",
+				"target": "ContactLocaleItem"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactCountry",
+			"owningSide": {
+				"name": "contact",
+				"inversedBy": "countries",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Contact",
+				"joiningColumn": {
+					"columnName": "contact_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "countries",
+				"ownedBy": "contact",
+				"type": "OneHasMany",
+				"target": "ContactCountry"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactRegion",
+			"owningSide": {
+				"name": "country",
+				"inversedBy": "regions",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContactCountry",
+				"joiningColumn": {
+					"columnName": "country_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "regions",
+				"ownedBy": "country",
+				"type": "OneHasMany",
+				"target": "ContactRegion"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactDepartment",
+			"owningSide": {
+				"name": "contact",
+				"inversedBy": "departments",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Contact",
+				"joiningColumn": {
+					"columnName": "contact_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "departments",
+				"ownedBy": "contact",
+				"type": "OneHasMany",
+				"target": "ContactDepartment"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactDepartmentLocale",
+			"owningSide": {
+				"name": "root",
+				"inversedBy": "locales",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContactDepartment",
+				"joiningColumn": {
+					"columnName": "root_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "locales",
+				"ownedBy": "root",
+				"type": "OneHasMany",
+				"target": "ContactDepartmentLocale"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactDepartmentLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "SiteLocale",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactPerson",
+			"owningSide": {
+				"name": "image",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Image",
+				"joiningColumn": {
+					"columnName": "image_id",
+					"onDelete": "restrict"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactPerson",
+			"owningSide": {
+				"name": "department",
+				"inversedBy": "people",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContactDepartment",
+				"joiningColumn": {
+					"columnName": "department_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "people",
+				"ownedBy": "department",
+				"type": "OneHasMany",
+				"target": "ContactPerson"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactPersonLocale",
+			"owningSide": {
+				"name": "root",
+				"inversedBy": "locales",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContactPerson",
+				"joiningColumn": {
+					"columnName": "root_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "locales",
+				"ownedBy": "root",
+				"type": "OneHasMany",
+				"target": "ContactPersonLocale"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactPersonLocale",
+			"owningSide": {
+				"name": "locale",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "SiteLocale",
+				"joiningColumn": {
+					"columnName": "locale_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactCountryPerson",
+			"owningSide": {
+				"name": "person",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContactPerson",
+				"joiningColumn": {
+					"columnName": "person_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactCountryPerson",
+			"owningSide": {
+				"name": "country",
+				"inversedBy": "people",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContactCountry",
+				"joiningColumn": {
+					"columnName": "country_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "people",
+				"ownedBy": "country",
+				"type": "OneHasMany",
+				"target": "ContactCountryPerson"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactRegionPerson",
+			"owningSide": {
+				"name": "person",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContactPerson",
+				"joiningColumn": {
+					"columnName": "person_id",
+					"onDelete": "cascade"
+				}
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContactRegionPerson",
+			"owningSide": {
+				"name": "region",
+				"inversedBy": "people",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "ContactRegion",
+				"joiningColumn": {
+					"columnName": "region_id",
+					"onDelete": "cascade"
+				}
+			},
+			"inverseSide": {
+				"name": "people",
+				"ownedBy": "region",
+				"type": "OneHasMany",
+				"target": "ContactRegionPerson"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ContactLocale",
+			"unique": {
+				"fields": [
+					"root",
+					"locale"
+				],
+				"name": "unique_ContactLocale_root_locale_cda795"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ContactCountry",
+			"unique": {
+				"fields": [
+					"contact",
+					"code"
+				],
+				"name": "unique_ContactCountry_contact_code_1db245"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ContactRegion",
+			"unique": {
+				"fields": [
+					"country",
+					"code"
+				],
+				"name": "unique_ContactRegion_country_code_7f388e"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ContactDepartment",
+			"unique": {
+				"fields": [
+					"contact",
+					"type"
+				],
+				"name": "unique_ContactDepartment_contact_type_2ecbe3"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ContactDepartmentLocale",
+			"unique": {
+				"fields": [
+					"root",
+					"locale"
+				],
+				"name": "unique_ContactDepartmentLocale_root_locale_f288f6"
+			}
+		},
+		{
+			"modification": "createUniqueConstraint",
+			"entityName": "ContactPersonLocale",
+			"unique": {
+				"fields": [
+					"root",
+					"locale"
+				],
+				"name": "unique_ContactPersonLocale_root_locale_4c6238"
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Contact",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"site": true,
+								"locales": true,
+								"departments": true,
+								"countries": true
+							},
+							"read": {
+								"id": true,
+								"site": true,
+								"locales": true,
+								"departments": true,
+								"countries": true
+							},
+							"update": {
+								"id": true,
+								"site": true,
+								"locales": true,
+								"departments": true,
+								"countries": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactLocale",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"root": true,
+								"locale": true,
+								"info": true,
+								"items": true
+							},
+							"read": {
+								"id": true,
+								"root": true,
+								"locale": true,
+								"info": true,
+								"items": true
+							},
+							"update": {
+								"id": true,
+								"root": true,
+								"locale": true,
+								"info": true,
+								"items": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactLocaleItem",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"contactLocale": true,
+								"order": true,
+								"key": true,
+								"value": true
+							},
+							"read": {
+								"id": true,
+								"contactLocale": true,
+								"order": true,
+								"key": true,
+								"value": true
+							},
+							"update": {
+								"id": true,
+								"contactLocale": true,
+								"order": true,
+								"key": true,
+								"value": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactCountry",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"contact": true,
+								"regions": true,
+								"people": true,
+								"code": true
+							},
+							"read": {
+								"id": true,
+								"contact": true,
+								"regions": true,
+								"people": true,
+								"code": true
+							},
+							"update": {
+								"id": true,
+								"contact": true,
+								"regions": true,
+								"people": true,
+								"code": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactRegion",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"country": true,
+								"people": true,
+								"code": true,
+								"name": true
+							},
+							"read": {
+								"id": true,
+								"country": true,
+								"people": true,
+								"code": true,
+								"name": true
+							},
+							"update": {
+								"id": true,
+								"country": true,
+								"people": true,
+								"code": true,
+								"name": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactDepartment",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"contact": true,
+								"type": true,
+								"order": true,
+								"locales": true,
+								"people": true
+							},
+							"read": {
+								"id": true,
+								"contact": true,
+								"type": true,
+								"order": true,
+								"locales": true,
+								"people": true
+							},
+							"update": {
+								"id": true,
+								"contact": true,
+								"type": true,
+								"order": true,
+								"locales": true,
+								"people": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactDepartmentLocale",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"root": true,
+								"locale": true,
+								"name": true
+							},
+							"read": {
+								"id": true,
+								"root": true,
+								"locale": true,
+								"name": true
+							},
+							"update": {
+								"id": true,
+								"root": true,
+								"locale": true,
+								"name": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactPerson",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"name": true,
+								"image": true,
+								"phone": true,
+								"email": true,
+								"locales": true,
+								"department": true,
+								"order": true
+							},
+							"read": {
+								"id": true,
+								"name": true,
+								"image": true,
+								"phone": true,
+								"email": true,
+								"locales": true,
+								"department": true,
+								"order": true
+							},
+							"update": {
+								"id": true,
+								"name": true,
+								"image": true,
+								"phone": true,
+								"email": true,
+								"locales": true,
+								"department": true,
+								"order": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactPersonLocale",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"root": true,
+								"locale": true,
+								"jobTitle": true
+							},
+							"read": {
+								"id": true,
+								"root": true,
+								"locale": true,
+								"jobTitle": true
+							},
+							"update": {
+								"id": true,
+								"root": true,
+								"locale": true,
+								"jobTitle": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactCountryPerson",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"person": true,
+								"country": true,
+								"order": true
+							},
+							"read": {
+								"id": true,
+								"person": true,
+								"country": true,
+								"order": true
+							},
+							"update": {
+								"id": true,
+								"person": true,
+								"country": true,
+								"order": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactRegionPerson",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"person": true,
+								"region": true,
+								"order": true
+							},
+							"read": {
+								"id": true,
+								"person": true,
+								"region": true,
+								"order": true
+							},
+							"update": {
+								"id": true,
+								"person": true,
+								"region": true,
+								"order": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/create/contact",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/read/contact",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/Site/operations/update/contact",
+					"value": true
+				}
+			]
+		}
+	]
+}
