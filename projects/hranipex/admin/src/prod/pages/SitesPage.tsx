@@ -4,7 +4,7 @@ import { getCountryFlag, getLocaleFlag } from '../utils'
 
 export const SitesPage = (
 	<MultiEditPage
-		entity="Site"
+		entityName="Site"
 		pageName="sites"
 		rendererProps={{
 			title: 'Sites',

@@ -5,12 +5,11 @@ import { ContentPageForm } from '../forms'
 
 export const ContentPageCreatePage = (
 	<CreatePage
-		entity="ContentPage"
+		entityName="ContentPage"
 		pageName={'contentPageCreate'}
 		rendererProps={{
 			title: 'Add a new page',
 			navigation: <NavigateBackButton to="contentPageList">Pages</NavigateBackButton>,
-			onlyOneInCollection: true,
 		}}
 		redirectOnSuccess={request => ({ ...request, pageName: 'contentPageList' })}
 	>

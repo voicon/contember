@@ -5,13 +5,13 @@ import { PostForm, PostFormSide } from '../forms'
 
 export const PostEditPage = (
 	<EditPage
-		entity="Post"
+		entityName="Post"
+		where="(id = $id)"
 		pageName={'postEdit'}
 		rendererProps={{
 			title: 'Edit post',
 			navigation: <NavigateBackButton to="postList">Posts</NavigateBackButton>,
 			side: <PostFormSide />,
-			onlyOneInCollection: true,
 		}}
 	>
 		<PostForm />

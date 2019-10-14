@@ -9,26 +9,29 @@ import {
 import * as React from 'react'
 import { EditButton, EditButtonProps } from './EditButton'
 
-export interface GridProps extends Omit<EntityListDataProviderProps<TableRendererProps>, 'renderer'> {
+export interface GridProps extends EntityListDataProviderProps {
 	editButton?: EditButtonProps
 	children: React.ReactNode
+	rendererProps?: Omit<TableRendererProps, 'children'>
 }
 
-export const Grid = React.memo<GridProps>(({ editButton, ...props }) => (
-	<EntityListDataProvider {...props} renderer={TableRenderer}>
-		{React.Children.toArray(props.children).map((it, i) => (
-			<TableCell key={i} shrunk={i === 2}>
-				{it}
-			</TableCell>
-		))}
+export const Grid = React.memo<GridProps>(({ editButton, rendererProps, ...props }) => (
+	<EntityListDataProvider {...props}>
+		<TableRenderer {...rendererProps}>
+			{React.Children.toArray(props.children).map((it, i) => (
+				<TableCell key={i} shrunk={i === 2}>
+					{it}
+				</TableCell>
+			))}
 
-		{editButton && (
+			{editButton && (
+				<TableCell shrunk>
+					<EditButton {...editButton} />
+				</TableCell>
+			)}
 			<TableCell shrunk>
-				<EditButton {...editButton} />
+				<RemoveButton removeType={'delete'} immediatePersist={true} />
 			</TableCell>
-		)}
-		<TableCell shrunk>
-			<RemoveButton removeType={'delete'} immediatePersist={true} />
-		</TableCell>
+		</TableRenderer>
 	</EntityListDataProvider>
 ))

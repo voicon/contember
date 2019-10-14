@@ -4,7 +4,7 @@ import { SeoForm } from '../forms'
 import { ImageField, LinkField, LocaleSideDimension } from '../components'
 
 export const FrontPage = (
-	<EditPage pageName={'frontPage'} entity={'Site'} where="(code = $site)" rendererProps={{ title: 'Front page' }}>
+	<EditPage pageName={'frontPage'} entityName="Site" where="(code = $site)" rendererProps={{ title: 'Front page' }}>
 		<ToOne field={'frontPage'}>
 			<LocaleSideDimension>
 				<Box heading={'Intro block'}>

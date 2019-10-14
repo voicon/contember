@@ -3,7 +3,7 @@ import * as React from 'react'
 import { LinkField, LocaleSideDimensionBase, SiteField } from '../components'
 
 export const HeaderPage = (
-	<EditPage pageName={'header'} entity={'Site'} where="(code = $site)" rendererProps={{ title: 'Header' }}>
+	<EditPage pageName={'header'} entityName="Site" where="(code = $site)" rendererProps={{ title: 'Header' }}>
 		<LocaleSideDimensionBase>
 			<ToOne field="locales(code=$currentLocaleCode).header">
 				<Box heading={'Left menu'}>

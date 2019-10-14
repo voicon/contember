@@ -3,7 +3,7 @@ import * as React from 'react'
 
 export const IconsPage = (
 	<MultiEditPage
-		entity="IconShape"
+		entityName="IconShape"
 		pageName="icons"
 		rendererProps={{
 			title: 'Icons',

@@ -1,4 +1,4 @@
-import { FieldText, GenericPage, Literal, PageLinkButton } from 'cms-admin'
+import { FieldText, GenericPage, PageLinkButton } from 'cms-admin'
 import * as React from 'react'
 import { Grid, LocaleSideDimension } from '../components'
 
