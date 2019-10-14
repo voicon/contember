@@ -48,7 +48,7 @@ export default () => (
 			<TextField label="Label of switching link" name="switchToLabel" />
 		</MultiEditPage>
 
-		<EditPage entityName="FrontPage" where="(unique = one)" rendererProps={{ title: 'Front page' }}>
+		<EditPage entityName="FrontPage" where={{ unique: new Literal('One') }} rendererProps={{ title: 'Front page' }}>
 			<FrontPage />
 		</EditPage>
 
@@ -117,15 +117,30 @@ export default () => (
 			<TextField label="Url" name="url" />
 		</MultiEditPage>
 
-		<EditPage entityName="Footer" pageName="footer" where="(unique = one)" rendererProps={{ title: 'Footer' }}>
+		<EditPage
+			entityName="Footer"
+			pageName="footer"
+			where={{ unique: new Literal('One') }}
+			rendererProps={{ title: 'Footer' }}
+		>
 			<Footer />
 		</EditPage>
 
-		<EditPage entityName="Contact" pageName="contact" where="(unique = one)" rendererProps={{ title: 'Contact' }}>
+		<EditPage
+			entityName="Contact"
+			pageName="contact"
+			where={{ unique: new Literal('One') }}
+			rendererProps={{ title: 'Contact' }}
+		>
 			<Contact />
 		</EditPage>
 
-		<EditPage entityName="JoinUsRoot" pageName="joinUs" where="(unique = one)" rendererProps={{ title: 'Join us' }}>
+		<EditPage
+			entityName="JoinUsRoot"
+			pageName="joinUs"
+			where={{ unique: new Literal('One') }}
+			rendererProps={{ title: 'Join us' }}
+		>
 			<LocaleSideDimension>
 				<TextField label="Label" name="joinUs(locale.slug='$currentLocaleSlug').label" />
 				<SelectField
@@ -139,7 +154,7 @@ export default () => (
 		<EditPage
 			entityName="TranslationRoot"
 			pageName="translations"
-			where="(unique = one)"
+			where={{ unique: new Literal('One') }}
 			rendererProps={{ title: 'Translations' }}
 		>
 			<Repeater field="translated">
