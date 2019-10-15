@@ -12,9 +12,11 @@ export const FrontPage = (
 			<ImageField name={'headerImage'} label={'Header image'} />
 
 			<FrontPageContentForm />
-			<TextField name={'scrollString'} label={'Scroll string'} allowNewlines={true} />
+			<Box>
+				<TextField name={'scrollString'} label={'Scroll string'} allowNewlines={true} />
 
-			<LinkForm />
+				<LinkForm />
+			</Box>
 			<SeoForm />
 		</ToOne>
 	</EditPage>

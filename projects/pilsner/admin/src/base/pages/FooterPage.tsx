@@ -37,19 +37,17 @@ export const FooterPage = (
 				<TextField name={'dontDriveLink'} label={'Link'} />
 			</Box>
 
-			<Box heading="Links">
-				<SortableRepeater sortBy={'order'} field={'links'} removeType={'delete'}>
-					<TextField name={'caption'} label="Caption" />
-					<DiscriminatedBlocks name="linkType" label={undefined}>
-						<Block discriminateBy="external" label="External">
-							<TextField name="linkUrl" label="URL" />
-						</Block>
-						<Block discriminateBy="internal" label="Internal">
-							<SelectField name="link" label="Link" options="Linkable.url" />
-						</Block>
-					</DiscriminatedBlocks>
-				</SortableRepeater>
-			</Box>
+			<SortableRepeater sortBy={'order'} field={'links'} removeType={'delete'} label="Links">
+				<TextField name={'caption'} label="Caption" />
+				<DiscriminatedBlocks name="linkType" label={undefined}>
+					<Block discriminateBy="external" label="External">
+						<TextField name="linkUrl" label="URL" />
+					</Block>
+					<Block discriminateBy="internal" label="Internal">
+						<SelectField name="link" label="Link" options="Linkable.url" />
+					</Block>
+				</DiscriminatedBlocks>
+			</SortableRepeater>
 		</ToOne>
 	</EditPage>
 )

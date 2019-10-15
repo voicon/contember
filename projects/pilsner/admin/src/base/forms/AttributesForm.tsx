@@ -9,15 +9,13 @@ export const AttributesForm = Component<AttributesFormProps>(
 	props => (
 		<>
 			<ToOne {...props}>
-				<Box heading="Attributes" distinction="seamlessIfNested">
-					<SortableRepeater sortBy={'order'} field={'attributes'}>
-						<TextField name="title" label={'Title'} />
-						<SortableRepeater sortBy={'order'} field={'values'}>
-							<TextField name="value" label={'Value'} />
-							<TextField name="url" label={'URL'} />
-						</SortableRepeater>
+				<SortableRepeater sortBy={'order'} field={'attributes'} label="Attributes">
+					<TextField name="title" label={'Title'} />
+					<SortableRepeater sortBy={'order'} field={'values'} label="Values">
+						<TextField name="value" label={'Value'} />
+						<TextField name="url" label={'URL'} />
 					</SortableRepeater>
-				</Box>
+				</SortableRepeater>
 			</ToOne>
 		</>
 	),
