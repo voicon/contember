@@ -4,9 +4,9 @@ import { LinkField, LocaleSideDimension, SiteField } from '../components'
 
 export const FaqPage = (
 	<MultiEditPage
-		entity="FaqCategory"
+		entityName="FaqCategory"
 		pageName="faq"
-		where="(site.code = $site)"
+		filter="[site.code = $site]" // TODO this probably does not persist well
 		rendererProps={{
 			removeType: 'delete',
 			title: 'FAQs',

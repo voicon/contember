@@ -24,8 +24,7 @@ export const SitesPage = (
 			}
 			name="code"
 		/>
-		<h3>Locales</h3>
-		<SortableRepeater field="locales" sortBy={'order'}>
+		<SortableRepeater field="locales" sortBy={'order'} label="Locales">
 			<TextField
 				label={
 					<>

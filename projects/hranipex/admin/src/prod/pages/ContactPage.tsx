@@ -4,7 +4,7 @@ import { ImageField, LocaleSideDimension, SiteField } from '../components'
 
 export const ContactPage = (
 	<EditPage
-		entity="Contact"
+		entityName="Contact"
 		pageName="contact"
 		where="(site.code = $site)"
 		rendererProps={{

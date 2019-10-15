@@ -4,7 +4,7 @@ import { SiteField } from '../components'
 
 export const ContactSalesPage = (
 	<EditPage
-		entity="Contact"
+		entityName="Contact"
 		pageName="contactSales"
 		where="(site.code = $site)"
 		rendererProps={{
