@@ -1,5 +1,6 @@
 import { SchemaDefinition as d } from '@contember/schema-definition'
 import { Site, SiteLocale } from './Site'
+import { Link } from './Links'
 
 export class FaqCategory {
 	locales = d.oneHasMany(FaqCategoryLocale, 'root')
@@ -31,7 +32,10 @@ export class FaqQuestion {
 		.cascadeOnDelete()
 		.notNull()
 	order = d.intColumn().notNull()
-	category = d.manyHasOne(FaqCategory, 'questions').notNull()
+	category = d
+		.manyHasOne(FaqCategory, 'questions')
+		.notNull()
+		.cascadeOnDelete()
 }
 
 @d.Unique('root', 'locale')
@@ -46,4 +50,6 @@ export class FaqQuestionLocale {
 		.notNull()
 	question = d.stringColumn().notNull()
 	answer = d.stringColumn().notNull()
+	linkCaption = d.stringColumn()
+	link = d.manyHasOne(Link).setNullOnDelete()
 }

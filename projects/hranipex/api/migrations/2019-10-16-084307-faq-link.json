@@ -1,0 +1,64 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "FaqQuestionLocale",
+			"field": {
+				"name": "linkCaption",
+				"columnName": "link_caption",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "FaqQuestionLocale",
+			"owningSide": {
+				"name": "link",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "Link",
+				"joiningColumn": {
+					"columnName": "link_id",
+					"onDelete": "set null"
+				}
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FaqQuestionLocale/operations/create/linkCaption",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FaqQuestionLocale/operations/create/link",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FaqQuestionLocale/operations/read/linkCaption",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FaqQuestionLocale/operations/read/link",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FaqQuestionLocale/operations/update/linkCaption",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/FaqQuestionLocale/operations/update/link",
+					"value": true
+				}
+			]
+		}
+	]
+}
