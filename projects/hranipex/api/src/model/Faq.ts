@@ -1,5 +1,6 @@
 import { SchemaDefinition as d } from '@contember/schema-definition'
 import { Site, SiteLocale } from './Site'
+import { Link } from './Links'
 
 export class FaqCategory {
 	locales = d.oneHasMany(FaqCategoryLocale, 'root')
@@ -49,4 +50,6 @@ export class FaqQuestionLocale {
 		.notNull()
 	question = d.stringColumn().notNull()
 	answer = d.stringColumn().notNull()
+	linkCaption = d.stringColumn()
+	link = d.manyHasOne(Link).setNullOnDelete()
 }
