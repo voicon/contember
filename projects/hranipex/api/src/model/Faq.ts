@@ -31,7 +31,10 @@ export class FaqQuestion {
 		.cascadeOnDelete()
 		.notNull()
 	order = d.intColumn().notNull()
-	category = d.manyHasOne(FaqCategory, 'questions').notNull()
+	category = d
+		.manyHasOne(FaqCategory, 'questions')
+		.notNull()
+		.cascadeOnDelete()
 }
 
 @d.Unique('root', 'locale')

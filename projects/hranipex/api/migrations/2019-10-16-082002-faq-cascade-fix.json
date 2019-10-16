@@ -1,0 +1,10 @@
+{
+	"modifications": [
+		{
+			"modification": "updateRelationOnDelete",
+			"entityName": "FaqQuestion",
+			"fieldName": "category",
+			"onDelete": "cascade"
+		}
+	]
+}
