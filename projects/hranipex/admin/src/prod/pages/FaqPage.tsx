@@ -8,6 +8,7 @@ export const FaqPage = (
 		pageName="faq"
 		where="(site.code = $site)"
 		rendererProps={{
+			removeType: 'delete',
 			title: 'FAQs',
 			sortable: {
 				sortBy: 'order',
@@ -18,7 +19,7 @@ export const FaqPage = (
 		<LocaleSideDimension>
 			<TextField label={'Category name'} name="name" />
 		</LocaleSideDimension>
-		<SortableRepeater sortBy={'order'} field={'questions'}>
+		<SortableRepeater sortBy={'order'} field={'questions'} removeType={'delete'}>
 			<SiteField />
 			<LocaleSideDimension>
 				<TextField label={'Question'} name="question" />
