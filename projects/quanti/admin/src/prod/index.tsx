@@ -15,6 +15,7 @@ import {
 	TextField,
 	DiffView,
 	DiffDialog,
+	ListPage,
 } from 'cms-admin'
 import * as React from 'react'
 import { Category } from './components/Category'
@@ -68,7 +69,7 @@ export default () => (
 		<MultiEditPage entityName="Category" pageName="categories" rendererProps={{ title: 'Categories' }}>
 			<Category />
 		</MultiEditPage>
-		<MultiEditPage
+		<ListPage
 			entityName="Page"
 			rendererProps={{
 				title: 'Pages',
@@ -86,7 +87,7 @@ export default () => (
 			}}
 		>
 			<PageListCells />
-		</MultiEditPage>
+		</ListPage>
 
 		<CreatePage entityName="Page" rendererProps={{ title: 'Create page' }}>
 			<Page />
@@ -174,7 +175,7 @@ export default () => (
 			</Repeater>
 		</EditPage>
 
-		<MultiEditPage
+		<ListPage
 			entityName="ContactMessage"
 			pageName="contactMessages"
 			rendererProps={{
@@ -190,6 +191,6 @@ export default () => (
 			<TableCell>
 				<FieldText name="message" />
 			</TableCell>
-		</MultiEditPage>
+		</ListPage>
 	</Pages>
 )
