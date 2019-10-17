@@ -5,18 +5,18 @@ import { EditButton, LocationTreeRenderer } from '../components'
 export const LocationPage = (
 	<ListPage
 		pageName={'locations'}
-		entity={'Location'}
+		entityName={'Location'}
 		filter="[site.slug = $site]"
-		renderer={LocationTreeRenderer}
 		rendererProps={{
 			title: 'Locations',
 			actions: <PageLinkButton to="locationCreate">Add a new location</PageLinkButton>,
+			wrapperComponent: LocationTreeRenderer,
 		}}
 	>
 		<FieldText name={'name'} />
 		<ToOne field="parent">
 			<Field name="name" />
 		</ToOne>
-		<EditButton pageName={'locationEdit'} label={'Edit'} />
+		<EditButton pageName={'locationEdit'} style={{ marginLeft: '.75em' }} />
 	</ListPage>
 )
