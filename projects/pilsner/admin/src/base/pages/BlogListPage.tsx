@@ -1,27 +1,27 @@
-import { FieldText, GenericPage, Literal, PageLinkButton } from 'cms-admin'
+import { FieldText, Literal, PageLinkButton, TableCell, TablePage } from 'cms-admin'
 import * as React from 'react'
-import { Grid } from '../components'
+import { EditButton } from '../components'
 
 export const BlogListPage = (
-	<GenericPage pageName={'blogList'}>
-		<Grid
-			entityName="Post"
-			orderBy={[{ publishedAt: new Literal('desc') }]}
-			filter="[site.slug = $site]"
-			editButton={{
-				pageName: 'blogEdit',
-			}}
-			rendererProps={{
-				title: 'Stories',
-				actions: (
-					<>
-						<PageLinkButton to="blogPage">Edit the Stories page</PageLinkButton>
-						<PageLinkButton to="blogCreate">Add a new story</PageLinkButton>
-					</>
-				),
-			}}
-		>
+	<TablePage
+		pageName={'blogList'}
+		entityName="Post"
+		orderBy={[{ publishedAt: new Literal('desc') }]}
+		filter="[site.slug = $site]"
+		rendererProps={{
+			title: 'Stories',
+			actions: (
+				<>
+					<PageLinkButton to="blogPage">Edit the Stories page</PageLinkButton>
+					<PageLinkButton to="blogCreate">Add a new story</PageLinkButton>
+				</>
+			),
+		}}
+	>
+		<TableCell>
 			<FieldText name="title" />
+		</TableCell>
+		<TableCell>
 			<div style={{ color: '#444', fontSize: '11px' }}>
 				<FieldText
 					name="publishedAt"
@@ -30,6 +30,9 @@ export const BlogListPage = (
 					}}
 				/>
 			</div>
-		</Grid>
-	</GenericPage>
+		</TableCell>
+		<TableCell shrunk>
+			<EditButton pageName="blogEdit" />
+		</TableCell>
+	</TablePage>
 )
