@@ -1,0 +1,38 @@
+{
+	"modifications": [
+		{
+			"modification": "createRelation",
+			"entityName": "ContactCountry",
+			"owningSide": {
+				"name": "site",
+				"nullable": true,
+				"type": "OneHasOne",
+				"target": "Site",
+				"joiningColumn": {
+					"columnName": "site_id",
+					"onDelete": "set null"
+				}
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactCountry/operations/create/site",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactCountry/operations/read/site",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactCountry/operations/update/site",
+					"value": true
+				}
+			]
+		}
+	]
+}

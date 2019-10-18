@@ -14,6 +14,7 @@ export const ContactSalesPage = (
 		<SiteField />
 		<Repeater field={'countries'} label={'Countries'}>
 			<TextField label={'Country code (ISO 3166-2)'} name="code" size={'large'} />
+			<SelectField label={'Dedicated site'} name="site" options="Site.code" allowNull={true} />
 			<SortableRepeater sortBy={'order'} field={'people'} label={'Salesmen in country'}>
 				<SelectField
 					label={undefined}
@@ -26,7 +27,6 @@ export const ContactSalesPage = (
 				<TextField label={'Name'} name="name" />
 				<SortableRepeater sortBy={'order'} field={'people'} label={'Salesmen in region'}>
 					<SelectField
-						description={'aaa'}
 						label={undefined}
 						name="person"
 						options="ContactPerson[department.contact.site.code=$site][department.type = sales].name"
