@@ -95,6 +95,8 @@ export class ContactPerson {
 		.notNull()
 		.cascadeOnDelete()
 	order = d.intColumn().notNull()
+	countries: d.OneHasManyDefinition = d.oneHasMany(ContactCountryPerson, 'person')
+	regions: d.OneHasManyDefinition = d.oneHasMany(ContactRegionPerson, 'person')
 }
 
 @d.Unique('root', 'locale')
@@ -112,7 +114,7 @@ export class ContactPersonLocale {
 
 export class ContactCountryPerson {
 	person = d
-		.manyHasOne(ContactPerson)
+		.manyHasOne(ContactPerson, 'countries')
 		.notNull()
 		.cascadeOnDelete()
 	country = d
@@ -124,7 +126,7 @@ export class ContactCountryPerson {
 
 export class ContactRegionPerson {
 	person = d
-		.manyHasOne(ContactPerson)
+		.manyHasOne(ContactPerson, 'regions')
 		.notNull()
 		.cascadeOnDelete()
 	region = d
