@@ -5,7 +5,7 @@ export const TranslationsPage = (
 	<MultiEditPage
 		pageName={'translations'}
 		entityName={'Translatable'}
-		rendererProps={{ title: 'String translations', enableAddingNew: false, enableUnlink: false }}
+		rendererProps={{ title: 'String translations', enableAddingNew: false, enableRemove: false }}
 	>
 		<TextField
 			label={
