@@ -23,6 +23,7 @@
 		{ "path": "./packages/react-multipass-rendering"},
 		{ "path": "./packages/schema" },
 		{ "path": "./packages/schema-definition" },
+		{ "path": "./packages/schema-migrations" },
 		{ "path": "./packages/schema-utils" },
 		{ "path": "./packages/ui" },
 		{ "path": "./packages/utils" },
