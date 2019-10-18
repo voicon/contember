@@ -112,7 +112,7 @@ export const ContentPageContentForm = Component(
 								<TextField name={'buttonCaption'} label={'Button caption'} />
 								<LinkField name={'buttonLink'} />
 								<ToOne field={'children'}>
-									<SortableRepeater field={'items'} sortBy={'order'}>
+									<SortableRepeater field={'items'} sortBy={'order'} removeType={'delete'}>
 										<TextField name={'title'} label={'Title'} allowNewlines={true} />
 										<TextField name={'text'} label={'Text'} allowNewlines={true} />
 										<ImageField name={'image'} label={'Image'} />
@@ -129,7 +129,7 @@ export const ContentPageContentForm = Component(
 								<TextField name={'subtitle'} label={'Subtitle'} allowNewlines={true} />
 								<TextField name={'text'} label={'Text'} allowNewlines={true} />
 								<ToOne field={'children'}>
-									<SortableRepeater field={'items'} sortBy={'order'}>
+									<SortableRepeater field={'items'} sortBy={'order'} removeType={'delete'}>
 										<TextField name={'title'} label={'Title'} allowNewlines={true} />
 										<TextField name={'text'} label={'Text'} allowNewlines={true} />
 										<ImageField name={'image'} label={'Image'} />
@@ -148,7 +148,7 @@ export const ContentPageContentForm = Component(
 								<TextField name={'subtitle'} label={'Subtitle'} allowNewlines={true} />
 								<TextField name={'text'} label={'Text'} allowNewlines={true} />
 								<ToOne field={'children'}>
-									<SortableRepeater field={'items'} sortBy={'order'}>
+									<SortableRepeater field={'items'} sortBy={'order'} removeType={'delete'}>
 										<TextField name={'title'} label={'Title'} allowNewlines={true} />
 										<TextField name={'text'} label={'Text'} allowNewlines={true} />
 										<ImageField name={'image'} label={'Image'} />
@@ -164,7 +164,7 @@ export const ContentPageContentForm = Component(
 								<TextField name={'title'} label={'Title'} allowNewlines={true} />
 								<TextField name={'text'} label={'Text'} allowNewlines={true} />
 								<ToOne field={'children'}>
-									<SortableRepeater field={'items'} sortBy={'order'}>
+									<SortableRepeater field={'items'} sortBy={'order'} removeType={'delete'}>
 										<TextField name={'title'} label={'Title'} allowNewlines={true} />
 										<TextField name={'text'} label={'Text'} allowNewlines={true} />
 									</SortableRepeater>

@@ -7,11 +7,11 @@ export const FooterPage = (
 		<LocaleSideDimensionBase>
 			<ToOne field="locales(code=$currentLocaleCode).footer">
 				<Box heading={'Footer columns'}>
-					<SortableRepeater sortBy={'order'} field={'columns'}>
+					<SortableRepeater sortBy={'order'} field={'columns'} removeType={'delete'}>
 						<TextField name="title" label="Column title" />
 						<ToOne field={'menu'}>
 							<SiteField />
-							<SortableRepeater sortBy={'order'} field={'items'} label={'Links in a column'}>
+							<SortableRepeater sortBy={'order'} field={'items'} label={'Links in a column'} removeType={'delete'}>
 								<TextField name="title" label="Link title" />
 								<LinkField name={'link'} />
 							</SortableRepeater>

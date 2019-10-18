@@ -12,21 +12,21 @@ export const ContactSalesPage = (
 		}}
 	>
 		<SiteField />
-		<Repeater field={'countries'} label={'Countries'}>
+		<Repeater field={'countries'} label={'Countries'} removeType={'delete'}>
 			<TextField label={'Country code (ISO 3166-2)'} name="code" size={'large'} />
-			<SortableRepeater sortBy={'order'} field={'people'} label={'Salesmen in country'}>
+			<SelectField label={'Dedicated site'} name="site" options="Site.code" allowNull={true} />
+			<SortableRepeater sortBy={'order'} field={'people'} label={'Salesmen in country'} removeType={'delete'}>
 				<SelectField
 					label={undefined}
 					name="person"
 					options="ContactPerson[department.contact.site.code=$site][department.type = sales].name"
 				/>
 			</SortableRepeater>
-			<Repeater field={'regions'} label={'Regions'}>
+			<Repeater field={'regions'} label={'Regions'} removeType={'delete'}>
 				<TextField label={'Region code (ISO 3166-2)'} name="code" size={'large'} />
 				<TextField label={'Name'} name="name" />
-				<SortableRepeater sortBy={'order'} field={'people'} label={'Salesmen in region'}>
+				<SortableRepeater sortBy={'order'} field={'people'} label={'Salesmen in region'} removeType={'delete'}>
 					<SelectField
-						description={'aaa'}
 						label={undefined}
 						name="person"
 						options="ContactPerson[department.contact.site.code=$site][department.type = sales].name"

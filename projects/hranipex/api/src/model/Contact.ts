@@ -46,6 +46,7 @@ export class ContactCountry {
 	people: d.OneHasManyDefinition = d.oneHasMany(ContactCountryPerson, 'country')
 	// ISO 3166-2
 	code = d.stringColumn().notNull()
+	site = d.oneHasOne(Site).setNullOnDelete()
 }
 
 @d.Unique('country', 'code')
