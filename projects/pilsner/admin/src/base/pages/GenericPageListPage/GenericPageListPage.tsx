@@ -2,7 +2,7 @@ import { EditPage, PageLinkButton } from 'cms-admin'
 import * as React from 'react'
 import { GenericPageList } from './GenericPageList'
 
-// TODO GenericPageListRenderer
+// TODO use a DetailPage
 export const GenericPageListPage = (
 	<EditPage
 		pageName="pageList"
