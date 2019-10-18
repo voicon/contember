@@ -1,0 +1,59 @@
+{
+	"modifications": [
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "ContactPerson",
+			"relation": {
+				"name": "countries",
+				"ownedBy": "person",
+				"type": "OneHasMany",
+				"target": "ContactCountryPerson"
+			}
+		},
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "ContactPerson",
+			"relation": {
+				"name": "regions",
+				"ownedBy": "person",
+				"type": "OneHasMany",
+				"target": "ContactRegionPerson"
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactPerson/operations/create/countries",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactPerson/operations/create/regions",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactPerson/operations/read/countries",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactPerson/operations/read/regions",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactPerson/operations/update/countries",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactPerson/operations/update/regions",
+					"value": true
+				}
+			]
+		}
+	]
+}
