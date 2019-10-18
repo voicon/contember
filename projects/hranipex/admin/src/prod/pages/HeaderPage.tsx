@@ -9,7 +9,7 @@ export const HeaderPage = (
 				<Box heading={'Left menu'}>
 					<ToOne field={'leftMenu'}>
 						<SiteField />
-						<SortableRepeater sortBy={'order'} field={'items'}>
+						<SortableRepeater sortBy={'order'} field={'items'} removeType={'delete'}>
 							<TextField name="title" label="Title" />
 							<LinkField name={'link'} />
 						</SortableRepeater>
@@ -23,7 +23,7 @@ export const HeaderPage = (
 				<Box heading={'Right menu'}>
 					<ToOne field={'rightMenu'}>
 						<SiteField />
-						<SortableRepeater sortBy={'order'} field={'items'}>
+						<SortableRepeater sortBy={'order'} field={'items'} removeType={'delete'}>
 							<TextField name="title" label="Title" />
 							<LinkField name={'link'} />
 						</SortableRepeater>

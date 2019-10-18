@@ -16,13 +16,13 @@ export const ContactPage = (
 		<Box heading={'Basic contact info'}>
 			<LocaleSideDimension>
 				<TextField label={'Info'} name="info" allowNewlines={true} />
-				<SortableRepeater sortBy={'order'} field={'items'}>
+				<SortableRepeater sortBy={'order'} field={'items'} removeType={'delete'}>
 					<TextField label={'Label'} name="key" />
 					<TextField label={'Value'} name="value" />
 				</SortableRepeater>
 			</LocaleSideDimension>
 		</Box>
-		<SortableRepeater sortBy={'order'} field={'departments'} label={'Departments'}>
+		<SortableRepeater sortBy={'order'} field={'departments'} label={'Departments'} removeType={'delete'}>
 			<LocaleSideDimension>
 				<TextField label={'Name'} name="name" size={'large'} />
 			</LocaleSideDimension>
@@ -35,7 +35,7 @@ export const ContactPage = (
 				name={'type'}
 				label={'Type'}
 			/>
-			<SortableRepeater sortBy={'order'} field={'people'} label={'People'}>
+			<SortableRepeater sortBy={'order'} field={'people'} label={'People'} removeType={'delete'}>
 				<TextField label={'Name'} name="name" />
 				<TextField label={'Phone'} name="phone" />
 				<TextField label={'E-mail'} name="email" />
