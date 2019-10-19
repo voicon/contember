@@ -8,7 +8,6 @@ export const FaqPage = (
 		pageName="faq"
 		filter="[site.code = $site]" // TODO this probably does not persist well
 		rendererProps={{
-			removeType: 'delete',
 			title: 'FAQs',
 			sortable: {
 				sortBy: 'order',

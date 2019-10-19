@@ -22,7 +22,7 @@ export const translationStringsPage = (
 			maxItems={10}
 		/>
 		<EntityListDataProvider entityName={'Translatable'} orderBy={[{ identifier: new Literal('asc') }]}>
-			<MultiEditRenderer title="String translations" enableAddingNew={true} enableUnlink={true}>
+			<MultiEditRenderer title="String translations" enableAddingNew={true} enableRemove={true}>
 				<TextField name={'identifier'} label={'translatable'} />
 				<SideDimensions dimension="translationSet" variableName="currentTranslationSet" variables={() => ({})}>
 					<ToOne field={'translations(set.id=$currentTranslationSet)'}>

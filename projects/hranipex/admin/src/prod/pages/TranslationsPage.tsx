@@ -10,7 +10,7 @@ export const TranslationsPage = (
 		rendererProps={{
 			title: 'String translations',
 			enableAddingNew: false,
-			enableUnlink: false,
+			enableRemove: false,
 			beforeContent: (
 				<>
 					<PageLinkButton to="translationSets">Edit translation sets</PageLinkButton>
