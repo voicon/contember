@@ -4,7 +4,7 @@ import { ImageField } from '../components'
 import { FrontPageContentForm, LinkForm, SeoForm } from '../forms'
 
 export const FrontPage = (
-	<EditPage pageName={'frontPage'} entity={'Site'} where="(slug = $site)" rendererProps={{ title: 'Front page' }}>
+	<EditPage pageName={'frontPage'} entityName={'Site'} where="(slug = $site)" rendererProps={{ title: 'Front page' }}>
 		<ToOne field={'frontPage'}>
 			<Box>
 				<TextField name={'title'} label={'Title'} size="large" allowNewlines={true} />
@@ -12,9 +12,11 @@ export const FrontPage = (
 			<ImageField name={'headerImage'} label={'Header image'} />
 
 			<FrontPageContentForm />
-			<TextField name={'scrollString'} label={'Scroll string'} allowNewlines={true} />
+			<Box>
+				<TextField name={'scrollString'} label={'Scroll string'} allowNewlines={true} />
 
-			<LinkForm />
+				<LinkForm />
+			</Box>
 			<SeoForm />
 		</ToOne>
 	</EditPage>

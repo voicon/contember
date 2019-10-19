@@ -1,6 +1,6 @@
-import { useAuth, useAuthedTenantMutation } from './lib'
+import { getTenantErrorMessage, useAuthIdentity } from '../../apiClient'
+import { useAuthedTenantMutation } from './lib'
 import { useCallback, useMemo } from 'react'
-import { getErrorCodeString } from './strings'
 
 const CHANGE_PASSWORD_MUTATION = `
 	mutation(
@@ -43,8 +43,8 @@ interface ReturnedState {
 }
 
 export const useChangePassword = (): [(password: string) => void, ReturnedState] => {
-	const auth = useAuth()
-	const personId = auth != null ? auth.personId : undefined
+	const auth = useAuthIdentity()
+	const personId = auth ? auth.personId : undefined
 	const [triggerChangePassword, state] = useAuthedTenantMutation<ChangePasswordResponse, ChangePasswordVariables>(
 		CHANGE_PASSWORD_MUTATION,
 	)
@@ -65,7 +65,9 @@ export const useChangePassword = (): [(password: string) => void, ReturnedState]
 			finished: state.finished,
 			loading: state.loading,
 			errors:
-				(state.finished && !state.error && state.data.changePassword.errors.map(it => getErrorCodeString(it.code))) ||
+				(state.finished &&
+					!state.error &&
+					state.data.changePassword.errors.map(it => getTenantErrorMessage(it.code))) ||
 				[],
 		}
 	}, [state])

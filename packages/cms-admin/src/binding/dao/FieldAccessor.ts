@@ -1,5 +1,6 @@
 import { GraphQlBuilder } from 'cms-client'
-import { FieldName, Scalar } from '../bindingTypes'
+import { FieldName } from '../bindingTypes'
+import { Scalar } from '../accessorTree'
 import { Accessor } from './Accessor'
 import { Errorable } from './Errorable'
 import { ErrorAccessor } from './ErrorAccessor'
@@ -11,6 +12,7 @@ export class FieldAccessor<
 	constructor(
 		public readonly fieldName: FieldName,
 		public readonly currentValue: Persisted | null,
+		public readonly persistedValue: Persisted | null,
 		public readonly errors: ErrorAccessor[],
 		public readonly updateValue?: (newValue: Produced | null) => void,
 	) {

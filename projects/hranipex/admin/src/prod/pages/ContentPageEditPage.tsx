@@ -5,12 +5,12 @@ import { ContentPageForm } from '../forms'
 
 export const ContentPageEditPage = (
 	<EditPage
-		entity="ContentPage"
+		entityName="ContentPage"
+		where="(id = $id)"
 		pageName={'contentPageEdit'}
 		rendererProps={{
 			title: 'Edit page',
 			navigation: <NavigateBackButton to="contentPageList">Pages</NavigateBackButton>,
-			onlyOneInCollection: true,
 		}}
 	>
 		<ContentPageForm />

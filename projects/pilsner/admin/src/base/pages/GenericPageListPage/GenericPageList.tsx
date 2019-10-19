@@ -1,15 +1,17 @@
 import {
+	Box,
 	ButtonList,
 	Component,
 	EntityAccessor,
 	EntityCollectionAccessor,
 	Field,
+	Message,
 	PageLinkButton,
 	RelativeSingleEntity,
 	RemoveButton,
 	Table,
-	TableRow,
 	TableCell,
+	TableRow,
 	ToMany,
 	ToOne,
 	useEntityCollectionAccessor,
@@ -49,19 +51,16 @@ export const GenericPageList = Component(
 		const shouldDisplayCustomPages =
 			isAdmin ||
 			(isRegionManager &&
-				customPages.reduce(
-					(accumulator, customPage) => {
-						const currentEntity = siteEntity.data.getField(customPage.field)
-						return accumulator || (currentEntity instanceof EntityAccessor && currentEntity.isPersisted())
-					},
-					false as boolean,
-				))
+				customPages.reduce<boolean>((accumulator, customPage) => {
+					const currentEntity = siteEntity.data.getField(customPage.field)
+					return accumulator || (currentEntity instanceof EntityAccessor && currentEntity.isPersisted())
+				}, false))
 
 		const shouldDisplayGenericPages =
 			genericPages instanceof EntityCollectionAccessor &&
-			genericPages.entities.reduce(
+			genericPages.entities.reduce<boolean>(
 				(accumulator, datum) => accumulator || (datum instanceof EntityAccessor && datum.isPersisted()),
-				false as boolean,
+				false,
 			)
 
 		return (
@@ -79,7 +78,7 @@ export const GenericPageList = Component(
 									<TableCell>{customPage.title}</TableCell>
 									{isAdmin && !currentEntity.isPersisted() && (
 										<TableCell>
-											<small>This page does not yet exist for this market.</small>
+											<Message size="small">This page does not yet exist for this market.</Message>
 										</TableCell>
 									)}
 									<TableCell shrunk>
@@ -101,10 +100,21 @@ export const GenericPageList = Component(
 					</Table>
 				)}
 				{!shouldDisplayGenericPages && (
-					<div>
-						{shouldDisplayCustomPages && 'There are no generic pages.'}
-						{!shouldDisplayCustomPages && 'There are no pages.'}
-					</div>
+					<Box>
+						{shouldDisplayCustomPages && (
+							<Message
+								flow="generousBlock"
+								action={
+									<PageLinkButton to="pageCreate" size="small">
+										Add a new page
+									</PageLinkButton>
+								}
+							>
+								There are no generic pages.
+							</Message>
+						)}
+						{!shouldDisplayCustomPages && <Message flow="generousBlock">There are no pages.</Message>}
+					</Box>
 				)}
 				{shouldDisplayGenericPages && genericPages && (
 					<Table>

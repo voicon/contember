@@ -1,43 +1,23 @@
 import { lcfirst } from 'cms-common'
 import * as React from 'react'
-import { DataRendererProps, EnvironmentContext, SingleEntityDataProvider } from '../../binding/coreComponents'
-import { CommonRendererProps } from '../../binding/facade/renderers'
-import { ParametersContext } from './Pages'
-import { SpecificPageProps } from './SpecificPageProps'
+import { SingleEntityDataProvider } from '../../binding/coreComponents'
+import { MutableSingleEntityRenderer, MutableSingleEntityRendererProps } from '../bindingFacade'
+import { PageProvider } from './PageProvider'
+import { SingleEntityPageProps } from './SingleEntityPageProps'
 
-interface EditPageProps<DRP> extends SpecificPageProps<DRP> {}
-
-export class EditPage<DRP extends CommonRendererProps = CommonRendererProps> extends React.Component<
-	EditPageProps<DRP>
-> {
-	static getPageName(props: EditPageProps<DataRendererProps>) {
-		return props.pageName || `edit_${lcfirst(props.entity)}`
-	}
-
-	render(): React.ReactNode {
-		return (
-			<ParametersContext.Consumer>
-				{parameters => (
-					<EnvironmentContext.Consumer>
-						{environment => (
-							<SingleEntityDataProvider
-								where={
-									typeof this.props.where === 'function'
-										? this.props.where(parameters, environment)
-										: this.props.where === undefined
-										? parameters
-										: this.props.where
-								}
-								entityName={this.props.entity}
-								renderer={this.props.renderer}
-								rendererProps={this.props.rendererProps}
-							>
-								{this.props.children}
-							</SingleEntityDataProvider>
-						)}
-					</EnvironmentContext.Consumer>
-				)}
-			</ParametersContext.Consumer>
-		)
-	}
+export interface EditPageProps extends SingleEntityPageProps {
+	rendererProps?: Omit<MutableSingleEntityRendererProps, 'children'>
 }
+
+const EditPage: Partial<PageProvider<EditPageProps>> & React.ComponentType<EditPageProps> = React.memo(
+	(props: EditPageProps) => (
+		<SingleEntityDataProvider where={props.where} entityName={props.entityName}>
+			<MutableSingleEntityRenderer {...props.rendererProps}>{props.children}</MutableSingleEntityRenderer>
+		</SingleEntityDataProvider>
+	),
+)
+
+EditPage.displayName = 'EditPage'
+EditPage.getPageName = (props: EditPageProps) => props.pageName || `edit_${lcfirst(props.entityName)}`
+
+export { EditPage }

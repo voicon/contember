@@ -5,13 +5,12 @@ import { PostForm, PostFormSide } from '../forms'
 
 export const PostCreatePage = (
 	<CreatePage
-		entity="Post"
+		entityName="Post"
 		pageName={'postCreate'}
 		rendererProps={{
 			title: 'Add a new post',
 			navigation: <NavigateBackButton to="postList">Posts</NavigateBackButton>,
 			side: <PostFormSide />,
-			onlyOneInCollection: true,
 		}}
 		redirectOnSuccess={request => ({ ...request, pageName: 'postList' })}
 	>

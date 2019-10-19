@@ -1,17 +1,16 @@
-import { Button, PageLinkById } from 'cms-admin'
+import { Button, AnchorBasedButtonProps, PageLinkById } from 'cms-admin'
 import * as React from 'react'
 
-export interface EditButtonProps {
+export type EditButtonProps = Omit<AnchorBasedButtonProps, 'Component'> & {
 	pageName: string
-	label?: string
 }
 
-export const EditButton: React.ComponentType<EditButtonProps> = props => (
+export const EditButton: React.ComponentType<EditButtonProps> = ({ pageName, children, ...outerButtonProps }) => (
 	<PageLinkById
-		change={id => ({ name: props.pageName, params: { id } })}
+		change={id => ({ name: pageName, params: { id } })}
 		Component={({ isActive, ...buttonProps }) => (
-			<Button {...buttonProps} Component="a">
-				{props.label || 'Edit'}
+			<Button {...buttonProps} {...outerButtonProps} Component="a">
+				{children || 'Edit'}
 			</Button>
 		)}
 	/>

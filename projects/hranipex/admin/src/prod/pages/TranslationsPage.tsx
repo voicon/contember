@@ -5,12 +5,12 @@ import { LocaleSideDimensionBase } from '../components'
 export const TranslationsPage = (
 	<MultiEditPage
 		pageName={'translations'}
-		entity={'Translatable'}
+		entityName="Translatable"
 		orderBy={[{ identifier: new Literal('asc') }]}
 		rendererProps={{
 			title: 'String translations',
 			enableAddingNew: false,
-			enableUnlink: false,
+			enableRemove: false,
 			beforeContent: (
 				<>
 					<PageLinkButton to="translationSets">Edit translation sets</PageLinkButton>

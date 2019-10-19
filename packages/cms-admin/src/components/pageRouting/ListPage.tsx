@@ -1,37 +1,29 @@
 import { lcfirst } from 'cms-common'
-import { Input } from '@contember/schema'
 import * as React from 'react'
-import { DataRendererProps, EntityListDataProvider } from '../../binding/coreComponents'
-import { CommonRendererProps, ListRenderer } from '../../binding/facade/renderers'
-import { SpecificPageProps } from './SpecificPageProps'
-import { Filter } from '../../binding'
-import { CrudQueryBuilder } from 'cms-client'
+import { EntityListDataProvider } from '../../binding/coreComponents'
+import { ListRenderer, ListRendererProps } from '../bindingFacade'
+import { EntityListPageProps } from './EntityListPageProps'
+import { PageProvider } from './PageProvider'
 
-interface ListPageProps<DRP> extends SpecificPageProps<DRP> {
-	filter?: string | Filter
-	orderBy?: Input.OrderBy<CrudQueryBuilder.OrderDirection>[]
-	offset?: number
-	limit?: number
+export interface ListPageProps extends EntityListPageProps {
+	rendererProps?: Omit<ListRendererProps, 'children'>
 }
 
-export class ListPage<DRP extends CommonRendererProps> extends React.Component<ListPageProps<DRP>> {
-	static getPageName(props: ListPageProps<DataRendererProps>) {
-		return props.pageName || `list_${lcfirst(props.entity)}`
-	}
+const ListPage: Partial<PageProvider<ListPageProps>> & React.ComponentType<ListPageProps> = React.memo(
+	(props: ListPageProps) => (
+		<EntityListDataProvider
+			entityName={props.entityName}
+			orderBy={props.orderBy}
+			offset={props.offset}
+			limit={props.limit}
+			filter={props.filter}
+		>
+			<ListRenderer {...props.rendererProps}>{props.children}</ListRenderer>
+		</EntityListDataProvider>
+	),
+)
 
-	render(): React.ReactNode {
-		return (
-			<EntityListDataProvider
-				entityName={this.props.entity}
-				renderer={this.props.renderer || (ListRenderer as React.ComponentType<DRP & DataRendererProps>)}
-				rendererProps={this.props.rendererProps}
-				filter={this.props.filter}
-				orderBy={this.props.orderBy}
-				offset={this.props.offset}
-				limit={this.props.limit}
-			>
-				{this.props.children}
-			</EntityListDataProvider>
-		)
-	}
-}
+ListPage.displayName = 'ListPage'
+ListPage.getPageName = (props: ListPageProps) => props.pageName || `list_${lcfirst(props.entityName)}`
+
+export { ListPage }

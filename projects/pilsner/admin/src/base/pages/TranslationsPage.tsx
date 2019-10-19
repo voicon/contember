@@ -4,8 +4,8 @@ import * as React from 'react'
 export const TranslationsPage = (
 	<MultiEditPage
 		pageName={'translations'}
-		entity={'Translatable'}
-		rendererProps={{ title: 'String translations', enableAddingNew: false, enableUnlink: false }}
+		entityName={'Translatable'}
+		rendererProps={{ title: 'String translations', enableAddingNew: false, enableRemove: false }}
 	>
 		<TextField
 			label={

@@ -1,27 +1,29 @@
-import { FieldText, GenericPage, Literal, PageLinkButton } from 'cms-admin'
+import { FieldText, PageLinkButton, TableCell, TablePage } from 'cms-admin'
 import * as React from 'react'
-import { Grid, LocaleSideDimension } from '../components'
+import { LocaleSideDimension } from '../components'
+import { EditButton } from '../components/EditButton'
 
 export const ContentPageListPage = (
-	<GenericPage pageName={'contentPageList'}>
-		<Grid
-			entityName="ContentPage"
-			filter="[site.code = $site]"
-			editButton={{
-				pageName: 'contentPageEdit',
-			}}
-			rendererProps={{
-				title: 'Pages',
-				actions: (
-					<>
-						<PageLinkButton to="contentPageCreate">Add a new page</PageLinkButton>
-					</>
-				),
-			}}
-		>
+	<TablePage
+		pageName={'contentPageList'}
+		entityName="ContentPage"
+		filter="[site.code = $site]"
+		rendererProps={{
+			title: 'Pages',
+			actions: (
+				<>
+					<PageLinkButton to="contentPageCreate">Add a new page</PageLinkButton>
+				</>
+			),
+		}}
+	>
+		<TableCell>
 			<LocaleSideDimension>
 				<FieldText name="title" />
 			</LocaleSideDimension>
-		</Grid>
-	</GenericPage>
+		</TableCell>
+		<TableCell shrunk>
+			<EditButton pageName="contentPageEdit" />
+		</TableCell>
+	</TablePage>
 )

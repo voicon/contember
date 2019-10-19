@@ -12,7 +12,6 @@ export const LocaleSideDimensionBase = Component<BaseLocaleSideDimensionProps>(p
 		variableName="currentLocaleCode"
 		variables={currentLocaleCode => ({
 			flag: getLocaleFlag(currentLocaleCode as string),
-			labelMiddleware: label => <>{label}</>,
 		})}
 	>
 		<div style={{ textAlign: 'center' }}>

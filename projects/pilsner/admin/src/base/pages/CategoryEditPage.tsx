@@ -1,11 +1,11 @@
-import { EditPage } from 'cms-admin'
+import { EditPage, NavigateBackButton } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton } from '../components'
 import { CategoryForm } from '../forms'
 
 export const CategoryEditPage = (
 	<EditPage
-		entity="Category"
+		entityName="Category"
+		where="(id = $id)"
 		pageName={'categoryEdit'}
 		rendererProps={{
 			title: 'Edit category',

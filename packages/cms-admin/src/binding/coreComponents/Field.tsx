@@ -1,7 +1,8 @@
 import { GraphQlBuilder } from 'cms-client'
 import * as React from 'react'
-import { DataTreeMutationState } from '../../state/dataTrees'
-import { FieldName, RelativeSingleField, Scalar, VariableInput } from '../bindingTypes'
+import { AccessorContext, useEnvironment } from '../accessorRetrievers'
+import { Scalar, useMutationState } from '../accessorTree'
+import { FieldName, RelativeSingleField, VariableInput } from '../bindingTypes'
 import {
 	DataBindingError,
 	EntityAccessor,
@@ -13,15 +14,13 @@ import {
 } from '../dao'
 import { VariableInputTransformer } from '../model/VariableInputTransformer'
 import { QueryLanguage } from '../queryLanguage'
-import { AccessorContext, AccessorContextValue } from './AccessorContext'
 import { EnforceSubtypeRelation } from './EnforceSubtypeRelation'
-import { EnvironmentContext } from './EnvironmentContext'
 import { FieldMarkerProvider } from './MarkerProvider'
-import { MutationStateContext } from './PersistState'
 
 export interface FieldPublicProps {
 	name: RelativeSingleField
 	defaultValue?: VariableInput | Scalar
+	isNonbearing?: boolean
 }
 
 export interface FieldMetadata<
@@ -31,7 +30,7 @@ export interface FieldMetadata<
 	fieldName: FieldName
 	data: FieldAccessor<Persisted, Produced>
 	errors: ErrorAccessor[]
-	isMutating: DataTreeMutationState
+	isMutating: boolean
 	environment: Environment
 }
 
@@ -74,6 +73,7 @@ class Field<
 								</Field.FieldInner>
 							)
 						} else {
+							console.error(`Undefined field`, fieldName, data)
 							throw new DataBindingError(`Undefined field '${fieldName}'`)
 						}
 					} else if (data instanceof EntityForRemovalAccessor) {
@@ -99,7 +99,7 @@ class Field<
 
 namespace Field {
 	export interface RawMetadata extends Omit<FieldMetadata, 'data' | 'errors'> {
-		data: AccessorContextValue
+		data: undefined | EntityAccessor | EntityForRemovalAccessor
 	}
 
 	export interface FieldInnerProps<
@@ -130,8 +130,8 @@ namespace Field {
 	}
 
 	export const DataRetriever = React.memo((props: DataRetrieverProps) => {
-		const environment = React.useContext(EnvironmentContext)
-		const isMutating = React.useContext(MutationStateContext)
+		const environment = useEnvironment()
+		const isMutating = useMutationState()
 
 		const propsName = props.name
 		const propsChildren = props.children
@@ -139,7 +139,7 @@ namespace Field {
 		return React.useMemo(() => {
 			return QueryLanguage.wrapRelativeSingleField(propsName, environment, fieldName => (
 				<AccessorContext.Consumer>
-					{(data: AccessorContextValue) => (
+					{(data: undefined | EntityAccessor | EntityForRemovalAccessor) => (
 						<RawMetadataGenerator fieldName={fieldName} data={data} isMutating={isMutating} environment={environment}>
 							{propsChildren}
 						</RawMetadataGenerator>

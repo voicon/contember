@@ -1,11 +1,11 @@
-import { CreatePage } from 'cms-admin'
+import { CreatePage, NavigateBackButton } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton, SiteField } from '../components'
+import { SiteField } from '../components'
 import { LocationForm } from '../forms'
 
 export const LocationCreatePage = (
 	<CreatePage
-		entity="Location"
+		entityName="Location"
 		pageName={'locationCreate'}
 		rendererProps={{
 			title: 'Create new location',

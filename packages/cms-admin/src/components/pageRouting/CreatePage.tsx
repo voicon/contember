@@ -1,45 +1,40 @@
 import { lcfirst } from 'cms-common'
 import * as React from 'react'
-import { DataRendererProps, EntityCreator } from '../../binding/coreComponents'
-import { CommonRendererProps } from '../../binding/facade/renderers'
+import { EntityCreator } from '../../binding/coreComponents'
 import { RequestChange } from '../../state/request'
+import { MutableSingleEntityRenderer, MutableSingleEntityRendererProps } from '../bindingFacade'
 import { DynamicLink } from '../DynamicLink'
-import { SpecificPageProps } from './SpecificPageProps'
+import { PageProvider } from './PageProvider'
+import { SingleEntityPageProps } from './SingleEntityPageProps'
 
-interface CreatePageProps<DRP> extends SpecificPageProps<DRP> {
+export interface CreatePageProps extends Omit<SingleEntityPageProps, 'where'> {
 	redirectOnSuccess?: RequestChange // TODO we cannot really redirect to an edit page of the newly-created entity.
+	rendererProps?: Omit<MutableSingleEntityRendererProps, 'children'>
 }
 
-export class CreatePage<DRP extends CommonRendererProps = CommonRendererProps> extends React.Component<
-	CreatePageProps<DRP>
-> {
-	static getPageName(props: CreatePageProps<DataRendererProps>) {
-		return props.pageName || `create_${lcfirst(props.entity)}`
-	}
-
-	render(): React.ReactNode {
-		if (!this.props.redirectOnSuccess) {
-			return (
-				<EntityCreator name={this.props.entity} renderer={this.props.renderer} rendererProps={this.props.rendererProps}>
-					{this.props.children}
-				</EntityCreator>
-			)
+const CreatePage: Partial<PageProvider<CreatePageProps>> & React.ComponentType<CreatePageProps> = React.memo(
+	(props: CreatePageProps) => {
+		if (!props.redirectOnSuccess) {
+			return <EntityCreator entityName={props.entityName}>{props.children}</EntityCreator>
 		}
 
 		return (
 			<DynamicLink
-				requestChange={this.props.redirectOnSuccess}
+				requestChange={props.redirectOnSuccess}
 				Component={({ onClick }) => (
 					<EntityCreator
-						name={this.props.entity}
-						renderer={this.props.renderer}
-						rendererProps={this.props.rendererProps}
-						onSuccessfulPersist={onClick}
+						entityName={props.entityName}
+						//onSuccessfulPersist={onClick}
 					>
-						{this.props.children}
+						<MutableSingleEntityRenderer {...props.rendererProps}>{props.children}</MutableSingleEntityRenderer>
 					</EntityCreator>
 				)}
 			/>
 		)
-	}
-}
+	},
+)
+
+CreatePage.displayName = 'CreatePage'
+CreatePage.getPageName = (props: CreatePageProps) => props.pageName || `create_${lcfirst(props.entityName)}`
+
+export { CreatePage }

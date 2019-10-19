@@ -1,16 +1,7 @@
-import { GraphQlBuilder } from 'cms-client'
 import { assertNever } from '@contember/utils'
-import {
-	ExpectedCount,
-	FieldName,
-	MutationRequestResult,
-	PRIMARY_KEY_NAME,
-	ReceivedData,
-	ReceivedDataTree,
-	ReceivedEntityData,
-	Scalar,
-	TYPENAME_KEY_NAME,
-} from '../bindingTypes'
+import { GraphQlBuilder } from 'cms-client'
+import { MutationDataResponse, ReceivedData, ReceivedDataTree, ReceivedEntityData, Scalar } from '../accessorTree'
+import { ExpectedCount, FieldName, PRIMARY_KEY_NAME, TYPENAME_KEY_NAME } from '../bindingTypes'
 import {
 	Accessor,
 	AccessorTreeRoot,
@@ -46,7 +37,7 @@ class AccessorTreeGenerator {
 		persistedData: ReceivedDataTree<undefined> | undefined,
 		initialData: AccessorTreeRoot | ReceivedDataTree<undefined> | undefined,
 		updateData: AccessorTreeGenerator.UpdateData,
-		errors?: MutationRequestResult,
+		errors?: MutationDataResponse,
 	): void {
 		const preprocessor = new ErrorsPreprocessor(errors)
 
@@ -132,6 +123,7 @@ class AccessorTreeGenerator {
 						? undefined
 						: this.initialData[field.id],
 					() => undefined,
+					undefined,
 				)
 			} else if (field instanceof ReferenceMarker) {
 				for (const referencePlaceholder in field.references) {
@@ -234,10 +226,18 @@ class AccessorTreeGenerator {
 						field.fieldName in errors.children
 							? errors.children[field.fieldName].errors
 							: []
+					const persistedValue =
+						fieldData instanceof FieldAccessor ? fieldData.persistedValue : fieldData === undefined ? null : fieldData
 					const onChange = (newValue: Scalar | GraphQlBuilder.Literal) => {
 						onUpdate(
 							placeholderName,
-							new FieldAccessor<Scalar | GraphQlBuilder.Literal>(placeholderName, newValue, fieldErrors, onChange),
+							new FieldAccessor<Scalar | GraphQlBuilder.Literal>(
+								placeholderName,
+								newValue,
+								persistedValue,
+								fieldErrors,
+								onChange,
+							),
 						)
 					}
 					// `fieldData` will be `undefined` when a repeater creates a clone based on no data or when we're creating
@@ -249,6 +249,7 @@ class AccessorTreeGenerator {
 							: fieldData instanceof FieldAccessor
 							? fieldData.currentValue
 							: fieldData,
+						persistedValue,
 						fieldErrors,
 						onChange,
 					)
@@ -516,7 +517,7 @@ class AccessorTreeGenerator {
 }
 
 namespace AccessorTreeGenerator {
-	export type UpdateData = (newData?: AccessorTreeRoot) => void
+	export type UpdateData = (newData: AccessorTreeRoot) => void
 
 	export type InitialEntityData = ReceivedEntityData<undefined> | EntityAccessor | EntityForRemovalAccessor
 }

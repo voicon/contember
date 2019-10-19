@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Provider } from 'react-redux'
 import { createAction } from 'redux-actions'
 import { populateRequest } from '../actions/request'
-import { EnvironmentContext } from '../binding/coreComponents'
+import { EnvironmentContext } from '../binding/accessorRetrievers'
 import { Environment } from '../binding/dao'
 import { Router } from '../containers/router'
 import { PROJECT_CONFIGS_REPLACE } from '../reducer/projectsConfigs'
@@ -12,9 +12,9 @@ import { ProjectConfig } from '../state/projectsConfigs'
 import { PageRequest } from '../state/request'
 
 import { configureStore, Store } from '../store'
-import Login from './Login'
+import { Login } from './Login'
 import ProjectsList from './ProjectsList'
-import Config, { validateConfig, ConfigContext } from '../config'
+import { Config, isValidConfig, ConfigContext, ConfigurationError } from '../config'
 import { Toaster } from './ui/Toaster'
 import { NavigationIsActiveProvider, NavigationProvider } from './NavigationProvider'
 
@@ -29,7 +29,9 @@ export default class Admin extends React.Component<AdminProps> {
 	constructor(props: AdminProps) {
 		super(props)
 
-		validateConfig(props.config)
+		if (!isValidConfig(props.config)) {
+			throw new ConfigurationError()
+		}
 
 		this.store = configureStore(emptyState, props.config)
 		this.store.dispatch(createAction(PROJECT_CONFIGS_REPLACE, () => this.props.configs)())
@@ -72,7 +74,7 @@ export default class Admin extends React.Component<AdminProps> {
 											normalizedConfigs[config.project][config.stage] = {
 												...config,
 												lazyComponent: React.lazy(config.component),
-												rootEnvironment: new Environment({
+												rootEnvironment: Environment.create({
 													dimensions: config.defaultDimensions || {},
 												}),
 											}

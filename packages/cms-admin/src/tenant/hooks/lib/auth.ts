@@ -1,22 +1,11 @@
-import { useSelector } from 'react-redux'
-import State from '../../../state'
-import { AuthIdentity } from '../../../state/auth'
-import { QueryRequestObject } from './requestState'
-import { useQuery } from './query'
+import { useAuthToken, useCurrentContentGraphQlClient, useTenantGraphQlClient } from '../../../apiClient'
 import { useMutation, UseMutationReturn } from './mutation'
-import { useGraphqlTenantClient } from './client'
-import { useCurrentContentGraphqlClient } from './project'
-
-export const useAuth = () => useSelector<State, AuthIdentity | null>(state => state.auth.identity)
-
-export const useToken = (): string | undefined => {
-	const auth = useAuth()
-	return auth != null ? auth.token : undefined
-}
+import { useQuery } from './query'
+import { QueryRequestObject } from './requestState'
 
 export const useAuthedTenantQuery = <R, V>(query: string, variables: V): QueryRequestObject<R> => {
-	const token = useToken()
-	const client = useGraphqlTenantClient()
+	const token = useAuthToken()
+	const client = useTenantGraphQlClient()
 	if (client === undefined) {
 		throw new Error('Cannot get a tenant client - maybe missing config context?')
 	}
@@ -24,8 +13,8 @@ export const useAuthedTenantQuery = <R, V>(query: string, variables: V): QueryRe
 }
 
 export const useAuthedTenantMutation = <R, V>(query: string): UseMutationReturn<R, V> => {
-	const token = useToken()
-	const client = useGraphqlTenantClient()
+	const token = useAuthToken()
+	const client = useTenantGraphQlClient()
 	if (client === undefined) {
 		throw new Error('Cannot get a tenant client - maybe missing config context?')
 	}
@@ -33,8 +22,8 @@ export const useAuthedTenantMutation = <R, V>(query: string): UseMutationReturn<
 }
 
 export const useAuthedContentQuery = <R, V>(query: string, variables: V): QueryRequestObject<R> => {
-	const token = useToken()
-	const client = useCurrentContentGraphqlClient()
+	const token = useAuthToken()
+	const client = useCurrentContentGraphQlClient()
 	if (client === undefined) {
 		throw new Error('Cannot get a tenant client - maybe missing config context?')
 	}

@@ -1,7 +1,4 @@
-import { IFormGroupProps } from '@blueprintjs/core'
 import * as React from 'react'
-import { SelectedDimension } from '../../state/request'
-import SystemMiddleware = Environment.SystemMiddleware
 
 class Environment {
 	private readonly names: Environment.NameStore
@@ -13,11 +10,18 @@ class Environment {
 		}
 	}
 
+	public static create(delta: Partial<Environment.NameStore> = {}) {
+		return new Environment({
+			...Environment.defaultSystemVariables,
+			dimensions: {},
+		}).putDelta(delta)
+	}
+
 	public hasName(name: keyof Environment.NameStore): boolean {
 		return name in this.names
 	}
 
-	public hasDimension(dimensionName: keyof SelectedDimension): boolean {
+	public hasDimension(dimensionName: keyof Environment.SelectedDimensions): boolean {
 		return dimensionName in this.names.dimensions
 	}
 
@@ -28,7 +32,7 @@ class Environment {
 		return this.names[name]
 	}
 
-	public getDimensionOrElse<F>(dimensionName: keyof SelectedDimension, fallback: F): string[] | F {
+	public getDimensionOrElse<F>(dimensionName: keyof Environment.SelectedDimensions, fallback: F): string[] | F {
 		if (!this.hasDimension(dimensionName)) {
 			return fallback
 		}
@@ -39,7 +43,7 @@ class Environment {
 		return this.names[name]
 	}
 
-	public getDimension(dimensionName: keyof SelectedDimension): string[] {
+	public getDimension(dimensionName: keyof Environment.SelectedDimensions): string[] {
 		return this.names.dimensions[dimensionName]
 	}
 
@@ -47,7 +51,7 @@ class Environment {
 		return { ...this.names }
 	}
 
-	public getAllDimensions(): SelectedDimension {
+	public getAllDimensions(): Environment.SelectedDimensions {
 		return { ...this.names.dimensions }
 	}
 
@@ -127,7 +131,7 @@ class Environment {
 		N extends Environment.SystemMiddlewareName,
 		A extends Parameters<Exclude<Environment.SystemMiddleware[N], undefined>>
 	>(name: N, ...args: A): ReturnType<Exclude<Environment.SystemMiddleware[N], undefined>> | A {
-		const middleware: SystemMiddleware[N] = this.names[name]
+		const middleware: Environment.SystemMiddleware[N] = this.names[name]
 		if (typeof middleware === 'function') {
 			return (middleware as (...args: A) => any)(...args)
 		}
@@ -141,31 +145,38 @@ namespace Environment {
 	export type Value = React.ReactNode
 
 	export interface SystemVariables {
-		labelMiddleware?: (label: IFormGroupProps['label']) => React.ReactNode
+		treeIdFactory: () => number
+		labelMiddleware?: (label: React.ReactNode) => React.ReactNode
 	}
 
 	export const systemVariableNames: Set<SystemVariableName> = new Set(['labelMiddleware'])
 
 	export type SystemVariableName = keyof SystemVariables
 
+	export interface SelectedDimensions {
+		[key: string]: string[]
+	}
+
 	export interface NameStore extends SystemVariables {
-		dimensions: SelectedDimension
+		dimensions: SelectedDimensions
 
 		[name: string]: Value
 	}
 
 	export type DeltaFactory = { [N in string]: ((environment: Environment) => Environment.Value) | Environment.Value } &
-		{ [N in keyof SystemVariables]: SystemVariables[N] }
+		{ [N in keyof SystemVariables]?: SystemVariables[N] }
 
 	export type SystemMiddleware = {
-		[N1 in {
-			[N2 in SystemVariableName]: SystemVariables[N2] extends (undefined | ((...args: any[]) => any)) ? N2 : never
-		}[SystemVariableName]]: SystemVariables[N1]
+		[N in SystemMiddlewareName]: SystemVariables[N]
 	}
 
-	export type SystemMiddlewareName = keyof SystemMiddleware
+	export type SystemMiddlewareName = 'labelMiddleware'
 
 	export const defaultSystemVariables: SystemVariables = {
+		treeIdFactory: (() => {
+			let treeId = 0
+			return () => treeId++
+		})(),
 		labelMiddleware: label => label,
 	}
 

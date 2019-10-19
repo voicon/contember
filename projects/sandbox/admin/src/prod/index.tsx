@@ -21,7 +21,7 @@ import { Layout } from './adminLayout'
 export default () => (
 	<Pages layout={Layout}>
 		<Page name="dashboard">{() => <p />}</Page>
-		<EditPage entity="Page">
+		<EditPage entityName="Page" where="(id = $id)">
 			<TextField name="title" label="Title" size="large" />
 			<TextField name="urlSlug" label="URL" />
 			<RichTextField

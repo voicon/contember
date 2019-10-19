@@ -4,7 +4,7 @@ import { SeoForm } from '../forms'
 import { ImageField, LinkField, LocaleSideDimension } from '../components'
 
 export const FrontPage = (
-	<EditPage pageName={'frontPage'} entity={'Site'} where="(code = $site)" rendererProps={{ title: 'Front page' }}>
+	<EditPage pageName={'frontPage'} entityName="Site" where="(code = $site)" rendererProps={{ title: 'Front page' }}>
 		<ToOne field={'frontPage'}>
 			<LocaleSideDimension>
 				<Box heading={'Intro block'}>
@@ -39,8 +39,7 @@ export const FrontPage = (
 						<LinkField name="buttonLink" label="Button link" />
 					</ToOne>
 
-					<h3>Items</h3>
-					<SortableRepeater sortBy={'order'} field={'contentPromoItems'} removeType={'delete'}>
+					<SortableRepeater sortBy={'order'} field={'contentPromoItems'} removeType={'delete'} label="Items">
 						<TextField name="title" label="Title" />
 						<TextField name="subtitle" label="Subtitle" />
 						<LinkField name="link" label="Link" />
@@ -60,8 +59,7 @@ export const FrontPage = (
 						<LinkField name="buttonLink" label="Button link" />
 					</ToOne>
 
-					<h3>Columns</h3>
-					<SortableRepeater sortBy={'order'} field={'aboutCompanyColumns'} removeType={'delete'}>
+					<SortableRepeater sortBy={'order'} field={'aboutCompanyColumns'} removeType={'delete'} label="Columns">
 						<TextField name="title" label="Title" />
 						<TextField name="text" label="Lines" allowNewlines={true} />
 					</SortableRepeater>
@@ -90,7 +88,9 @@ export const FrontPage = (
 				</Box>
 			</LocaleSideDimension>
 			<LocaleSideDimension>
-				<TextField name="newsletterTitle" label="Newsletter title" />
+				<Box>
+					<TextField name="newsletterTitle" label="Newsletter title" />
+				</Box>
 			</LocaleSideDimension>
 			<LocaleSideDimension>
 				<SeoForm />

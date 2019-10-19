@@ -27,8 +27,8 @@ export default () => (
 		</GenericPage>
 
 		<EditPage
-			entity="FrontPage"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
+			entityName="FrontPage"
+			where="(unique = one)"
 			rendererProps={{
 				title: 'Front Page',
 			}}
@@ -37,7 +37,7 @@ export default () => (
 		</EditPage>
 
 		<MultiEditPage
-			entity="MenuItem"
+			entityName="MenuItem"
 			rendererProps={{
 				title: 'Menu',
 				sortable: {
@@ -49,8 +49,8 @@ export default () => (
 		</MultiEditPage>
 
 		<EditPage
-			entity="Footer"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
+			entityName="Footer"
+			where="(unique = one)"
 			rendererProps={{
 				title: 'Footer',
 			}}
@@ -61,8 +61,8 @@ export default () => (
 		{/* ---- */}
 
 		<EditPage
-			entity="TeamPage"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
+			entityName="TeamPage"
+			where="(unique = one)"
 			rendererProps={{
 				title: 'Team Page',
 			}}
@@ -70,7 +70,7 @@ export default () => (
 			{teamPageForm}
 		</EditPage>
 		<MultiEditPage
-			entity="Person"
+			entityName="Person"
 			rendererProps={{
 				title: 'Team members',
 				beforeContent: <PageLink to="create_person">Create new</PageLink>,
@@ -82,7 +82,8 @@ export default () => (
 			{personListForm}
 		</MultiEditPage>
 		<EditPage
-			entity="Person"
+			entityName="Person"
+			where="(id = $id)"
 			rendererProps={{
 				title: (
 					<>
@@ -94,7 +95,7 @@ export default () => (
 			{personForm}
 		</EditPage>
 		<CreatePage
-			entity="Person"
+			entityName="Person"
 			rendererProps={{
 				title: 'Create a new team member',
 			}}
@@ -105,8 +106,8 @@ export default () => (
 		{/* ---- */}
 
 		<EditPage
-			entity="WhatWeDoPage"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
+			entityName="WhatWeDoPage"
+			where="(unique = one)"
 			rendererProps={{
 				title: 'What we do page',
 			}}
@@ -114,8 +115,8 @@ export default () => (
 			{whatWeDoPageForm}
 		</EditPage>
 		<EditPage
-			entity="WhatWeDoPage"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
+			entityName="WhatWeDoPage"
+			where="(unique = one)"
 			pageName="multiEdit_whatWeDo"
 			rendererProps={{
 				title: 'What we do',
@@ -124,7 +125,8 @@ export default () => (
 			{whatWeDoListForm}
 		</EditPage>
 		<EditPage
-			entity="WhatWeDo"
+			entityName="WhatWeDo"
+			where="(id = $id)"
 			rendererProps={{
 				title: (
 					<>
@@ -139,8 +141,8 @@ export default () => (
 		{/* ---- */}
 
 		<EditPage
-			entity="ReferencesPage"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
+			entityName="ReferencesPage"
+			where="(unique = one)"
 			rendererProps={{
 				title: 'References page',
 			}}
@@ -149,8 +151,8 @@ export default () => (
 		</EditPage>
 
 		<EditPage
-			entity="ReferencesPage"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
+			entityName="ReferencesPage"
+			where="(unique = one)"
 			pageName="edit_references"
 			rendererProps={{
 				title: 'References',
@@ -162,8 +164,8 @@ export default () => (
 		{/* ---- */}
 
 		<EditPage
-			entity="ContactPage"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
+			entityName="ContactPage"
+			where="(unique = one)"
 			rendererProps={{
 				title: 'Contact page',
 			}}
@@ -171,8 +173,8 @@ export default () => (
 			{contactPageForm}
 		</EditPage>
 		<EditPage
-			entity="Contact"
-			where={() => ({ unique: new GraphQlBuilder.Literal('one') })}
+			entityName="Contact"
+			where="(unique = one)"
 			rendererProps={{
 				title: 'Contact information',
 			}}
@@ -183,7 +185,7 @@ export default () => (
 		{/* ---- */}
 
 		<MultiEditPage
-			entity="Language"
+			entityName="Language"
 			rendererProps={{
 				title: 'Languages',
 				beforeContent: (

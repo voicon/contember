@@ -1,28 +1,30 @@
-import { FieldText, GenericPage, Literal, PageLinkButton } from 'cms-admin'
+import { FieldText, Literal, PageLinkButton, TableCell, TablePage } from 'cms-admin'
 import * as React from 'react'
-import { Grid } from '../components'
+import { EditButton } from '../components'
 
 export const TapsterListPage = (
-	<GenericPage pageName={'tapsterList'}>
-		<Grid
-			entityName="Tapster"
-			orderBy={[{ publishedAt: new Literal('desc') }]}
-			filter="[site.slug = $site]"
-			editButton={{
-				pageName: 'tapsterEdit',
-			}}
-			rendererProps={{
-				title: 'Tapsters',
-				actions: (
-					<>
-						<PageLinkButton to="tapstersPage">Edit the Tapsters page</PageLinkButton>
-						<PageLinkButton to="tapsterCreate">Add a new tapster</PageLinkButton>
-					</>
-				),
-			}}
-		>
+	<TablePage
+		pageName={'tapsterList'}
+		entityName="Tapster"
+		orderBy={[{ publishedAt: new Literal('desc') }]}
+		filter="[site.slug = $site]"
+		rendererProps={{
+			title: 'Tapsters',
+			actions: (
+				<>
+					<PageLinkButton to="tapstersPage">Edit the Tapsters page</PageLinkButton>
+					<PageLinkButton to="tapsterCreate">Add a new tapster</PageLinkButton>
+				</>
+			),
+		}}
+	>
+		<TableCell>
 			<FieldText name="name" />
+		</TableCell>
+		<TableCell>
 			<FieldText name="subtitle" />
+		</TableCell>
+		<TableCell>
 			<div style={{ color: '#444', fontSize: '11px' }}>
 				<FieldText
 					name="publishedAt"
@@ -31,6 +33,9 @@ export const TapsterListPage = (
 					}}
 				/>
 			</div>
-		</Grid>
-	</GenericPage>
+		</TableCell>
+		<TableCell shrunk>
+			<EditButton pageName="tapsterEdit" />
+		</TableCell>
+	</TablePage>
 )

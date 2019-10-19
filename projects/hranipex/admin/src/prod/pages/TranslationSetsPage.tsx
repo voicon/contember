@@ -3,7 +3,7 @@ import * as React from 'react'
 
 export const TranslationSetsPage = (
 	<MultiEditPage
-		entity="TranslationSet"
+		entityName="TranslationSet"
 		pageName="translationSets"
 		rendererProps={{
 			title: 'Translation sets',

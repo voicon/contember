@@ -1,36 +1,29 @@
 import { lcfirst } from 'cms-common'
 import * as React from 'react'
-import { DataRendererProps, EntityListDataProvider } from '../../binding/coreComponents'
-import { MultiEditRenderer, MultiEditRendererProps } from '../../binding/facade/renderers'
-import { SpecificPageProps } from './SpecificPageProps'
-import { Input } from '@contember/schema'
-import { CrudQueryBuilder } from 'cms-client'
+import { EntityListDataProvider } from '../../binding/coreComponents'
+import { MultiEditRenderer, MultiEditRendererProps } from '../bindingFacade/renderers'
+import { EntityListPageProps } from './EntityListPageProps'
+import { PageProvider } from './PageProvider'
 
-interface MultiEditPageProps<DRP extends MultiEditRendererProps> extends SpecificPageProps<DRP> {
-	orderBy?: Input.OrderBy<CrudQueryBuilder.OrderDirection>[]
+export interface MultiEditPageProps extends EntityListPageProps {
+	rendererProps?: Omit<MultiEditRendererProps, 'children'>
 }
 
-export class MultiEditPage<DRP extends MultiEditRendererProps = MultiEditRendererProps> extends React.Component<
-	MultiEditPageProps<DRP>
-> {
-	static getPageName(props: MultiEditPageProps<MultiEditRendererProps>) {
-		return props.pageName || `multiEdit_${lcfirst(props.entity)}`
-	}
+const MultiEditPage: Partial<PageProvider<MultiEditPageProps>> & React.ComponentType<MultiEditPageProps> = React.memo(
+	(props: MultiEditPageProps) => (
+		<EntityListDataProvider
+			entityName={props.entityName}
+			orderBy={props.orderBy}
+			offset={props.offset}
+			limit={props.limit}
+			filter={props.filter}
+		>
+			<MultiEditRenderer {...props.rendererProps}>{props.children}</MultiEditRenderer>
+		</EntityListDataProvider>
+	),
+)
 
-	render(): React.ReactNode {
-		return (
-			<EntityListDataProvider<DRP>
-				entityName={this.props.entity}
-				orderBy={this.props.orderBy}
-				renderer={
-					this.props.renderer ||
-					// The as any cast is necessary because MultiEditRenderer is also a namespace… 🙄
-					((MultiEditRenderer as any) as React.ComponentType<DRP & DataRendererProps>)
-				}
-				rendererProps={this.props.rendererProps}
-			>
-				{this.props.children}
-			</EntityListDataProvider>
-		)
-	}
-}
+MultiEditPage.displayName = 'MultiEditPage'
+MultiEditPage.getPageName = (props: MultiEditPageProps) => props.pageName || `multiEdit_${lcfirst(props.entityName)}`
+
+export { MultiEditPage }

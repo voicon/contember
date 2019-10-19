@@ -1,11 +1,11 @@
-import { Box, EditPage, TextField, ToOne } from 'cms-admin'
+import { Box, EditPage, NavigateBackButton, TextField, ToOne } from 'cms-admin'
 import * as React from 'react'
-import { ImageField, NavigateBackButton } from '../components'
+import { ImageField } from '../components'
 import { LinkForm, SeoForm } from '../forms'
 
 export const PubsPage = (
 	<EditPage
-		entity="Site"
+		entityName="Site"
 		pageName="pubsPage"
 		where="(slug = $site)"
 		rendererProps={{

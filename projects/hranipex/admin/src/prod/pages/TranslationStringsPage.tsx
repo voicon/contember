@@ -21,22 +21,15 @@ export const translationStringsPage = (
 			slugField="id"
 			maxItems={10}
 		/>
-		<EntityListDataProvider
-			entityName={'Translatable'}
-			renderer={MultiEditRenderer}
-			orderBy={[{ identifier: new Literal('asc') }]}
-			rendererProps={{
-				title: 'String translations',
-				enableAddingNew: true,
-				enableUnlink: true,
-			}}
-		>
-			<TextField name={'identifier'} label={'translatable'} />
-			<SideDimensions dimension="translationSet" variableName="currentTranslationSet" variables={() => ({})}>
-				<ToOne field={'translations(set.id=$currentTranslationSet)'}>
-					<TextField name={'value'} label={<FieldText name={'set.name'} />} allowNewlines={true} />
-				</ToOne>
-			</SideDimensions>
+		<EntityListDataProvider entityName={'Translatable'} orderBy={[{ identifier: new Literal('asc') }]}>
+			<MultiEditRenderer title="String translations" enableAddingNew={true} enableRemove={true}>
+				<TextField name={'identifier'} label={'translatable'} />
+				<SideDimensions dimension="translationSet" variableName="currentTranslationSet" variables={() => ({})}>
+					<ToOne field={'translations(set.id=$currentTranslationSet)'}>
+						<TextField name={'value'} label={<FieldText name={'set.name'} />} allowNewlines={true} />
+					</ToOne>
+				</SideDimensions>
+			</MultiEditRenderer>
 		</EntityListDataProvider>
 	</GenericPage>
 )

@@ -4,7 +4,7 @@ import * as React from 'react'
 export const SocialLinkPage = (
 	<EditPage
 		pageName={'social'}
-		entity={'Site'}
+		entityName={'Site'}
 		where="(slug = $site)"
 		rendererProps={{
 			title: 'Social Networks',

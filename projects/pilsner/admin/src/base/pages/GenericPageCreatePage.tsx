@@ -1,11 +1,11 @@
-import { CreatePage } from 'cms-admin'
+import { CreatePage, NavigateBackButton } from 'cms-admin'
 import * as React from 'react'
-import { NavigateBackButton, SiteField } from '../components'
+import { SiteField } from '../components'
 import { GenericPageForm } from '../forms'
 
 export const GenericPageCreatePage = (
 	<CreatePage
-		entity="GenericPage"
+		entityName="GenericPage"
 		pageName={'pageCreate'}
 		rendererProps={{
 			title: 'Add a new page',
