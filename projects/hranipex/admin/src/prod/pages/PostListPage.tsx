@@ -1,28 +1,29 @@
-import { FieldText, GenericPage, Literal, PageLinkButton } from 'cms-admin'
+import { FieldText, Literal, PageLinkButton, TableCell, TablePage } from 'cms-admin'
 import * as React from 'react'
-import { Grid, LocaleSideDimension } from '../components'
+import { LocaleSideDimension } from '../components'
+import { EditButton } from '../components/EditButton'
 
 export const PostListPage = (
-	<GenericPage pageName={'postList'}>
-		<Grid
-			entityName="Post"
-			orderBy={[{ publishedAt: new Literal('desc') }]}
-			filter="[site.code = $site]"
-			editButton={{
-				pageName: 'postEdit',
-			}}
-			rendererProps={{
-				title: 'Posts',
-				actions: (
-					<>
-						<PageLinkButton to="postCreate">Add a new post</PageLinkButton>
-					</>
-				),
-			}}
-		>
+	<TablePage
+		pageName={'postList'}
+		entityName="Post"
+		orderBy={[{ publishedAt: new Literal('desc') }]}
+		filter="[site.code = $site]"
+		rendererProps={{
+			title: 'Posts',
+			actions: (
+				<>
+					<PageLinkButton to="postCreate">Add a new post</PageLinkButton>
+				</>
+			),
+		}}
+	>
+		<TableCell>
 			<LocaleSideDimension>
 				<FieldText name="title" />
 			</LocaleSideDimension>
+		</TableCell>
+		<TableCell>
 			<div style={{ color: '#444', fontSize: '11px' }}>
 				<FieldText
 					name="publishedAt"
@@ -31,6 +32,9 @@ export const PostListPage = (
 					}}
 				/>
 			</div>
-		</Grid>
-	</GenericPage>
+		</TableCell>
+		<TableCell shrunk>
+			<EditButton pageName="postEdit" />
+		</TableCell>
+	</TablePage>
 )

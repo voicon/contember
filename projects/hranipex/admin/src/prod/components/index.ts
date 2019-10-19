@@ -1,5 +1,4 @@
 export * from './ImageField'
-export * from './Grid'
 export * from './IsPublishedField'
 export * from './NavigateBackButton'
 export * from './LocaleSideDimension'
