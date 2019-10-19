@@ -1,16 +1,15 @@
 import {
+	AccessorTreeStateWithDataContext,
 	Button,
 	Component,
-	AccessorContext,
 	EntityAccessor,
+	FeedbackRenderer,
 	Field,
 	FieldAccessor,
+	FormGroup,
 	readEventStream,
 	readLines,
-	RendererProps,
 	SingleEntityDataProvider,
-	Spinner,
-	FormGroup,
 } from 'cms-admin'
 import * as React from 'react'
 
@@ -20,35 +19,25 @@ interface State {
 	deploymentStatus?: { progress: number; state: string; failureReason?: string }
 }
 
-class DeployRenderer extends React.PureComponent<RendererProps> {
-	render() {
-		if (!this.props.data) {
-			return <Spinner />
-		}
-		const accessor = this.props.data.root
-		if (!(accessor instanceof EntityAccessor)) {
-			throw new Error()
-		}
-		return <AccessorContext.Provider value={accessor}>{this.props.children}</AccessorContext.Provider>
-	}
-}
-
 const DeployButtonInner = Component<{
 	renderButton: (apiConfig: { apiKey: string; apiEndpoint: string }) => React.ReactNode
 }>(
-	props => (
-		<AccessorContext.Consumer>
-			{data => {
-				if (!(data instanceof EntityAccessor)) {
-					throw new Error()
-				}
-				const apiKey = (data.data.getField('apiKey') as FieldAccessor).currentValue as string
-				const apiEndpoint = (data.data.getField('apiEndpoint') as FieldAccessor).currentValue as string
+	props => {
+		const accessorTreeState = React.useContext(AccessorTreeStateWithDataContext)
 
-				return props.renderButton({ apiKey, apiEndpoint })
-			}}
-		</AccessorContext.Consumer>
-	),
+		if (!accessorTreeState) {
+			return null
+		}
+		const data = accessorTreeState.data.root
+
+		if (!(data instanceof EntityAccessor)) {
+			throw new Error()
+		}
+		const apiKey = (data.data.getField('apiKey') as FieldAccessor).currentValue as string
+		const apiEndpoint = (data.data.getField('apiEndpoint') as FieldAccessor).currentValue as string
+
+		return <>{props.renderButton({ apiKey, apiEndpoint })}</>
+	},
 	() => (
 		<>
 			<Field name={'apiKey'} />
@@ -84,17 +73,15 @@ export class DeployButton extends React.Component<Props, State> {
 			return null
 		}
 		return (
-			<SingleEntityDataProvider
-				where="(unique = one)"
-				entityName={'DeploymentConfig'}
-				renderer={DeployRenderer}
-				rendererProps={{}}
-			>
-				<DeployButtonInner
-					renderButton={({ apiKey, apiEndpoint }) => (
-						<Button onClick={() => this.handleDeploy(apiEndpoint, apiKey)}>Deploy</Button>
-					)}
-				/>
+			// TODO this is broken
+			<SingleEntityDataProvider where="(unique = one)" entityName="DeploymentConfig">
+				<FeedbackRenderer>
+					<DeployButtonInner
+						renderButton={({ apiKey, apiEndpoint }) => (
+							<Button onClick={() => this.handleDeploy(apiEndpoint, apiKey)}>Deploy</Button>
+						)}
+					/>
+				</FeedbackRenderer>
 			</SingleEntityDataProvider>
 		)
 	}
