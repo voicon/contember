@@ -47,6 +47,7 @@ export class ContactCountry {
 	// ISO 3166-2
 	code = d.stringColumn().notNull()
 	site = d.oneHasOne(Site).setNullOnDelete()
+	siteLabel = d.stringColumn()
 }
 
 @d.Unique('country', 'code')
