@@ -3,6 +3,8 @@
 		"bootstrap": "lerna bootstrap --ci",
 		"bootstrap:hoist": "lerna bootstrap --ci --hoist",
 		"update": "lerna bootstrap --no-ci",
+		"cli": "node ./packages/cli/dist/src/cli.js",
+		"restart-api": "docker-compose up --force-recreate -d --no-deps api",
 		"ci-clean": "rm -rf {instances,projects}/*/{admin,api}/node_modules/typescript packages/*/node_modules/typescript",
 		"clean": "rm -rf node_modules/ {instances,projects}/*/{admin,api}/{dist,node_modules} packages/*/{dist,node_modules} instances/*/admin/public",
 		"ts:build": "tsc --build --verbose",
