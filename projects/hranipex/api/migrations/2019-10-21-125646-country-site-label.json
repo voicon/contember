@@ -1,0 +1,35 @@
+{
+	"modifications": [
+		{
+			"modification": "createColumn",
+			"entityName": "ContactCountry",
+			"field": {
+				"name": "siteLabel",
+				"columnName": "site_label",
+				"nullable": true,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactCountry/operations/create/siteLabel",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactCountry/operations/read/siteLabel",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContactCountry/operations/update/siteLabel",
+					"value": true
+				}
+			]
+		}
+	]
+}
