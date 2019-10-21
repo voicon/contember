@@ -9,6 +9,6 @@ export const IconsPage = (
 			title: 'Icons',
 		}}
 	>
-		<TextField label="Identifier" name="identifier" />
+		<TextField label="Identifier" name="identifier" labelPosition="labelInlineLeft" />
 	</MultiEditPage>
 )
