@@ -4,6 +4,7 @@
 	"references": [
 		{ "path": "./packages/authorization" },
 		{ "path": "./packages/benchmark" },
+		{ "path": "./packages/cli" },
 		{ "path": "./packages/cms-api" },
 		{ "path": "./packages/cms-common" },
 		{ "path": "./packages/cms-admin" },
