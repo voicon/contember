@@ -48,6 +48,7 @@ export const FrontPage = (
 					</SortableRepeater>
 				</Box>
 			</LocaleSideDimension>
+
 			<LocaleSideDimension>
 				<Box heading={'About company'}>
 					<ToOne field={'aboutCompanyBlock'}>
@@ -87,11 +88,13 @@ export const FrontPage = (
 					</ToOne>
 				</Box>
 			</LocaleSideDimension>
+
 			<LocaleSideDimension>
 				<Box>
 					<TextField name="newsletterTitle" label="Newsletter title" />
 				</Box>
 			</LocaleSideDimension>
+
 			<LocaleSideDimension>
 				<SeoForm />
 			</LocaleSideDimension>
