@@ -18,7 +18,7 @@ export const FaqPage = (
 		<LocaleSideDimension>
 			<TextField label={'Category name'} name="name" />
 		</LocaleSideDimension>
-		<SortableRepeater sortBy={'order'} field={'questions'} removeType={'delete'}>
+		<SortableRepeater sortBy={'order'} field={'questions'} removeType={'delete'} label="Questions">
 			<SiteField />
 			<LocaleSideDimension>
 				<TextField label={'Question'} name="question" />
