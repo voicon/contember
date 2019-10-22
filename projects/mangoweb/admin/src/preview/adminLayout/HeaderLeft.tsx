@@ -1,4 +1,3 @@
-import { IconNames } from '@blueprintjs/icons'
 import { DimensionsSwitcher } from 'cms-admin'
 import * as React from 'react'
 
