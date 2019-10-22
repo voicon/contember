@@ -38,6 +38,6 @@ export const IsPublishedField = Component(
 			</FormGroup>
 		)
 	},
-	() => <Field name={fieldName} defaultValue={now.toISOString()} />,
+	() => <Field name={fieldName} defaultValue={now.toISOString()} isNonbearing={true} />,
 	'IsPublishedField',
 )
