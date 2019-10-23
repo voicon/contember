@@ -7,40 +7,6 @@ services:
         working_dir: /src
         command: npm run ts:watch
 
-    api:
-        image: node:12
-        volumes:
-            - ./:/src:cached
-        working_dir: /src/instances/mangoweb/api
-        environment:
-            NODE_ENV: development
-            DB_HOST: db
-            DB_PASSWORD: contember
-            DB_USER: contember
-            DB_PORT: 5432
-            TEST_DB_HOST: db
-            TEST_DB_PASSWORD: contember
-            TEST_DB_USER: contember
-            TEST_DB_PORT: 5432
-            TEST_DB_NAME: tests
-            SERVER_PORT: 4000
-        expose:
-          - 4000
-        command: npm run start
-        depends_on:
-          - db
-
-    admin:
-        image: node:12
-        volumes:
-            - ./:/src:cached
-        working_dir: /src/instances/mangoweb/admin
-        environment:
-            API_SERVER: "http://localhost:4477"
-            SERVER_PORT: 4000
-        expose:
-            - 4000
-        command: npm run start
 
     storybook:
         image: node:12

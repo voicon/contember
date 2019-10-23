@@ -1,5 +1,5 @@
 import { FormGroup, FormGroupProps } from '@contember/ui'
-import { arrayDifference } from 'cms-common'
+import { arrayDifference } from '@contember/utils'
 import * as React from 'react'
 import { Component, Environment, ErrorAccessor, FieldName } from '../../../binding'
 import { Select } from '../../ui'
