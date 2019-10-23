@@ -1,36 +1,36 @@
 stages:
-  - test:build
-  - test:run
-  - deploy:pre-build
-  - deploy:build
-  - deploy:helm
+  - install
+  - build
+  - test
+  - publish
 variables:
   DOCKER_HOST: tcp://gitlab-prod-dind-svc:2375
-build:
-  stage: test:build
-  image: node:12
 
+install:
+  stage: install
+  image: node:12
   script:
     - npm ci
     - npm run bootstrap
-    - rm -rf {instances,projects}/*/{admin,api}/node_modules/typescript packages/*/node_modules/typescript
-    - rm -rf {instances,projects}/*/{admin,api}/node_modules/.bin/{tsc,tsserver} packages/*/node_modules/.bin/{tsc,tsserver}
+    - rm -rf packages/*/node_modules/typescript packages/*/node_modules/.bin/{tsc,tsserver}
+  artifacts:
+    paths:
+      - "node_modules"
+      - "packages/*/node_modules"
+
+build:
+  stage: build
+  image: node:12
+
+  script:
     - npm run build
 
   artifacts:
     paths:
-      - "instances/*/admin/public"
-      - "instances/*/admin/webpack-assets.json"
-      - "instances/*/*/node_modules"
-      - "instances/*/*/dist"
-      - "node_modules"
       - "packages/*/dist"
-      - "packages/*/node_modules"
-      - "projects/*/*/dist"
-      - "projects/*/*/node_modules"
 
 test:
-  stage: test:run
+  stage: test
   image: node:12
   services:
     - postgres:10
@@ -48,126 +48,31 @@ test:
     - npm run test
 
 eslint:
-  stage: test:run
+  stage: test
   image: node:12
   script:
     - npm run eslint:lint
 
-build:prod:
-  image: node:12
-  stage: deploy:pre-build
-  only:
-    refs:
-      - /^deploy\/.*$/
-      - /^build\/.*$/
-  script:
-    - sh deploy/resolve-nodemodules.sh
-  artifacts:
-    paths:
-      - "instances/*/admin/public"
-      - "instances/*/admin/webpack-assets.json"
-      - "instances/*/*/node_modules"
-      - "instances/*/*/dist"
-
 build:docker:
   image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/mangoweb/docker-ecr:1.1
-  stage: deploy:build
+  stage: publish
   dependencies:
-    - build:prod
+    - build
   only:
     refs:
+      - pr/build-rework
       - /^deploy\/.*$/
       - /^build\/.*$/
   variables:
     VERSION: "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
   script:
-    - sh deploy/build.sh
+    - sh scripts/docker/build.sh
 
-deploy:beta:api:
-  stage: deploy:helm
-  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/deploy:5.18
-  dependencies: []
 
-  only:
-    refs:
-      - deploy/beta
-  variables:
-    GIT_STRATEGY: none # do not clone repo
-    MGW_CLUSTER: beta
-    RELEASE_NAME: cms-beta-api
-    VALUES: '{"version": "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"}'
 
-  environment:
-    name: beta-api
-    url: https://cms-api.mgw.cz
-
+publish:
+  image: node:12
+  stage: publish
   script:
-    - /usr/bin/deploy
-
-
-deploy:beta:admin:
-  stage: deploy:helm
-  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/deploy:5.18
-  dependencies: []
-
-  only:
-    refs:
-      - deploy/beta
-
-  variables:
-    GIT_STRATEGY: none # do not clone repo
-    MGW_CLUSTER: beta
-    RELEASE_NAME: cms-beta-admin
-    VALUES: '{"version": "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"}'
-
-  environment:
-    name: beta-admin
-    url: https://cms-admin.mgw.cz
-
-  script:
-    - /usr/bin/deploy
-
-
-deploy:prod:api:
-  stage: deploy:helm
-  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/deploy:5.18
-  dependencies: []
-
-  only:
-    refs:
-      - deploy/prod
-  variables:
-    GIT_STRATEGY: none # do not clone repo
-    MGW_CLUSTER: prod
-    RELEASE_NAME: cms-prod-api
-    VALUES: '{"version": "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"}'
-
-  environment:
-    name: prod-api
-    url: https://cms-api-prod.mgw.cz
-
-  script:
-    - /usr/bin/deploy
-
-
-deploy:prod:admin:
-  stage: deploy:helm
-  image: 831119889470.dkr.ecr.eu-central-1.amazonaws.com/deploy:5.18
-  dependencies: []
-
-  only:
-    refs:
-      - deploy/prod
-
-  variables:
-    GIT_STRATEGY: none # do not clone repo
-    MGW_CLUSTER: prod
-    RELEASE_NAME: cms-prod-admin
-    VALUES: '{"version": "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"}'
-
-  environment:
-    name: prod-admin
-    url: https://cms-admin-prod.mgw.cz
-
-  script:
-    - /usr/bin/deploy
+    - sh ./scripts/npm/setup.sh
+    - sh ./scripts/npm/publish.sh

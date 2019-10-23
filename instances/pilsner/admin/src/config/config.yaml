@@ -1,8 +1,0 @@
-admin:
-    apiServer: '%env.API_SERVER%'
-    loginToken: '%env.LOGIN_TOKEN%'
-assets:
-    _include:
-     - "../../webpack-assets.json"
-server:
-    port: '%env.SERVER_PORT%'
