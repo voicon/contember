@@ -12,7 +12,6 @@ export const ContactPage = (
 		}}
 	>
 		<PageLinkButton to="contactSales">Sales regions</PageLinkButton>
-		<SiteField />
 		<Box heading={'Basic contact info'}>
 			<LocaleSideDimension>
 				<TextField label={'Info'} name="info" allowNewlines={true} />
