@@ -1,60 +1,49 @@
-import { Box, Component, RichEditorNG, SlugField, TextAreaField, TextField, ToOne } from 'cms-admin'
+import {
+	Block,
+	BlockType,
+	Box,
+	Component,
+	LineBreakBehavior,
+	Mark,
+	RichTextField,
+	SlugField,
+	SortableBlockRepeater,
+	TextAreaField,
+	TextField,
+	ToOne,
+} from 'cms-admin'
 import * as React from 'react'
 import { ImageField, IsPublishedField, LocaleSideDimension, SiteField } from '../components'
 import { SeoForm } from './'
 
 export const GenericContentForm = Component(
 	() => (
-		<ToOne field={'content'}>
-			<h2>Content</h2>
+		<ToOne field="content">
 			<SiteField />
-			<RichEditorNG
-				name="type"
-				sortBy={'order'}
-				field={'blocks'}
-				defaultBlock="text"
-				inlines={{
-					link: {
-						renderInline: ({ children, attributes, data, setData }) => (
-							<a
-								{...attributes}
-								style={{ textDecoration: 'underline', color: 'blue' }}
-								href={data.href}
-								onClick={e => {
-									e.preventDefault()
-									setData({ href: prompt('Enter url') })
-								}}
-							>
-								{children}
-							</a>
-						),
-						htmlSerializer: {},
-						keyboardShortcut: 'mod+l',
-						menuButton: () => 'L',
-					},
-				}}
-				marks={{
-					bold: {
-						renderMark: ({ children, attributes }) => <strong {...attributes}>{children}</strong>,
-						htmlSerializer: {},
-						keyboardShortcut: 'mod+b',
-						menuButton: () => 'B',
-					},
-				}}
-				blocks={{
-					text: {
-						label: 'Text',
-						renderBlock: ({ children }) => <p style={{ minHeight: '1em' }}>{children}</p>,
-						valueField: 'text',
-						marks: ['bold'],
-						inlines: ['link'],
-					},
-					image: {
-						label: 'Image',
-						render: <ImageField name={'image'} label={'Image'} />,
-					},
-				}}
-			/>
+			<SortableBlockRepeater
+				sortBy="order"
+				field="blocks"
+				removeType="delete"
+				discriminationField="type"
+				label="Content"
+				enableUnlinkAll={true}
+			>
+				<Block discriminateBy="text" label="Text">
+					<RichTextField
+						label="Text"
+						name="text"
+						lineBreakBehavior={LineBreakBehavior.SMART}
+						blocks={[
+							{ block: BlockType.PARAGRAPH, marks: [Mark.BOLD, Mark.LINK, Mark.ITALIC, Mark.UNDERLINED] },
+							{ block: BlockType.HEADING_H2, marks: [] },
+							{ block: BlockType.HEADING_H3, marks: [] },
+						]}
+					/>
+				</Block>
+				<Block discriminateBy="image" label="Image">
+					<ImageField name="image" label="Image" />
+				</Block>
+			</SortableBlockRepeater>
 		</ToOne>
 	),
 	'GenericContentForm',

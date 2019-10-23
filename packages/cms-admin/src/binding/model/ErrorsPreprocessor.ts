@@ -74,13 +74,31 @@ class ErrorsPreprocessor {
 
 				if (pathNode.__typename === '_FieldPathFragment') {
 					if (currentNode.nodeType === ErrorsPreprocessor.ErrorNodeType.FieldIndexed) {
-						if (!(pathNode.field in currentNode.children)) {
-							currentNode.children[pathNode.field] = this.getRootNode(mutationError, i + 1)
-							if (i + 1 <= mutationError.path.length) {
+						let alias = pathNode.field
+						let nextIndex = i + 1
+						if (nextIndex in mutationError.path) {
+							const nextPathNode = mutationError.path[nextIndex]
+
+							if (
+								nextPathNode.__typename === '_IndexPathFragment' &&
+								typeof nextPathNode.alias === 'string' &&
+								nextPathNode.alias.startsWith(pathNode.field)
+							) {
+								// We're dealing with a reduced hasMany relation.
+								i++
+								nextIndex++
+								alias = nextPathNode.alias
+							}
+						}
+
+						if (!(alias in currentNode.children)) {
+							currentNode.children[alias] = this.getRootNode(mutationError, nextIndex)
+							if (nextIndex <= mutationError.path.length) {
+								// This path has been handled by getRootNode
 								continue errorLoop
 							}
 						}
-						currentNode = currentNode.children[pathNode.field]
+						currentNode = currentNode.children[alias]
 					} else {
 						this.rejectCorruptData()
 					}
@@ -97,13 +115,14 @@ class ErrorsPreprocessor {
 						const numericAlias = parseInt(alias, 10)
 
 						if (isNaN(numericAlias)) {
-							// See this.getRootNode
-							throw new ErrorsPreprocessor.ErrorsPreprocessorError(`Not implemented! Encountered a non-numeric alias.`)
+							// This case is handled above.
+							throw new ErrorsPreprocessor.ErrorsPreprocessorError(`Corrupt data: encountered a non-numeric alias.`)
 						}
 
 						if (!(numericAlias in currentNode.children)) {
 							currentNode.children[numericAlias] = this.getRootNode(mutationError, i + 1)
 							if (i + 1 <= mutationError.path.length) {
+								// This path has been handled by getRootNode
 								continue errorLoop
 							}
 						}
@@ -149,8 +168,8 @@ class ErrorsPreprocessor {
 				const numericAlias = parseInt(alias, 10)
 
 				if (isNaN(numericAlias)) {
-					// Failed to parse the alias
-					if (i - 1 < startIndex) {
+					// Failed to parse the alias but that's fine, we can just use i.
+					if (!(i - 1 in error.path)) {
 						throw new ErrorsPreprocessor.ErrorsPreprocessorError(
 							`Corrupt data: non-numeric alias without a corresponding associated path.`,
 						)
@@ -180,7 +199,7 @@ class ErrorsPreprocessor {
 					errors: [],
 					nodeType: ErrorsPreprocessor.ErrorNodeType.NumberIndexed,
 					children: {
-						[parseInt(alias, 10)]: rootNode,
+						[numericAlias]: rootNode,
 					},
 				}
 			} else {

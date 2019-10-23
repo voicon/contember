@@ -11,7 +11,6 @@ export const ContactSalesPage = (
 			title: 'Contacts',
 		}}
 	>
-		<SiteField />
 		<Repeater field={'countries'} label={'Countries'} removeType={'delete'}>
 			<TextField label={'Country code (ISO 3166-2)'} name="code" size={'large'} />
 			<SelectField label={'Dedicated site'} name="site" options="Site.code" allowNull={true} />

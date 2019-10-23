@@ -181,16 +181,24 @@ export class MutationGenerator {
 		return queryBuilder.create(
 			entityName,
 			builder => {
+				let writeBuilder = this.registerCreateMutationPart(
+					entity,
+					entityFields,
+					new CrudQueryBuilder.WriteDataBuilder(),
+				)
+				if (
+					constraints &&
+					constraints.whereType === 'unique' &&
+					writeBuilder.data !== undefined &&
+					!isEmptyObject(writeBuilder.data)
+				) {
+					// Shallow cloning the constraints like this IS too naïve but it will likely last surprisingly long before we
+					// run into issues.
+					writeBuilder = new CrudQueryBuilder.WriteDataBuilder({ ...writeBuilder.data, ...constraints.where })
+				}
+
 				return builder
-					.data(
-						this.registerCreateMutationPart(
-							entity,
-							entityFields,
-							new CrudQueryBuilder.WriteDataBuilder(
-								constraints && constraints.whereType === 'unique' ? constraints.where : undefined,
-							),
-						),
-					)
+					.data(writeBuilder)
 					.node(builder => builder.column(PRIMARY_KEY_NAME))
 					.ok()
 					.validation()
@@ -245,7 +253,7 @@ export class MutationGenerator {
 
 					if (reference.expectedCount === ExpectedCount.UpToOne) {
 						if (accessor instanceof EntityAccessor) {
-							accessorReference.push({ accessor, reference })
+							accessorReference.push({ accessor, reference, alias: referencePlaceholder })
 
 							if (reference.reducedBy === undefined) {
 								unreducedHasOnePresent = true

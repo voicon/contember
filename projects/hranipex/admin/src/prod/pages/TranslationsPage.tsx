@@ -1,6 +1,6 @@
 import { FieldText, Literal, MultiEditPage, PageLinkButton, TextField, ToOne } from 'cms-admin'
 import * as React from 'react'
-import { LocaleSideDimensionBase } from '../components'
+import { LocaleSideDimension } from '../components'
 
 export const TranslationsPage = (
 	<MultiEditPage
@@ -21,10 +21,8 @@ export const TranslationsPage = (
 	>
 		<FieldText name={'identifier'} />
 
-		<LocaleSideDimensionBase>
-			<ToOne field="translations(set.locale.code=$currentLocaleCode, set.locale.site.code=$site)">
-				<TextField name={'value'} label={'Translation'} allowNewlines={true} />
-			</ToOne>
-		</LocaleSideDimensionBase>
+		<LocaleSideDimension toOneField="translations(set.locale.code=$currentLocaleCode, set.locale.site.code=$site)">
+			<TextField name={'value'} label={'Translation'} allowNewlines={true} />
+		</LocaleSideDimension>
 	</MultiEditPage>
 )
