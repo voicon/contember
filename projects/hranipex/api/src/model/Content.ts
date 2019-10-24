@@ -1,4 +1,4 @@
-import { Image, Link, Site, Video } from './'
+import { GenericFile, Image, Link, Site, Video } from './'
 import { SchemaDefinition as d } from '@contember/schema-definition'
 
 export class Content {
@@ -23,6 +23,7 @@ export const ContentBlockType = d.createEnum(
 	'circleList',
 	'squareList',
 	'timeline',
+	'attachmentSection',
 )
 
 export class ContentBlock {
@@ -65,4 +66,5 @@ export class ContentBlockChildItem {
 	image = d.manyHasOne(Image).setNullOnDelete()
 	buttonCaption = d.stringColumn()
 	buttonLink = d.manyHasOne(Link).setNullOnDelete()
+	attachment = d.manyHasOne(GenericFile).setNullOnDelete()
 }
