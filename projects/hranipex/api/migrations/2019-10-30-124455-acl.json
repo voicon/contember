@@ -1,0 +1,3040 @@
+{
+	"modifications": [
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/manager",
+					"value": {
+						"variables": {},
+						"stages": "*",
+						"entities": {
+							"SiteLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"code": false,
+										"order": false,
+										"site": false,
+										"translationSet": true,
+										"frontPage": true,
+										"posts": true,
+										"footer": true,
+										"header": true,
+										"pages": true,
+										"faqCategories": true,
+										"faqQuestions": true
+									},
+									"read": {
+										"id": true,
+										"code": true,
+										"order": true,
+										"site": true,
+										"translationSet": true,
+										"frontPage": true,
+										"posts": true,
+										"footer": true,
+										"header": true,
+										"pages": true,
+										"faqCategories": true,
+										"faqQuestions": true
+									},
+									"update": {
+										"id": true,
+										"code": false,
+										"order": false,
+										"site": false,
+										"translationSet": true,
+										"frontPage": true,
+										"posts": true,
+										"footer": true,
+										"header": true,
+										"pages": true,
+										"faqCategories": true,
+										"faqQuestions": true
+									},
+									"delete": false
+								}
+							},
+							"Site": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"code": false,
+										"order": false,
+										"locales": false,
+										"frontPage": false,
+										"posts": false,
+										"pages": false,
+										"faqCategories": false,
+										"faqQuestions": false,
+										"contact": false
+									},
+									"read": {
+										"id": true,
+										"code": true,
+										"order": true,
+										"locales": true,
+										"frontPage": true,
+										"posts": true,
+										"pages": true,
+										"faqCategories": true,
+										"faqQuestions": true,
+										"contact": true
+									},
+									"update": {
+										"id": true,
+										"code": false,
+										"order": false,
+										"locales": true,
+										"frontPage": true,
+										"posts": true,
+										"pages": true,
+										"faqCategories": true,
+										"faqQuestions": true,
+										"contact": true
+									},
+									"delete": false
+								}
+							},
+							"Content": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"site": true,
+										"blocks": true
+									},
+									"read": {
+										"id": true,
+										"site": true,
+										"blocks": true
+									},
+									"update": {
+										"id": true,
+										"site": true,
+										"blocks": true
+									},
+									"delete": true
+								}
+							},
+							"ContentBlock": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"content": true,
+										"order": true,
+										"type": true,
+										"tocCaption": true,
+										"title": true,
+										"subtitle": true,
+										"link": true,
+										"text": true,
+										"image": true,
+										"video": true,
+										"buttonCaption": true,
+										"buttonLink": true,
+										"children": true
+									},
+									"read": {
+										"id": true,
+										"content": true,
+										"order": true,
+										"type": true,
+										"tocCaption": true,
+										"title": true,
+										"subtitle": true,
+										"link": true,
+										"text": true,
+										"image": true,
+										"video": true,
+										"buttonCaption": true,
+										"buttonLink": true,
+										"children": true
+									},
+									"update": {
+										"id": true,
+										"content": true,
+										"order": true,
+										"type": true,
+										"tocCaption": true,
+										"title": true,
+										"subtitle": true,
+										"link": true,
+										"text": true,
+										"image": true,
+										"video": true,
+										"buttonCaption": true,
+										"buttonLink": true,
+										"children": true
+									},
+									"delete": true
+								}
+							},
+							"ContentBlockChildren": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"block": true,
+										"items": true
+									},
+									"read": {
+										"id": true,
+										"block": true,
+										"items": true
+									},
+									"update": {
+										"id": true,
+										"block": true,
+										"items": true
+									},
+									"delete": true
+								}
+							},
+							"ContentBlockChildItem": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"parent": true,
+										"order": true,
+										"title": true,
+										"text": true,
+										"image": true,
+										"buttonCaption": true,
+										"buttonLink": true,
+										"attachment": true
+									},
+									"read": {
+										"id": true,
+										"parent": true,
+										"order": true,
+										"title": true,
+										"text": true,
+										"image": true,
+										"buttonCaption": true,
+										"buttonLink": true,
+										"attachment": true
+									},
+									"update": {
+										"id": true,
+										"parent": true,
+										"order": true,
+										"title": true,
+										"text": true,
+										"image": true,
+										"buttonCaption": true,
+										"buttonLink": true,
+										"attachment": true
+									},
+									"delete": true
+								}
+							},
+							"ContentPage": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"site": true,
+										"locales": true
+									},
+									"read": {
+										"id": true,
+										"site": true,
+										"locales": true
+									},
+									"update": {
+										"id": true,
+										"site": true,
+										"locales": true
+									},
+									"delete": true
+								}
+							},
+							"ContentPageLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"seo": true,
+										"slug": true,
+										"title": true,
+										"content": true
+									},
+									"read": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"seo": true,
+										"slug": true,
+										"title": true,
+										"content": true
+									},
+									"update": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"seo": true,
+										"slug": true,
+										"title": true,
+										"content": true
+									},
+									"delete": true
+								}
+							},
+							"FrontPage": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"site": true,
+										"locales": true
+									},
+									"read": {
+										"id": true,
+										"site": true,
+										"locales": true
+									},
+									"update": {
+										"id": true,
+										"site": true,
+										"locales": true
+									},
+									"delete": true
+								}
+							},
+							"FrontPageLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"seo": true,
+										"introBlock": true,
+										"productPromoItems": true,
+										"contentPromoBlock": true,
+										"contentPromoItems": true,
+										"aboutCompanyBlock": true,
+										"aboutCompanyColumns": true,
+										"references": true,
+										"joinUsBlock": true,
+										"newsletterTitle": true
+									},
+									"read": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"seo": true,
+										"introBlock": true,
+										"productPromoItems": true,
+										"contentPromoBlock": true,
+										"contentPromoItems": true,
+										"aboutCompanyBlock": true,
+										"aboutCompanyColumns": true,
+										"references": true,
+										"joinUsBlock": true,
+										"newsletterTitle": true
+									},
+									"update": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"seo": true,
+										"introBlock": true,
+										"productPromoItems": true,
+										"contentPromoBlock": true,
+										"contentPromoItems": true,
+										"aboutCompanyBlock": true,
+										"aboutCompanyColumns": true,
+										"references": true,
+										"joinUsBlock": true,
+										"newsletterTitle": true
+									},
+									"delete": true
+								}
+							},
+							"FrontPageContentBlock": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"title": true,
+										"subtitle": true,
+										"text": true,
+										"image": true,
+										"link": true,
+										"buttonCaption": true,
+										"buttonLink": true
+									},
+									"read": {
+										"id": true,
+										"title": true,
+										"subtitle": true,
+										"text": true,
+										"image": true,
+										"link": true,
+										"buttonCaption": true,
+										"buttonLink": true
+									},
+									"update": {
+										"id": true,
+										"title": true,
+										"subtitle": true,
+										"text": true,
+										"image": true,
+										"link": true,
+										"buttonCaption": true,
+										"buttonLink": true
+									},
+									"delete": true
+								}
+							},
+							"FrontPageAboutCompanyColumn": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"title": true,
+										"text": true
+									},
+									"read": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"title": true,
+										"text": true
+									},
+									"update": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"title": true,
+										"text": true
+									},
+									"delete": true
+								}
+							},
+							"FrontPageProductPromoItem": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"shape": true,
+										"title": true,
+										"image": true,
+										"link": true
+									},
+									"read": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"shape": true,
+										"title": true,
+										"image": true,
+										"link": true
+									},
+									"update": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"shape": true,
+										"title": true,
+										"image": true,
+										"link": true
+									},
+									"delete": true
+								}
+							},
+							"FrontPageContentPromoItem": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"title": true,
+										"subtitle": true,
+										"image": true,
+										"buttonCaption": true,
+										"link": true
+									},
+									"read": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"title": true,
+										"subtitle": true,
+										"image": true,
+										"buttonCaption": true,
+										"link": true
+									},
+									"update": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"title": true,
+										"subtitle": true,
+										"image": true,
+										"buttonCaption": true,
+										"link": true
+									},
+									"delete": true
+								}
+							},
+							"FrontPageReference": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"quote": true,
+										"name": true,
+										"company": true,
+										"image": true,
+										"link": true
+									},
+									"read": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"quote": true,
+										"name": true,
+										"company": true,
+										"image": true,
+										"link": true
+									},
+									"update": {
+										"id": true,
+										"frontPage": true,
+										"order": true,
+										"quote": true,
+										"name": true,
+										"company": true,
+										"image": true,
+										"link": true
+									},
+									"delete": true
+								}
+							},
+							"Link": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"type": true,
+										"description": true,
+										"destination": true,
+										"parameters": true,
+										"url": true,
+										"linkable": true
+									},
+									"read": {
+										"id": true,
+										"type": true,
+										"description": true,
+										"destination": true,
+										"parameters": true,
+										"url": true,
+										"linkable": true
+									},
+									"update": {
+										"id": true,
+										"type": true,
+										"description": true,
+										"destination": true,
+										"parameters": true,
+										"url": true,
+										"linkable": true
+									},
+									"delete": true
+								}
+							},
+							"Image": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"url": true
+									},
+									"read": {
+										"id": true,
+										"url": true
+									},
+									"update": {
+										"id": true,
+										"url": true
+									},
+									"delete": true
+								}
+							},
+							"Video": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"url": true
+									},
+									"read": {
+										"id": true,
+										"url": true
+									},
+									"update": {
+										"id": true,
+										"url": true
+									},
+									"delete": true
+								}
+							},
+							"GenericFile": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"url": true
+									},
+									"read": {
+										"id": true,
+										"url": true
+									},
+									"update": {
+										"id": true,
+										"url": true
+									},
+									"delete": true
+								}
+							},
+							"Seo": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"title": true,
+										"description": true,
+										"ogImage": true,
+										"ogTitle": true,
+										"ogDescription": true
+									},
+									"read": {
+										"id": true,
+										"title": true,
+										"description": true,
+										"ogImage": true,
+										"ogTitle": true,
+										"ogDescription": true
+									},
+									"update": {
+										"id": true,
+										"title": true,
+										"description": true,
+										"ogImage": true,
+										"ogTitle": true,
+										"ogDescription": true
+									},
+									"delete": true
+								}
+							},
+							"Post": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"site": true,
+										"publishedAt": true,
+										"locales": true
+									},
+									"read": {
+										"id": true,
+										"site": true,
+										"publishedAt": true,
+										"locales": true
+									},
+									"update": {
+										"id": true,
+										"site": true,
+										"publishedAt": true,
+										"locales": true
+									},
+									"delete": true
+								}
+							},
+							"PostLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"slug": true,
+										"seo": true,
+										"title": true,
+										"perex": true,
+										"image": true,
+										"content": true
+									},
+									"read": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"slug": true,
+										"seo": true,
+										"title": true,
+										"perex": true,
+										"image": true,
+										"content": true
+									},
+									"update": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"slug": true,
+										"seo": true,
+										"title": true,
+										"perex": true,
+										"image": true,
+										"content": true
+									},
+									"delete": true
+								}
+							},
+							"FooterLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"locale": true,
+										"columns": true
+									},
+									"read": {
+										"id": true,
+										"locale": true,
+										"columns": true
+									},
+									"update": {
+										"id": true,
+										"locale": true,
+										"columns": true
+									},
+									"delete": true
+								}
+							},
+							"FooterColumn": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"footer": true,
+										"order": true,
+										"title": true,
+										"menu": true
+									},
+									"read": {
+										"id": true,
+										"footer": true,
+										"order": true,
+										"title": true,
+										"menu": true
+									},
+									"update": {
+										"id": true,
+										"footer": true,
+										"order": true,
+										"title": true,
+										"menu": true
+									},
+									"delete": true
+								}
+							},
+							"HeaderLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"locale": true,
+										"leftMenu": true,
+										"rightMenu": true
+									},
+									"read": {
+										"id": true,
+										"locale": true,
+										"leftMenu": true,
+										"rightMenu": true
+									},
+									"update": {
+										"id": true,
+										"locale": true,
+										"leftMenu": true,
+										"rightMenu": true
+									},
+									"delete": true
+								}
+							},
+							"Menu": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"site": true,
+										"items": true
+									},
+									"read": {
+										"id": true,
+										"site": true,
+										"items": true
+									},
+									"update": {
+										"id": true,
+										"site": true,
+										"items": true
+									},
+									"delete": true
+								}
+							},
+							"MenuItem": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"menu": true,
+										"order": true,
+										"title": true,
+										"link": true
+									},
+									"read": {
+										"id": true,
+										"menu": true,
+										"order": true,
+										"title": true,
+										"link": true
+									},
+									"update": {
+										"id": true,
+										"menu": true,
+										"order": true,
+										"title": true,
+										"link": true
+									},
+									"delete": true
+								}
+							},
+							"FaqCategory": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"locales": true,
+										"site": true,
+										"order": true,
+										"questions": true
+									},
+									"read": {
+										"id": true,
+										"locales": true,
+										"site": true,
+										"order": true,
+										"questions": true
+									},
+									"update": {
+										"id": true,
+										"locales": true,
+										"site": true,
+										"order": true,
+										"questions": true
+									},
+									"delete": true
+								}
+							},
+							"FaqCategoryLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"name": true
+									},
+									"read": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"name": true
+									},
+									"update": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"name": true
+									},
+									"delete": true
+								}
+							},
+							"FaqQuestion": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"locales": true,
+										"site": true,
+										"order": true,
+										"category": true
+									},
+									"read": {
+										"id": true,
+										"locales": true,
+										"site": true,
+										"order": true,
+										"category": true
+									},
+									"update": {
+										"id": true,
+										"locales": true,
+										"site": true,
+										"order": true,
+										"category": true
+									},
+									"delete": true
+								}
+							},
+							"FaqQuestionLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"question": true,
+										"answer": true,
+										"linkCaption": true,
+										"link": true
+									},
+									"read": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"question": true,
+										"answer": true,
+										"linkCaption": true,
+										"link": true
+									},
+									"update": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"question": true,
+										"answer": true,
+										"linkCaption": true,
+										"link": true
+									},
+									"delete": true
+								}
+							},
+							"Contact": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"site": true,
+										"locales": true,
+										"departments": true,
+										"countries": true
+									},
+									"read": {
+										"id": true,
+										"site": true,
+										"locales": true,
+										"departments": true,
+										"countries": true
+									},
+									"update": {
+										"id": true,
+										"site": true,
+										"locales": true,
+										"departments": true,
+										"countries": true
+									},
+									"delete": true
+								}
+							},
+							"ContactLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"info": true,
+										"items": true
+									},
+									"read": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"info": true,
+										"items": true
+									},
+									"update": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"info": true,
+										"items": true
+									},
+									"delete": true
+								}
+							},
+							"ContactLocaleItem": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"contactLocale": true,
+										"order": true,
+										"key": true,
+										"value": true
+									},
+									"read": {
+										"id": true,
+										"contactLocale": true,
+										"order": true,
+										"key": true,
+										"value": true
+									},
+									"update": {
+										"id": true,
+										"contactLocale": true,
+										"order": true,
+										"key": true,
+										"value": true
+									},
+									"delete": true
+								}
+							},
+							"ContactCountry": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"contact": true,
+										"regions": true,
+										"people": true,
+										"code": true,
+										"site": true,
+										"siteLabel": true
+									},
+									"read": {
+										"id": true,
+										"contact": true,
+										"regions": true,
+										"people": true,
+										"code": true,
+										"site": true,
+										"siteLabel": true
+									},
+									"update": {
+										"id": true,
+										"contact": true,
+										"regions": true,
+										"people": true,
+										"code": true,
+										"site": true,
+										"siteLabel": true
+									},
+									"delete": true
+								}
+							},
+							"ContactRegion": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"country": true,
+										"people": true,
+										"code": true,
+										"name": true
+									},
+									"read": {
+										"id": true,
+										"country": true,
+										"people": true,
+										"code": true,
+										"name": true
+									},
+									"update": {
+										"id": true,
+										"country": true,
+										"people": true,
+										"code": true,
+										"name": true
+									},
+									"delete": true
+								}
+							},
+							"ContactDepartment": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"contact": true,
+										"type": true,
+										"order": true,
+										"locales": true,
+										"people": true
+									},
+									"read": {
+										"id": true,
+										"contact": true,
+										"type": true,
+										"order": true,
+										"locales": true,
+										"people": true
+									},
+									"update": {
+										"id": true,
+										"contact": true,
+										"type": true,
+										"order": true,
+										"locales": true,
+										"people": true
+									},
+									"delete": true
+								}
+							},
+							"ContactDepartmentLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"name": true
+									},
+									"read": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"name": true
+									},
+									"update": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"name": true
+									},
+									"delete": true
+								}
+							},
+							"ContactPerson": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"name": true,
+										"image": true,
+										"phone": true,
+										"email": true,
+										"locales": true,
+										"department": true,
+										"order": true,
+										"countries": true,
+										"regions": true
+									},
+									"read": {
+										"id": true,
+										"name": true,
+										"image": true,
+										"phone": true,
+										"email": true,
+										"locales": true,
+										"department": true,
+										"order": true,
+										"countries": true,
+										"regions": true
+									},
+									"update": {
+										"id": true,
+										"name": true,
+										"image": true,
+										"phone": true,
+										"email": true,
+										"locales": true,
+										"department": true,
+										"order": true,
+										"countries": true,
+										"regions": true
+									},
+									"delete": true
+								}
+							},
+							"ContactPersonLocale": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"jobTitle": true
+									},
+									"read": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"jobTitle": true
+									},
+									"update": {
+										"id": true,
+										"root": true,
+										"locale": true,
+										"jobTitle": true
+									},
+									"delete": true
+								}
+							},
+							"ContactCountryPerson": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"person": true,
+										"country": true,
+										"order": true
+									},
+									"read": {
+										"id": true,
+										"person": true,
+										"country": true,
+										"order": true
+									},
+									"update": {
+										"id": true,
+										"person": true,
+										"country": true,
+										"order": true
+									},
+									"delete": true
+								}
+							},
+							"ContactRegionPerson": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"person": true,
+										"region": true,
+										"order": true
+									},
+									"read": {
+										"id": true,
+										"person": true,
+										"region": true,
+										"order": true
+									},
+									"update": {
+										"id": true,
+										"person": true,
+										"region": true,
+										"order": true
+									},
+									"delete": true
+								}
+							},
+							"Linkable": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"site": false,
+										"url": false
+									},
+									"read": {
+										"id": true,
+										"site": true,
+										"url": true
+									},
+									"update": {
+										"id": false,
+										"site": false,
+										"url": false
+									},
+									"delete": false
+								}
+							},
+							"IconShape": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"identifier": false
+									},
+									"read": {
+										"id": true,
+										"identifier": true
+									},
+									"update": {
+										"id": false,
+										"identifier": false
+									},
+									"delete": false
+								}
+							},
+							"Translatable": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"identifier": false,
+										"translations": false
+									},
+									"read": {
+										"id": true,
+										"identifier": true,
+										"translations": true
+									},
+									"update": {
+										"id": false,
+										"identifier": false,
+										"translations": false
+									},
+									"delete": false
+								}
+							},
+							"TranslationSet": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"name": false,
+										"translations": false,
+										"fallback": false,
+										"locale": false
+									},
+									"read": {
+										"id": true,
+										"name": true,
+										"translations": true,
+										"fallback": true,
+										"locale": true
+									},
+									"update": {
+										"id": false,
+										"name": false,
+										"translations": false,
+										"fallback": false,
+										"locale": false
+									},
+									"delete": false
+								}
+							},
+							"Translation": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"translatable": false,
+										"set": false,
+										"value": false
+									},
+									"read": {
+										"id": true,
+										"translatable": true,
+										"set": true,
+										"value": true
+									},
+									"update": {
+										"id": false,
+										"translatable": false,
+										"set": false,
+										"value": false
+									},
+									"delete": false
+								}
+							}
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/siteManager",
+					"value": {
+						"variables": {
+							"site_id": {
+								"type": "entity",
+								"entityName": "Site"
+							}
+						},
+						"stages": "*",
+						"entities": {
+							"MenuItem": {
+								"predicates": {
+									"site": {
+										"menu": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"menu": "site",
+										"order": "site",
+										"title": "site",
+										"link": "site"
+									},
+									"read": {
+										"id": "site",
+										"menu": "site",
+										"order": "site",
+										"title": "site",
+										"link": "site"
+									},
+									"update": {
+										"id": "site",
+										"menu": "site",
+										"order": "site",
+										"title": "site",
+										"link": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"HeaderLocale": {
+								"predicates": {
+									"site": {
+										"locale": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"locale": "site",
+										"leftMenu": "site",
+										"rightMenu": "site"
+									},
+									"read": {
+										"id": "site",
+										"locale": "site",
+										"leftMenu": "site",
+										"rightMenu": "site"
+									},
+									"update": {
+										"id": "site",
+										"locale": "site",
+										"leftMenu": "site",
+										"rightMenu": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FrontPageAboutCompanyColumn": {
+								"predicates": {
+									"site": {
+										"frontPage": {
+											"root": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"title": "site",
+										"text": "site"
+									},
+									"read": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"title": "site",
+										"text": "site"
+									},
+									"update": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"title": "site",
+										"text": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FrontPageProductPromoItem": {
+								"predicates": {
+									"site": {
+										"frontPage": {
+											"root": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"shape": "site",
+										"title": "site",
+										"image": "site",
+										"link": "site"
+									},
+									"read": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"shape": "site",
+										"title": "site",
+										"image": "site",
+										"link": "site"
+									},
+									"update": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"shape": "site",
+										"title": "site",
+										"image": "site",
+										"link": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FrontPageContentPromoItem": {
+								"predicates": {
+									"site": {
+										"frontPage": {
+											"root": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"title": "site",
+										"subtitle": "site",
+										"image": "site",
+										"buttonCaption": "site",
+										"link": "site"
+									},
+									"read": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"title": "site",
+										"subtitle": "site",
+										"image": "site",
+										"buttonCaption": "site",
+										"link": "site"
+									},
+									"update": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"title": "site",
+										"subtitle": "site",
+										"image": "site",
+										"buttonCaption": "site",
+										"link": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FrontPageReference": {
+								"predicates": {
+									"site": {
+										"frontPage": {
+											"root": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"quote": "site",
+										"name": "site",
+										"company": "site",
+										"image": "site",
+										"link": "site"
+									},
+									"read": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"quote": "site",
+										"name": "site",
+										"company": "site",
+										"image": "site",
+										"link": "site"
+									},
+									"update": {
+										"id": "site",
+										"frontPage": "site",
+										"order": "site",
+										"quote": "site",
+										"name": "site",
+										"company": "site",
+										"image": "site",
+										"link": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FooterColumn": {
+								"predicates": {
+									"site": {
+										"footer": {
+											"locale": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"footer": "site",
+										"order": "site",
+										"title": "site",
+										"menu": "site"
+									},
+									"read": {
+										"id": "site",
+										"footer": "site",
+										"order": "site",
+										"title": "site",
+										"menu": "site"
+									},
+									"update": {
+										"id": "site",
+										"footer": "site",
+										"order": "site",
+										"title": "site",
+										"menu": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FooterLocale": {
+								"predicates": {
+									"site": {
+										"locale": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"locale": "site",
+										"columns": "site"
+									},
+									"read": {
+										"id": "site",
+										"locale": "site",
+										"columns": "site"
+									},
+									"update": {
+										"id": "site",
+										"locale": "site",
+										"columns": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContentBlockChildItem": {
+								"predicates": {
+									"site": {
+										"parent": {
+											"block": {
+												"content": {
+													"site": {
+														"id": "site_id"
+													}
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"parent": "site",
+										"order": "site",
+										"title": "site",
+										"text": "site",
+										"image": "site",
+										"buttonCaption": "site",
+										"buttonLink": "site",
+										"attachment": "site"
+									},
+									"read": {
+										"id": "site",
+										"parent": "site",
+										"order": "site",
+										"title": "site",
+										"text": "site",
+										"image": "site",
+										"buttonCaption": "site",
+										"buttonLink": "site",
+										"attachment": "site"
+									},
+									"update": {
+										"id": "site",
+										"parent": "site",
+										"order": "site",
+										"title": "site",
+										"text": "site",
+										"image": "site",
+										"buttonCaption": "site",
+										"buttonLink": "site",
+										"attachment": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContentBlockChildren": {
+								"predicates": {
+									"site": {
+										"block": {
+											"content": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"block": "site",
+										"items": "site"
+									},
+									"read": {
+										"id": "site",
+										"block": "site",
+										"items": "site"
+									},
+									"update": {
+										"id": "site",
+										"block": "site",
+										"items": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContentBlock": {
+								"predicates": {
+									"site": {
+										"content": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"content": "site",
+										"order": "site",
+										"type": "site",
+										"tocCaption": "site",
+										"title": "site",
+										"subtitle": "site",
+										"link": "site",
+										"text": "site",
+										"image": "site",
+										"video": "site",
+										"buttonCaption": "site",
+										"buttonLink": "site",
+										"children": "site"
+									},
+									"read": {
+										"id": "site",
+										"content": "site",
+										"order": "site",
+										"type": "site",
+										"tocCaption": "site",
+										"title": "site",
+										"subtitle": "site",
+										"link": "site",
+										"text": "site",
+										"image": "site",
+										"video": "site",
+										"buttonCaption": "site",
+										"buttonLink": "site",
+										"children": "site"
+									},
+									"update": {
+										"id": "site",
+										"content": "site",
+										"order": "site",
+										"type": "site",
+										"tocCaption": "site",
+										"title": "site",
+										"subtitle": "site",
+										"link": "site",
+										"text": "site",
+										"image": "site",
+										"video": "site",
+										"buttonCaption": "site",
+										"buttonLink": "site",
+										"children": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactRegionPerson": {
+								"predicates": {
+									"site": {
+										"region": {
+											"country": {
+												"contact": {
+													"site": {
+														"id": "site_id"
+													}
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"person": "site",
+										"region": "site",
+										"order": "site"
+									},
+									"read": {
+										"id": "site",
+										"person": "site",
+										"region": "site",
+										"order": "site"
+									},
+									"update": {
+										"id": "site",
+										"person": "site",
+										"region": "site",
+										"order": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactCountryPerson": {
+								"predicates": {
+									"site": {
+										"country": {
+											"contact": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"person": "site",
+										"country": "site",
+										"order": "site"
+									},
+									"read": {
+										"id": "site",
+										"person": "site",
+										"country": "site",
+										"order": "site"
+									},
+									"update": {
+										"id": "site",
+										"person": "site",
+										"country": "site",
+										"order": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactRegion": {
+								"predicates": {
+									"site": {
+										"country": {
+											"contact": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"country": "site",
+										"people": "site",
+										"code": "site",
+										"name": "site"
+									},
+									"read": {
+										"id": "site",
+										"country": "site",
+										"people": "site",
+										"code": "site",
+										"name": "site"
+									},
+									"update": {
+										"id": "site",
+										"country": "site",
+										"people": "site",
+										"code": "site",
+										"name": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactCountry": {
+								"predicates": {
+									"site": {
+										"contact": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"contact": "site",
+										"regions": "site",
+										"people": "site",
+										"code": "site",
+										"site": "site",
+										"siteLabel": "site"
+									},
+									"read": {
+										"id": "site",
+										"contact": "site",
+										"regions": "site",
+										"people": "site",
+										"code": "site",
+										"site": "site",
+										"siteLabel": "site"
+									},
+									"update": {
+										"id": "site",
+										"contact": "site",
+										"regions": "site",
+										"people": "site",
+										"code": "site",
+										"site": "site",
+										"siteLabel": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactLocaleItem": {
+								"predicates": {
+									"site": {
+										"contactLocale": {
+											"root": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"contactLocale": "site",
+										"order": "site",
+										"key": "site",
+										"value": "site"
+									},
+									"read": {
+										"id": "site",
+										"contactLocale": "site",
+										"order": "site",
+										"key": "site",
+										"value": "site"
+									},
+									"update": {
+										"id": "site",
+										"contactLocale": "site",
+										"order": "site",
+										"key": "site",
+										"value": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContentPageLocale": {
+								"predicates": {
+									"site": {
+										"root": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"seo": "site",
+										"slug": "site",
+										"title": "site",
+										"content": "site"
+									},
+									"read": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"seo": "site",
+										"slug": "site",
+										"title": "site",
+										"content": "site"
+									},
+									"update": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"seo": "site",
+										"slug": "site",
+										"title": "site",
+										"content": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FrontPageLocale": {
+								"predicates": {
+									"site": {
+										"root": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"seo": "site",
+										"introBlock": "site",
+										"productPromoItems": "site",
+										"contentPromoBlock": "site",
+										"contentPromoItems": "site",
+										"aboutCompanyBlock": "site",
+										"aboutCompanyColumns": "site",
+										"references": "site",
+										"joinUsBlock": "site",
+										"newsletterTitle": "site"
+									},
+									"read": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"seo": "site",
+										"introBlock": "site",
+										"productPromoItems": "site",
+										"contentPromoBlock": "site",
+										"contentPromoItems": "site",
+										"aboutCompanyBlock": "site",
+										"aboutCompanyColumns": "site",
+										"references": "site",
+										"joinUsBlock": "site",
+										"newsletterTitle": "site"
+									},
+									"update": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"seo": "site",
+										"introBlock": "site",
+										"productPromoItems": "site",
+										"contentPromoBlock": "site",
+										"contentPromoItems": "site",
+										"aboutCompanyBlock": "site",
+										"aboutCompanyColumns": "site",
+										"references": "site",
+										"joinUsBlock": "site",
+										"newsletterTitle": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"PostLocale": {
+								"predicates": {
+									"site": {
+										"root": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"slug": "site",
+										"seo": "site",
+										"title": "site",
+										"perex": "site",
+										"image": "site",
+										"content": "site"
+									},
+									"read": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"slug": "site",
+										"seo": "site",
+										"title": "site",
+										"perex": "site",
+										"image": "site",
+										"content": "site"
+									},
+									"update": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"slug": "site",
+										"seo": "site",
+										"title": "site",
+										"perex": "site",
+										"image": "site",
+										"content": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FaqCategoryLocale": {
+								"predicates": {
+									"site": {
+										"root": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"name": "site"
+									},
+									"read": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"name": "site"
+									},
+									"update": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"name": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FaqQuestionLocale": {
+								"predicates": {
+									"site": {
+										"root": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"question": "site",
+										"answer": "site",
+										"linkCaption": "site",
+										"link": "site"
+									},
+									"read": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"question": "site",
+										"answer": "site",
+										"linkCaption": "site",
+										"link": "site"
+									},
+									"update": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"question": "site",
+										"answer": "site",
+										"linkCaption": "site",
+										"link": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactLocale": {
+								"predicates": {
+									"site": {
+										"root": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"info": "site",
+										"items": "site"
+									},
+									"read": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"info": "site",
+										"items": "site"
+									},
+									"update": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"info": "site",
+										"items": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactDepartmentLocale": {
+								"predicates": {
+									"site": {
+										"root": {
+											"contact": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"name": "site"
+									},
+									"read": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"name": "site"
+									},
+									"update": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"name": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactPersonLocale": {
+								"predicates": {
+									"site": {
+										"root": {
+											"department": {
+												"contact": {
+													"site": {
+														"id": "site_id"
+													}
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"jobTitle": "site"
+									},
+									"read": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"jobTitle": "site"
+									},
+									"update": {
+										"id": "site",
+										"root": "site",
+										"locale": "site",
+										"jobTitle": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactPerson": {
+								"predicates": {
+									"site": {
+										"department": {
+											"contact": {
+												"site": {
+													"id": "site_id"
+												}
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"name": "site",
+										"image": "site",
+										"phone": "site",
+										"email": "site",
+										"locales": "site",
+										"department": "site",
+										"order": "site",
+										"countries": "site",
+										"regions": "site"
+									},
+									"read": {
+										"id": "site",
+										"name": "site",
+										"image": "site",
+										"phone": "site",
+										"email": "site",
+										"locales": "site",
+										"department": "site",
+										"order": "site",
+										"countries": "site",
+										"regions": "site"
+									},
+									"update": {
+										"id": "site",
+										"name": "site",
+										"image": "site",
+										"phone": "site",
+										"email": "site",
+										"locales": "site",
+										"department": "site",
+										"order": "site",
+										"countries": "site",
+										"regions": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContactDepartment": {
+								"predicates": {
+									"site": {
+										"contact": {
+											"site": {
+												"id": "site_id"
+											}
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"contact": "site",
+										"type": "site",
+										"order": "site",
+										"locales": "site",
+										"people": "site"
+									},
+									"read": {
+										"id": "site",
+										"contact": "site",
+										"type": "site",
+										"order": "site",
+										"locales": "site",
+										"people": "site"
+									},
+									"update": {
+										"id": "site",
+										"contact": "site",
+										"type": "site",
+										"order": "site",
+										"locales": "site",
+										"people": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Content": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"blocks": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"blocks": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"blocks": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"ContentPage": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"locales": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"locales": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"locales": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FrontPage": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"locales": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"locales": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"locales": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Linkable": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"url": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"url": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"url": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"SiteLocale": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"code": "site",
+										"order": "site",
+										"site": "site",
+										"translationSet": "site",
+										"frontPage": "site",
+										"posts": "site",
+										"footer": "site",
+										"header": "site",
+										"pages": "site",
+										"faqCategories": "site",
+										"faqQuestions": "site"
+									},
+									"read": {
+										"id": "site",
+										"code": "site",
+										"order": "site",
+										"site": "site",
+										"translationSet": "site",
+										"frontPage": "site",
+										"posts": "site",
+										"footer": "site",
+										"header": "site",
+										"pages": "site",
+										"faqCategories": "site",
+										"faqQuestions": "site"
+									},
+									"update": {
+										"id": "site",
+										"code": "site",
+										"order": "site",
+										"site": "site",
+										"translationSet": "site",
+										"frontPage": "site",
+										"posts": "site",
+										"footer": "site",
+										"header": "site",
+										"pages": "site",
+										"faqCategories": "site",
+										"faqQuestions": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Post": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"publishedAt": "site",
+										"locales": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"publishedAt": "site",
+										"locales": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"publishedAt": "site",
+										"locales": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Menu": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"items": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"items": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"items": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FaqCategory": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"locales": "site",
+										"site": "site",
+										"order": "site",
+										"questions": "site"
+									},
+									"read": {
+										"id": "site",
+										"locales": "site",
+										"site": "site",
+										"order": "site",
+										"questions": "site"
+									},
+									"update": {
+										"id": "site",
+										"locales": "site",
+										"site": "site",
+										"order": "site",
+										"questions": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"FaqQuestion": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"locales": "site",
+										"site": "site",
+										"order": "site",
+										"category": "site"
+									},
+									"read": {
+										"id": "site",
+										"locales": "site",
+										"site": "site",
+										"order": "site",
+										"category": "site"
+									},
+									"update": {
+										"id": "site",
+										"locales": "site",
+										"site": "site",
+										"order": "site",
+										"category": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Contact": {
+								"predicates": {
+									"site": {
+										"site": {
+											"id": "site_id"
+										}
+									}
+								},
+								"operations": {
+									"create": {
+										"id": "site",
+										"site": "site",
+										"locales": "site",
+										"departments": "site",
+										"countries": "site"
+									},
+									"read": {
+										"id": "site",
+										"site": "site",
+										"locales": "site",
+										"departments": "site",
+										"countries": "site"
+									},
+									"update": {
+										"id": "site",
+										"site": "site",
+										"locales": "site",
+										"departments": "site",
+										"countries": "site"
+									},
+									"delete": "site"
+								}
+							},
+							"Site": {
+								"predicates": {
+									"site": {
+										"id": "site_id"
+									}
+								},
+								"operations": {
+									"create": {
+										"id": false,
+										"code": false,
+										"order": false,
+										"locales": false,
+										"frontPage": false,
+										"posts": false,
+										"pages": false,
+										"faqCategories": false,
+										"faqQuestions": false,
+										"contact": false
+									},
+									"read": {
+										"id": "site",
+										"code": "site",
+										"order": "site",
+										"locales": "site",
+										"frontPage": "site",
+										"posts": "site",
+										"pages": "site",
+										"faqCategories": "site",
+										"faqQuestions": "site",
+										"contact": "site"
+									},
+									"update": {
+										"id": "site",
+										"code": false,
+										"order": false,
+										"locales": "site",
+										"frontPage": "site",
+										"posts": "site",
+										"pages": "site",
+										"faqCategories": "site",
+										"faqQuestions": "site",
+										"contact": "site"
+									},
+									"delete": false
+								}
+							},
+							"FrontPageContentBlock": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"title": true,
+										"subtitle": true,
+										"text": true,
+										"image": true,
+										"link": true,
+										"buttonCaption": true,
+										"buttonLink": true
+									},
+									"read": {
+										"id": true,
+										"title": true,
+										"subtitle": true,
+										"text": true,
+										"image": true,
+										"link": true,
+										"buttonCaption": true,
+										"buttonLink": true
+									},
+									"update": {
+										"id": true,
+										"title": true,
+										"subtitle": true,
+										"text": true,
+										"image": true,
+										"link": true,
+										"buttonCaption": true,
+										"buttonLink": true
+									},
+									"delete": true
+								}
+							},
+							"Link": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"type": true,
+										"description": true,
+										"destination": true,
+										"parameters": true,
+										"url": true,
+										"linkable": true
+									},
+									"read": {
+										"id": true,
+										"type": true,
+										"description": true,
+										"destination": true,
+										"parameters": true,
+										"url": true,
+										"linkable": true
+									},
+									"update": {
+										"id": true,
+										"type": true,
+										"description": true,
+										"destination": true,
+										"parameters": true,
+										"url": true,
+										"linkable": true
+									},
+									"delete": true
+								}
+							},
+							"Image": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"url": true
+									},
+									"read": {
+										"id": true,
+										"url": true
+									},
+									"update": {
+										"id": true,
+										"url": true
+									},
+									"delete": true
+								}
+							},
+							"Video": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"url": true
+									},
+									"read": {
+										"id": true,
+										"url": true
+									},
+									"update": {
+										"id": true,
+										"url": true
+									},
+									"delete": true
+								}
+							},
+							"GenericFile": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"url": true
+									},
+									"read": {
+										"id": true,
+										"url": true
+									},
+									"update": {
+										"id": true,
+										"url": true
+									},
+									"delete": true
+								}
+							},
+							"Seo": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"title": true,
+										"description": true,
+										"ogImage": true,
+										"ogTitle": true,
+										"ogDescription": true
+									},
+									"read": {
+										"id": true,
+										"title": true,
+										"description": true,
+										"ogImage": true,
+										"ogTitle": true,
+										"ogDescription": true
+									},
+									"update": {
+										"id": true,
+										"title": true,
+										"description": true,
+										"ogImage": true,
+										"ogTitle": true,
+										"ogDescription": true
+									},
+									"delete": true
+								}
+							},
+							"IconShape": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"identifier": false
+									},
+									"read": {
+										"id": true,
+										"identifier": true
+									},
+									"update": {
+										"id": false,
+										"identifier": false
+									},
+									"delete": false
+								}
+							},
+							"Translatable": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"identifier": false,
+										"translations": false
+									},
+									"read": {
+										"id": true,
+										"identifier": true,
+										"translations": true
+									},
+									"update": {
+										"id": false,
+										"identifier": false,
+										"translations": false
+									},
+									"delete": false
+								}
+							},
+							"TranslationSet": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"name": false,
+										"translations": false,
+										"fallback": false,
+										"locale": false
+									},
+									"read": {
+										"id": true,
+										"name": true,
+										"translations": true,
+										"fallback": true,
+										"locale": true
+									},
+									"update": {
+										"id": false,
+										"name": false,
+										"translations": false,
+										"fallback": false,
+										"locale": false
+									},
+									"delete": false
+								}
+							},
+							"Translation": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": false,
+										"translatable": false,
+										"set": false,
+										"value": false
+									},
+									"read": {
+										"id": true,
+										"translatable": true,
+										"set": true,
+										"value": true
+									},
+									"update": {
+										"id": false,
+										"translatable": false,
+										"set": false,
+										"value": false
+									},
+									"delete": false
+								}
+							}
+						}
+					}
+				}
+			]
+		}
+	]
+}

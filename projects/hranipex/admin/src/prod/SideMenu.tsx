@@ -1,7 +1,11 @@
 import * as React from 'react'
-import { Menu } from 'cms-admin'
+import { Menu, useProjectUserRoles } from 'cms-admin'
+import { UserRoles } from './acl'
 
 export const SideMenu = React.memo(props => {
+	const userRoles = useProjectUserRoles()
+
+	const isAdmin = userRoles.has(UserRoles.Admin)
 	return (
 		<Menu>
 			<Menu.Item>
@@ -17,6 +21,7 @@ export const SideMenu = React.memo(props => {
 				<Menu.Item title="Sites" to="sites" />
 				<Menu.Item title="Translations" to="translations" />
 				<Menu.Item title="Icons" to="icons" />
+				{isAdmin && <Menu.Item title="Users" to="tenantUsers" />}
 			</Menu.Item>
 		</Menu>
 	)
