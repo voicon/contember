@@ -10,5 +10,4 @@ export class Video {
 
 export class GenericFile {
 	url = d.stringColumn().notNull()
-	mediaType = d.stringColumn().notNull()
 }
