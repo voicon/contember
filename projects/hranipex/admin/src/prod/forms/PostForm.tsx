@@ -28,8 +28,8 @@ export const GenericContentForm = Component(
 				label="Content"
 				enableUnlinkAll={true}
 			>
-				<Block discriminateBy="text" label="Text">
-					<RichTextField
+				<Block discriminateBy="text" label="HTML content">
+					{/*<RichTextField
 						label="Text"
 						name="text"
 						lineBreakBehavior={LineBreakBehavior.SMART}
@@ -38,7 +38,8 @@ export const GenericContentForm = Component(
 							{ block: BlockType.HEADING_H2, marks: [] },
 							{ block: BlockType.HEADING_H3, marks: [] },
 						]}
-					/>
+					/>*/}
+					<TextAreaField name="text" label="Content" description="You may use HTML" style={{ fontFamily: 'mono' }} />
 				</Block>
 				<Block discriminateBy="image" label="Image">
 					<ImageField name="image" label="Image" />

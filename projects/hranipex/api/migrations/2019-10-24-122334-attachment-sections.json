@@ -1,0 +1,124 @@
+{
+	"modifications": [
+		{
+			"modification": "updateEnum",
+			"enumName": "ContentBlockType",
+			"values": [
+				"text",
+				"image",
+				"video",
+				"actionButton",
+				"textBox",
+				"toc",
+				"imageBoxLeft",
+				"imageBoxRight",
+				"imageBoxCircleLeft",
+				"grid",
+				"circleList",
+				"squareList",
+				"timeline",
+				"attachmentSection"
+			]
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "GenericFile",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "generic_file",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"unique": {}
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "GenericFile",
+			"field": {
+				"name": "url",
+				"columnName": "url",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "GenericFile",
+			"field": {
+				"name": "mediaType",
+				"columnName": "media_type",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "ContentBlockChildItem",
+			"owningSide": {
+				"name": "attachment",
+				"nullable": true,
+				"type": "ManyHasOne",
+				"target": "GenericFile",
+				"joiningColumn": {
+					"columnName": "attachment_id",
+					"onDelete": "set null"
+				}
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/GenericFile",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"create": {
+								"id": true,
+								"url": true,
+								"mediaType": true
+							},
+							"read": {
+								"id": true,
+								"url": true,
+								"mediaType": true
+							},
+							"update": {
+								"id": true,
+								"url": true,
+								"mediaType": true
+							},
+							"delete": true
+						}
+					}
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlockChildItem/operations/create/attachment",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlockChildItem/operations/read/attachment",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/admin/entities/ContentBlockChildItem/operations/update/attachment",
+					"value": true
+				}
+			]
+		}
+	]
+}

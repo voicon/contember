@@ -3,6 +3,7 @@ import {
 	BlockType,
 	Box,
 	Component,
+	FileUploadField,
 	LineBreakBehavior,
 	Mark,
 	RichTextField,
@@ -100,6 +101,13 @@ export const ContentPageContentForm = Component(
 					<SortableRepeater field={'children.items'} sortBy={'order'} removeType={'delete'}>
 						<TextField name={'title'} label={'Title'} allowNewlines={true} />
 						<TextField name={'text'} label={'Text'} allowNewlines={true} />
+					</SortableRepeater>
+				</Block>
+				<Block discriminateBy="attachmentSection" label="Attachment section">
+					<TextField name={'title'} label={'Title'} allowNewlines={true} />
+					<SortableRepeater field={'children.items'} sortBy={'order'} removeType={'delete'}>
+						<TextField name={'title'} label={'Title'} allowNewlines={true} />
+						<FileUploadField name="attachment.url" label="File" />
 					</SortableRepeater>
 				</Block>
 			</SortableBlockRepeater>

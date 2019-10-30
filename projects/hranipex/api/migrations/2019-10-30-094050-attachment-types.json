@@ -1,0 +1,26 @@
+{
+	"modifications": [
+		{
+			"modification": "removeField",
+			"entityName": "GenericFile",
+			"fieldName": "mediaType"
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/GenericFile/operations/create/mediaType"
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/GenericFile/operations/read/mediaType"
+				},
+				{
+					"op": "remove",
+					"path": "/roles/admin/entities/GenericFile/operations/update/mediaType"
+				}
+			]
+		}
+	]
+}

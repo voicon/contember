@@ -7,3 +7,7 @@ export class Image {
 export class Video {
 	url = d.stringColumn().notNull()
 }
+
+export class GenericFile {
+	url = d.stringColumn().notNull()
+}
